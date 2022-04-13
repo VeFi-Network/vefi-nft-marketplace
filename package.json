@@ -1,0 +1,29 @@
+{
+  "name": "vefi-nft-marketplace",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@web3-react/core": "^6.1.9",
+    "@web3-react/injected-connector": "^6.0.7",
+    "axios": "^0.26.1",
+    "next": "12.1.5",
+    "react": "18.0.0",
+    "react-dom": "18.0.0",
+    "react-icons": "^4.3.1",
+    "styled-components": "^5.3.5",
+    "web3": "^1.7.3"
+  },
+  "devDependencies": {
+    "@types/node": "17.0.23",
+    "@types/react": "18.0.3",
+    "babel-plugin-styled-components": "^2.0.7",
+    "eslint": "7",
+    "eslint-config-next": "12.1.5",
+    "typescript": "4.6.3"
+  }
+}
