@@ -7,7 +7,6 @@ type Props = {
     NFTName: string,
     NFTPrice: string,
     NFTImageURI: string,
-    nftHolderAvatar:string
 }
 
 const CardContainer  = styled.div`
@@ -37,25 +36,36 @@ const CardFooterContainer = styled.div`
     width: 100%;
     height: auto;
     position:absolute;
-    top:85%;
+    top:70%;
 `
 
 const CardFooter = styled.div`
     width:100%;
-    height:100px;
+    height:85px;
     display:flex;
     align-items:center;
     color:#fff;
 `
 
-const AvatarCards = styled.div`
-    position:absolute;
+const Avatars = styled.div`
     z-index:99;
-    top:80%;
-    margin:0 5px;
+    display:flex;
+    flex-direction:row;
+    margin-left:-20px !important;
+    position:absolute;
+    top:65%;
+    left:20%;
     img{
+        z-index:999;
+        border:2px solid #fff !important;
+        object-fit:cover;
         border-radius:50%;
-        border:1px solid #fff !important;
+        width:100%;
+        height:100%;
+    }
+    .avatar{
+        margin-left: -20px;
+        overflow:hidden;
     }
 `
 
@@ -69,12 +79,14 @@ const CardFooterItem = styled.div`
         display:flex;
         flex-direction:column;
         padding:0 10px;
+        margin-top:20px;
     }
     .nft-price-info{
         font-weight:bold;
         display:flex;
         flex-direction:column;
-        padding:0 10px;
+        padding:10px;
+        row-gap:0.3rem;
     }
     .nft_name{
         font-size:12px;
@@ -100,11 +112,17 @@ const Card = (props:Props) => {
             <CardHeader>
                 <Image src={props.NFTImageURI} width={329} height={378} />
             </CardHeader>
-            <AvatarCards>
-                <Image src={props.nftHolderAvatar} width={30} height={30} />
-                <Image src={props.nftHolderAvatar} width={30} height={30} />
-                <Image src={props.nftHolderAvatar} width={30} height={30} />
-            </AvatarCards>
+            <Avatars>
+                <div className="avatar">
+                    <Image src="/avatar/user01.png" width={30} height={30} />
+                </div>
+                <div className="avatar">
+                <Image src="/avatar/user01.png" width={30} height={30} />
+                </div>
+                <div className="avatar">
+                    <Image src="/avatar/user01.png" width={30} height={30} />
+                </div>
+            </Avatars>
             <CardFooterContainer>
                 <CardFooter>
                     <CardFooterItem>
