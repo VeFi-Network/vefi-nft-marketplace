@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import styled from 'styled-components';
+import { useState } from 'react';
 
 const NavContainer = styled.nav`
     max-width: 100%;
@@ -35,6 +36,7 @@ const UserWallet = styled.div`
     .wallet_container{
         background-color: #373943;
         border-radius:30px;
+        cursor:pointer;
         color:#fff;
         display:flex;
         flex-direction:row;
