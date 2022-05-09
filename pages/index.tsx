@@ -1,4 +1,6 @@
 import type { NextPage } from 'next'
+import Link from 'next/link';
+
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
@@ -16,6 +18,12 @@ const Home: NextPage = () => {
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
+
+        <h2>
+          <Link href="marketplace">
+          <a> Go to marketplace</a>
+          </Link>
+          </h2>
 
         <p className={styles.description}>
           Get started by editing{' '}

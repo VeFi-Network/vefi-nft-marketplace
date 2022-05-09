@@ -1,9 +1,16 @@
+*,
+*::before,
+*::after ,
 html,
 body {
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    background-color: black;
+    /* background: #16052B; */
+    /* background-image: linear-gradient(to right, #16052b, #201746, #2a2663, #323782, #3449a3, #514caf, #6c4fb9, #8750c2, #af3dad, #cb2691, #dc1071, #e21950);
+ */
 }
 
 a {
