@@ -1,5 +1,5 @@
-import React from 'react'
-import styled  from 'styled-components';
+import React from 'react';
+import styled from 'styled-components';
 import Filled_CTA_Button from '../components/Button/CTA/Filled';
 import Ghost_CTA_Button from '../components/Button/Ghost';
 import Navbar from '../components/Navbar';
@@ -8,482 +8,422 @@ import { useState } from 'react';
 import Card from '../components/Card';
 import Background from './background';
 
-
 const MainContainer = styled.div`
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: center;
-background: #0C0C0C;
-
-
-
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background: #0c0c0c;
 `;
 
 const MarketplaceContainer = styled.div`
-    min-height: 100vh;
-    width: 1800px;
-    max-width: 2000px;
-    min-width: 1000px;
-    background: #0C0C0C;
-    padding-left: 55px;
-    padding-top: 20px;
-    padding-bottom: 30px;
-    overflow: hidden;
-
-
-
+  min-height: 100vh;
+  width: 1800px;
+  max-width: 2000px;
+  min-width: 1000px;
+  background: #0c0c0c;
+  padding-left: 55px;
+  padding-top: 20px;
+  padding-bottom: 30px;
+  overflow: hidden;
 `;
 
-
 const DiscoverText = styled.div`
-font-family: 'MonumentExtended';
-font-style: normal;
-font-weight: 400;
-font-size: 55px;
-line-height: 140%;
+  font-family: 'MonumentExtended';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 55px;
+  line-height: 140%;
 
-margin-top: 60px;
+  margin-top: 60px;
 
-display: flex;
-align-items: center;
+  display: flex;
+  align-items: center;
 
-color: #FFFFFF;
-margin-left: 55px;
-
-
-
-
-
+  color: #ffffff;
+  margin-left: 55px;
 `;
 
 const ButtonContainer = styled.div`
-margin-left: 55px;
-margin-top: 30px;
-display: flex;
-flex-direction: row;
-gap: 30px;
-
-
-
+  margin-left: 55px;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
 `;
- 
-const FilterByText =styled.div`
-    margin-top: -280px;
-    margin-left: 55px;
-    font-family: 'Rubik';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 19px;
-    color: #EBF8FF;
 
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    
+const FilterByText = styled.div`
+  margin-top: -280px;
+  margin-left: 55px;
+  font-family: 'Rubik';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  color: #ebf8ff;
 
-
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 `;
 
 const FilterContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    gap: 24px;
-    margin-top: 21px;
-    margin-left: 55px;
-
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  margin-top: 21px;
+  margin-left: 55px;
 `;
 
 const FilterBtn = styled.button`
+  background: #373943;
+  border-radius: 11px;
 
-    background: #373943;
-    border-radius: 11px;
+  font-family: 'Rubik';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  border: none;
 
-    font-family: 'Rubik';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 17px;
-    border: none;
+  color: #5c95ff;
+  padding: 10px;
 
+  cursor: pointer;
 
-    color: #5C95FF;
-    padding: 10px;
-
-
-    cursor: pointer;
-
-    display: flex;
-    flex-direction: row;
-    gap: 11px;
-
+  display: flex;
+  flex-direction: row;
+  gap: 11px;
 `;
 
 const FilterAllBtn = styled.button`
+  background: #373943;
+  border-radius: 11px;
 
-    background: #373943;
-    border-radius: 11px;
+  font-family: 'Rubik';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  border: none;
 
-    font-family: 'Rubik';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 17px;
-    border: none;
+  color: #5c95ff;
+  padding: 10px 50px 10px 10px;
 
+  cursor: pointer;
 
-    color: #5C95FF;
-    padding: 10px 50px 10px 10px;
-
-
-    cursor: pointer;
-
-    display: flex;
-    flex-direction: row;
-    gap: 11px;
-
+  display: flex;
+  flex-direction: row;
+  gap: 11px;
 `;
 
 const SearchBar = styled.div`
-display: flex;
-flex-direction: row;
-align-items: flex-start;
-padding: 10px 20px 10px 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 10px 20px 10px 10px;
 
+  background: #373943;
+  border-radius: 11px;
+  gap: 10px;
 
+  z-index: 3;
 
-background: #373943;
-border-radius: 11px;
-gap: 10px;
-
-
-z-index: 3;
-
-
-.input{
+  .input {
     background: transparent;
     color: #828282;
     border: none;
-    outline: none;   
+    outline: none;
     width: 150px;
-
-
-}
-
-
-
+  }
 `;
 
-
 const NFTContainer = styled.div`
-display: flex;
-flex-direction: row;
- justify-content: space-around;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 
+  padding-left: 7%;
+  padding-right: 10%;
 
- padding-left: 7%;
- padding-right: 10%;
+  align-items: center;
 
- align-items: center;
+  transition-duration: 500ms;
 
+  opacity: ${(props: { visible: any }) => (props.visible ? '1' : '0')};
 
+  z-index: 3;
 
+  background: linear-gradient(254.33deg, rgba(255, 255, 255, 0.1) 1.71%, rgba(255, 255, 255, 0.05) 99.35%);
+  backdrop-filter: blur(16.86px);
 
-transition-duration: 500ms;
+  border-radius: 20px 20px 0px 0px;
 
-opacity: ${(props: { visible: any; }) => props.visible?"1":"0"};
+  width: -moz-calc(100% - 150px);
 
-z-index: 3;
+  width: -webkit-calc(100% - 150px);
 
+  width: -o-calc(100% - 150px);
 
-background: linear-gradient(254.33deg, rgba(255, 255, 255, 0.1) 1.71%, rgba(255, 255, 255, 0.05) 99.35%);
-backdrop-filter: blur(16.86px);
-
-border-radius: 20px 20px 0px 0px;
-
-width: -moz-calc(100% - 150px);
-
-width: -webkit-calc(100% - 150px);
-
-width: -o-calc(100% - 150px);
-
-width: calc(100% - 150px);
-height: 400px;
-margin-left: 55px;
-margin-top: 80px;
-border: 1px solid #383838;
-
+  width: calc(100% - 150px);
+  height: 400px;
+  margin-left: 55px;
+  margin-top: 80px;
+  border: 1px solid #383838;
 `;
 
 const NFTTransparentContainer = styled.div`
-margin-left: 55px;
+  margin-left: 55px;
 
+  background: linear-gradient(254.33deg, rgba(255, 255, 255, 0.1) 1.71%, rgba(255, 255, 255, 0.05) 99.35%);
+  backdrop-filter: blur(16.86px);
 
+  border-radius: 20px 20px 0px 0px;
+  box-sizing: border-box;
+  height: 400px;
 
-background: linear-gradient(254.33deg, rgba(255, 255, 255, 0.1) 1.71%, rgba(255, 255, 255, 0.05) 99.35%);
-backdrop-filter: blur(16.86px);
+  width: -moz-calc(100% - 150px);
 
+  width: -webkit-calc(100% - 150px);
 
-border-radius: 20px 20px 0px 0px;
-box-sizing: border-box;
-height: 400px;
+  width: -o-calc(100% - 150px);
 
+  width: calc(100% - 150px);
 
-width: -moz-calc(100% - 150px);
+  margin-top: -310px;
 
-width: -webkit-calc(100% - 150px);
+  border: 1px solid #383838;
 
-width: -o-calc(100% - 150px);
-
-width: calc(100% - 150px);
-
-margin-top: -310px;
-
-
-border: 1px solid #383838;
-
-z-index: 1;
-opacity: 0;
-        
-
-
-
-
-
-
-
-
-
-
+  z-index: 1;
+  opacity: 0;
 `;
 
-
-
 const ParentNFTCont = styled.div`
-    
-
-    &:hover{
-        .transparent-cont{
-        margin-top: 20px;
-          height: 500px;
-        opacity: 1;
-        
-
-        }
-
-        .nft-container{
-            display: none;
-      
-         
-        }
-
-        .hover-container{
-            display: flex;
-        
-     
-        }
-
-
-    
+  &:hover {
+    .transparent-cont {
+      margin-top: 20px;
+      height: 500px;
+      opacity: 1;
     }
 
+    .nft-container {
+      display: none;
+    }
+
+    .hover-container {
+      display: flex;
+    }
+  }
 `;
 
 const NFTSubCont = styled.div`
-display: flex;
-flex-direction: row;
- justify-content: space-around;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 
- width: 100%;
- margin-top: -120px;
- transition-duration: 250ms;
- opacity: ${(props: { visible: any; }) => props.visible?"1":"0"};
-
-
+  width: 100%;
+  margin-top: -120px;
+  transition-duration: 250ms;
+  opacity: ${(props: { visible: any }) => (props.visible ? '1' : '0')};
 `;
 
-const PaddedSpace =styled.div`
-    min-width: 50px;
-   
-
+const PaddedSpace = styled.div`
+  min-width: 50px;
 `;
 
 const NFTScrollableContainer = styled.div`
-display: flex;
-flex-direction: row;
-justify-content: space-between;
-display: none;
-align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  display: none;
+  align-items: center;
 
-margin-top: 20px;
+  margin-top: 20px;
 
+  height: 415px;
 
-
-
-height: 415px;
-
-flex-direction: row;
-gap: 25px;
-overflow-x: auto;
-transition-duration: 500ms;
-opacity: ${(props: { visible: any; }) => props.visible?"1":"0"};
-
-
-
+  flex-direction: row;
+  gap: 25px;
+  overflow-x: auto;
+  transition-duration: 500ms;
+  opacity: ${(props: { visible: any }) => (props.visible ? '1' : '0')};
 `;
 
-
 const DiscoverAndAnimate = styled.div`
-    display: flex;
-    flex-direction: row;
-    position: relative;
-
+  display: flex;
+  flex-direction: row;
+  position: relative;
 `;
 
 const SeeMore = styled.div`
-    color: white;
-    display: none;
-    margin-left: 90%;
-    margin-top: 15px;
-    cursor: pointer;
+  color: white;
+  display: none;
+  margin-left: 90%;
+  margin-top: 15px;
+  cursor: pointer;
 
-    flex-direction: row;
-    gap: 15px;
-
-
+  flex-direction: row;
+  gap: 15px;
 `;
 
-
 const DiscoverPart = styled.div`
-    width: 600px;
+  width: 600px;
 `;
 
 const AnimatePart = styled.div`
-    width: 100%;
-    margin-top: -330px;
-    z-index: 0;
-
+  width: 100%;
+  margin-top: -330px;
+  z-index: 0;
 `;
 
 const ExploreNFT = styled.div`
-    height: 585px;
-    width: 97px;
+  height: 585px;
+  width: 97px;
 
-    position: absolute;
-    margin-left: -60px;
+  position: absolute;
+  margin-left: -60px;
 `;
 
 const RoundBlueLine = styled.div`
-
-    position: absolute;
-    margin-left: 300px;
-    margin-top: 65px;
-    
-
+  position: absolute;
+  margin-left: 300px;
+  margin-top: 65px;
 `;
 
-
 export default function Marketplace() {
+  const [searchValue, setSearchValue] = useState('Search artwork');
 
-  const [searchValue,setSearchValue ] = useState("Search artwork");
+  const [transition, setTransition] = useState(false);
 
-  const [transition,setTransition] = useState(false);
-
-  const applyTransition = ()=>{
-    
-      setTransition(true);
-  }
+  const applyTransition = () => {
+    setTransition(true);
+  };
 
   return (
     <>
-    <MainContainer>
-    <MarketplaceContainer>
-        <Navbar />
-        <DiscoverAndAnimate>
-             <ExploreNFT>
-                 <Image width="97px" height="585px" src="/icons/exploreNFT.png" />
-             </ExploreNFT>
-            <DiscoverPart>  
-                 <RoundBlueLine>
-                     <Image width="149px" height="80px" src="/objects/round.svg" />   
-                </RoundBlueLine> 
-                <DiscoverText>
-                    Discover,<br /> collect, and sell <br /> extraordinary <br /> NFTs
-                </DiscoverText>
-                <ButtonContainer>
-                    <Filled_CTA_Button>Get Started</Filled_CTA_Button>
-                    <Ghost_CTA_Button>Become a Creator</Ghost_CTA_Button>
-                </ButtonContainer>
+      <MainContainer>
+        <MarketplaceContainer>
+          <Navbar />
+          <DiscoverAndAnimate>
+            <ExploreNFT>
+              <Image width="97px" height="585px" src="/icons/exploreNFT.png" />
+            </ExploreNFT>
+            <DiscoverPart>
+              <RoundBlueLine>
+                <Image width="149px" height="80px" src="/objects/round.svg" />
+              </RoundBlueLine>
+              <DiscoverText>
+                Discover,
+                <br /> collect, and sell <br /> extraordinary <br /> NFTs
+              </DiscoverText>
+              <ButtonContainer>
+                <Filled_CTA_Button>Get Started</Filled_CTA_Button>
+                <Ghost_CTA_Button>Become a Creator</Ghost_CTA_Button>
+              </ButtonContainer>
             </DiscoverPart>
 
             <AnimatePart>
-                <Background />
+              <Background />
             </AnimatePart>
+          </DiscoverAndAnimate>
 
-           
-
-        </DiscoverAndAnimate>
-        
-        <FilterByText>
-            <Image height={18} width={18} src="/icons/filter.svg"  />
+          <FilterByText>
+            <Image height={18} width={18} src="/icons/filter.svg" />
             <div> Filter by</div>
-        </FilterByText>
-        <FilterContainer>
+          </FilterByText>
+          <FilterContainer>
             <FilterAllBtn>All</FilterAllBtn>
-            <FilterBtn>Top Selling <div style={{marginTop: -1}}><Image width="12px"  height="9px" src="/icons/downIcon.svg"/></div></FilterBtn>
-            <FilterBtn>Price <div style={{marginTop: -1}}><Image width="12px"  height="9px" src="/icons/downIcon.svg"/></div></FilterBtn>
-            <SearchBar><Image height="18px" width="18px" src={"/icons/search.svg"} /> <input className='input' value={searchValue} onChange={(e)=>{setSearchValue(e.target.value)}} onClick={()=>setSearchValue("")} /></SearchBar>
-        </FilterContainer>
-        <ParentNFTCont>
-        <NFTContainer visible={!transition} className='nft-container'>
-            <NFTSubCont visible={!transition}>
-                <Card collectionName='God of War' NFTImageURI='/nft/nft01.png' NFTPrice='247' NFTName='ToomuchLag' ></Card>
-                <Card collectionName='Rolling Ape' NFTImageURI='/nft/nft02.png' NFTPrice='7' NFTName='Unknowest' ></Card>
-                <Card collectionName='Lost in Space' NFTImageURI='/nft/nft03.png' NFTPrice='2' NFTName='Wereywanle' ></Card>
-            
-            </NFTSubCont>
-           
-           
+            <FilterBtn>
+              Top Selling{' '}
+              <div style={{ marginTop: -1 }}>
+                <Image width="12px" height="9px" src="/icons/downIcon.svg" />
+              </div>
+            </FilterBtn>
+            <FilterBtn>
+              Price{' '}
+              <div style={{ marginTop: -1 }}>
+                <Image width="12px" height="9px" src="/icons/downIcon.svg" />
+              </div>
+            </FilterBtn>
+            <SearchBar>
+              <Image height="18px" width="18px" src={'/icons/search.svg'} />{' '}
+              <input
+                className="input"
+                value={searchValue}
+                onChange={e => {
+                  setSearchValue(e.target.value);
+                }}
+                onClick={() => setSearchValue('')}
+              />
+            </SearchBar>
+          </FilterContainer>
+          <ParentNFTCont>
+            <NFTContainer visible={!transition} className="nft-container">
+              <NFTSubCont visible={!transition}>
+                <Card
+                  collectionName="God of War"
+                  NFTImageURI="/nft/nft01.png"
+                  NFTPrice="247"
+                  NFTName="ToomuchLag"
+                ></Card>
+                <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
+                <Card
+                  collectionName="Lost in Space"
+                  NFTImageURI="/nft/nft03.png"
+                  NFTPrice="2"
+                  NFTName="Wereywanle"
+                ></Card>
+              </NFTSubCont>
+            </NFTContainer>
+            <NFTTransparentContainer
+              visible={transition}
+              className="transparent-cont"
+              onMouseEnter={() => {
+                setTimeout(() => {
+                  applyTransition();
+                }, 250);
+              }}
+              onMouseLeave={() => {
+                setTimeout(() => {
+                  setTransition(false);
+                }, 200);
+              }}
+            >
+              <NFTScrollableContainer visible={transition} className="hover-container">
+                <PaddedSpace />
+                <Card
+                  collectionName="God of War"
+                  NFTImageURI="/nft/nft01.png"
+                  NFTPrice="247"
+                  NFTName="ToomuchLag"
+                ></Card>
+                <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
+                <Card
+                  collectionName="Lost in Space"
+                  NFTImageURI="/nft/nft03.png"
+                  NFTPrice="2"
+                  NFTName="Wereywanle"
+                ></Card>
+                <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
+                <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
+                <Card
+                  collectionName="Lost in Space"
+                  NFTImageURI="/nft/nft03.png"
+                  NFTPrice="2"
+                  NFTName="Wereywanle"
+                ></Card>
 
-         
-         </NFTContainer>
-      <NFTTransparentContainer visible={transition} className="transparent-cont"  onMouseEnter={() => {setTimeout(()=>{applyTransition();},250)}} onMouseLeave={() => {setTimeout(()=>{setTransition(false)},200)}}>  
+                <PaddedSpace />
+              </NFTScrollableContainer>
 
-             <NFTScrollableContainer  visible={transition}  
-                 className="hover-container">
-
-              <PaddedSpace />
-                <Card collectionName='God of War' NFTImageURI='/nft/nft01.png' NFTPrice='247' NFTName='ToomuchLag' ></Card>
-                <Card collectionName='Rolling Ape' NFTImageURI='/nft/nft02.png' NFTPrice='7' NFTName='Unknowest' ></Card>
-                <Card collectionName='Lost in Space' NFTImageURI='/nft/nft03.png' NFTPrice='2' NFTName='Wereywanle' ></Card>
-                <Card collectionName='Rolling Ape' NFTImageURI='/nft/nft02.png' NFTPrice='7' NFTName='Unknowest' ></Card>
-                <Card collectionName='Rolling Ape' NFTImageURI='/nft/nft02.png' NFTPrice='7' NFTName='Unknowest' ></Card>
-                <Card collectionName='Lost in Space' NFTImageURI='/nft/nft03.png' NFTPrice='2' NFTName='Wereywanle' ></Card>
-
-            <PaddedSpace />
-           
-              
-            
-            </NFTScrollableContainer> 
-
-            <SeeMore className="hover-container" >
-  
-               See more 
-               <Image height={18} width={18} src="/icons/right-arrow.svg"  />
-            </SeeMore>
-
-       
-
-      
-      </NFTTransparentContainer>
-        </ParentNFTCont>
-       
-      
-    </MarketplaceContainer>
-    </MainContainer>
-    
-
+              <SeeMore className="hover-container">
+                See more
+                <Image height={18} width={18} src="/icons/right-arrow.svg" />
+              </SeeMore>
+            </NFTTransparentContainer>
+          </ParentNFTCont>
+        </MarketplaceContainer>
+      </MainContainer>
     </>
-  )
+  );
 }
