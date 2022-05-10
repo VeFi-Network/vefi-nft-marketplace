@@ -17,6 +17,16 @@ const Ghost_CTA_Button = styled.button`
     background-color:${(props:Props) => props.backgroundColor || "transparent"};
     border-color:${(props:Props) => props.borderColor || "#EBF8FF"};
     font-size:${(props:Props) => props.fontSize || "14px"};
+
+    transition-duration: 250ms;
+
+
+    &:hover{
+        opacity: 0.7;
+        transform: scale(1.05);
+        
+    }
+    
 `
 
 export default Ghost_CTA_Button;

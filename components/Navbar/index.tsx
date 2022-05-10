@@ -9,10 +9,12 @@ const NavContainer = styled.nav`
     justify-content: space-between;
     align-items:center;
     padding: 0 50px;
+   
 `
 
 const NavBrand = styled.div`
     padding:0 10px;
+    z-index: 2;
 `
 
 const NavLinks = styled.div`
@@ -29,9 +31,19 @@ const NavLinks = styled.div`
         justify-content:center;
         align-items:center;
         cursor:pointer;
+       
+        transition-duration: 250ms;
+
+        &:hover{
+            transform: scale(1.1);
+        }
+     
     }
+    z-index: 2;
+    
 `
 const UserWallet = styled.div`
+
     border-radius:50%;
     .wallet_container{
         background-color: #373943;
@@ -42,7 +54,14 @@ const UserWallet = styled.div`
         flex-direction:row;
         align-items:center;
         column-gap:0.5rem;
-        width:180px;
+        padding-right: 10px;
+ 
+        transition-duration: 250ms;
+
+        &:hover{
+            transform: scale(1.05);
+        }
+     
     }
     .wallet_icon{
         background-color: #FFF;
@@ -53,7 +72,10 @@ const UserWallet = styled.div`
         justify-content:center;
         align-items:center;
         cursor:pointer;
+     
+        
     }
+    z-index: 2;
 `
 
 
