@@ -12,7 +12,17 @@ type Props = {
 const CardContainer  = styled.div`
     position:relative;
     top:0;
-    width: 240px;
+    min-width: 328.27px;
+    z-index: 3;
+
+    transition-duration: 250ms;
+
+    cursor: pointer;
+
+    &:hover{
+        transform: scale(1.05);
+    }
+    
     height:auto;
     border-radius:21px 21px 0 0;
     ::before{
@@ -34,7 +44,7 @@ const CardFooterContainer = styled.div`
     z-index:5;
     backdrop-filter: blur(20px) opacity(0.9);
     width: 100%;
-    height: auto;
+    height: 110.26px;
     position:absolute;
     top:70%;
 `
