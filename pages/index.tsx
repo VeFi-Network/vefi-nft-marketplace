@@ -1,12 +1,9 @@
 import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-import Marketplace from './marketplace'
+import Homepage from '../components/Homepage/Homepage'
 
 const Home: NextPage = () => {
   return (
-    <Marketplace></Marketplace>
+    <Homepage></Homepage>
   )
 }
 

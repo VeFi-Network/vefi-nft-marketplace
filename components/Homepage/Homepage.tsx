@@ -1,12 +1,12 @@
 import React from 'react'
 import styled  from 'styled-components';
-import Filled_CTA_Button from '../components/Button/CTA/Filled';
-import Ghost_CTA_Button from '../components/Button/Ghost';
-import Navbar from '../components/Navbar';
+import Filled_CTA_Button from '../Button/CTA/Filled';
+import Ghost_CTA_Button from '../Button/Ghost';
+import Navbar from '../Navbar';
 import Image from 'next/image';
 import { useState } from 'react';
-import Card from '../components/Card';
-import Background from './background';
+import Card from '../Card';
+import Background from './AnimatedBackground/background';
 
 
 const MainContainer = styled.div`
@@ -384,7 +384,7 @@ const RoundBlueLine = styled.div`
 `;
 
 
-export default function Marketplace() {
+export default function Homepage (){
 
   const [searchValue,setSearchValue ] = useState("Search artwork");
 
