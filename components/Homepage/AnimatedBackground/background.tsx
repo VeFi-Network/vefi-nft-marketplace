@@ -30,20 +30,6 @@ const ObjectContainer1 = styled.div`
 
     `;
 
-const ObjectContainer2 = styled.div`
-
-    width: 600px;
-    height: 600px;
-  
-    ${(props: { animate: boolean; }) => props.animate?"":"transition-duration: 2s;"}
-    margin-left: ${(props: { animate: boolean; }) => props.animate?"30%":"40%"};
-  
-    margin-top: -250px;
-    `;
-
-
-
-
 
 
 export default function Background() {
