@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+ import img from "../public/im4.png";
 
 const MarketContainer = styled.div`
   --header-bg-color:#373943;
@@ -178,15 +179,110 @@ const MarketContainer = styled.div`
         padding: 2rem;
 
         & .scrollable-container{
+            display: flex;
+            justify-content: space-around;
             margin: 2rem;
             padding: 2rem 2rem;
             width: 90%;
             min-height: 40vh;
             border: 0px solid red;
             border-radius: 2rem;
-            background: inherit;
-        backdrop-filter: inherit;
+            background: transparent;
+            /* border: 1px solid white; */
 
+            & .card{
+                z-index: 1;
+                position: relative;
+                width: 320px;
+                height: 365px;
+                border: 1px solid white;
+                border-radius: 2rem 2rem 0 0;
+                /* background-image: url(img);
+                background-repeat: no-repeat; */
+    
+
+                & .card-img{
+                    border-radius: 2rem 2rem 0 0;
+                }
+
+                & .lowerSection{
+                    z-index: 2;
+                    position: absolute;
+                    top: 259px;
+                    left: 0px;
+                    width: 100%;
+                    height: 29%;
+                    background: #e6dbdb83;
+                    backdrop-filter: blur(5px);
+
+                    & .innerFlex{
+                        background:inherit;
+                           
+                        & .eth7{
+                            background-color:inherit;
+                        }
+                            
+                           
+                            
+
+                    }
+
+                }
+                   
+
+            }
+     
+
+        }
+
+        & .top-sellers-container{
+            /*make background transparent */
+            background: transparent;
+            backdrop-filter: blur(5px);
+
+
+            width: 87%;
+
+            & .top-title{
+                margin-left: 2rem;
+                background: transparent;
+            backdrop-filter: blur(5px);
+            }
+
+            
+            & .top-sellers{
+                background: transparent;
+            backdrop-filter: blur(5px);
+                display: grid;
+                grid-template-columns: auto auto auto auto auto;
+                border: 0px solid white;
+                
+                
+                
+                & .top-seller-item{
+                    display: flex;
+                    
+                    
+                    background: transparent;
+                    border-radius: 50%;
+                    margin: 1rem 2rem;
+                    
+                    & p{
+                        margin-left: 1rem;
+                        padding-top: 1rem;
+                        background: transparent;
+                        backdrop-filter: blur(5px);
+                    }
+
+                    & .top-seller-img {
+                        background: transparent;
+                        backdrop-filter: blur(5px);
+
+
+                    }
+                }
+                
+            }
         }
 
      

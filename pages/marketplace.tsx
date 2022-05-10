@@ -1,6 +1,18 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import logo from './images/logo.png';
+import im4 from "./images/im4.png";
+import im5 from "./images/im5.png";
+import topSeller from './images/topseller1.png';
+import topSeller2 from './images/topseller2.png';
+import topSeller3 from './images/topseller3.png'
+import topSeller4 from './images/topseller4.png'
+import topSeller5 from './images/topseller5.png'
+import topSeller6 from './images/topseller6.png'
+import topSeller7 from './images/topseller7.png'
+import topSeller8 from './images/topseller8.png'
+import topSeller9 from './images/topseller9.png'
+import topSeller10 from './images/topseller10.png'
 import filter from './images/filter.png';
 import messageLogo from './images/message.png';
 import secondListLogo from './images/Vector2.png';
@@ -112,16 +124,288 @@ export default function Marketplace() {
             {/* cards-container */}
             <div className='cards-container'>
 
-                <div className="scrollable-container">
-                    
-                </div>
-                <div className="scrollable-container">
-                    
-                    </div>
-    
+                {/* first scrollable container */}
 
-                
+                <div className="scrollable-container">
+
+                    {/* cards */}
+
+                    <div className='card'>
+                        <Image className='card-img' src={im4} alt="img"/>
+                        <div className='lowerSection'>
+                            <div className='innerImgs'>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            </div>
+
+                            <div className='innerFlex'>
+                                <div></div>
+                                <div>
+                                <div className='eth7'>
+                                    
+                                </div>
+                                <div></div>
+                                </div>
+                            </div>
+                           
+                        </div>
+
+
+
+                    </div>
+
+                    <div className='card'>
+                        <Image className='card-img' src={im5} alt="img"/>
+                        <div className='lowerSection'>
+                            <div className='innerImgs'>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            </div>
+
+                            <div className='innerFlex'>
+                                <div></div>
+                                <div>
+                                <div className='eth7'>
+                                    
+                                </div>
+                                <div></div>
+                                </div>
+                            </div>
+                           
+                        </div>
+
+
+
+                    </div>
+                    
+                    <div className='card'>
+                        <Image className='card-img' src={im4} alt="img"/>
+                        <div className='lowerSection'>
+                            <div className='innerImgs'>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            </div>
+
+                            <div className='innerFlex'>
+                                <div></div>
+                                <div>
+                                <div className='eth7'>
+                                    
+                                </div>
+                                <div></div>
+                                </div>
+                            </div>
+                           
+                        </div>
+
+
+
+                    </div>
+                    
+                    <div className='card'>
+                        <Image className='card-img' src={im5} alt="img"/>
+                        <div className='lowerSection'>
+                            <div className='innerImgs'>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            </div>
+
+                            <div className='innerFlex'>
+                                <div></div>
+                                <div>
+                                <div className='eth7'>
+                                    
+                                </div>
+                                <div></div>
+                                </div>
+                            </div>
+                           
+                        </div>
+
+
+
+                    </div>
+                    
+                    
                 </div>
+
+                <div className="top-sellers-container">
+                    <div className='top-title'>Top sellers</div>
+                    <div  className="top-sellers">
+                    <div className="top-seller-item">
+                        <Image className='top-seller-img' src={topSeller} alt="top seller"/>
+                        <p className='top-seller-name'>Beastyzakustler</p>
+                    </div>
+                    <div className="top-seller-item">
+                        <Image src={topSeller2} alt="top seller"/>
+                        <p>Cassy Mcconnell</p>
+                    </div>
+
+                    <div className="top-seller-item">
+                        <Image src={topSeller3} alt="top seller"/>
+                        <p>Coben Day</p>
+                    </div>
+
+                    <div className="top-seller-item">
+                        <Image src={topSeller4} alt="top seller"/>
+                        <p>Bradly Giles</p>
+                    </div>
+
+                    <div className="top-seller-item">
+                        <Image src={topSeller5} alt="top seller"/>
+                        <p>Saim Roth</p>
+                    </div>
+                    <div className="top-seller-item">
+                        <Image src={topSeller6} alt="top seller"/>
+                        <p>Dylan Bowen</p>
+                    </div>
+                    <div className="top-seller-item">
+                        <Image src={topSeller7} alt="top seller"/>
+                        <p>Heini Fitzpatrick</p>
+                    </div>
+
+                    <div className="top-seller-item">
+                        <Image src={topSeller8} alt="top seller"/>
+                        <p>Neshawn Glover</p>
+                    </div>
+
+                    <div className="top-seller-item">
+                        <Image src={topSeller9} alt="top seller"/>
+                        <p>Nelson Daugherty</p>
+                    </div>
+
+                    <div className="top-seller-item">
+                        <Image src={topSeller10} alt="top seller"/>
+                        <p>Shiloh York</p>
+                    </div>
+
+
+                  </div>
+
+                </div>
+                {/* top sellers end */}
+
+                {/* second scrollable container */}
+
+                <div className="scrollable-container">
+
+                    {/* cards */}
+
+                    <div className='card'>
+                        <Image className='card-img' src={im4} alt="img"/>
+                        <div className='lowerSection'>
+                            <div className='innerImgs'>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            </div>
+
+                            <div className='innerFlex'>
+                                <div></div>
+                                <div>
+                                <div className='eth7'>
+                                    
+                                </div>
+                                <div></div>
+                                </div>
+                            </div>
+                           
+                        </div>
+
+
+
+                    </div>
+
+                    <div className='card'>
+                        <Image className='card-img' src={im5} alt="img"/>
+                        <div className='lowerSection'>
+                            <div className='innerImgs'>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            </div>
+
+                            <div className='innerFlex'>
+                                <div></div>
+                                <div>
+                                <div className='eth7'>
+                                    
+                                </div>
+                                <div></div>
+                                </div>
+                            </div>
+                           
+                        </div>
+
+
+
+                    </div>
+                    
+                    <div className='card'>
+                        <Image className='card-img' src={im4} alt="img"/>
+                        <div className='lowerSection'>
+                            <div className='innerImgs'>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            </div>
+
+                            <div className='innerFlex'>
+                                <div></div>
+                                <div>
+                                <div className='eth7'>
+                                    
+                                </div>
+                                <div></div>
+                                </div>
+                            </div>
+                           
+                        </div>
+
+
+
+                    </div>
+                    
+                    <div className='card'>
+                        <Image className='card-img' src={im5} alt="img"/>
+                        <div className='lowerSection'>
+                            <div className='innerImgs'>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            </div>
+
+                            <div className='innerFlex'>
+                                <div></div>
+                                <div>
+                                <div className='eth7'>
+                                    
+                                </div>
+                                <div></div>
+                                </div>
+                            </div>
+                           
+                        </div>
+
+
+
+                    </div>
+                    
+                    
+                </div>
+            </div>
 
         </div>
       </MarketContainer>
