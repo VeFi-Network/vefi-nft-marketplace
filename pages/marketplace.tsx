@@ -342,7 +342,7 @@ const AnimatePart = styled.div`
 
 `;
 
-export default function marketplace() {
+export default function Marketplace() {
 
   const [searchValue,setSearchValue ] = useState("Search artwork");
 
