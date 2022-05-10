@@ -7,20 +7,26 @@ const MainContainer = styled.div`
   
     z-index: -1;
 
-    
+    min-width: 1000px;
+    min-height: 1200px;
+
 
 
 `;
 
 const ObjectContainer1 = styled.div`
 
-    width: 600px;
-    height: 600px;
+
   
     ${(props: { animate: boolean; }) => props.animate?"":"transition-duration: 2s;"}
-    margin-left: ${(props: { animate: boolean; }) => props.animate?"100%":"60%"};
-  
-    margin-top: ${(props: { animate: boolean; }) => props.animate?"0px":"100px"};
+
+    animation-timing-function: ease-out;
+
+    margin-left: ${(props: { animate: boolean; }) => props.animate?"32%":"5%"};
+    margin-top: 0px;
+    width: 1400px;
+    height: 1000px;
+    
 
     `;
 
@@ -30,7 +36,7 @@ const ObjectContainer2 = styled.div`
     height: 600px;
   
     ${(props: { animate: boolean; }) => props.animate?"":"transition-duration: 2s;"}
-    margin-left: ${(props: { animate: boolean; }) => props.animate?"90%":"40%"};
+    margin-left: ${(props: { animate: boolean; }) => props.animate?"30%":"40%"};
   
     margin-top: -250px;
     `;
@@ -56,11 +62,9 @@ export default function Background() {
     <MainContainer>
 
         <ObjectContainer1 animate={!animate}>
-             <Image src='/objects/object1.png' width="645px" height="645px" />
+             <Image src='/objects/objectGrouped.png' height="1300px" width="1400px" />
         </ObjectContainer1>
-        <ObjectContainer2 animate={!animate}>
-             <Image src='/objects/object2.png' width="645px" height="645px" />
-        </ObjectContainer2>
+      
             
     </MainContainer>
   )

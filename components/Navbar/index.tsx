@@ -31,10 +31,19 @@ const NavLinks = styled.div`
         justify-content:center;
         align-items:center;
         cursor:pointer;
+       
+        transition-duration: 250ms;
+
+        &:hover{
+            transform: scale(1.1);
+        }
+     
     }
     z-index: 2;
+    
 `
 const UserWallet = styled.div`
+
     border-radius:50%;
     .wallet_container{
         background-color: #373943;
@@ -46,6 +55,12 @@ const UserWallet = styled.div`
         align-items:center;
         column-gap:0.5rem;
         padding-right: 10px;
+ 
+        transition-duration: 250ms;
+
+        &:hover{
+            transform: scale(1.05);
+        }
      
     }
     .wallet_icon{
@@ -57,6 +72,7 @@ const UserWallet = styled.div`
         justify-content:center;
         align-items:center;
         cursor:pointer;
+     
         
     }
     z-index: 2;

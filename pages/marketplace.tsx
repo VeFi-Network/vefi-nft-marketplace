@@ -8,13 +8,30 @@ import { useState } from 'react';
 import Card from '../components/Card';
 import Background from './background';
 
+
+const MainContainer = styled.div`
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: center;
+background: #0C0C0C;
+
+
+
+`;
+
 const MarketplaceContainer = styled.div`
     min-height: 100vh;
-    width: 100vw;
+    width: 1800px;
+    max-width: 2000px;
+    min-width: 1000px;
     background: #0C0C0C;
     padding-left: 55px;
     padding-top: 20px;
     padding-bottom: 30px;
+    overflow: hidden;
+
+
 
 `;
 
@@ -37,6 +54,7 @@ margin-left: 55px;
 
 
 
+
 `;
 
 const ButtonContainer = styled.div`
@@ -51,7 +69,7 @@ gap: 30px;
 `;
  
 const FilterByText =styled.div`
-    margin-top: -250px;
+    margin-top: -280px;
     margin-left: 55px;
     font-family: 'Rubik';
     font-style: normal;
@@ -139,12 +157,17 @@ background: #373943;
 border-radius: 11px;
 gap: 10px;
 
+
+z-index: 3;
+
+
 .input{
     background: transparent;
     color: #828282;
     border: none;
     outline: none;   
     width: 150px;
+
 
 }
 
@@ -298,7 +321,7 @@ margin-top: 20px;
 
 
 
-height: 410px;
+height: 415px;
 
 flex-direction: row;
 gap: 25px;
@@ -314,6 +337,7 @@ opacity: ${(props: { visible: any; }) => props.visible?"1":"0"};
 const DiscoverAndAnimate = styled.div`
     display: flex;
     flex-direction: row;
+    position: relative;
 
 `;
 
@@ -337,10 +361,28 @@ const DiscoverPart = styled.div`
 
 const AnimatePart = styled.div`
     width: 100%;
-    margin-top: -170px;
+    margin-top: -330px;
     z-index: 0;
 
 `;
+
+const ExploreNFT = styled.div`
+    height: 585px;
+    width: 97px;
+
+    position: absolute;
+    margin-left: -60px;
+`;
+
+const RoundBlueLine = styled.div`
+
+    position: absolute;
+    margin-left: 300px;
+    margin-top: 65px;
+    
+
+`;
+
 
 export default function Marketplace() {
 
@@ -355,12 +397,19 @@ export default function Marketplace() {
 
   return (
     <>
+    <MainContainer>
     <MarketplaceContainer>
         <Navbar />
         <DiscoverAndAnimate>
+             <ExploreNFT>
+                 <Image width="97px" height="585px" src="/icons/exploreNFT.png" />
+             </ExploreNFT>
             <DiscoverPart>  
+                 <RoundBlueLine>
+                     <Image width="149px" height="80px" src="/objects/round.svg" />   
+                </RoundBlueLine> 
                 <DiscoverText>
-                    Discover, <br /> collect, and sell <br /> extraordinary <br /> NFTs
+                    Discover,<br /> collect, and sell <br /> extraordinary <br /> NFTs
                 </DiscoverText>
                 <ButtonContainer>
                     <Filled_CTA_Button>Get Started</Filled_CTA_Button>
@@ -409,6 +458,9 @@ export default function Marketplace() {
                 <Card collectionName='Rolling Ape' NFTImageURI='/nft/nft02.png' NFTPrice='7' NFTName='Unknowest' ></Card>
                 <Card collectionName='Lost in Space' NFTImageURI='/nft/nft03.png' NFTPrice='2' NFTName='Wereywanle' ></Card>
                 <Card collectionName='Rolling Ape' NFTImageURI='/nft/nft02.png' NFTPrice='7' NFTName='Unknowest' ></Card>
+                <Card collectionName='Rolling Ape' NFTImageURI='/nft/nft02.png' NFTPrice='7' NFTName='Unknowest' ></Card>
+                <Card collectionName='Lost in Space' NFTImageURI='/nft/nft03.png' NFTPrice='2' NFTName='Wereywanle' ></Card>
+
             <PaddedSpace />
            
               
@@ -429,6 +481,7 @@ export default function Marketplace() {
        
       
     </MarketplaceContainer>
+    </MainContainer>
     
 
     </>

@@ -42,9 +42,9 @@ const CardFooterContainer = styled.div`
     background: linear-gradient(137.43deg, rgba(255, 255, 255, 0.5) 3.89%, rgba(255, 255, 255, 0.2) 100%);
     border-top: 0.841717px solid #FFFFFF;
     z-index:5;
-    backdrop-filter: blur(20px) opacity(0.9);
+    backdrop-filter: blur(16.83px);
     width: 100%;
-    height: 110.26px;
+    height: 112.26px;
     position:absolute;
     top:70%;
 `
@@ -61,10 +61,11 @@ const Avatars = styled.div`
     z-index:99;
     display:flex;
     flex-direction:row;
-    margin-left:-20px !important;
+    margin-left:-30px !important;
     position:absolute;
     top:65%;
     left:20%;
+    gap: 10px;
     img{
         z-index:999;
         border:2px solid #fff !important;
@@ -84,11 +85,14 @@ const CardFooterItem = styled.div`
     flex-direction:row;
     width:100%;
     justify-content:space-between;
+    height: 121px;
+    margin-top: 15px;
     padding:10px 0;
     .nft-meta-data{
         display:flex;
         flex-direction:column;
         padding:0 10px;
+        gap: 8px;
         margin-top:20px;
     }
     .nft-price-info{
@@ -96,7 +100,8 @@ const CardFooterItem = styled.div`
         display:flex;
         flex-direction:column;
         padding:10px;
-        row-gap:0.3rem;
+        row-gap:0.3rem;   
+        gap: 15px;
     }
     .nft_name{
         font-size:12px;
@@ -132,6 +137,9 @@ const Card = (props:Props) => {
                 <div className="avatar">
                     <Image src="/avatar/user01.png" width={30} height={30} />
                 </div>
+                <div className="avatar">
+                    <Image src="/avatar/user01.png" width={30} height={30} />
+                </div>
             </Avatars>
             <CardFooterContainer>
                 <CardFooter>
@@ -141,10 +149,10 @@ const Card = (props:Props) => {
                             <span className="nft_name">{props.NFTName}</span>
                         </div>
                         <div className="nft-price-info">
-                            <span>
-                                <Image src="/icons/eth.svg" width={15} height={15} />  {props.NFTPrice}eth
+                                <span>
+                                <Image src="/icons/eth_classic.svg" width={15} height={15} />  {props.NFTPrice}eth
                                 </span>
-                            <Button borderThickness={3}>Purchase</Button>
+                            <Button borderThickness={2}>Purchase</Button>
                         </div>
                     </CardFooterItem>
                 </CardFooter>
