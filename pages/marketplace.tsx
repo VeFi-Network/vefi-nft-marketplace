@@ -1,21 +1,5 @@
-import Link from 'next/link';
 import Image from 'next/image';
-import logo from './images/logo.png';
-import im4 from "./images/im4.png";
-import im5 from "./images/im5.png";
-import topSeller from './images/topseller1.png';
-import topSeller2 from './images/topseller2.png';
-import topSeller3 from './images/topseller3.png'
-import topSeller4 from './images/topseller4.png'
-import topSeller5 from './images/topseller5.png'
-import topSeller6 from './images/topseller6.png'
-import topSeller7 from './images/topseller7.png'
-import topSeller8 from './images/topseller8.png'
-import topSeller9 from './images/topseller9.png'
-import topSeller10 from './images/topseller10.png'
-import filter from './images/filter.png';
-import messageLogo from './images/message.png';
-import secondListLogo from './images/Vector2.png';
+import {logo,im4,im5,topseller1,topseller2,topseller3,topseller4,topseller5,topseller6,topseller7,topseller8,topseller9,topseller10,filter,messageLogo,secondListLogo} from './imagesData';
 import {FiPlus} from 'react-icons/fi';
 import {BiSearch} from 'react-icons/bi';
 import {FaEthereum} from 'react-icons/fa';
@@ -241,49 +225,49 @@ export default function Marketplace() {
                     <div className='top-title'>Top sellers</div>
                     <div  className="top-sellers">
                     <div className="top-seller-item">
-                        <Image className='top-seller-img' src={topSeller} alt="top seller"/>
+                        <Image className='top-seller-img' src={topseller1} alt="top seller"/>
                         <p className='top-seller-name'>Beastyzakustler</p>
                     </div>
                     <div className="top-seller-item">
-                        <Image src={topSeller2} alt="top seller"/>
+                        <Image src={topseller2} alt="top seller"/>
                         <p>Cassy Mcconnell</p>
                     </div>
 
                     <div className="top-seller-item">
-                        <Image src={topSeller3} alt="top seller"/>
+                        <Image src={topseller3} alt="top seller"/>
                         <p>Coben Day</p>
                     </div>
 
                     <div className="top-seller-item">
-                        <Image src={topSeller4} alt="top seller"/>
+                        <Image src={topseller4} alt="top seller"/>
                         <p>Bradly Giles</p>
                     </div>
 
                     <div className="top-seller-item">
-                        <Image src={topSeller5} alt="top seller"/>
+                        <Image src={topseller5} alt="top seller"/>
                         <p>Saim Roth</p>
                     </div>
                     <div className="top-seller-item">
-                        <Image src={topSeller6} alt="top seller"/>
+                        <Image src={topseller6} alt="top seller"/>
                         <p>Dylan Bowen</p>
                     </div>
                     <div className="top-seller-item">
-                        <Image src={topSeller7} alt="top seller"/>
+                        <Image src={topseller7} alt="top seller"/>
                         <p>Heini Fitzpatrick</p>
                     </div>
 
                     <div className="top-seller-item">
-                        <Image src={topSeller8} alt="top seller"/>
+                        <Image src={topseller8} alt="top seller"/>
                         <p>Neshawn Glover</p>
                     </div>
 
                     <div className="top-seller-item">
-                        <Image src={topSeller9} alt="top seller"/>
+                        <Image src={topseller9} alt="top seller"/>
                         <p>Nelson Daugherty</p>
                     </div>
 
                     <div className="top-seller-item">
-                        <Image src={topSeller10} alt="top seller"/>
+                        <Image src={topseller10} alt="top seller"/>
                         <p>Shiloh York</p>
                     </div>
 

@@ -195,7 +195,7 @@ const MarketContainer = styled.div`
                 position: relative;
                 width: 320px;
                 height: 365px;
-                border: 1px solid white;
+                border: 0px solid white;
                 border-radius: 2rem 2rem 0 0;
                 /* background-image: url(img);
                 background-repeat: no-repeat; */
