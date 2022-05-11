@@ -351,6 +351,7 @@ export default function Homepage() {
                   setSearchValue(e.target.value);
                 }}
                 onClick={() => setSearchValue('')}
+                placeholder="Search Artwork"
               />
             </SearchBar>
           </FilterContainer>
