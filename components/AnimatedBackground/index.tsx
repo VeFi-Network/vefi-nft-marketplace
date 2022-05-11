@@ -17,7 +17,7 @@ const ObjectContainer1 = styled.div`
   animation-timing-function: ease-out;
 
   margin-left: ${(props: { animate: boolean }) => (props.animate ? '35%' : '0%')};
-  margin-top: 80px;
+  margin-top: 100px;
   width: 1400px;
   height: 1000px;
 `;
