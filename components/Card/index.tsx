@@ -75,7 +75,7 @@ const Avatars = styled.div`
     height: 100%;
   }
   .avatar {
-    margin-left: -20px;
+    margin-left: -25px;
     overflow: hidden;
   }
 `;
