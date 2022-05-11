@@ -43,10 +43,11 @@ const CardFooterContainer = styled.div`
     border-top: 0.841717px solid #FFFFFF;
     z-index:5;
     backdrop-filter: blur(16.83px);
-    width: 100%;
+
     height: 112.26px;
     position:absolute;
     top:70%;
+    width: 328px;
 `
 
 const CardFooter = styled.div`
@@ -55,6 +56,7 @@ const CardFooter = styled.div`
     display:flex;
     align-items:center;
     color:#fff;
+
 `
 
 const Avatars = styled.div`
@@ -83,7 +85,7 @@ const Avatars = styled.div`
 const CardFooterItem = styled.div`
     display:flex;
     flex-direction:row;
-    width:100%;
+    min-width: 328.27px;
     justify-content:space-between;
     height: 121px;
     margin-top: 15px;
