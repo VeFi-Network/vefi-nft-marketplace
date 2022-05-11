@@ -3,39 +3,39 @@ import Image from 'next/image';
 import Button from '../Button/Ghost';
 
 type Props = {
-    collectionName: string,
-    NFTName: string,
-    NFTPrice: string,
-    NFTImageURI: string,
-}
+  collectionName: string;
+  NFTName: string;
+  NFTPrice: string;
+  NFTImageURI: string;
+};
 
-const CardContainer  = styled.div`
-    position:relative;
-    top:0;
-    min-width: 328.27px;
-    z-index: 3;
+const CardContainer = styled.div`
+  position: relative;
+  top: 0;
+  min-width: 328.27px;
+  z-index: 3;
 
-    transition-duration: 250ms;
+  transition-duration: 250ms;
 
-    cursor: pointer;
+  cursor: pointer;
 
-    &:hover{
-        transform: scale(1.05);
-    }
-    
-    height:auto;
-    border-radius:21px 21px 0 0;
-    ::before{
-        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 58.79%, #000000 92.21%);
-    }
-    img{
-        border-radius:21px 21px 0 0;
-    }
-`
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  height: auto;
+  border-radius: 21px 21px 0 0;
+  ::before {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 58.79%, #000000 92.21%);
+  }
+  img {
+    border-radius: 21px 21px 0 0;
+  }
+`;
 
 const CardHeader = styled.div`
-    z-index:1;
-`
+  z-index: 1;
+`;
 
 const CardFooterContainer = styled.div`
     background-color:transparent;
@@ -60,27 +60,27 @@ const CardFooter = styled.div`
 `
 
 const Avatars = styled.div`
-    z-index:99;
-    display:flex;
-    flex-direction:row;
-    margin-left:-30px !important;
-    position:absolute;
-    top:65%;
-    left:20%;
-    gap: 10px;
-    img{
-        z-index:999;
-        border:2px solid #fff !important;
-        object-fit:cover;
-        border-radius:50%;
-        width:100%;
-        height:100%;
-    }
-    .avatar{
-        margin-left: -20px;
-        overflow:hidden;
-    }
-`
+  z-index: 99;
+  display: flex;
+  flex-direction: row;
+  margin-left: -30px !important;
+  position: absolute;
+  top: 65%;
+  left: 20%;
+  gap: 10px;
+  img {
+    z-index: 999;
+    border: 2px solid #fff !important;
+    object-fit: cover;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+  }
+  .avatar {
+    margin-left: -20px;
+    overflow: hidden;
+  }
+`;
 
 const CardFooterItem = styled.div`
     display:flex;
@@ -122,45 +122,44 @@ const CardFooterItem = styled.div`
     }
 `
 
-
-const Card = (props:Props) => {
-    return(
-        <CardContainer>
-            <CardHeader>
-                <Image src={props.NFTImageURI} width={329} height={378} />
-            </CardHeader>
-            <Avatars>
-                <div className="avatar">
-                    <Image src="/avatar/user01.png" width={30} height={30} />
-                </div>
-                <div className="avatar">
-                <Image src="/avatar/user01.png" width={30} height={30} />
-                </div>
-                <div className="avatar">
-                    <Image src="/avatar/user01.png" width={30} height={30} />
-                </div>
-                <div className="avatar">
-                    <Image src="/avatar/user01.png" width={30} height={30} />
-                </div>
-            </Avatars>
-            <CardFooterContainer>
-                <CardFooter>
-                    <CardFooterItem>
-                        <div className="nft-meta-data">
-                            <span className="nft_collection_name">{props.collectionName}</span>
-                            <span className="nft_name">{props.NFTName}</span>
-                        </div>
-                        <div className="nft-price-info">
-                                <span>
-                                <Image src="/icons/eth_classic.svg" width={15} height={15} />  {props.NFTPrice}eth
-                                </span>
-                            <Button borderThickness={2}>Purchase</Button>
-                        </div>
-                    </CardFooterItem>
-                </CardFooter>
-            </CardFooterContainer>
-        </CardContainer>
-    )
-}
+const Card = (props: Props) => {
+  return (
+    <CardContainer>
+      <CardHeader>
+        <Image src={props.NFTImageURI} width={329} height={378} />
+      </CardHeader>
+      <Avatars>
+        <div className="avatar">
+          <Image src="/avatar/user01.png" width={30} height={30} />
+        </div>
+        <div className="avatar">
+          <Image src="/avatar/user01.png" width={30} height={30} />
+        </div>
+        <div className="avatar">
+          <Image src="/avatar/user01.png" width={30} height={30} />
+        </div>
+        <div className="avatar">
+          <Image src="/avatar/user01.png" width={30} height={30} />
+        </div>
+      </Avatars>
+      <CardFooterContainer>
+        <CardFooter>
+          <CardFooterItem>
+            <div className="nft-meta-data">
+              <span className="nft_collection_name">{props.collectionName}</span>
+              <span className="nft_name">{props.NFTName}</span>
+            </div>
+            <div className="nft-price-info">
+              <span>
+                <Image src="/icons/eth_classic.svg" width={15} height={15} /> {props.NFTPrice}eth
+              </span>
+              <Button borderThickness={2}>Purchase</Button>
+            </div>
+          </CardFooterItem>
+        </CardFooter>
+      </CardFooterContainer>
+    </CardContainer>
+  );
+};
 
 export default Card;
