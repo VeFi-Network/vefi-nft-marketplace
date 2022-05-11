@@ -157,11 +157,7 @@ const Card = (props: Props) => {
               <span>
                 <Image src="/icons/eth_classic.svg" width={20} height={15} /> {props.NFTPrice}eth
               </span>
-<<<<<<< HEAD
               <Button borderThickness={2} borderRadius="4px">Purchase</Button>
-=======
-              <Button borderThickness="1px">Purchase</Button>
->>>>>>> 0c4c21bed6c128f0a1007f7ca068e0fc2f879ce6
             </div>
           </CardFooterItem>
         </CardFooter>
