@@ -1,3 +1,9 @@
+:root{
+  --grad1:#16052B;;
+  --grad2:#2B63D1;
+  --grad3:#E21950;
+}
+
 *,
 *::before,
 *::after ,
@@ -7,8 +13,9 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-    background-color: black;
-    /* background: #16052B; */
+    /* background-color: black; */
+    background: #16052B;
+    /* background: linear-gradient(320deg, var(--grad1), var(--grad2),var(--grad3)); */
     /* background-image: linear-gradient(to right, #16052b, #201746, #2a2663, #323782, #3449a3, #514caf, #6c4fb9, #8750c2, #af3dad, #cb2691, #dc1071, #e21950);
  */
 }
