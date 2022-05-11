@@ -16,8 +16,8 @@ const ObjectContainer1 = styled.div`
 
   animation-timing-function: ease-out;
 
-  margin-left: ${(props: { animate: boolean }) => (props.animate ? '32%' : '5%')};
-  margin-top: 0px;
+  margin-left: ${(props: { animate: boolean }) => (props.animate ? '35%' : '0%')};
+  margin-top: 80px;
   width: 1400px;
   height: 1000px;
 `;
@@ -40,7 +40,7 @@ export default function Background() {
   useEffect(() => {
     setTimeout(() => {
       setAnimate(true);
-      setHeight(window.screen.height);
+      setHeight(window.screen.height * 2);
       setWidth(window.screen.width);
     }, 200);
   }, []);
