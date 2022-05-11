@@ -2,7 +2,9 @@ import styled from 'styled-components';
  import img from "../public/im4.png";
 
 const MarketContainer = styled.div`
+box-sizing: border-box;
   --header-bg-color:#373943;
+  background: #16052B;
   margin: 1rem 3rem;
   color: white;
 
