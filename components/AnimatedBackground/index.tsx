@@ -40,7 +40,7 @@ export default function Background() {
   useEffect(() => {
     setTimeout(() => {
       setAnimate(true);
-      setHeight(window.screen.height * 2);
+      setHeight(window.screen.height * 1.95);
       setWidth(window.screen.width);
     }, 200);
   }, []);
