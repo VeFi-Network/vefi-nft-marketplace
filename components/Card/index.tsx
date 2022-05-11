@@ -38,24 +38,26 @@ const CardHeader = styled.div`
 `;
 
 const CardFooterContainer = styled.div`
-  background-color: transparent;
-  background: linear-gradient(137.43deg, rgba(255, 255, 255, 0.5) 3.89%, rgba(255, 255, 255, 0.2) 100%);
-  border-top: 0.841717px solid #ffffff;
-  z-index: 5;
-  backdrop-filter: blur(16.83px);
-  width: 100%;
-  height: 112.26px;
-  position: absolute;
-  top: 70%;
-`;
+    background-color:transparent;
+    background: linear-gradient(137.43deg, rgba(255, 255, 255, 0.5) 3.89%, rgba(255, 255, 255, 0.2) 100%);
+    border-top: 0.841717px solid #FFFFFF;
+    z-index:5;
+    backdrop-filter: blur(16.83px);
+
+    height: 112.26px;
+    position:absolute;
+    top:70%;
+    width: 328px;
+`
 
 const CardFooter = styled.div`
-  width: 100%;
-  height: 85px;
-  display: flex;
-  align-items: center;
-  color: #fff;
-`;
+    width:100%;
+    height:85px;
+    display:flex;
+    align-items:center;
+    color:#fff;
+
+`
 
 const Avatars = styled.div`
   z-index: 99;
@@ -81,44 +83,44 @@ const Avatars = styled.div`
 `;
 
 const CardFooterItem = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: space-between;
-  height: 121px;
-  margin-top: 15px;
-  padding: 10px 0;
-  .nft-meta-data {
-    display: flex;
-    flex-direction: column;
-    padding: 0 10px;
-    gap: 8px;
-    margin-top: 20px;
-  }
-  .nft-price-info {
-    font-weight: bold;
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    row-gap: 0.3rem;
-    gap: 15px;
-  }
-  .nft_name {
-    font-size: 12px;
-    padding: 5px 0;
-    text-decoration: underline;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  .nft_name span {
-    margin: 10px 0;
-    text-align: center;
-  }
-  .nft_collection_name {
-    font-weight: bold;
-    cursor: pointer;
-  }
-`;
+    display:flex;
+    flex-direction:row;
+    min-width: 328.27px;
+    justify-content:space-between;
+    height: 121px;
+    margin-top: 15px;
+    padding:10px 0;
+    .nft-meta-data{
+        display:flex;
+        flex-direction:column;
+        padding:0 10px;
+        gap: 8px;
+        margin-top:20px;
+    }
+    .nft-price-info{
+        font-weight:bold;
+        display:flex;
+        flex-direction:column;
+        padding:10px;
+        row-gap:0.3rem;   
+        gap: 15px;
+    }
+    .nft_name{
+        font-size:12px;
+        padding:5px 0;
+        text-decoration:underline;
+        cursor:pointer;
+        font-weight:bold;
+    }
+    .nft_name span{
+        margin:10px 0;
+        text-align:center;
+    }
+    .nft_collection_name{
+        font-weight:bold;
+        cursor:pointer;
+    }
+`
 
 const Card = (props: Props) => {
   return (
