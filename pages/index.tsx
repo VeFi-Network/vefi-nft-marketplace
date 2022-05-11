@@ -260,7 +260,6 @@ const SeeMore = styled.div`
   margin-left: 90%;
   margin-top: 15px;
   cursor: pointer;
-
   flex-direction: row;
   gap: 15px;
 `;

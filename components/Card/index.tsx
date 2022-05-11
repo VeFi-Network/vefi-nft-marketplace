@@ -43,10 +43,11 @@ const CardFooterContainer = styled.div`
   border-top: 0.841717px solid #ffffff;
   z-index: 5;
   backdrop-filter: blur(16.83px);
-  width: 100%;
+
   height: 112.26px;
   position: absolute;
   top: 70%;
+  width: 328px;
 `;
 
 const CardFooter = styled.div`
@@ -83,7 +84,7 @@ const Avatars = styled.div`
 const CardFooterItem = styled.div`
   display: flex;
   flex-direction: row;
-  width: 100%;
+  min-width: 328.27px;
   justify-content: space-between;
   height: 121px;
   margin-top: 15px;
@@ -156,7 +157,11 @@ const Card = (props: Props) => {
               <span>
                 <Image src="/icons/eth_classic.svg" width={20} height={15} /> {props.NFTPrice}eth
               </span>
+<<<<<<< HEAD
               <Button borderThickness={2} borderRadius="4px">Purchase</Button>
+=======
+              <Button borderThickness="1px">Purchase</Button>
+>>>>>>> 0c4c21bed6c128f0a1007f7ca068e0fc2f879ce6
             </div>
           </CardFooterItem>
         </CardFooter>
