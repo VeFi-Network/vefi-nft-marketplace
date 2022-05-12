@@ -1,25 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
-
+import BG from '/public/objects/colorBackground.svg';
 const MainContainer = styled.div`
-  background: transparent;
-
   z-index: -1;
-
-  min-width: 1000px;
-  min-height: 1200px;
+  /* width: 1400px; */
+  /* height: calc(100vh + 110px); */
+  /* min-width: 1000px;
+  min-height: 1200px; */
 `;
 
 const ObjectContainer1 = styled.div`
   ${(props: { animate: boolean }) => (props.animate ? '' : 'transition-duration: 2s;')}
-
   animation-timing-function: ease-out;
+  margin-left: ${(props: { animate: boolean }) => (props.animate ? '52%' : '5%')};
+  margin-top: -100px;
+  background: url('/objects/objectGrouped.png') no-repeat;
+  background-size: cover;
+  width: 100%;
 
-  margin-left: ${(props: { animate: boolean }) => (props.animate ? '32%' : '5%')};
-  margin-top: 0px;
-  width: 1400px;
-  height: 1000px;
+  height: 850px;
+  img {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain;
+  }
 `;
 
 // const ObjectContainer2 = styled.div`
@@ -34,22 +39,16 @@ const ObjectContainer1 = styled.div`
 
 export default function Background() {
   const [animate, setAnimate] = useState(false);
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
 
   useEffect(() => {
     setTimeout(() => {
       setAnimate(true);
-      setHeight(window.screen.height);
-      setWidth(window.screen.width);
     }, 200);
   }, []);
 
   return (
     <MainContainer>
-      <ObjectContainer1 animate={!animate}>
-        <Image src="/objects/objectGrouped.png" height={height} width={width} />
-      </ObjectContainer1>
+      <ObjectContainer1 animate={!animate}></ObjectContainer1>
     </MainContainer>
   );
 }
