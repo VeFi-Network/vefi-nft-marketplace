@@ -16,42 +16,39 @@ const CollectionRoundAvatar = styled.div`
 `;
 
 const CollectionInfoCont = styled.div`
-    width: 290px;
-  
-    margin-top: 30px;
-    padding: 10px;
+  width: 290px;
 
+  margin-top: 30px;
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+  color: white;
+  gap: 17px;
+
+  .name {
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 47px;
+    color: #ffffff;
+  }
+
+  .creator {
     display: flex;
-    flex-direction: column;
-    color white;
-    gap: 17px;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    color: #ffffff;
+    gap: 12px;
 
-    .name{
-
-        font-family: 'Rubik';
-        font-style: normal;
-        font-weight: 600;
-        font-size: 40px;
-        line-height: 47px;
-        color: #FFFFFF;
+    .blue {
+      color: #5c95ff;
     }
-
-    .creator{
-        display: flex;
-        font-family: 'Rubik';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 20px;
-        line-height: 24px;
-        color: #FFFFFF;
-        gap: 12px;
-
-        .blue{
-            color: #5C95FF;
-        }
-
-    }
-
+  }
 `;
 
 const StyledStatsDiv = styled.div`
