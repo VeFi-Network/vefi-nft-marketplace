@@ -6,7 +6,7 @@ import Navbar from '../components/Navbar';
 import Image from 'next/image';
 import Card from '../components/Card';
 import Background from '../components/AnimatedBackground';
-
+import { FaQuestion } from 'react-icons/fa';
 const MainContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -14,6 +14,7 @@ const MainContainer = styled.div`
   justify-content: center;
   background: #0c0c0c;
   width: 100%;
+  position: relative;
 `;
 
 const MarketplaceContainer = styled.div`
@@ -50,7 +51,7 @@ const ButtonContainer = styled.div`
 `;
 
 const FilterByText = styled.div`
-  margin-top: -280px;
+  margin-top: -240px;
   margin-left: 55px;
   font-family: 'Rubik';
   font-style: normal;
@@ -75,22 +76,19 @@ const FilterContainer = styled.div`
 const FilterBtn = styled.button`
   background: #373943;
   border-radius: 11px;
-
+  cursor: pointer;
   font-family: 'Rubik';
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 17px;
   border: none;
 
-  color: #5c95ff;
+  color: #fff;
   padding: 10px;
-
-  cursor: pointer;
-
   display: flex;
   flex-direction: row;
-  gap: 11px;
+  gap: 10px;
 `;
 
 const FilterAllBtn = styled.button`
@@ -104,14 +102,14 @@ const FilterAllBtn = styled.button`
   line-height: 17px;
   border: none;
 
-  color: #5c95ff;
+  color: #fff;
   padding: 10px 50px 10px 10px;
 
   cursor: pointer;
 
   display: flex;
   flex-direction: row;
-  gap: 11px;
+  gap: 10px;
 `;
 
 const SearchBar = styled.div`
@@ -176,6 +174,7 @@ const NFTTransparentContainer = styled.div`
   border: 1px solid #383838;
   z-index: 1;
   opacity: 0;
+  transition: opacity 0.3s ease-out;
 `;
 
 const ParentNFTCont = styled.div`
@@ -201,7 +200,7 @@ const NFTSubCont = styled.div`
   flex-direction: row;
   justify-content: space-between;
   margin-top: -120px;
-  gap: 15px;
+  gap: 20px;
   transition: all 300ms ease-in-out;
   opacity: ${(props: { visible: any }) => (props.visible ? '1' : '0')};
 `;
@@ -268,6 +267,27 @@ const RoundBlueLine = styled.div`
   margin-left: 300px;
   margin-top: 65px;
 `;
+const FooterHelpIcon = styled.div`
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 20px;
+  right: 0;
+  margin-right: 20px;
+  width: 60px;
+  height: 60px;
+  background: #373943;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  .help {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.5rem;
+    color: #fff;
+  }
+`;
 
 export default function Homepage() {
   const [transition, setTransition] = useState(false);
@@ -324,6 +344,7 @@ export default function Homepage() {
               <input
                 className="input"
                 value={searchValue}
+                placeholder="Search artwork"
                 onChange={e => {
                   setSearchValue(e.target.value);
                 }}
@@ -355,12 +376,12 @@ export default function Homepage() {
               onMouseEnter={() => {
                 setTimeout(() => {
                   applyTransition();
-                }, 250);
+                }, 5);
               }}
               onMouseLeave={() => {
                 setTimeout(() => {
                   setTransition(false);
-                }, 200);
+                }, 5);
               }}
             >
               <NFTScrollableContainer visible={transition} className="hover-container">
@@ -397,6 +418,11 @@ export default function Homepage() {
             </NFTTransparentContainer>
           </ParentNFTCont>
         </MarketplaceContainer>
+        <FooterHelpIcon>
+          <div className="help">
+            <FaQuestion />
+          </div>
+        </FooterHelpIcon>
       </MainContainer>
     </>
   );
