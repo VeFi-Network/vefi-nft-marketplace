@@ -13,6 +13,7 @@ const MainContainer = styled.div`
   align-items: center;
   justify-content: center;
   background: #0c0c0c;
+  width: 100%;
 `;
 
 const MarketplaceContainer = styled.div`
@@ -30,17 +31,14 @@ const MarketplaceContainer = styled.div`
 const DiscoverText = styled.div`
   font-family: 'MonumentExtended';
   font-style: normal;
-  font-weight: 400;
-  font-size: 55px;
-  line-height: 140%;
-
+  font-weight: 800;
+  font-size: 3.5rem;
   margin-top: 60px;
-
   display: flex;
   align-items: center;
-
   color: #ffffff;
   margin-left: 55px;
+  line-height: 120%;
 `;
 
 const ButtonContainer = styled.div`
@@ -140,30 +138,22 @@ const SearchBar = styled.div`
 const NFTContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
 
   padding-left: 7%;
   padding-right: 10%;
 
   align-items: center;
 
-  transition-duration: 500ms;
-
+  transition: all 300ms ease-in-out;
   opacity: ${(props: { visible: any }) => (props.visible ? '1' : '0')};
-
   z-index: 3;
-
   background: linear-gradient(254.33deg, rgba(255, 255, 255, 0.1) 1.71%, rgba(255, 255, 255, 0.05) 99.35%);
   backdrop-filter: blur(16.86px);
-
   border-radius: 20px 20px 0px 0px;
-
   width: -moz-calc(100% - 150px);
-
   width: -webkit-calc(100% - 150px);
-
   width: -o-calc(100% - 150px);
-
   width: calc(100% - 150px);
   height: 400px;
   margin-left: 55px;
@@ -173,26 +163,17 @@ const NFTContainer = styled.div`
 
 const NFTTransparentContainer = styled.div`
   margin-left: 55px;
-
   background: linear-gradient(254.33deg, rgba(255, 255, 255, 0.1) 1.71%, rgba(255, 255, 255, 0.05) 99.35%);
   backdrop-filter: blur(16.86px);
-
   border-radius: 20px 20px 0px 0px;
   box-sizing: border-box;
   height: 400px;
-
   width: -moz-calc(100% - 150px);
-
   width: -webkit-calc(100% - 150px);
-
   width: -o-calc(100% - 150px);
-
   width: calc(100% - 150px);
-
   margin-top: -310px;
-
   border: 1px solid #383838;
-
   z-index: 1;
   opacity: 0;
 `;
@@ -218,11 +199,10 @@ const ParentNFTCont = styled.div`
 const NFTSubCont = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
-
-  width: 100%;
+  justify-content: space-between;
   margin-top: -120px;
-  transition-duration: 250ms;
+  gap: 15px;
+  transition: all 300ms ease-in-out;
   opacity: ${(props: { visible: any }) => (props.visible ? '1' : '0')};
 `;
 
@@ -236,7 +216,6 @@ const NFTScrollableContainer = styled.div`
   justify-content: space-between;
   display: none;
   align-items: center;
-
   margin-top: 20px;
 
   height: 415px;
@@ -250,6 +229,7 @@ const NFTScrollableContainer = styled.div`
 
 const DiscoverAndAnimate = styled.div`
   display: flex;
+  width: 100%;
   flex-direction: row;
   position: relative;
 `;
@@ -266,12 +246,12 @@ const SeeMore = styled.div`
 `;
 
 const DiscoverPart = styled.div`
-  width: 600px;
+  flex: 0.5;
 `;
 
 const AnimatePart = styled.div`
-  width: 100%;
-  margin-top: -330px;
+  flex: 0.5;
+  /* margin-top: -330px; */
   z-index: 0;
 `;
 
@@ -310,16 +290,12 @@ export default function Homepage() {
               <RoundBlueLine>
                 <Image width="149px" height="80px" src="/objects/round.svg" />
               </RoundBlueLine>
-              <DiscoverText>
-                Discover,
-                <br /> collect, and sell <br /> extraordinary <br /> NFTs
-              </DiscoverText>
+              <DiscoverText>Discover, collect, and sell extraordinary NFTs</DiscoverText>
               <ButtonContainer>
                 <Filled_CTA_Button>Get Started</Filled_CTA_Button>
                 <Ghost_CTA_Button>Become a Creator</Ghost_CTA_Button>
               </ButtonContainer>
             </DiscoverPart>
-
             <AnimatePart>
               <Background />
             </AnimatePart>
