@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Card from '../components/Card';
 import Background from '../components/AnimatedBackground';
 import { FaQuestion } from 'react-icons/fa';
+
 const MainContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -273,6 +274,9 @@ const FooterHelpIcon = styled.div`
 export default function Homepage() {
   const [searchValue, setSearchValue] = useState('');
 
+
+
+
   return (
     <>
       <MainContainer>
@@ -374,7 +378,8 @@ export default function Homepage() {
                 <PaddedSpace />
               </NFTScrollableContainer>
 
-              <SeeMore className="hover-container">
+              <SeeMore 
+                className="hover-container">
                 See more
                 <Image height={18} width={18} src="/icons/right-arrow.svg" />
               </SeeMore>

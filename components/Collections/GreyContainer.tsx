@@ -10,7 +10,7 @@ const GreyContainerMain = styled.div`
   backdrop-filter: blur(16.86px);
   border-radius: 20px;
   margin-top: 83px;
-  z-index: 1;
+  z-index: 2;
 `;
 
 const FilterByText = styled.div`
