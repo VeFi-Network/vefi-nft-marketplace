@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Image from 'next/image';
-import BG from '/public/objects/colorBackground.svg';
+
 const MainContainer = styled.div`
   z-index: -1;
   /* width: 1400px; */
