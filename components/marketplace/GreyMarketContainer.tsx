@@ -45,7 +45,7 @@ const TopSellersDiv = styled.div`
   height: 150px;
 
   .title {
-    font-family: 'Rubik';
+    font-family: 'RubikRegular';
     font-style: normal;
     font-weight: 400;
     font-size: 16px;

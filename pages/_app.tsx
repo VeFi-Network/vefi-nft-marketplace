@@ -1,16 +1,20 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
-import Head from 'next/head';
+import Web3 from 'web3';
+import { Web3ReactProvider } from '@web3-react/core';
+import { Web3ContextProvider } from '../contexts/web3';
+
+function getLibrary(provider: any) {
+  return new Web3(provider);
+}
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
-      {' '}
-      <Head>
-        <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet" />
-      </Head>
-      <Component {...pageProps} />
-    </>
+    <Web3ReactProvider getLibrary={getLibrary}>
+      <Web3ContextProvider>
+        <Component {...pageProps} />
+      </Web3ContextProvider>
+    </Web3ReactProvider>
   );
 }
 

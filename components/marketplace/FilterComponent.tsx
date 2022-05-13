@@ -43,7 +43,7 @@ const FilterBtn = styled.button`
 const FilterAllBtn = styled.button`
   background: #373943;
   border-radius: 11px;
-  font-family: 'Rubik';
+  font-family: 'RubikRegular';
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
