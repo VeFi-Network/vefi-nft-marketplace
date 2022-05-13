@@ -7,7 +7,7 @@ import Image from 'next/image';
 import Card from '../components/Card';
 import Background from '../components/AnimatedBackground';
 import { FaQuestion } from 'react-icons/fa';
-import { useRouter } from 'next/router'
+
 const MainContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -85,7 +85,7 @@ const FilterBtn = styled.button`
   line-height: 17px;
   border: none;
 
-  color: #fff;
+  color: #ccc;
   padding: 10px;
   display: flex;
   flex-direction: row;
@@ -103,7 +103,7 @@ const FilterAllBtn = styled.button`
   line-height: 17px;
   border: none;
 
-  color: #fff;
+  color: #ccc;
   padding: 10px 50px 10px 10px;
 
   cursor: pointer;
@@ -137,15 +137,11 @@ const SearchBar = styled.div`
 const NFTContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-
-  padding-left: 7%;
-  padding-right: 10%;
-
+  width: 100%;
   align-items: center;
 
   transition: all 300ms ease-in-out;
-  opacity: ${(props: { visible: any }) => (props.visible ? '1' : '0')};
+  opacity: 1;
   z-index: 3;
   background: linear-gradient(254.33deg, rgba(255, 255, 255, 0.1) 1.71%, rgba(255, 255, 255, 0.05) 99.35%);
   backdrop-filter: blur(16.86px);
@@ -155,7 +151,7 @@ const NFTContainer = styled.div`
   width: -o-calc(100% - 150px);
   width: calc(100% - 150px);
   height: 400px;
-  margin-left: 55px;
+  margin: 0px auto;
   margin-top: 80px;
   border: 1px solid #383838;
 `;
@@ -178,32 +174,17 @@ const NFTTransparentContainer = styled.div`
   transition: opacity 0.3s ease-out;
 `;
 
-const ParentNFTCont = styled.div`
-  &:hover {
-    .transparent-cont {
-      margin-top: 20px;
-      height: 500px;
-      opacity: 1;
-    }
-
-    .nft-container {
-      display: none;
-    }
-
-    .hover-container {
-      display: flex;
-    }
-  }
-`;
+const ParentNFTCont = styled.div``;
 
 const NFTSubCont = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   margin-top: -120px;
+  width: 100%;
   gap: 20px;
   transition: all 300ms ease-in-out;
-  opacity: ${(props: { visible: any }) => (props.visible ? '1' : '0')};
+  opacity: 1;
 `;
 
 const PaddedSpace = styled.div`
@@ -224,7 +205,7 @@ const NFTScrollableContainer = styled.div`
   gap: 25px;
   overflow-x: auto;
   transition-duration: 500ms;
-  opacity: ${(props: { visible: any }) => (props.visible ? '1' : '0')};
+  opacity: 1;
 `;
 
 const DiscoverAndAnimate = styled.div`
@@ -291,17 +272,11 @@ const FooterHelpIcon = styled.div`
 `;
 
 export default function Homepage() {
-  const [transition, setTransition] = useState(false);
   const [searchValue, setSearchValue] = useState('');
 
-  const applyTransition = () => {
-    setTransition(true);
-  };
-  const router = useRouter();
 
-  const navigateToMarketplace = ()=>{
-    router.push("/marketplace")
-  }
+
+
   return (
     <>
       <MainContainer>
@@ -358,8 +333,8 @@ export default function Homepage() {
             </SearchBar>
           </FilterContainer>
           <ParentNFTCont>
-            <NFTContainer visible={!transition} className="nft-container">
-              <NFTSubCont visible={!transition}>
+            <NFTContainer className="nft-container">
+              <NFTSubCont>
                 <Card
                   collectionName="God of War"
                   NFTImageURI="/nft/nft01.png"
@@ -375,21 +350,8 @@ export default function Homepage() {
                 ></Card>
               </NFTSubCont>
             </NFTContainer>
-            <NFTTransparentContainer
-              visible={transition}
-              className="transparent-cont"
-              onMouseEnter={() => {
-                setTimeout(() => {
-                  applyTransition();
-                }, 5);
-              }}
-              onMouseLeave={() => {
-                setTimeout(() => {
-                  setTransition(false);
-                }, 5);
-              }}
-            >
-              <NFTScrollableContainer visible={transition} className="hover-container">
+            <NFTTransparentContainer className="transparent-cont">
+              <NFTScrollableContainer className="hover-container">
                 <PaddedSpace />
                 <Card
                   collectionName="God of War"
@@ -416,8 +378,7 @@ export default function Homepage() {
                 <PaddedSpace />
               </NFTScrollableContainer>
 
-              <SeeMore onClick={
-                ()=>{navigateToMarketplace()}} 
+              <SeeMore 
                 className="hover-container">
                 See more
                 <Image height={18} width={18} src="/icons/right-arrow.svg" />
