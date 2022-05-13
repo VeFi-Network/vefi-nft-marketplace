@@ -1,4 +1,6 @@
 import React, { createContext, useEffect, useContext, useCallback } from 'react';
+import { useRouter } from 'next/router';
+import { hexlify } from '@ethersproject/bytes';
 import { useWeb3React } from '@web3-react/core';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import type Web3 from 'web3';
@@ -8,6 +10,7 @@ type Web3ContextType = {
   library?: Web3;
   chainId?: number;
   connectOrDisconnectWeb3: () => void;
+  switchChain: (chain: number) => void;
 };
 
 const Web3Context = createContext<Web3ContextType>({} as Web3ContextType);
@@ -18,6 +21,7 @@ const injectedConnector = new InjectedConnector({
 
 export const Web3ContextProvider = ({ children }: any) => {
   const { library, account, activate, deactivate, active, chainId, connector } = useWeb3React<Web3>();
+  const { reload } = useRouter();
 
   const connectOrDisconnectWeb3 = useCallback(() => {
     if (!active) {
@@ -30,9 +34,26 @@ export const Web3ContextProvider = ({ children }: any) => {
     }
   }, [active]);
 
-  const switchChain = useCallback((chain: number) => {
-    if ((window as any).ethereum) {}
-  }, [chainId]);
+  const switchChain = useCallback(
+    (chain: number) => {
+      const { ethereum } = window as unknown as Window & { ethereum: any };
+
+      if (!!ethereum) {
+        ethereum
+          .request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: hexlify(chain) }],
+          })
+          .then(() => reload())
+          .catch((error: any) => {
+            if (error.code === 4902) {
+              // Do something
+            }
+          });
+      }
+    },
+    [chainId]
+  );
 
   useEffect(() => {
     injectedConnector.isAuthorized().then(isAuth => {
@@ -45,7 +66,7 @@ export const Web3ContextProvider = ({ children }: any) => {
   }, []);
 
   return (
-    <Web3Context.Provider value={{ account, library, chainId, connectOrDisconnectWeb3 }}>
+    <Web3Context.Provider value={{ account, library, chainId, connectOrDisconnectWeb3, switchChain }}>
       {children}
     </Web3Context.Provider>
   );
