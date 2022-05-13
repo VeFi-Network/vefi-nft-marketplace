@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Card from '../components/Card';
 import Background from '../components/AnimatedBackground';
 import { FaQuestion } from 'react-icons/fa';
+import { useRouter } from 'next/router'
 const MainContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -296,7 +297,11 @@ export default function Homepage() {
   const applyTransition = () => {
     setTransition(true);
   };
+  const router = useRouter();
 
+  const navigateToMarketplace = ()=>{
+    router.push("/marketplace")
+  }
   return (
     <>
       <MainContainer>
@@ -411,7 +416,9 @@ export default function Homepage() {
                 <PaddedSpace />
               </NFTScrollableContainer>
 
-              <SeeMore className="hover-container">
+              <SeeMore onClick={
+                ()=>{navigateToMarketplace()}} 
+                className="hover-container">
                 See more
                 <Image height={18} width={18} src="/icons/right-arrow.svg" />
               </SeeMore>
