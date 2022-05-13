@@ -43,7 +43,7 @@ const CardFooterContainer = styled.div`
   border-top: 0.841717px solid #ffffff;
   z-index: 5;
   backdrop-filter: blur(16.83px);
-
+  cursor: pointer;
   height: 112.26px;
   position: absolute;
   top: 70%;
@@ -89,6 +89,7 @@ const CardFooterItem = styled.div`
   height: 121px;
   margin-top: 15px;
   padding: 10px 0;
+  cursor: pointer;
   .nft-meta-data {
     display: flex;
     flex-direction: column;
@@ -102,7 +103,20 @@ const CardFooterItem = styled.div`
     flex-direction: column;
     padding: 10px;
     row-gap: 0.3rem;
+    align-items: center;
     gap: 15px;
+
+    .price {
+      display: flex;
+      align-items: center;
+
+      img {
+        display: flex;
+        align-items: center;
+        object-fit: contain;
+        margin-top: 2px !important;
+      }
+    }
   }
   .nft-price-info span{
     padding-bottom: -5px;
@@ -154,10 +168,12 @@ const Card = (props: Props) => {
               <span className="nft_name">{props.NFTName}</span>
             </div>
             <div className="nft-price-info">
-              <span>
-                <Image src="/icons/eth_classic.svg" width={20} height={15} /> {props.NFTPrice}eth
-              </span>
-              <Button borderThickness="1.68px" borderRadius="4px">Purchase</Button>
+              <div className="price">
+                <Image src="/icons/eth_classic.svg" width={20} height={20} />
+
+                <div>{props.NFTPrice}eth</div>
+              </div>
+              <Button borderThickness="1px">Purchase</Button>
             </div>
           </CardFooterItem>
         </CardFooter>
