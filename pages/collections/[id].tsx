@@ -31,17 +31,22 @@ const CollectionContainer = styled.div`
 `;
 
 const NavbarContainer = styled.div`
-  width: 100%;
+  max-width: 2000px;
+  width: 95%;
+  min-width: 1000px;
+  position: fixed;
+  z-index: 3;
 `;
 
 const Banner = styled.div`
-  margin-top: 10px;
+
   width: 100%;
   border-top: 5px solid #5c95ff;
   border-bottom: 5px solid #5c95ff;
   height: 265px;
   background-size: 100%;
   background-height: 100%;
+  margin-top: 70px;
 `;
 
 const CollectionImage = styled.img`
@@ -73,6 +78,7 @@ const Collection = () => {
 
   return (
     <>
+    
       <MainContainer>
         <CollectionContainer>
           <NavbarContainer>
