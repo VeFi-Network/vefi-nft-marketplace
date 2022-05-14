@@ -1,10 +1,10 @@
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
-import Navbar from '../components/Navbar'
+import Navbar from '../components/Navbar';
 import GreyMarketContainer from '../components/marketplace/GreyMarketContainer';
 import FilterComponent from '../components/marketplace/FilterComponent';
 
-type Props = {}
+type Props = {};
 
 const MainContainer = styled.div`
   display: flex;
@@ -40,9 +40,6 @@ const NavbarContainer = styled.div`
   z-index: 3;
 `;
 
-
-
-
 const StyledViewNft = styled.img`
   position: absolute;
   height: 585px;
@@ -61,31 +58,24 @@ const ColoredBackground = styled.div`
   z-index: 0;
 `;
 
-
-
 export default function marketplace({}: Props) {
-
-
-
   return (
     <>
-    <MainContainer>
+      <MainContainer>
         <MarketplaceContainer>
-            <NavbarContainer>
-                <Navbar />
-            </NavbarContainer>
+          <NavbarContainer>
+            <Navbar />
+          </NavbarContainer>
 
-            <FilterComponent />
+          <FilterComponent />
 
-            <GreyMarketContainer />
-        
+          <GreyMarketContainer />
 
-            <StyledViewNft src="/icons/exploreNFT.png" />
+          <StyledViewNft src="/icons/exploreNFT.png" />
 
-            <ColoredBackground></ColoredBackground>
+          <ColoredBackground></ColoredBackground>
         </MarketplaceContainer>
-
-    </MainContainer>
+      </MainContainer>
     </>
-  )
+  );
 }

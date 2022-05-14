@@ -39,7 +39,6 @@ const NavbarContainer = styled.div`
 `;
 
 const Banner = styled.div`
-
   width: 100%;
   border-top: 5px solid #5c95ff;
   border-bottom: 5px solid #5c95ff;
@@ -78,7 +77,6 @@ const Collection = () => {
 
   return (
     <>
-    
       <MainContainer>
         <CollectionContainer>
           <NavbarContainer>
