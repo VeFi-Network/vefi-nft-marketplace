@@ -264,6 +264,25 @@ export const NFTUserCollectionInfo = styled.div`
       }
     }
   }
+  .create__collection__btn {
+    margin: 30px 0 80px 0;
+    display: flex;
+
+    button {
+      background: transparent !important;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 20px 30px;
+      color: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 5px;
+      transition: all 0.3s ease-in;
+      &:hover {
+        color: rgba(255, 255, 255, 0.3);
+      }
+    }
+  }
 `;
 
 export const NFTCollection = styled.div`

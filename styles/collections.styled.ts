@@ -47,6 +47,10 @@ export const NFTUserStats = styled.div`
           font-size: 2.5rem;
           font-weight: 600;
           color: #fff;
+
+          @media screen and (max-width: 760px) {
+            font-size: 1.5rem;
+          }
         }
       }
       .label {

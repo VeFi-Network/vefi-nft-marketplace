@@ -1,5 +1,6 @@
+import { Button } from 'antd';
 import Link from 'next/link';
-import { FaBars, FaChevronDown } from 'react-icons/fa';
+import { FaBars, FaChevronDown, FaPlus } from 'react-icons/fa';
 import { FiBarChart, FiGrid } from 'react-icons/fi';
 import NFTCard from '../../components/Card/NftCard';
 import FilterProperty from '../../components/Filter';
@@ -101,6 +102,9 @@ const Collection = () => {
                   </button>
                 </div>
               </div>
+            </div>
+            <div className="create__collection__btn">
+              <Button icon={<FaPlus />}>Create New Item</Button>
             </div>
           </div>
           <NFTCollection>
