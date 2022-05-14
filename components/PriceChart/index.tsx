@@ -50,25 +50,26 @@ const FilterBtn = styled.button`
 `;
 
 const Chart = styled.div`
-    img{
-        position:relative;
-        z-index:99;
-        top:-50%;
-        drop-shadow:3px 3px #5C95FF !important;
-    }
     div{
         display:flex;
         flex-direction:column;
         align-items:center;
         justify-content:space-between;
         row-gap:1.2rem;
-        margin-top:1.2rem;
+        margin-top:-11rem;
     }
     hr{
         width:100%;
         height:1px !important;
         color:#4F4D4D !important;
     }
+`
+const ChartLine = styled.img`
+        position:relative !important;
+        z-index:9;
+        top:3rem;
+        left:5rem;
+        filter:drop-shadow(0 0 30px #5C95FF) !important;
 `
 
 const PriceChart = () => {
@@ -89,11 +90,9 @@ const PriceChart = () => {
                         </div>
                     </FilterBtn>
                 </ChartFilter>
+                <ChartLine src="/icons/chart-line.svg" />
                 <Chart>
                     <div>
-                        <Image src="/icons/chart-line.svg" width={380} height={212} />
-                        <hr />
-                        <hr />
                         <hr />
                         <hr />
                         <hr />
