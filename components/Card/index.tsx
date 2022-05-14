@@ -173,7 +173,7 @@ const Card = (props: Props) => {
 
                 <div>{props.NFTPrice}eth</div>
               </div>
-              <Button borderThickness="1px">Purchase</Button>
+              <Button borderThickness="1px" borderRadius="4px">Purchase</Button>
             </div>
           </CardFooterItem>
         </CardFooter>
