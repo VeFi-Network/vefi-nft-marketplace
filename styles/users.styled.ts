@@ -42,7 +42,7 @@ export const UserNFTInfo = styled.div`
   .display__pics {
     width: 180px;
     height: 180px;
-    background: green;
+    background: #5c95ff;
     display: flex;
     justify-content: center;
     border: 3px solid #5c95ff;
@@ -63,7 +63,7 @@ export const UserNFTInfo = styled.div`
     .username {
       display: flex;
       h2 {
-        margin: 10px 0 -15px 0;
+        margin: 10px 0 -5px 0;
         font-size: 2rem;
         color: #ccc;
         display: flex;
@@ -72,7 +72,6 @@ export const UserNFTInfo = styled.div`
         span {
           background: yellow;
           padding: 8px;
-          margin-top: 5px;
           border-radius: 50%;
         }
       }
@@ -91,7 +90,7 @@ export const NFTUserInfo = styled.div`
   width: 100%;
   height: 200px;
   position: relative;
-
+  z-index: 1;
   div:nth-child(1) {
     width: 200px;
     height: 300px;
@@ -150,12 +149,12 @@ export const NFTUserCollectionInfo = styled.div`
       display: flex;
       color: rgba(255, 255, 255, 0.3);
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
       font-size: 0.9rem;
       gap: 5px;
-      h3 {
-        font-size: 0.9rem;
-        font-weight: 400;
+      font-weight: 400;
+      span {
+        display: flex;
       }
     }
 
@@ -173,13 +172,12 @@ export const NFTUserCollectionInfo = styled.div`
         display: flex;
         flex-wrap: wrap;
         gap: 20px;
-        flex: 0.8;
       }
       .search__box {
         display: flex;
         background: #373943;
         width: 100%;
-        flex: 0.2;
+
         border-radius: 8px;
         color: rgba(255, 255, 255, 0.3);
         align-items: center;
@@ -219,7 +217,7 @@ export const NFTUserCollectionInfo = styled.div`
         align-items: center;
         gap: 10px;
         padding-bottom: 8px;
-        color: rgba(255, 255, 255, 0.3);
+
         transition: all 0.3s ease-in;
         &:hover {
           color: rgba(255, 255, 255, 0.7);
@@ -231,7 +229,7 @@ export const NFTUserCollectionInfo = styled.div`
         span {
           display: flex;
           align-items: center;
-
+          color: rgba(255, 255, 255, 0.3);
           &:last-child {
             font-size: 0.9rem;
           }
@@ -263,6 +261,25 @@ export const NFTUserCollectionInfo = styled.div`
             }
           }
         }
+      }
+    }
+  }
+  .create__collection__btn {
+    margin: 30px 0 80px 0;
+    display: flex;
+
+    button {
+      background: transparent !important;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 20px 30px;
+      color: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 5px;
+      transition: all 0.3s ease-in;
+      &:hover {
+        color: rgba(255, 255, 255, 0.3);
       }
     }
   }

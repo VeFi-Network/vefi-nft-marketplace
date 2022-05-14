@@ -44,7 +44,184 @@ a {
   color: inherit;
   text-decoration: none;
 }
-
+:root {
+  --bg-dark: #222222;
+}
 * {
   box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+
+.ant-modal-content {
+  background-color: #373943 !important;
+  border-radius: 14px !important;
+}
+.wallet__body {
+  padding: 10px 20px !important;
+}
+.wallet__header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.wallet__setting {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #ebf8ff;
+}
+.wallet__icon {
+  display: flex;
+  background-color: #ebf8ff;
+  border-radius: 50%;
+  padding: 3px;
+  border: 1px solid #105dcf;
+}
+.wallet__setting__title {
+  color: #ebf8ff;
+  font-size: 0.8rem;
+}
+.wallet__icon img {
+  width: 30px !important;
+  height: 30px !important;
+  object-fit: contain !important;
+}
+.wallet__connected__account {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.chain__logo {
+  display: flex;
+  color: #ebf8ff;
+  background-color: #ebf8ff;
+  border-radius: 50%;
+  padding: 3px;
+}
+.chain__id {
+  color: #ebf8ff;
+  font-weight: 600;
+  margin-right: 5px;
+}
+.wallet__content {
+  margin: 20px 0;
+}
+.wallet__balance {
+  background-color: var(--bg-dark);
+  padding: 20px 30px;
+  border-radius: 8px 8px 0px 0px;
+}
+.wallet__balance {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.wallet__balance__heading {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+}
+.wallet__balance__amt {
+  font-size: 2rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+}
+.wallet__balance__btn {
+  background: #5c95ff;
+  border-radius: 0px 0px 8px 8px;
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  color: #fff;
+}
+.btn__text {
+  font-weight: 600;
+}
+.wallet__balance__btn .icon {
+  display: flex;
+  color: #fff !important;
+}
+.wallet__accounts {
+  background-color: var(--bg-dark);
+  border-radius: 8px;
+  height: 150px;
+  overflow-y: scroll;
+  padding: 20px;
+}
+.wallet__account__container {
+  display: flex;
+  width: 100%;
+}
+.wallet__account__container:nth-child(1) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+}
+.wallet__account__container:nth-child(even) {
+  padding-top: 10px;
+}
+.wallet__account__balance {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+.account__balance__info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.wallet__account__logo {
+  background: #ebf8ff;
+  display: flex;
+  padding: 5px;
+  border-radius: 50%;
+}
+.wallet__account__logo img {
+  width: 30px !important;
+  object-fit: contain !important;
+  height: 30px !important;
+}
+.wallet__account__info {
+  display: flex;
+  flex-direction: column;
+}
+.chain__name {
+  margin-bottom: -5px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #ebf8ff;
+}
+.source__account {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+.account__balance__info__right {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+.chain__name__amount {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ebf8ff;
+}
+.source__account__amount {
+  font-size: 0.7rem;
+  color: #ebf8ff;
+}
+.ant-modal-close {
+  color: rgba(255, 255, 255, 0.4) !important;
+  transition: all 0.3s ease-in;
+}
+.ant-modal-close:hover {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+.ant-modal-footer,
+.ant-modal-header {
+  display: none !important;
 }
