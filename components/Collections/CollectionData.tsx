@@ -16,13 +16,13 @@ const CollectionRoundAvatar = styled.div`
 `;
 
 const CollectionInfoCont = styled.div`
-  width: 290px;
-
+  width: 350px;
   margin-top: 30px;
   padding: 10px;
 
   display: flex;
   flex-direction: column;
+  align-items: center;
   color: white;
   gap: 17px;
 
