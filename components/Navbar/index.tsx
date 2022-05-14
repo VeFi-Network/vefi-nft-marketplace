@@ -1,14 +1,19 @@
 import Image from 'next/image';
 import styled from 'styled-components';
 import { useState } from 'react';
+import Link from 'next/link';
 
 const NavContainer = styled.nav`
   max-width: 100%;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 50px;
+  .navbar__container {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 50px;
+    height: 60px;
+  }
 `;
 
 const NavBrand = styled.div`
@@ -74,28 +79,34 @@ const UserWallet = styled.div`
 const Navbar = () => {
   return (
     <NavContainer>
-      <NavBrand>
-        <Image src="/logo/vefi_nft_logo.svg" width={100} height={45} />
-      </NavBrand>
-      <NavLinks>
-        <div className="icon">
-          <Image src="/icons/envelope.svg" width={15} height={15} />
-        </div>
-        <div className="icon">
-          <Image src="/icons/notification.svg" width={15} height={15} />
-        </div>
-        <div className="icon">
-          <Image src="/icons/wallet.svg" width={15} height={15} />
-        </div>
-        <UserWallet>
-          <div className="wallet_container">
-            <div className="wallet_icon">
-              <Image src="/icons/eth.svg" width={15} height={15} />
-            </div>
-            <div>0xF2255c5F4dd0a...</div>
+      <div className="navbar__container">
+        <NavBrand>
+          <Link href="/">
+            <a>
+              <Image src="/logo/vefi_nft_logo.svg" width={100} height={45} />
+            </a>
+          </Link>
+        </NavBrand>
+        <NavLinks>
+          <div className="icon">
+            <Image src="/icons/envelope.svg" width={15} height={15} />
           </div>
-        </UserWallet>
-      </NavLinks>
+          <div className="icon">
+            <Image src="/icons/notification.svg" width={15} height={15} />
+          </div>
+          <div className="icon">
+            <Image src="/icons/wallet.svg" width={15} height={15} />
+          </div>
+          <UserWallet>
+            <div className="wallet_container">
+              <div className="wallet_icon">
+                <Image src="/icons/eth.svg" width={15} height={15} />
+              </div>
+              <div>0xF2255c5F4dd0a...</div>
+            </div>
+          </UserWallet>
+        </NavLinks>
+      </div>
     </NavContainer>
   );
 };

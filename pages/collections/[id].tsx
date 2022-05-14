@@ -41,7 +41,6 @@ const Banner = styled.div`
   border-bottom: 5px solid #5c95ff;
   height: 265px;
   background-size: 100%;
-  background-height: 100%;
 `;
 
 const CollectionImage = styled.img`
@@ -69,7 +68,7 @@ const StyledViewNft = styled.img`
 
 const Collection = () => {
   const router = useRouter();
-  const { id } = router.query;
+  // const { id } = router.query;
 
   return (
     <>
