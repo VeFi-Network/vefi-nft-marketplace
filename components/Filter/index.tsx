@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 type IFilterProps = {
-  icon: any;
+  icon?: any;
   label: string;
   count?: number | string | any;
 };
 export const FilterPropertyWrapper = styled.div`
   background: #373943;
   width: max-content;
-  padding: 0 15px;
+
   border-radius: 10px;
   display: flex;
   justify-content: space-between;
@@ -15,15 +15,12 @@ export const FilterPropertyWrapper = styled.div`
   text-transform: capitalize;
   font-size: small;
   align-items: center;
+  padding: 5px 20px;
   cursor: pointer;
   transition: all 0.3s ease-in;
   color: rgba(255, 255, 255, 0.5);
   &:hover {
     color: rgba(255, 255, 255, 0.9);
-  }
-  p {
-    font-size: 0.7rem;
-    letter-spacing: 0.04rem;
   }
 
   .icon {
@@ -45,7 +42,7 @@ const FilterProperty = ({ icon, label, count }: IFilterProps) => {
     <>
       <FilterPropertyWrapper>
         <span className="icon">{icon}</span>
-        <p>{label}</p>
+        <span>{label}</span>
         <span className="count">{count}</span>
       </FilterPropertyWrapper>
     </>
