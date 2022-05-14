@@ -42,7 +42,7 @@ export const UserNFTInfo = styled.div`
   .display__pics {
     width: 180px;
     height: 180px;
-    background: green;
+    background: #5c95ff;
     display: flex;
     justify-content: center;
     border: 3px solid #5c95ff;

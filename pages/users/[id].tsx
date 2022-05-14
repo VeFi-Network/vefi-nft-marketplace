@@ -1,48 +1,29 @@
 import Image from 'next/image';
 import React from 'react';
-import { FaBars, FaDashcube, FaFilter, FaHandHoldingUsd, FaRegEyeSlash, FaSearch } from 'react-icons/fa';
+import { FaBars, FaFilter, FaHandHoldingUsd, FaRegEyeSlash, FaSearch } from 'react-icons/fa';
 import { FiBarChart, FiChevronDown, FiEyeOff, FiGrid, FiHeart, FiList, FiRotateCcw, FiTag } from 'react-icons/fi';
 import FilterProperty from '../../components/FilterProperty';
 import Navbar from '../../components/Navbar';
-import {
-  NFTArt,
-  NFTCollection,
-  NFTUserCollectionInfo,
-  NFTUserInfo,
-  UserNFTBanner,
-  UserNFTInfo,
-  UsersWrapper,
-} from '../../styles/users.styled';
+import UserBanner from '../../components/Profile/UserBanner';
+import { NFTArt, NFTCollection, NFTUserCollectionInfo, UsersWrapper } from '../../styles/users.styled';
 
 const Users = () => {
   return (
     <>
       <UsersWrapper>
         <Navbar />
-        <div className="user__header__banner">
-          <UserNFTBanner bg="/objects/bg.png" />
-          <div className="nft__wrapper">
-            <UserNFTInfo>
-              <div className="display__pics">
-                <Image src="/nft/nft01.png" height="100px" width="100px" alt="user pics" />
-              </div>
-              <div className="user__info">
-                <div className="username">
-                  <h2>
-                    Unnamed <span></span>
-                  </h2>
-                </div>
-                <div className="join__date">
-                  <p>Joined September 2022</p>
-                </div>
-              </div>
-            </UserNFTInfo>
+        <UserBanner>
+          <div className="user__info">
+            <div className="username">
+              <h2>
+                Unnamed <span></span>
+              </h2>
+            </div>
+            <div className="join__date">
+              <p>Joined September 2022</p>
+            </div>
           </div>
-        </div>
-        <NFTUserInfo>
-          <div></div>
-          <div></div>
-        </NFTUserInfo>
+        </UserBanner>
         <NFTUserCollectionInfo>
           <div className="filter__collection">
             <div className="heading">
