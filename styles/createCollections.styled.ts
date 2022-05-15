@@ -20,6 +20,9 @@ export const SectionWrapper = styled.section`
   @media screen and (max-width: 760px) {
     background-size: contain;
     background-position-y: 0px;
+    .exploreNft {
+      display: none;
+    }
   }
   @media screen and (min-width: 1500px) and (max-width: 2000px) {
     background-position-y: -80vh;
@@ -80,7 +83,9 @@ export const FormWrapper = styled.div`
     p {
       color: rgba(255, 255, 255, 0.5);
       font-size: 0.9rem;
-
+      span {
+        color: #5c95ff;
+      }
       @media screen and (max-width: 760px) {
         font-size: 0.75rem;
       }
