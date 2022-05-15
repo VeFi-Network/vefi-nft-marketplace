@@ -7,7 +7,6 @@ import Image from 'next/image';
 import Card from '../components/Card';
 import Background from '../components/AnimatedBackground';
 import { FaQuestion } from 'react-icons/fa';
-import WalletPopup from '../components/Popup/WalletPopup';
 
 const MainContainer = styled.div`
   display: flex;
@@ -276,7 +275,6 @@ export default function Homepage() {
 
   return (
     <>
-      <WalletPopup />
       <MainContainer>
         <MarketplaceContainer>
           <Navbar />
