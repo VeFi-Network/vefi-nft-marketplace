@@ -124,11 +124,11 @@ const FilterAndBtnContainer = styled.div`
     margin-top: 50px;
 
 
-    @media (max-width: 1200px) {
+    @media (max-width: 1280px) {
 
-      width: 1000px;
+      width: 950px;
       min-width: 700px;
-      margin-left: 50px;
+      padding-right: 30px;
   
     }
 `;

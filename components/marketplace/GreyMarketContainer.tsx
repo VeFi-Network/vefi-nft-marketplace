@@ -15,6 +15,16 @@ const GreyContainerMain = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+
+  @media (max-width: 1280px) {
+
+    width: 950px;
+    min-width: 700px;
+
+
+  }
+
 `;
 
 const PaddedSpace = styled.div`
@@ -37,6 +47,12 @@ const NFTScrollableContainer = styled.div`
   opacity: 1;
   margin-top: 35px;
   margin-bottom: 10px;
+
+  @media (max-width: 1280px) {
+    width: 900px;
+    min-width: 650px;
+
+  }
 `;
 
 const TopSellersDiv = styled.div`
@@ -62,6 +78,13 @@ height: 150px;
     margin-top: 20px;
     margin-left: 20px;
   }
+
+  @media (max-width: 1280px) {
+
+    width: 900px;
+    min-width: 650px;
+    
+  }
 `;
 
 const CollectionCard = styled.div`
@@ -72,6 +95,13 @@ const CollectionCard = styled.div`
   gap: 10px;
   transition-duration: 250ms;
   cursor: pointer;
+
+  @media (max-width: 1280px) {
+
+   width: 150px;
+  
+
+  }
 
   &:hover {
     transform: scale(1.05);
@@ -105,6 +135,12 @@ const CollectionCard = styled.div`
     font-weight: 600;
     font-size: 16px;
     line-height: 19px;
+
+    @media (max-width: 1280px) {
+      font-size: 12px;
+      margin-top: -10px;
+    }
+
   }
 `;
 

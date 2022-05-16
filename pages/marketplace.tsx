@@ -41,7 +41,7 @@ const NavbarContainer = styled.div`
   padding-left: 100px;
   z-index: 3;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1280px) {
 
     width: 1100px;
     min-width: 700px;
