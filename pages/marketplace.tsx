@@ -18,11 +18,8 @@ const MainContainer = styled.div`
 
 const MarketplaceContainer = styled.div`
   min-height: 100vh;
-  width: 1800px;
-  max-width: 2000px;
-  min-width: 1000px;
+  width: 100vw;
   background: #0c0c0c;
-  padding-left: 55px;
   padding-top: 20px;
   padding-bottom: 30px;
   overflow: hidden;
@@ -33,10 +30,11 @@ const MarketplaceContainer = styled.div`
 `;
 
 const NavbarContainer = styled.div`
-  max-width: 1755px;
-  width: 95%;
+ 
+  width: 1400px;
   min-width: 1000px;
   position: fixed;
+  padding-left: 100px;
   z-index: 3;
 `;
 
@@ -44,11 +42,9 @@ const NavbarContainer = styled.div`
 
 
 const StyledViewNft = styled.img`
-  position: absolute;
   height: 585px;
   width: 97px;
-  left: 50px;
-  top: 150px;
+  margin-top: 52px;
 `;
 
 const ColoredBackground = styled.div`
@@ -61,7 +57,19 @@ const ColoredBackground = styled.div`
   z-index: 0;
 `;
 
+const ParentGreyAndExploreNFT = styled.div`
+  
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 
+`;
+
+const FilterAndGrey = styled.div`
+  display: flex;
+  flex-direction: column;
+
+`;
 
 export default function marketplace({}: Props) {
 
@@ -75,14 +83,23 @@ export default function marketplace({}: Props) {
                 <Navbar />
             </NavbarContainer>
 
-            <FilterComponent />
+       
 
-            <GreyMarketContainer />
+            
+
+            <ParentGreyAndExploreNFT>
+
+              <StyledViewNft src="/icons/exploreNFT.png" />
+              <FilterAndGrey>
+                 <FilterComponent />
+                 <GreyMarketContainer />
+              </FilterAndGrey>
+              <ColoredBackground></ColoredBackground>
+
+            </ParentGreyAndExploreNFT>
+
+
         
-
-            <StyledViewNft src="/icons/exploreNFT.png" />
-
-            <ColoredBackground></ColoredBackground>
         </MarketplaceContainer>
 
     </MainContainer>

@@ -118,7 +118,8 @@ const FilterParentContainer = styled.div`
 `;
 
 const FilterAndBtnContainer = styled.div`
-    width: 1248px;
+    width: 1180px;
+    min-width: 1000px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -144,7 +145,7 @@ const [searchValue, setSearchValue] = useState('');
                 <FilterBtn>
                 Top Selling{' '}
                 <div style={{ marginTop: -1 }}>
-                    <Image width="12px" height="9px" src="/icons/downIcon.svg" />
+                    <Image width="12px" style={{zIndex: 1}} height="9px" src="/icons/downIcon.svg" />
                 </div>
                 </FilterBtn>
                 <FilterBtn>

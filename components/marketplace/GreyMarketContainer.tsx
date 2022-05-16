@@ -5,7 +5,8 @@ import Card from '../Card';
 
 
 const GreyContainerMain = styled.div`
-  width: 1248px;
+  width: 1180px;
+  min-width: 900px;
   padding-bottom: 20px;
   background: linear-gradient(254.33deg, rgba(255, 255, 255, 0.1) 1.71%, rgba(255, 255, 255, 0.05) 99.35%);
   backdrop-filter: blur(16.86px);
@@ -30,7 +31,7 @@ const NFTScrollableContainer = styled.div`
   display: flex;
   align-items: center;
   margin-top: 20px;
-  width: 1200px;
+  width: 1130px;
   height: 415px;
   flex-direction: row;
   gap: 46px;
@@ -42,7 +43,7 @@ const NFTScrollableContainer = styled.div`
 `;
 
 const TopSellersDiv = styled.div`
-width: 1200px;
+width: 1130px;
 margin-top: 50px;
 margin-bottom: 40px;
 height: 150px;
