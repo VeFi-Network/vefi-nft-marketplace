@@ -2,8 +2,9 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { useState } from 'react';
 import Link from 'next/link';
-import { Drawer, Button } from 'antd';
+import { Drawer, Dropdown } from 'antd';
 import { FiChevronDown, FiPlus } from 'react-icons/fi';
+import menu from '../Profile/Menu';
 
 const NavContainer = styled.nav`
   max-width: 100%;
@@ -80,13 +81,6 @@ const UserWallet = styled.div`
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
-  const showDrawer = () => {
-    setVisible(true);
-  };
-
-  const onClose = () => {
-    setVisible(false);
-  };
 
   return (
     <>
@@ -106,21 +100,25 @@ const Navbar = () => {
             <div className="icon">
               <Image src="/icons/notification.svg" width={15} height={15} />
             </div>
-            <div className="icon" onClick={showDrawer}>
+            <div className="icon" onClick={() => setVisible(!visible)}>
               <Image src="/icons/wallet.svg" width={15} height={15} />
             </div>
-            <UserWallet>
-              <div className="wallet_container">
-                <div className="wallet_icon">
-                  <Image src="/icons/eth.svg" width={15} height={15} />
-                </div>
-                <div>0xF2255c5F4dd0a...</div>
-              </div>
-            </UserWallet>
+            <Dropdown overlay={menu} trigger={['click']}>
+              <a onClick={e => e.preventDefault()}>
+                <UserWallet>
+                  <div className="wallet_container">
+                    <div className="wallet_icon">
+                      <Image src="/icons/eth.svg" width={15} height={15} />
+                    </div>
+                    <div>0xF2255c5F4dd0a...</div>
+                  </div>
+                </UserWallet>
+              </a>
+            </Dropdown>
           </NavLinks>
         </div>
       </NavContainer>
-      <Drawer title="Basic Drawer" placement="right" onClose={onClose} visible={visible}>
+      <Drawer title="Basic Drawer" placement="right" onClose={() => setVisible(!visible)} visible={visible}>
         <div className="wallet__body">
           <div className="wallet__header">
             <div className="wallet__setting">
@@ -128,7 +126,11 @@ const Navbar = () => {
                 <Image src="/icons/eth.svg" width={20} height={20} alt="wallet" />
               </div>
               <div className="wallet__setting__title">
-                <span>My wallet </span>
+                <Dropdown overlay={menu} trigger={['click']}>
+                  <a onClick={e => e.preventDefault()}>
+                    <div style={{ color: 'var(--text-light)' }}>My Profile</div>
+                  </a>
+                </Dropdown>
               </div>
               <FiChevronDown />
             </div>
