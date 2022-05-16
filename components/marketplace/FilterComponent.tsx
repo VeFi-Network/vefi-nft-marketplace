@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
-type Props = {}
+type Props = {};
 
 const FilterByText = styled.div`
   margin-top: 50px;
@@ -33,8 +33,9 @@ const FilterBtn = styled.button`
   font-size: 12px;
   line-height: 17px;
   border: none;
-  color: #5C95FF;
+  color: #5c95ff;
   padding: 10px;
+  height: 37px;
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -43,13 +44,14 @@ const FilterBtn = styled.button`
 const FilterAllBtn = styled.button`
   background: #373943;
   border-radius: 11px;
-  font-family: 'Rubik';
+  font-family: 'RubikRegular';
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
+  height: 37px;
   border: none;
-  color: #5C95FF;
+  color: #5c95ff;
   padding: 10px 50px 10px 10px;
   cursor: pointer;
   display: flex;
@@ -65,6 +67,7 @@ const SearchBar = styled.div`
   background: #373943;
   border-radius: 11px;
   gap: 10px;
+  height: 37px;
   z-index: 3;
 
   .input {
@@ -73,6 +76,7 @@ const SearchBar = styled.div`
     border: none;
     outline: none;
     width: 150px;
+    margin-top: -1px;
   }
 `;
 
@@ -85,21 +89,17 @@ const CreateNewItem = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 10px;
-  margin-top: 30px;
+  margin-top: 75px;
   color: white;
   cursor: pointer;
   z-index: 2;
 
-
   transition-duration: 250ms;
   cursor: pointer;
 
-
-  &:hover{
-      transform: scale(1.05);
+  &:hover {
+    transform: scale(1.05);
   }
-
-  
 
   .cross {
     font-size: 25px;
@@ -108,13 +108,9 @@ const CreateNewItem = styled.div`
   }
 `;
 
-
-
 const FilterParentContainer = styled.div`
   display: flex;
   flex-direction: column;
-
-
 `;
 
 const FilterAndBtnContainer = styled.div`
@@ -127,11 +123,18 @@ const FilterAndBtnContainer = styled.div`
 
     margin-top: 50px;
 
+
+    @media (max-width: 1200px) {
+
+      width: 1000px;
+      min-width: 700px;
+      margin-left: 50px;
+  
+    }
 `;
 
 export default function FilterComponent({}: Props) {
-
-const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState('');
 
   return (
     <FilterAndBtnContainer>
@@ -170,11 +173,10 @@ const [searchValue, setSearchValue] = useState('');
             </FilterContainer>
         </FilterParentContainer>
 
-       
-        <CreateNewItem>
-            {' '}
-            <div className="cross">+</div> Create New Item
-         </CreateNewItem>
+      <CreateNewItem>
+        {' '}
+        <div className="cross">+</div> Create New Item
+      </CreateNewItem>
     </FilterAndBtnContainer>
-  )
+  );
 }

@@ -1,8 +1,7 @@
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 import Card from '../Card';
-
 
 const GreyContainerMain = styled.div`
   width: 1180px;
@@ -17,8 +16,6 @@ const GreyContainerMain = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-
-
 
 const PaddedSpace = styled.div`
   min-width: 50px;
@@ -48,247 +45,180 @@ margin-top: 50px;
 margin-bottom: 40px;
 height: 150px;
 
-.title{
-    font-family: 'Rubik';
+  .title {
+    font-family: 'RubikRegular';
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
     line-height: 19px;
-    color: #EBF8FF;
+    color: #ebf8ff;
     margin-left: 20px;
-   
+  }
 
-   
-}
-
-.collection-grid{
+  .collection-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 30px;
     margin-top: 20px;
     margin-left: 20px;
-}
-
+  }
 `;
 
 const CollectionCard = styled.div`
-    width: 200px;
-    height: 45px;
+  width: 200px;
+  height: 45px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  transition-duration: 250ms;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  .img-cont {
+    width: 45px;
+
+    .seller-img {
+      border-radius: 50%;
+      width: 40.4px;
+      height: 40.04px;
+      border: 1.83647px solid #ffffff;
+      position: relative;
+    }
+
+    .tick {
+      position: absolute;
+      margin-left: -10px;
+    }
+  }
+
+  .name {
+    width: 150px;
     display: flex;
     flex-direction: row;
-    gap: 10px;
-    transition-duration: 250ms;
-    cursor: pointer;
-
-
-    &:hover{
-        transform: scale(1.05);
-    }
-
-    .img-cont{
-        width: 45px;
-
-        .seller-img{
-            border-radius: 50%;
-            width: 40.4px;
-            height: 40.04px;
-            border: 1.83647px solid #FFFFFF;
-            position: relative;
-        }
-
-        .tick{
-            position: absolute;
-            margin-left: -10px;
-          
-        }
-    }
-
-    .name{
-        width: 150px;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        color: #FFFFFF;
-        font-family: 'Rubik';
-        font-style: normal;
-        font-weight: 600;
-        font-size: 16px;
-        line-height: 19px;
-
-    }
-
+    align-items: center;
+    color: #ffffff;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+  }
 `;
 
-
-
 const topSellersList = [
-    {
-        name:"Beasyzakustler",
-        verified: true,
-        imageUrl: "/marketplace/topSellers/1.png"
-    },
-    {
-        name:"Cassy Mcconnell",
-        verified: false,
-        imageUrl: "/marketplace/topSellers/2.png"
-    },
-    {
-        name:"Coben Day",
-        verified: true,
-        imageUrl: "/marketplace/topSellers/3.png"
-    },
-    {
-        name:"Bradly Giles",
-        verified: false,
-        imageUrl: "/marketplace/topSellers/1.png"
-    },
-    {
-        name:"Saim Roth",
-        verified: false,
-        imageUrl: "/marketplace/topSellers/4.png"
-    },
-    {
-        name:"Dylan Bowen",
-        verified: false,
-        imageUrl: "/marketplace/topSellers/5.png"
-    },
-    {
-        name:"Heini Fitzpatrick",
-        verified: false,
-        imageUrl: "/marketplace/topSellers/8.png"
-    },
-    {
-        name:"Neshawn Glover",
-        verified: false,
-        imageUrl:"/marketplace/topSellers/6.png"
-    },
-    {
-        name:"Nelson Daugherty",
-        verified: false,
-        imageUrl: "/marketplace/topSellers/7.png"
-    },
-    {
-        name:"Shiloh York",
-        verified: true,
-        imageUrl:"/marketplace/topSellers/8.png"
-    }
-]
+  {
+    name: 'Beasyzakustler',
+    verified: true,
+    imageUrl: '/marketplace/topSellers/1.png',
+  },
+  {
+    name: 'Cassy Mcconnell',
+    verified: false,
+    imageUrl: '/marketplace/topSellers/2.png',
+  },
+  {
+    name: 'Coben Day',
+    verified: true,
+    imageUrl: '/marketplace/topSellers/3.png',
+  },
+  {
+    name: 'Bradly Giles',
+    verified: false,
+    imageUrl: '/marketplace/topSellers/1.png',
+  },
+  {
+    name: 'Saim Roth',
+    verified: false,
+    imageUrl: '/marketplace/topSellers/4.png',
+  },
+  {
+    name: 'Dylan Bowen',
+    verified: false,
+    imageUrl: '/marketplace/topSellers/5.png',
+  },
+  {
+    name: 'Heini Fitzpatrick',
+    verified: false,
+    imageUrl: '/marketplace/topSellers/8.png',
+  },
+  {
+    name: 'Neshawn Glover',
+    verified: false,
+    imageUrl: '/marketplace/topSellers/6.png',
+  },
+  {
+    name: 'Nelson Daugherty',
+    verified: false,
+    imageUrl: '/marketplace/topSellers/7.png',
+  },
+  {
+    name: 'Shiloh York',
+    verified: true,
+    imageUrl: '/marketplace/topSellers/8.png',
+  },
+];
 
-type Props = {}
+type Props = {};
 
 export default function GreyMarketContainer({}: Props) {
   return (
     <GreyContainerMain>
-    <NFTScrollableContainer >
-       <PaddedSpace />
-       <Card
-         collectionName="God of War"
-         NFTImageURI="/nft/nft01.png"
-         NFTPrice="247"
-         NFTName="ToomuchLag"
-       ></Card>
-       <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
-       <Card
-         collectionName="Lost in Space"
-         NFTImageURI="/nft/nft03.png"
-         NFTPrice="2"
-         NFTName="Wereywanle"
-       ></Card>
-       <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
-       <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
-       <Card
-         collectionName="Lost in Space"
-         NFTImageURI="/nft/nft03.png"
-         NFTPrice="2"
-         NFTName="Wereywanle"
-       ></Card>
+      <NFTScrollableContainer>
+        <PaddedSpace />
+        <Card collectionName="God of War" NFTImageURI="/nft/nft01.png" NFTPrice="247" NFTName="ToomuchLag"></Card>
+        <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
+        <Card collectionName="Lost in Space" NFTImageURI="/nft/nft03.png" NFTPrice="2" NFTName="Wereywanle"></Card>
+        <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
+        <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
+        <Card collectionName="Lost in Space" NFTImageURI="/nft/nft03.png" NFTPrice="2" NFTName="Wereywanle"></Card>
 
-       <PaddedSpace />
-     </NFTScrollableContainer>
+        <PaddedSpace />
+      </NFTScrollableContainer>
 
-     <TopSellersDiv>
-           <div className="title">
-               Top Sellers
-           </div>
+      <TopSellersDiv>
+        <div className="title">Top Sellers</div>
 
-           <div className="collection-grid">
-               {
-                   topSellersList && topSellersList.map((seller,i)=>(
-                       <CollectionCard key={i}>
-                           <div className="img-cont">
-                               <Image width="40.4px" height="40.4px" src={seller.imageUrl} className="seller-img"/>
-                               {
-                                   seller.verified && (
-                                       <img src="/icons/verification.svg" width="20px" height="20px" className='tick' />
-                                   )
-                               }
-                               
-                           </div>
+        <div className="collection-grid">
+          {topSellersList &&
+            topSellersList.map((seller, i) => (
+              <CollectionCard key={i}>
+                <div className="img-cont">
+                  <Image width="40.4px" height="40.4px" src={seller.imageUrl} className="seller-img" />
+                  {seller.verified && <img src="/icons/verification.svg" width="20px" height="20px" className="tick" />}
+                </div>
 
-                           <div className="name">
-                               {seller.name}
-                           </div>
+                <div className="name">{seller.name}</div>
+              </CollectionCard>
+            ))}
+        </div>
+      </TopSellersDiv>
 
+      <NFTScrollableContainer>
+        <PaddedSpace />
+        <Card collectionName="God of War" NFTImageURI="/nft/nft01.png" NFTPrice="247" NFTName="ToomuchLag"></Card>
+        <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
+        <Card collectionName="Lost in Space" NFTImageURI="/nft/nft03.png" NFTPrice="2" NFTName="Wereywanle"></Card>
+        <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
+        <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
+        <Card collectionName="Lost in Space" NFTImageURI="/nft/nft03.png" NFTPrice="2" NFTName="Wereywanle"></Card>
 
-                       </CollectionCard>
-                   ))
-               }
-           </div>
-     </TopSellersDiv>
+        <PaddedSpace />
+      </NFTScrollableContainer>
 
-     <NFTScrollableContainer >
-       <PaddedSpace />
-       <Card
-         collectionName="God of War"
-         NFTImageURI="/nft/nft01.png"
-         NFTPrice="247"
-         NFTName="ToomuchLag"
-       ></Card>
-       <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
-       <Card
-         collectionName="Lost in Space"
-         NFTImageURI="/nft/nft03.png"
-         NFTPrice="2"
-         NFTName="Wereywanle"
-       ></Card>
-       <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
-       <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
-       <Card
-         collectionName="Lost in Space"
-         NFTImageURI="/nft/nft03.png"
-         NFTPrice="2"
-         NFTName="Wereywanle"
-       ></Card>
+      <NFTScrollableContainer>
+        <PaddedSpace />
+        <Card collectionName="God of War" NFTImageURI="/nft/nft01.png" NFTPrice="247" NFTName="ToomuchLag"></Card>
+        <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
+        <Card collectionName="Lost in Space" NFTImageURI="/nft/nft03.png" NFTPrice="2" NFTName="Wereywanle"></Card>
+        <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
+        <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
+        <Card collectionName="Lost in Space" NFTImageURI="/nft/nft03.png" NFTPrice="2" NFTName="Wereywanle"></Card>
 
-       <PaddedSpace />
-     </NFTScrollableContainer>
-
-     <NFTScrollableContainer >
-       <PaddedSpace />
-       <Card
-         collectionName="God of War"
-         NFTImageURI="/nft/nft01.png"
-         NFTPrice="247"
-         NFTName="ToomuchLag"
-       ></Card>
-       <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
-       <Card
-         collectionName="Lost in Space"
-         NFTImageURI="/nft/nft03.png"
-         NFTPrice="2"
-         NFTName="Wereywanle"
-       ></Card>
-       <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
-       <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
-       <Card
-         collectionName="Lost in Space"
-         NFTImageURI="/nft/nft03.png"
-         NFTPrice="2"
-         NFTName="Wereywanle"
-       ></Card>
-
-       <PaddedSpace />
-     </NFTScrollableContainer>
+        <PaddedSpace />
+      </NFTScrollableContainer>
     </GreyContainerMain>
-  )
+  );
 }

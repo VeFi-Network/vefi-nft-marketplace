@@ -1,10 +1,10 @@
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
-import Navbar from '../components/Navbar'
+import Navbar from '../components/Navbar';
 import GreyMarketContainer from '../components/marketplace/GreyMarketContainer';
 import FilterComponent from '../components/marketplace/FilterComponent';
 
-type Props = {}
+type Props = {};
 
 const MainContainer = styled.div`
   display: flex;
@@ -27,6 +27,10 @@ const MarketplaceContainer = styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
+
+
+
+
 `;
 
 const NavbarContainer = styled.div`
@@ -36,10 +40,15 @@ const NavbarContainer = styled.div`
   position: fixed;
   padding-left: 100px;
   z-index: 3;
+
+  @media (max-width: 1200px) {
+
+    width: 1100px;
+    min-width: 700px;
+    padding-left: 0px;
+
+  }
 `;
-
-
-
 
 const StyledViewNft = styled.img`
   height: 585px;
@@ -72,16 +81,13 @@ const FilterAndGrey = styled.div`
 `;
 
 export default function marketplace({}: Props) {
-
-
-
   return (
     <>
-    <MainContainer>
+      <MainContainer>
         <MarketplaceContainer>
-            <NavbarContainer>
-                <Navbar />
-            </NavbarContainer>
+          <NavbarContainer>
+            <Navbar />
+          </NavbarContainer>
 
        
 
@@ -101,8 +107,7 @@ export default function marketplace({}: Props) {
 
         
         </MarketplaceContainer>
-
-    </MainContainer>
+      </MainContainer>
     </>
-  )
+  );
 }

@@ -9,8 +9,10 @@
     "format": "prettier --write **/**/*.{css,js,json,ts,tsx}"
   },
   "dependencies": {
+    "@ethersproject/bytes": "^5.6.1",
     "@web3-react/core": "^6.1.9",
     "@web3-react/injected-connector": "^6.0.7",
+    "antd": "^4.20.4",
     "axios": "^0.26.1",
     "next": "12.1.5",
     "react": "18.0.0",

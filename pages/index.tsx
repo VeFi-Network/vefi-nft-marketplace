@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Card from '../components/Card';
 import Background from '../components/AnimatedBackground';
 import { FaQuestion } from 'react-icons/fa';
+import WalletPopup from '../components/Popup/WalletPopup';
 
 const MainContainer = styled.div`
   display: flex;
@@ -221,7 +222,6 @@ const SeeMore = styled.div`
   margin-left: 90%;
   margin-top: 15px;
   cursor: pointer;
-
   flex-direction: row;
   gap: 15px;
 `;
@@ -274,11 +274,9 @@ const FooterHelpIcon = styled.div`
 export default function Homepage() {
   const [searchValue, setSearchValue] = useState('');
 
-
-
-
   return (
     <>
+      <WalletPopup />
       <MainContainer>
         <MarketplaceContainer>
           <Navbar />
@@ -378,8 +376,7 @@ export default function Homepage() {
                 <PaddedSpace />
               </NFTScrollableContainer>
 
-              <SeeMore 
-                className="hover-container">
+              <SeeMore className="hover-container">
                 See more
                 <Image height={18} width={18} src="/icons/right-arrow.svg" />
               </SeeMore>

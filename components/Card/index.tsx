@@ -76,7 +76,7 @@ const Avatars = styled.div`
     height: 100%;
   }
   .avatar {
-    margin-left: -20px;
+    margin-left: -25px;
     overflow: hidden;
   }
 `;
@@ -118,9 +118,13 @@ const CardFooterItem = styled.div`
       }
     }
   }
+  .nft-price-info span{
+    padding-bottom: -5px;
+    font-size:20px;
+  }
   .nft_name {
-    font-size: 12px;
-    padding: 5px 0;
+    font-size: 14px;
+    padding: 3px 0;
     text-decoration: underline;
     cursor: pointer;
     font-weight: bold;
@@ -130,7 +134,8 @@ const CardFooterItem = styled.div`
     text-align: center;
   }
   .nft_collection_name {
-    font-weight: bold;
+    font-size:20px;
+    font-weight: bolder;
     cursor: pointer;
   }
 `;
@@ -168,7 +173,7 @@ const Card = (props: Props) => {
 
                 <div>{props.NFTPrice}eth</div>
               </div>
-              <Button borderThickness="1px">Purchase</Button>
+              <Button borderThickness="1px" borderRadius="4px">Purchase</Button>
             </div>
           </CardFooterItem>
         </CardFooter>
