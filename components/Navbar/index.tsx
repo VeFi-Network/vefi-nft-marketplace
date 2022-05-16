@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Drawer, Dropdown } from 'antd';
 import { FiChevronDown, FiPlus } from 'react-icons/fi';
 import menu from '../Profile/Menu';
+import notification from '../Profile/Notification';
 
 const NavContainer = styled.nav`
   max-width: 100%;
@@ -97,13 +98,22 @@ const Navbar = () => {
             <div className="icon">
               <Image src="/icons/envelope.svg" width={15} height={15} />
             </div>
-            <div className="icon">
-              <Image src="/icons/notification.svg" width={15} height={15} />
-            </div>
+            <Dropdown
+              overlay={notification}
+              trigger={['hover']}
+              placement="bottom"
+              overlayClassName="notification"
+              arrow
+            >
+              <div className="icon">
+                <Image src="/icons/notification.svg" width={15} height={15} />
+              </div>
+            </Dropdown>
+
             <div className="icon" onClick={() => setVisible(!visible)}>
               <Image src="/icons/wallet.svg" width={15} height={15} />
             </div>
-            <Dropdown overlay={menu} trigger={['click']}>
+            <Dropdown overlay={menu} trigger={['click']} arrow>
               <a onClick={e => e.preventDefault()}>
                 <UserWallet>
                   <div className="wallet_container">

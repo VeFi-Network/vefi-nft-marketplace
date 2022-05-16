@@ -79,11 +79,40 @@ a {
 .ant-dropdown-menu-item {
   padding: 10px 20px !important;
 }
+
 .ant-dropdown-menu-item:hover {
   background: var(--bg-dark) !important;
 }
 .ant-dropdown-menu-item-divider {
   background-color: rgba(0, 0, 0, 0.2) !important;
+}
+.ant-dropdown-arrow {
+  background: transparent !important;
+}
+.ant-dropdown-arrow::before {
+  background: var(--bg-lightdark) !important;
+}
+.select__chain__wrap {
+  background: rgba(0, 0, 0, 0.3);
+}
+.notification {
+  width: 250px !important;
+}
+.notification .ant-dropdown-menu {
+  height: 300px !important;
+  overflow-y: scroll !important;
+}
+.notification__icon {
+  background: #000;
+  border: 1px solid #105dcf;
+  padding: 10px;
+  border-radius: 50%;
+}
+.notification__text {
+  font-size: 0.7rem;
+}
+.notification .ant-dropdown-menu-item:nth-child(even) {
+  background: var(--bg-dark) !important;
 }
 .listItem {
   display: flex !important;
@@ -101,9 +130,6 @@ a {
   color: rgba(255, 255, 255, 0.6);
 }
 
-.text:hover {
-  color: red !important;
-}
 .wallet__body {
   padding: 10px 10px !important;
 }
