@@ -15,6 +15,7 @@ const GreyContainerMain = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  border: 1px solid #383838;
 
 
   @media (max-width: 1280px) {
@@ -130,7 +131,7 @@ const CollectionCard = styled.div`
     flex-direction: row;
     align-items: center;
     color: #ffffff;
-    font-family: 'Rubik';
+    font-family: 'RubikRegular';
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
