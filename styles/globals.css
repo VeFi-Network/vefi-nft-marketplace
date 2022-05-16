@@ -46,6 +46,8 @@ a {
 }
 :root {
   --bg-dark: #222222;
+  --bg-lightdark: #373943;
+  --text-light: #ebf8ff;
 }
 * {
   box-sizing: border-box;
@@ -57,8 +59,53 @@ a {
   background-color: #373943 !important;
   border-radius: 14px !important;
 }
-.wallet__body {
+.ant-drawer-content {
+  background-color: #373943 !important;
+}
+.ant-drawer-header {
+  display: none !important;
+}
+.ant-drawer-mask {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+}
+.ant-dropdown {
+  width: 200px !important;
+  transition: all 0.3s ease-in !important;
+}
+.ant-dropdown-menu {
+  background-color: var(--bg-lightdark) !important;
+  border-radius: 10px !important;
+}
+.ant-dropdown-menu-item {
   padding: 10px 20px !important;
+}
+.ant-dropdown-menu-item:hover {
+  background: var(--bg-dark) !important;
+}
+.ant-dropdown-menu-item-divider {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+}
+.listItem {
+  display: flex !important;
+  color: var(--text-light) !important;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0;
+}
+.icon {
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.6);
+  display: flex;
+}
+.text {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.text:hover {
+  color: red !important;
+}
+.wallet__body {
+  padding: 10px 10px !important;
 }
 .wallet__header {
   width: 100%;
@@ -118,6 +165,7 @@ a {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 30px;
 }
 .wallet__balance__heading {
   color: rgba(255, 255, 255, 0.6);
@@ -149,7 +197,7 @@ a {
 .wallet__accounts {
   background-color: var(--bg-dark);
   border-radius: 8px;
-  height: 150px;
+  height: 300px;
   overflow-y: scroll;
   padding: 20px;
 }
