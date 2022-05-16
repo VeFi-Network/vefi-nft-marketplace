@@ -4,7 +4,8 @@ import Image from 'next/image';
 import Card from '../Card';
 
 const GreyContainerMain = styled.div`
-  width: 1248px;
+  width: 1180px;
+  min-width: 900px;
   padding-bottom: 20px;
   background: linear-gradient(254.33deg, rgba(255, 255, 255, 0.1) 1.71%, rgba(255, 255, 255, 0.05) 99.35%);
   backdrop-filter: blur(16.86px);
@@ -14,6 +15,17 @@ const GreyContainerMain = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  border: 1px solid #383838;
+
+
+  @media (max-width: 1280px) {
+
+    width: 950px;
+    min-width: 700px;
+
+
+  }
+
 `;
 
 const PaddedSpace = styled.div`
@@ -27,7 +39,7 @@ const NFTScrollableContainer = styled.div`
   display: flex;
   align-items: center;
   margin-top: 20px;
-  width: 1200px;
+  width: 1130px;
   height: 415px;
   flex-direction: row;
   gap: 46px;
@@ -36,13 +48,19 @@ const NFTScrollableContainer = styled.div`
   opacity: 1;
   margin-top: 35px;
   margin-bottom: 10px;
+
+  @media (max-width: 1280px) {
+    width: 900px;
+    min-width: 650px;
+
+  }
 `;
 
 const TopSellersDiv = styled.div`
-  width: 1200px;
-  margin-top: 50px;
-  margin-bottom: 40px;
-  height: 150px;
+width: 1130px;
+margin-top: 50px;
+margin-bottom: 40px;
+height: 150px;
 
   .title {
     font-family: 'RubikRegular';
@@ -61,6 +79,13 @@ const TopSellersDiv = styled.div`
     margin-top: 20px;
     margin-left: 20px;
   }
+
+  @media (max-width: 1280px) {
+
+    width: 900px;
+    min-width: 650px;
+    
+  }
 `;
 
 const CollectionCard = styled.div`
@@ -71,6 +96,13 @@ const CollectionCard = styled.div`
   gap: 10px;
   transition-duration: 250ms;
   cursor: pointer;
+
+  @media (max-width: 1280px) {
+
+   width: 150px;
+  
+
+  }
 
   &:hover {
     transform: scale(1.05);
@@ -99,11 +131,17 @@ const CollectionCard = styled.div`
     flex-direction: row;
     align-items: center;
     color: #ffffff;
-    font-family: 'Rubik';
+    font-family: 'RubikRegular';
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
     line-height: 19px;
+
+    @media (max-width: 1280px) {
+      font-size: 12px;
+      margin-top: -10px;
+    }
+
   }
 `;
 

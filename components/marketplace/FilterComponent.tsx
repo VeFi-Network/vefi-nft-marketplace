@@ -35,6 +35,7 @@ const FilterBtn = styled.button`
   border: none;
   color: #5c95ff;
   padding: 10px;
+  height: 37px;
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -48,6 +49,7 @@ const FilterAllBtn = styled.button`
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
+  height: 37px;
   border: none;
   color: #5c95ff;
   padding: 10px 50px 10px 10px;
@@ -65,6 +67,7 @@ const SearchBar = styled.div`
   background: #373943;
   border-radius: 11px;
   gap: 10px;
+  height: 37px;
   z-index: 3;
 
   .input {
@@ -73,6 +76,7 @@ const SearchBar = styled.div`
     border: none;
     outline: none;
     width: 150px;
+    margin-top: -1px;
   }
 `;
 
@@ -85,7 +89,7 @@ const CreateNewItem = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 10px;
-  margin-top: 30px;
+  margin-top: 75px;
   color: white;
   cursor: pointer;
   z-index: 2;
@@ -110,13 +114,23 @@ const FilterParentContainer = styled.div`
 `;
 
 const FilterAndBtnContainer = styled.div`
-  width: 1248px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+    width: 1180px;
+    min-width: 1000px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 
-  margin-top: 50px;
+    margin-top: 50px;
+
+
+    @media (max-width: 1280px) {
+
+      width: 950px;
+      min-width: 700px;
+      padding-right: 30px;
+  
+    }
 `;
 
 export default function FilterComponent({}: Props) {
@@ -124,39 +138,40 @@ export default function FilterComponent({}: Props) {
 
   return (
     <FilterAndBtnContainer>
-      <FilterParentContainer>
-        <FilterByText>
-          <Image height={18} width={18} src="/icons/filter.svg" />
-          <div> Filter by</div>
-        </FilterByText>
-        <FilterContainer>
-          <FilterAllBtn>All</FilterAllBtn>
-          <FilterBtn>
-            Top Selling{' '}
-            <div style={{ marginTop: -1 }}>
-              <Image width="12px" height="9px" src="/icons/downIcon.svg" />
-            </div>
-          </FilterBtn>
-          <FilterBtn>
-            Price{' '}
-            <div style={{ marginTop: -1 }}>
-              <Image width="12px" height="9px" src="/icons/downIcon.svg" />
-            </div>
-          </FilterBtn>
-          <SearchBar>
-            <Image height="18px" width="18px" src={'/icons/search.svg'} />{' '}
-            <input
-              className="input"
-              value={searchValue}
-              placeholder="Search artwork"
-              onChange={e => {
-                setSearchValue(e.target.value);
-              }}
-              onClick={() => setSearchValue('')}
-            />
-          </SearchBar>
-        </FilterContainer>
-      </FilterParentContainer>
+    <FilterParentContainer>
+                <FilterByText>
+                <Image height={18} width={18} src="/icons/filter.svg" />
+                <div> Filter by</div>
+            </FilterByText>
+            <FilterContainer>
+                <FilterAllBtn>All</FilterAllBtn>
+                <FilterBtn>
+                Top Selling{' '}
+                <div style={{ marginTop: -1 }}>
+                    <Image width="12px" style={{zIndex: 1}} height="9px" src="/icons/downIcon.svg" />
+                </div>
+                </FilterBtn>
+                <FilterBtn>
+                Price{' '}
+                <div style={{ marginTop: -1 }}>
+                    <Image width="12px" height="9px" src="/icons/downIcon.svg" />
+                </div>
+                </FilterBtn>
+                <SearchBar>
+                <Image height="18px" width="18px" src={'/icons/search.svg'} />{' '}
+                <input
+                    className="input"
+                    value={searchValue}
+                    placeholder="Search artwork"
+                    onChange={e => {
+                    setSearchValue(e.target.value);
+                    }}
+                    onClick={() => setSearchValue('')}
+                />
+                </SearchBar>
+            
+            </FilterContainer>
+        </FilterParentContainer>
 
       <CreateNewItem>
         {' '}
