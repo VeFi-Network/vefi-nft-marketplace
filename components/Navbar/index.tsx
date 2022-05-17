@@ -98,13 +98,8 @@ const Navbar = () => {
             <div className="icon">
               <Image src="/icons/envelope.svg" width={15} height={15} />
             </div>
-            <Dropdown
-              overlay={notification}
-              trigger={['hover']}
-              placement="bottom"
-              overlayClassName="notification"
-              arrow
-            >
+
+            <Dropdown overlay={menu} trigger={['click']} placement="bottom" arrow>
               <div className="icon">
                 <Image src="/icons/notification.svg" width={15} height={15} />
               </div>
@@ -113,18 +108,14 @@ const Navbar = () => {
             <div className="icon" onClick={() => setVisible(!visible)}>
               <Image src="/icons/wallet.svg" width={15} height={15} />
             </div>
-            <Dropdown overlay={menu} trigger={['click']} arrow>
-              <a onClick={e => e.preventDefault()}>
-                <UserWallet>
-                  <div className="wallet_container">
-                    <div className="wallet_icon">
-                      <Image src="/icons/eth.svg" width={15} height={15} />
-                    </div>
-                    <div>0xF2255c5F4dd0a...</div>
-                  </div>
-                </UserWallet>
-              </a>
-            </Dropdown>
+            <UserWallet onClick={() => setVisible(!visible)}>
+              <div className="wallet_container">
+                <div className="wallet_icon">
+                  <Image src="/icons/eth.svg" width={15} height={15} />
+                </div>
+                <div>0xF2255c5F4dd0a...</div>
+              </div>
+            </UserWallet>
           </NavLinks>
         </div>
       </NavContainer>
