@@ -257,7 +257,7 @@ export default function NFTs() {
 
           <Banner>
             <BannerCaption>Lost in Space</BannerCaption>
-            <ProfileAvatar/>
+            <ProfileAvatar />
           </Banner>
 
           <CollectionInfoCont>

@@ -114,23 +114,20 @@ const FilterParentContainer = styled.div`
 `;
 
 const FilterAndBtnContainer = styled.div`
-    width: 1180px;
-    min-width: 1000px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+  width: 1180px;
+  min-width: 1000px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 
-    margin-top: 50px;
+  margin-top: 50px;
 
-
-    @media (max-width: 1280px) {
-
-      width: 950px;
-      min-width: 700px;
-      padding-right: 30px;
-  
-    }
+  @media (max-width: 1280px) {
+    width: 950px;
+    min-width: 700px;
+    padding-right: 30px;
+  }
 `;
 
 export default function FilterComponent({}: Props) {
@@ -138,40 +135,39 @@ export default function FilterComponent({}: Props) {
 
   return (
     <FilterAndBtnContainer>
-    <FilterParentContainer>
-                <FilterByText>
-                <Image height={18} width={18} src="/icons/filter.svg" />
-                <div> Filter by</div>
-            </FilterByText>
-            <FilterContainer>
-                <FilterAllBtn>All</FilterAllBtn>
-                <FilterBtn>
-                Top Selling{' '}
-                <div style={{ marginTop: -1 }}>
-                    <Image width="12px" style={{zIndex: 1}} height="9px" src="/icons/downIcon.svg" />
-                </div>
-                </FilterBtn>
-                <FilterBtn>
-                Price{' '}
-                <div style={{ marginTop: -1 }}>
-                    <Image width="12px" height="9px" src="/icons/downIcon.svg" />
-                </div>
-                </FilterBtn>
-                <SearchBar>
-                <Image height="18px" width="18px" src={'/icons/search.svg'} />{' '}
-                <input
-                    className="input"
-                    value={searchValue}
-                    placeholder="Search artwork"
-                    onChange={e => {
-                    setSearchValue(e.target.value);
-                    }}
-                    onClick={() => setSearchValue('')}
-                />
-                </SearchBar>
-            
-            </FilterContainer>
-        </FilterParentContainer>
+      <FilterParentContainer>
+        <FilterByText>
+          <Image height={18} width={18} src="/icons/filter.svg" />
+          <div> Filter by</div>
+        </FilterByText>
+        <FilterContainer>
+          <FilterAllBtn>All</FilterAllBtn>
+          <FilterBtn>
+            Top Selling{' '}
+            <div style={{ marginTop: -1 }}>
+              <Image width="12px" style={{ zIndex: 1 }} height="9px" src="/icons/downIcon.svg" />
+            </div>
+          </FilterBtn>
+          <FilterBtn>
+            Price{' '}
+            <div style={{ marginTop: -1 }}>
+              <Image width="12px" height="9px" src="/icons/downIcon.svg" />
+            </div>
+          </FilterBtn>
+          <SearchBar>
+            <Image height="18px" width="18px" src={'/icons/search.svg'} />{' '}
+            <input
+              className="input"
+              value={searchValue}
+              placeholder="Search artwork"
+              onChange={e => {
+                setSearchValue(e.target.value);
+              }}
+              onClick={() => setSearchValue('')}
+            />
+          </SearchBar>
+        </FilterContainer>
+      </FilterParentContainer>
 
       <CreateNewItem>
         {' '}
