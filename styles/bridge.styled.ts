@@ -3,9 +3,10 @@ import styled from 'styled-components';
 export const BridgeBackground = styled.section`
   width: 100%;
   position: relative;
-  background: url('/objects/colorBackground.svg') no-repeat;
+  background: url('/objects/bridge2.svg') no-repeat;
   background-position: top right;
-  min-height: 100vh;
+  background-size: contain;
+  height: 100vh;
   @media screen and (max-width: 760px) {
     min-height: 100vh;
     background-size: contain;
@@ -49,10 +50,10 @@ export const BridgeContainer = styled.div`
       align-items: center;
       margin: 10px 0 20px 0;
       h2 {
-        font-size: 2.2rem;
-        font-family: 'Monument Extended', sans-serif;
+        font-size: 1.8rem;
+        font-family: 'MonumentExtended', sans-serif;
         text-align: center;
-        line-height: 42px;
+        line-height: 38px;
         font-weight: 800;
         color: #fff;
 
@@ -161,5 +162,77 @@ export const BridgeContainer = styled.div`
         }
       }
     }
+  }
+`;
+export const BridgeChainWrapper = styled.div`
+  .select__chain__heading {
+    margin: 20px 0;
+    font-size: 1.2rem;
+    font-family: 'Rubik';
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 600;
+  }
+  .select__chain__search {
+    margin-bottom: 20px;
+
+    .ant-input-affix-wrapper {
+      background-color: #222222 !important;
+      border: 1px solid transparent !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+    .ant-input-affix-wrapper-focused {
+      outline: none !important ;
+      border: 1px solid transparent !important;
+    }
+    .ant-input-prefix {
+      color: #ccc !important;
+      font-size: 0.9rem;
+      padding-top: 2px;
+    }
+    .ant-input {
+      background: transparent !important ;
+      color: #ccc;
+      outline: none !important ;
+      padding-left: 3px;
+    }
+  }
+  .select__chain__container {
+    height: 250px;
+    overflow-y: scroll;
+  }
+`;
+export const SelectChainOptions = styled.ul`
+  display: flex;
+  width: 100%;
+  align-items: center;
+`;
+
+export const ChainOptions = styled.li`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: all 0.3s ease-in;
+  .chain__logo {
+    display: flex;
+    overflow: hidden;
+    img {
+      width: 28px !important;
+      height: 28px !important;
+      object-fit: cover;
+    }
+  }
+  .chain__text {
+    font-family: 'Rubik';
+    color: #ebf8ff;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  &:hover {
+    background: #222222;
+    border-radius: 8px;
   }
 `;

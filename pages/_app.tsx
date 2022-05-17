@@ -11,11 +11,13 @@ function getLibrary(provider: any) {
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Web3ReactProvider getLibrary={getLibrary}>
-      <Web3ContextProvider>
-        <Component {...pageProps} />
-      </Web3ContextProvider>
-    </Web3ReactProvider>
+    <>
+      <Web3ReactProvider getLibrary={getLibrary}>
+        <Web3ContextProvider>
+          <Component {...pageProps} />
+        </Web3ContextProvider>
+      </Web3ReactProvider>
+    </>
   );
 }
 

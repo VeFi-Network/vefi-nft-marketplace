@@ -1,4 +1,5 @@
 import { Menu } from 'antd';
+import Link from 'next/link';
 import { FaChessBoard, FaUserCircle } from 'react-icons/fa';
 import { FiEye, FiHeart, FiLogOut, FiSettings, FiUser } from 'react-icons/fi';
 
@@ -7,27 +8,31 @@ const menu = (
     items={[
       {
         label: (
-          <a href="https://www.antgroup.com">
-            <div className="listItem">
-              <div className="icon">
-                <FaUserCircle />
+          <Link href="/users/i">
+            <a>
+              <div className="listItem">
+                <div className="icon">
+                  <FaUserCircle />
+                </div>
+                <div className="text">Profile</div>
               </div>
-              <div className="text">Profile</div>
-            </div>
-          </a>
+            </a>
+          </Link>
         ),
         key: '0',
       },
       {
         label: (
-          <a href="https://www.antgroup.com">
-            <div className="listItem">
-              <div className="icon">
-                <FaChessBoard />
+          <Link href="/collections/i">
+            <a>
+              <div className="listItem">
+                <div className="icon">
+                  <FaChessBoard />
+                </div>
+                <div className="text">My Collections</div>
               </div>
-              <div className="text">My Collections</div>
-            </div>
-          </a>
+            </a>
+          </Link>
         ),
         key: '1',
       },

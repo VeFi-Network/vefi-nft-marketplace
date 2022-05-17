@@ -1,9 +1,16 @@
-import { Button, Modal } from 'antd';
+import { Button, Input, Modal } from 'antd';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { FaArrowRight, FaChevronDown } from 'react-icons/fa';
+import { FiSearch } from 'react-icons/fi';
 import Navbar from '../components/Navbar';
-import { BridgeBackground, BridgeContainer } from '../styles/bridge.styled';
+import {
+  BridgeBackground,
+  BridgeChainWrapper,
+  BridgeContainer,
+  ChainOptions,
+  SelectChainOptions,
+} from '../styles/bridge.styled';
 import { SectionWrapper } from '../styles/createCollections.styled';
 
 const Bridge = () => {
@@ -63,9 +70,78 @@ const Bridge = () => {
         wrapClassName="select__chain__wrap"
         onCancel={() => setIsModalVisible(!isModalVisible)}
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <BridgeChainWrapper>
+          <div className="select__chain__heading">Select Chain</div>
+          <div className="select__chain__search">
+            <Input size="large" placeholder="Search" prefix={<FiSearch />} />
+          </div>
+          <div className="select__chain__container">
+            <SelectChainOptions>
+              <ChainOptions>
+                <div className="chain__logo">
+                  <Image src="/logo/eth.jpg" width={30} height={30} alt="image" />
+                </div>
+                <div className="chain__text">Etherium</div>
+              </ChainOptions>
+            </SelectChainOptions>
+            <SelectChainOptions>
+              <ChainOptions>
+                <div className="chain__logo">
+                  <Image src="/logo/eth.jpg" width={30} height={30} alt="image" />
+                </div>
+                <div className="chain__text">Etherium</div>
+              </ChainOptions>
+            </SelectChainOptions>
+            <SelectChainOptions>
+              <ChainOptions>
+                <div className="chain__logo">
+                  <Image src="/logo/eth.jpg" width={30} height={30} alt="image" />
+                </div>
+                <div className="chain__text">Etherium</div>
+              </ChainOptions>
+            </SelectChainOptions>
+            <SelectChainOptions>
+              <ChainOptions>
+                <div className="chain__logo">
+                  <Image src="/logo/eth.jpg" width={30} height={30} alt="image" />
+                </div>
+                <div className="chain__text">Etherium</div>
+              </ChainOptions>
+            </SelectChainOptions>
+            <SelectChainOptions>
+              <ChainOptions>
+                <div className="chain__logo">
+                  <Image src="/logo/eth.jpg" width={30} height={30} alt="image" />
+                </div>
+                <div className="chain__text">Etherium</div>
+              </ChainOptions>
+            </SelectChainOptions>
+            <SelectChainOptions>
+              <ChainOptions>
+                <div className="chain__logo">
+                  <Image src="/logo/eth.jpg" width={30} height={30} alt="image" />
+                </div>
+                <div className="chain__text">Etherium</div>
+              </ChainOptions>
+            </SelectChainOptions>
+            <SelectChainOptions>
+              <ChainOptions>
+                <div className="chain__logo">
+                  <Image src="/logo/eth.jpg" width={30} height={30} alt="image" />
+                </div>
+                <div className="chain__text">Etherium</div>
+              </ChainOptions>
+            </SelectChainOptions>
+            <SelectChainOptions>
+              <ChainOptions>
+                <div className="chain__logo">
+                  <Image src="/logo/eth.jpg" width={30} height={30} alt="image" />
+                </div>
+                <div className="chain__text">Etherium</div>
+              </ChainOptions>
+            </SelectChainOptions>
+          </div>
+        </BridgeChainWrapper>
       </Modal>
     </>
   );
