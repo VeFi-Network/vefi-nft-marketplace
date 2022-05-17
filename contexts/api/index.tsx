@@ -91,6 +91,12 @@ export const APIContextProvider = ({ children }: any) => {
     }
   }, []);
 
+  useEffect(() => {
+    if (!!token && token.length > 0) {
+      loadAuthUser();
+    }
+  }, [token]);
+
   return (
     <APIContext.Provider
       value={{
