@@ -29,10 +29,16 @@ const CardContainer = styled.div`
   border-radius: 21px 21px 0 0;
   &:first-child {
     margin-left: 90%;
-    @media screen and (max-width: 760px) {
+    @media screen and (min-width: 1401px) and (max-width: 1600px) {
+      margin-left: 55.5%;
+    }
+    @media screen and (min-width: 761px) and (max-width: 1400px) {
+      margin-left: 85%;
+    }
+    @media screen and (min-width: 376px) and (max-width: 760px) {
       margin-left: 460%;
     }
-    @media screen and (max-width: 375px) {
+    @media screen and (min-width: 321px) and (max-width: 375px) {
       margin-left: 513%;
     }
     @media screen and (max-width: 320px) {
