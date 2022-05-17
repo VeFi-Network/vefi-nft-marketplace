@@ -1,17 +1,30 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import { AccountModel } from '../../api/models/account';
 import { NFTModel } from '../../api/models/nft';
-import { getNFTsByOwner, getNFTsByCollection, getAllNFTsByNetwork } from '../../api/nft';
+import {
+  getNFTsByOwner,
+  getNFTsByCollection,
+  getAllNFTsByNetwork,
+  signToken,
+  getAuthenticatedUser
+} from '../../api/nft';
 
 export enum APIErrorPoint {
   NFTS_BY_USER,
   NFTS_BY_COLLECTION,
-  NFTS_BY_NETWORK
+  NFTS_BY_NETWORK,
+  TOKEN_LOAD,
+  AUTH_USER
 }
 
 type APIContextType = {
   nftsByUser: Array<NFTModel>;
   nftsByCollection: Array<NFTModel>;
   nftsByNetwork: Array<NFTModel>;
+  isUserAuthenticated: boolean;
+  authenticatedUser?: AccountModel;
+  loadAuthUser: () => void;
+  loadToken: (accountId: any) => void;
   loadNFTsByUser: (page?: number) => void;
   loadNFTsByCollection: (collection: string, page?: number) => void;
   loadNFTsByNetwork: (network: string, page?: number) => void;
@@ -28,14 +41,31 @@ export const APIContextProvider = ({ children }: any) => {
   const [nftsByUser, setNFTsByUser] = useState<Array<NFTModel>>([]);
   const [nftsByCollection, setNFTsByCollection] = useState<Array<NFTModel>>([]);
   const [nftsByNetwork, setNFTsByNetwork] = useState<Array<NFTModel>>([]);
+  const [authenticatedUser, setAuthenticatedUser] = useState<AccountModel>();
+  const [isUserAuthenticated, setIsUserAuthenticated] = useState<boolean>(false);
+  const [token, setToken] = useState<string>('');
 
   const clearError = () => {
     setError(undefined);
   };
 
+  const loadToken = (accountId: string) => {
+    clearError();
+    signToken({ accountId })
+      .then(res => setToken(res.token))
+      .catch((error: any) => setError({ point: APIErrorPoint.NFTS_BY_USER, message: error.message }));
+  };
+
+  const loadAuthUser = () => {
+    clearError();
+    getAuthenticatedUser(token)
+      .then(setAuthenticatedUser)
+      .catch((error: any) => setError({ point: APIErrorPoint.AUTH_USER, message: error.message }));
+  };
+
   const loadNFTsByUser = (page: number = 1) => {
     clearError();
-    getNFTsByOwner('', '', page)
+    getNFTsByOwner(token, '', page)
       .then(setNFTsByUser)
       .catch((error: any) => setError({ point: APIErrorPoint.NFTS_BY_USER, message: error.message }));
   };
@@ -54,6 +84,13 @@ export const APIContextProvider = ({ children }: any) => {
       .catch((error: any) => setError({ point: APIErrorPoint.NFTS_BY_NETWORK, message: error.message }));
   };
 
+  useEffect(() => {
+    if (!!localStorage.getItem('VEFI_NFT_TOKEN')) {
+      setToken(localStorage.getItem('VEFI_NFT_TOKEN') as string);
+      setIsUserAuthenticated(true);
+    }
+  }, []);
+
   return (
     <APIContext.Provider
       value={{
@@ -63,6 +100,10 @@ export const APIContextProvider = ({ children }: any) => {
         loadNFTsByUser,
         loadNFTsByCollection,
         loadNFTsByNetwork,
+        loadToken,
+        loadAuthUser,
+        isUserAuthenticated,
+        authenticatedUser,
         error
       }}
     >
