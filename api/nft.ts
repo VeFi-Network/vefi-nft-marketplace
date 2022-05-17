@@ -74,3 +74,12 @@ export function getAllCollections(network: string): Promise<CollectionModel[]> {
       .catch(reject);
   });
 }
+
+export function getAllCollectionsByOwner(network: string, token: string): Promise<CollectionModel[]> {
+  return new Promise((resolve, reject) => {
+    baseAxios
+      .get(`/api/collection/${network}/byOwner`, { headers: { Authorization: `Bearer ${token}` } })
+      .then(res => resolve(res.data.result))
+      .catch(reject);
+  });
+}
