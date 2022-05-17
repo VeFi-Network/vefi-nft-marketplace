@@ -27,6 +27,21 @@ const CardContainer = styled.div`
   }
   height: 380px;
   border-radius: 21px 21px 0 0;
+  &:first-child {
+    margin-left: 90%;
+    @media screen and (max-width: 760px) {
+      margin-left: 460%;
+    }
+    @media screen and (max-width: 375px) {
+      margin-left: 513%;
+    }
+    @media screen and (max-width: 320px) {
+      margin-left: 610%;
+    }
+  }
+  &:last-child {
+    margin-right: 30px;
+  }
 `;
 
 const CardHeader = styled.div`
