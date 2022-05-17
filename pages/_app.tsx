@@ -4,6 +4,7 @@ import type { AppProps } from 'next/app';
 import Web3 from 'web3';
 import { Web3ReactProvider } from '@web3-react/core';
 import { Web3ContextProvider } from '../contexts/web3';
+import { APIContextProvider } from '../contexts/api';
 
 function getLibrary(provider: any) {
   return new Web3(provider);
@@ -14,7 +15,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <Web3ReactProvider getLibrary={getLibrary}>
         <Web3ContextProvider>
-          <Component {...pageProps} />
+          <APIContextProvider>
+            <Component {...pageProps} />
+          </APIContextProvider>
         </Web3ContextProvider>
       </Web3ReactProvider>
     </>

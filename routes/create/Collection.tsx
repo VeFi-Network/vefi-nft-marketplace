@@ -2,6 +2,7 @@ import React from 'react';
 import { FiImage, FiPlus } from 'react-icons/fi';
 import { FormWrapper } from '../../styles/createCollections.styled';
 import { Button, InputNumber, Select, Switch } from 'antd';
+
 const { Option } = Select;
 const CreateNewCollection = () => {
   function handleChange(value: string) {

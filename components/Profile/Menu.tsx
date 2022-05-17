@@ -19,7 +19,7 @@ const menu = (
             </a>
           </Link>
         ),
-        key: '0',
+        key: '0'
       },
       {
         label: (
@@ -34,7 +34,7 @@ const menu = (
             </a>
           </Link>
         ),
-        key: '1',
+        key: '1'
       },
       {
         label: (
@@ -47,7 +47,7 @@ const menu = (
             </div>
           </a>
         ),
-        key: '2',
+        key: '2'
       },
       {
         label: (
@@ -60,7 +60,7 @@ const menu = (
             </div>
           </a>
         ),
-        key: '3',
+        key: '3'
       },
       {
         label: (
@@ -73,7 +73,7 @@ const menu = (
             </div>
           </a>
         ),
-        key: '4',
+        key: '4'
       },
       {
         label: (
@@ -86,10 +86,10 @@ const menu = (
             </div>
           </a>
         ),
-        key: '5',
+        key: '5'
       },
       {
-        type: 'divider',
+        type: 'divider'
       },
       {
         label: (
@@ -102,8 +102,8 @@ const menu = (
             </div>
           </a>
         ),
-        key: '6',
-      },
+        key: '6'
+      }
     ]}
   />
 );

@@ -9,7 +9,7 @@ import {
   BridgeChainWrapper,
   BridgeContainer,
   ChainOptions,
-  SelectChainOptions,
+  SelectChainOptions
 } from '../styles/bridge.styled';
 import { SectionWrapper } from '../styles/createCollections.styled';
 
