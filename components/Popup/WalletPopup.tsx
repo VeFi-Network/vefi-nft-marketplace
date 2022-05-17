@@ -6,10 +6,6 @@ import { FiChevronDown, FiPlus } from 'react-icons/fi';
 const WalletPopup = () => {
   const [isModalVisible, setIsModalVisible] = useState(true);
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
   const handleOk = () => {
     setIsModalVisible(false);
   };
