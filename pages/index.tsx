@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Card from '../components/Card';
 import Background from '../components/AnimatedBackground';
 import { FaQuestion } from 'react-icons/fa';
+import { Button } from 'antd';
 
 const MainContainer = styled.div`
   display: flex;
@@ -20,14 +21,18 @@ const MainContainer = styled.div`
 
 const MarketplaceContainer = styled.div`
   min-height: 100vh;
-  width: 1800px;
-  max-width: 2000px;
-  min-width: 1000px;
+  width: 100%;
+
   background: #0c0c0c;
   padding-left: 55px;
   padding-top: 20px;
   padding-bottom: 30px;
   overflow: hidden;
+
+  @media screen and (max-width: 760px) {
+    width: 100%;
+    padding-left: 0px;
+  }
 `;
 
 const DiscoverText = styled.div`
@@ -41,6 +46,19 @@ const DiscoverText = styled.div`
   color: #ffffff;
   margin-left: 55px;
   line-height: 120%;
+
+  @media screen and (max-width: 760px) {
+    margin: 0px;
+    font-size: 1.9rem;
+    line-height: 50px;
+    max-width: 100%;
+    font-weight: 600 !important;
+    padding: 50px 20px;
+  }
+  @media screen and (max-width: 320px) {
+    font-size: 1.5rem;
+    line-height: 35px;
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -49,6 +67,13 @@ const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 30px;
+
+  @media screen and (max-width: 760px) {
+    margin: 0;
+    width: 95%;
+    margin: 0px auto;
+    justify-content: center;
+  }
 `;
 
 const FilterByText = styled.div`
@@ -64,6 +89,10 @@ const FilterByText = styled.div`
   display: flex;
   flex-direction: row;
   gap: 10px;
+
+  @media screen and (max-width: 769px) {
+    margin: 20px;
+  }
 `;
 
 const FilterContainer = styled.div`
@@ -72,6 +101,13 @@ const FilterContainer = styled.div`
   gap: 24px;
   margin-top: 21px;
   margin-left: 55px;
+
+  @media screen and (max-width: 769px) {
+    width: 90%;
+    margin: 0px auto;
+    flex-direction: column;
+    gap: 8px;
+  }
 `;
 
 const FilterBtn = styled.button`
@@ -154,20 +190,22 @@ const NFTContainer = styled.div`
   margin: 0px auto;
   margin-top: 80px;
   border: 1px solid #383838;
+
+  @media screen and (max-width: 769px) {
+    width: 95%;
+  }
 `;
 
 const NFTTransparentContainer = styled.div`
   margin-left: 55px;
-  background: linear-gradient(254.33deg, rgba(255, 255, 255, 0.1) 1.71%, rgba(255, 255, 255, 0.05) 99.35%);
-  backdrop-filter: blur(16.86px);
+
   border-radius: 20px 20px 0px 0px;
   box-sizing: border-box;
-  height: 400px;
+
   width: -moz-calc(100% - 150px);
   width: -webkit-calc(100% - 150px);
   width: -o-calc(100% - 150px);
   width: calc(100% - 150px);
-  margin-top: -310px;
   border: 1px solid #383838;
   z-index: 1;
   opacity: 0;
@@ -183,8 +221,11 @@ const NFTSubCont = styled.div`
   margin-top: -120px;
   width: 100%;
   gap: 20px;
+  overflow-x: scroll;
+
   transition: all 300ms ease-in-out;
   opacity: 1;
+  height: 400px;
 `;
 
 const PaddedSpace = styled.div`
@@ -227,12 +268,26 @@ const SeeMore = styled.div`
 
 const DiscoverPart = styled.div`
   flex: 0.5;
+
+  @media screen and (max-width: 760px) {
+    width: 100%;
+    margin: 0px auto;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: max-content;
+    padding-bottom: 50px;
+  }
 `;
 
 const AnimatePart = styled.div`
   flex: 0.5;
   /* margin-top: -330px; */
   z-index: 0;
+  @media screen and (max-width: 760px) {
+    display: none;
+  }
 `;
 
 const ExploreNFT = styled.div`
@@ -241,12 +296,23 @@ const ExploreNFT = styled.div`
 
   position: absolute;
   margin-left: -60px;
+  @media screen and (max-width: 760px) {
+    display: none;
+  }
 `;
 
 const RoundBlueLine = styled.div`
   position: absolute;
   margin-left: 300px;
   margin-top: 65px;
+  @media screen and (max-width: 760px) {
+    margin-left: 150px;
+    margin-top: 45px;
+    display: none;
+    img {
+      width: 100px !important;
+    }
+  }
 `;
 const FooterHelpIcon = styled.div`
   position: absolute;
@@ -267,6 +333,70 @@ const FooterHelpIcon = styled.div`
     text-align: center;
     font-size: 1.5rem;
     color: #fff;
+  }
+`;
+const Footer = styled.footer`
+  width: 100%;
+  width: calc(100% - 150px);
+  margin: 0px auto;
+  margin-top: 80px;
+  height: 250px;
+
+  .footer__container {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px 30px;
+    height: 100%;
+    border-radius: 10px;
+    display: flex;
+
+    .footer__left {
+      flex: 0.7;
+
+      h2 {
+        font-family: 'MonumentExtended';
+        font-size: 1.8rem;
+        font-weight: 800;
+        line-height: 38px;
+        color: rgba(255, 255, 255, 1);
+      }
+      p {
+        max-width: 500px;
+        color: rgba(255, 255, 255, 0.3);
+        font-size: 0.8rem;
+      }
+      button {
+        border-radius: 5px;
+        margin-top: 10px;
+      }
+    }
+    .footer__right {
+      flex: 0.3;
+      margin-top: -70px;
+      img {
+        width: 310px !important;
+        height: 300px !important;
+        object-fit: contain;
+        opacity: 0.6;
+      }
+    }
+  }
+  @media screen and (max-width: 769px) {
+    width: 95%;
+    height: max-content;
+    .footer__container {
+      flex-direction: column;
+    }
+    .footer__left {
+      flex: 1;
+      h2 {
+        font-size: 1.4rem !important;
+        line-height: 30px !important ;
+      }
+    }
+    .footer__right {
+      flex: 1;
+      margin-top: 20px !important;
+    }
   }
 `;
 
@@ -331,56 +461,32 @@ export default function Homepage() {
           <ParentNFTCont>
             <NFTContainer className="nft-container">
               <NFTSubCont>
-                <Card
-                  collectionName="God of War"
-                  NFTImageURI="/nft/nft01.png"
-                  NFTPrice="247"
-                  NFTName="ToomuchLag"
-                ></Card>
-                <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
-                <Card
-                  collectionName="Lost in Space"
-                  NFTImageURI="/nft/nft03.png"
-                  NFTPrice="2"
-                  NFTName="Wereywanle"
-                ></Card>
+                <Card collectionName="God of War" NFTImageURI="/nft/nft01.png" NFTPrice="247" NFTName="ToomuchLag" />
+                <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest" />
+                <Card collectionName="Lost in Space" NFTImageURI="/nft/nft03.png" NFTPrice="2" NFTName="Wereywanle" />
+                <Card collectionName="Lost in Space" NFTImageURI="/nft/nft03.png" NFTPrice="2" NFTName="Wereywanle" />
+                <Card collectionName="Lost in Space" NFTImageURI="/nft/nft03.png" NFTPrice="2" NFTName="Wereywanle" />
+                <Card collectionName="Lost in Space" NFTImageURI="/nft/nft03.png" NFTPrice="2" NFTName="Wereywanle" />
               </NFTSubCont>
             </NFTContainer>
-            <NFTTransparentContainer className="transparent-cont">
-              <NFTScrollableContainer className="hover-container">
-                <PaddedSpace />
-                <Card
-                  collectionName="God of War"
-                  NFTImageURI="/nft/nft01.png"
-                  NFTPrice="247"
-                  NFTName="ToomuchLag"
-                ></Card>
-                <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
-                <Card
-                  collectionName="Lost in Space"
-                  NFTImageURI="/nft/nft03.png"
-                  NFTPrice="2"
-                  NFTName="Wereywanle"
-                ></Card>
-                <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
-                <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
-                <Card
-                  collectionName="Lost in Space"
-                  NFTImageURI="/nft/nft03.png"
-                  NFTPrice="2"
-                  NFTName="Wereywanle"
-                ></Card>
-
-                <PaddedSpace />
-              </NFTScrollableContainer>
-
-              <SeeMore className="hover-container">
-                See more
-                <Image height={18} width={18} src="/icons/right-arrow.svg" />
-              </SeeMore>
-            </NFTTransparentContainer>
           </ParentNFTCont>
+          <Footer>
+            <div className="footer__container">
+              <div className="footer__left">
+                <h2>Introducing the Vefi bridging technology </h2>
+                <p>
+                  Get to link your Nft from one network to another Quick and easy right from the VefiNft website Read
+                  more
+                </p>
+                <Button type="primary">Start Bridging</Button>
+              </div>
+              <div className="footer__right">
+                <Image src="/objects/bridge.svg" width={300} height={300} alt="image" />
+              </div>
+            </div>
+          </Footer>
         </MarketplaceContainer>
+
         <FooterHelpIcon>
           <div className="help">
             <FaQuestion />
