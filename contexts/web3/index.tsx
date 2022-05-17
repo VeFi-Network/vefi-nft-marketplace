@@ -16,7 +16,7 @@ type Web3ContextType = {
 const Web3Context = createContext<Web3ContextType>({} as Web3ContextType);
 
 const injectedConnector = new InjectedConnector({
-  supportedChainIds: [97, 56, 32520, 64668],
+  supportedChainIds: [97, 56, 32520, 64668]
 });
 
 export const Web3ContextProvider = ({ children }: any) => {
@@ -42,7 +42,7 @@ export const Web3ContextProvider = ({ children }: any) => {
         ethereum
           .request({
             method: 'wallet_switchEthereumChain',
-            params: [{ chainId: hexlify(chain) }],
+            params: [{ chainId: hexlify(chain) }]
           })
           .then(() => reload())
           .catch((error: any) => {
