@@ -27,14 +27,9 @@ const MarketplaceContainer = styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
-
-
-
-
 `;
 
 const NavbarContainer = styled.div`
- 
   width: 1400px;
   min-width: 1000px;
   position: fixed;
@@ -42,11 +37,9 @@ const NavbarContainer = styled.div`
   z-index: 3;
 
   @media (max-width: 1280px) {
-
     width: 1100px;
     min-width: 700px;
     padding-left: 0px;
-
   }
 `;
 
@@ -67,17 +60,14 @@ const ColoredBackground = styled.div`
 `;
 
 const ParentGreyAndExploreNFT = styled.div`
-  
   display: flex;
   flex-direction: row;
   gap: 10px;
-
 `;
 
 const FilterAndGrey = styled.div`
   display: flex;
   flex-direction: column;
-
 `;
 
 export default function marketplace({}: Props) {
@@ -89,23 +79,14 @@ export default function marketplace({}: Props) {
             <Navbar />
           </NavbarContainer>
 
-       
-
-            
-
-            <ParentGreyAndExploreNFT>
-
-              <StyledViewNft src="/icons/exploreNFT.png" />
-              <FilterAndGrey>
-                 <FilterComponent />
-                 <GreyMarketContainer />
-              </FilterAndGrey>
-              <ColoredBackground></ColoredBackground>
-
-            </ParentGreyAndExploreNFT>
-
-
-        
+          <ParentGreyAndExploreNFT>
+            <StyledViewNft src="/icons/exploreNFT.png" />
+            <FilterAndGrey>
+              <FilterComponent />
+              <GreyMarketContainer />
+            </FilterAndGrey>
+            <ColoredBackground></ColoredBackground>
+          </ParentGreyAndExploreNFT>
         </MarketplaceContainer>
       </MainContainer>
     </>
