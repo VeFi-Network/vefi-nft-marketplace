@@ -118,9 +118,9 @@ const CardFooterItem = styled.div`
       }
     }
   }
-  .nft-price-info span{
+  .nft-price-info span {
     padding-bottom: -5px;
-    font-size:20px;
+    font-size: 20px;
   }
   .nft_name {
     font-size: 14px;
@@ -134,7 +134,7 @@ const CardFooterItem = styled.div`
     text-align: center;
   }
   .nft_collection_name {
-    font-size:20px;
+    font-size: 20px;
     font-weight: bolder;
     cursor: pointer;
   }
@@ -173,7 +173,9 @@ const Card = (props: Props) => {
 
                 <div>{props.NFTPrice}eth</div>
               </div>
-              <Button borderThickness="1px" borderRadius="4px">Purchase</Button>
+              <Button borderThickness="1px" borderRadius="4px">
+                Purchase
+              </Button>
             </div>
           </CardFooterItem>
         </CardFooter>
