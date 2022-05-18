@@ -2,13 +2,13 @@ import { Button } from 'antd';
 import Link from 'next/link';
 import { FaBars, FaChevronDown, FaPlus } from 'react-icons/fa';
 import { FiBarChart, FiGrid } from 'react-icons/fi';
-import NFTCard from '../../components/Card/NftCard';
-import FilterProperty from '../../components/Filter';
-import FIlterBy from '../../components/Filter/FIlterBy';
-import Navbar from '../../components/Navbar';
-import UserBanner from '../../components/Profile/UserBanner';
-import { NFTCollectionDescription, NFTCollectionWrapper, NFTUserStats } from '../../styles/collections.styled';
-import { NFTCollection, NFTUserCollectionInfo, UsersWrapper } from '../../styles/users.styled';
+import NFTCard from '../../../components/Card/NftCard';
+import FilterProperty from '../../../components/Filter';
+import FIlterBy from '../../../components/Filter/FIlterBy';
+import Navbar from '../../../components/Navbar';
+import UserBanner from '../../../components/Profile/UserBanner';
+import { NFTCollectionDescription, NFTCollectionWrapper, NFTUserStats } from '../../../styles/collections.styled';
+import { NFTCollection, NFTUserCollectionInfo, UsersWrapper } from '../../../styles/users.styled';
 
 const Collection = () => {
   return (
