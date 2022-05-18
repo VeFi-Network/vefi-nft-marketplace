@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { Drawer, Dropdown } from 'antd';
 import { FiChevronDown, FiPlus } from 'react-icons/fi';
 import menu from '../Profile/Menu';
-import notification from '../Profile/Notification';
 
 const NavContainer = styled.nav`
   max-width: 100%;
@@ -17,6 +16,10 @@ const NavContainer = styled.nav`
     align-items: center;
     margin: 0 50px;
     height: 60px;
+
+    @media screen and (max-width: 760px) {
+      margin: 0;
+    }
   }
 `;
 
@@ -113,7 +116,7 @@ const Navbar = () => {
                 <div className="wallet_icon">
                   <Image src="/icons/eth.svg" width={15} height={15} />
                 </div>
-                <div>0xF2255c5F4dd0a...</div>
+                <div>0xF2255c5F...</div>
               </div>
             </UserWallet>
           </NavLinks>

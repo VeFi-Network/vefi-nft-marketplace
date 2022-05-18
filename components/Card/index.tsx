@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Image from 'next/image';
 import Button from '../Button/Ghost';
+import Link from 'next/link';
 
 type Props = {
   collectionName: string;
@@ -20,21 +21,43 @@ const CardContainer = styled.div`
   cursor: pointer;
 
   &:hover {
-    transform: scale(1.05);
+    transform: scale(1);
+    top: 5px;
+    position: relative;
   }
-
-  height: auto;
+  height: 380px;
   border-radius: 21px 21px 0 0;
-  ::before {
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 58.79%, #000000 92.21%);
+  &:first-child {
+    margin-left: 90%;
+    @media screen and (min-width: 1401px) and (max-width: 1600px) {
+      margin-left: 55.5%;
+    }
+    @media screen and (min-width: 761px) and (max-width: 1400px) {
+      margin-left: 85%;
+    }
+    @media screen and (min-width: 376px) and (max-width: 760px) {
+      margin-left: 460%;
+    }
+    @media screen and (min-width: 321px) and (max-width: 375px) {
+      margin-left: 513%;
+    }
+    @media screen and (max-width: 320px) {
+      margin-left: 610%;
+    }
   }
-  img {
-    border-radius: 21px 21px 0 0;
+  &:last-child {
+    margin-right: 30px;
   }
 `;
 
 const CardHeader = styled.div`
   z-index: 1;
+  img {
+    border-radius: 21px 21px 0 0;
+    width: 100% !important;
+    height: 380px !important;
+    object-fit: cover !important;
+  }
 `;
 
 const CardFooterContainer = styled.div`
@@ -46,8 +69,8 @@ const CardFooterContainer = styled.div`
   cursor: pointer;
   height: 112.26px;
   position: absolute;
-  top: 70%;
-  width: 328px;
+  bottom: 0;
+  width: 100%;
 `;
 
 const CardFooter = styled.div`
@@ -173,9 +196,13 @@ const Card = (props: Props) => {
 
                 <div>{props.NFTPrice}eth</div>
               </div>
-              <Button borderThickness="1px" borderRadius="4px">
-                Purchase
-              </Button>
+              <Link href="/">
+                <a>
+                  <Button borderThickness="1px" borderRadius="4px">
+                    View
+                  </Button>
+                </a>
+              </Link>
             </div>
           </CardFooterItem>
         </CardFooter>
