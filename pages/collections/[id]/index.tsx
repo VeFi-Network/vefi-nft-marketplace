@@ -130,7 +130,7 @@ const Collection = () => {
                   <NFTCard
                     model={nft}
                     onClick={() => {
-                      router.push(`/nfts/${collectionById.collectionId}:${nft.id}`);
+                      router.push(`/nfts/${collectionById.collectionId}:${nft.tokenId}`);
                     }}
                     key={nft.id}
                   />
