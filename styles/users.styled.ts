@@ -294,7 +294,7 @@ export const NFTCollection = styled.div`
     flex-wrap: wrap;
     gap: 20px;
     margin: 30px 0;
-    justify-content: space-between;
+    justify-content: flex-start;
   }
 `;
 

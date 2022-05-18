@@ -1,9 +1,13 @@
+import { Spin } from 'antd';
 import Navbar from '../../components/Navbar';
 import styled from 'styled-components';
 import Image from 'next/image';
 import Filled_CTA_Button from '../../components/Button/CTA/Filled';
 import Listing from '../../components/ListingTable/index';
 import PriceChart from '../../components/PriceChart/index';
+import { usePageQuery } from '../../hooks/query';
+import { useAPIContext } from '../../contexts/api';
+import { useEffect, useState } from 'react';
 
 const RootContainer = styled.div`
   width: 100%;
@@ -31,9 +35,8 @@ const Banner = styled.div`
   border-top: 5px solid #5c95ff;
   border-bottom: 5px solid #5c95ff;
   height: 98px;
-  background-size: no-repeat;
-  background-height: 100%;
-  background-image: url('/objects/solarSystem.png');
+  background-size: 100% 100%;
+  background-image: ${(props: any) => `url(${props.background})`};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -52,8 +55,8 @@ const ProfileAvatar = styled.div`
   height: 125px;
   position: absolute;
   left: 80%;
-  background: url('/nft/nft03.png') no-repeat;
-  background-size: 100%;
+  background: ${(props: any) => `url(${props.background})`} no-repeat;
+  background-size: 100% 100%;
 `;
 
 const CollectionInfoCont = styled.div`
@@ -246,7 +249,20 @@ const CTA = styled.div`
   height: 42px;
 `;
 
-export default function NFTs() {
+export default function NFT() {
+  const { slug } = usePageQuery();
+  const { nftById, collectionById, loadCollectionById, loadNFTById } = useAPIContext();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (!!slug) {
+      const splitSlug = (slug as string).split(':');
+      loadNFTById(splitSlug[0], parseInt(splitSlug[1]));
+      loadCollectionById(splitSlug[0]);
+      setIsLoading(false);
+    }
+  }, [slug]);
+
   return (
     <>
       <RootContainer>
@@ -255,95 +271,91 @@ export default function NFTs() {
             <Navbar />
           </NavContainer>
 
-          <Banner>
-            <BannerCaption>Lost in Space</BannerCaption>
-            <ProfileAvatar />
-          </Banner>
+          <Spin spinning={isLoading}>
+            <Banner background={collectionById.metadata.bannerURI}>
+              <BannerCaption>{collectionById.collectionName || 'Collection Name'}</BannerCaption>
+              <ProfileAvatar background={collectionById.metadata.imageURI} />
+            </Banner>
 
-          <CollectionInfoCont>
-            <div className="creator">
-              Created By: <div className="blue"> Wereywanle</div>{' '}
-              <Image src="/icons/verification.svg" alt="" width="20px" height="20px" className="tick" />
-            </div>
-          </CollectionInfoCont>
+            <CollectionInfoCont>
+              <div className="creator">
+                Created By: <div className="blue"> {nftById.metadata?.owner || 'NFT owner'}</div>{' '}
+                <Image src="/icons/verification.svg" alt="" width="20px" height="20px" className="tick" />
+              </div>
+            </CollectionInfoCont>
 
-          <BodyContainer>
-            <LeftColumn>
-              <ProfileAvatarCard>
-                <LikeButtonContainer>
-                  <LikeButton src="/icons/dark-heart.png" />
-                </LikeButtonContainer>
-                <Image src="/nft/nft03.png" width={398} height={498} />
-              </ProfileAvatarCard>
+            <BodyContainer>
+              <LeftColumn>
+                <ProfileAvatarCard>
+                  <LikeButtonContainer>
+                    <LikeButton src="/icons/dark-heart.png" />
+                  </LikeButtonContainer>
+                  <img src={nftById.metadata?.imageURI} alt="NFT Image" width={398} height={498} />
+                </ProfileAvatarCard>
 
-              <DescriptionContainer>
-                <DescriptionHeading>
-                  <Image src="/icons/info.svg" alt="Info Icon" width={20} height={20} />
-                  Description
-                </DescriptionHeading>
-                <DescriptionText>
-                  Lost in space in collaboration with The MetaArt Club launches an NFT collection inspired by the theme
-                  of 'Every Body'—exploring the relationship between avatars and bodies in the metaverse Lost in space
-                  depicts letting go of doubts, negativity and unrealistic expectations to bring about inner peace.
-                  According to Owo, his futuristic female subject, “Understands the power she possesses when she is at
-                  peace with her body and she’s thriving in her world – where acceptance, peace, and beauty dominate.”
-                </DescriptionText>
-              </DescriptionContainer>
-            </LeftColumn>
-            <RightColumn>
-              <ProfileStats>
-                <div className="stat">
-                  <span className="icon">
-                    <Image width={20} height={20} src="/icons/people.svg" />
-                  </span>
-                  <p className="info">20 Owners</p>
-                </div>
-                <div className="stat">
-                  <span className="icon">
-                    <Image width={20} height={20} src="/icons/apps.svg" />
-                  </span>
-                  <p className="info">50 Total</p>
-                </div>
-                <div className="stat">
-                  <span className="icon">
-                    <Image width={20} height={20} src="/icons/eye.svg" />
-                  </span>
-                  <p className="info">3.5k Views</p>
-                </div>
-                <div className="stat">
-                  <span className="icon">
-                    <Image width={20} height={20} src="/icons/heart.svg" />
-                  </span>
-                  <p className="info">1.5k Likes</p>
-                </div>
-              </ProfileStats>
-              <CollectionName>Lost In Space</CollectionName>
-              <PriceInfo>
-                <div className="nft_price">
-                  <span>
-                    <Image width={50} height={50} src="/icons/eth_classic.svg" />
-                  </span>
-                  <p className="price">2eth</p>
-                </div>
-                <div className="sales">
-                  <span>
-                    <Image width={35} height={35} src="/icons/timer.svg" />
-                  </span>
-                  <p>Sale ends October, 3rd 2022</p>
-                </div>
-              </PriceInfo>
-              <CTA>
-                <Filled_CTA_Button>Buy Now</Filled_CTA_Button>
-                <Filled_CTA_Button backgroundColor="#fff" color="#5C95FF">
-                  Make an offer
-                </Filled_CTA_Button>
-              </CTA>
-              <PriceChart />
-              <Listing />
-            </RightColumn>
-          </BodyContainer>
+                <DescriptionContainer>
+                  <DescriptionHeading>
+                    <Image src="/icons/info.svg" alt="Info Icon" width={20} height={20} />
+                    Description
+                  </DescriptionHeading>
+                  <DescriptionText>{nftById.metadata?.description || 'No Description Available'}</DescriptionText>
+                </DescriptionContainer>
+              </LeftColumn>
+              <RightColumn>
+                <ProfileStats>
+                  <div className="stat">
+                    <span className="icon">
+                      <Image width={20} height={20} src="/icons/people.svg" />
+                    </span>
+                    <p className="info">20 Owners</p>
+                  </div>
+                  <div className="stat">
+                    <span className="icon">
+                      <Image width={20} height={20} src="/icons/apps.svg" />
+                    </span>
+                    <p className="info">50 Total</p>
+                  </div>
+                  <div className="stat">
+                    <span className="icon">
+                      <Image width={20} height={20} src="/icons/eye.svg" />
+                    </span>
+                    <p className="info">3.5k Views</p>
+                  </div>
+                  <div className="stat">
+                    <span className="icon">
+                      <Image width={20} height={20} src="/icons/heart.svg" />
+                    </span>
+                    <p className="info">1.5k Likes</p>
+                  </div>
+                </ProfileStats>
+                <CollectionName>Lost In Space</CollectionName>
+                <PriceInfo>
+                  <div className="nft_price">
+                    <span>
+                      <Image width={50} height={50} src="/icons/eth_classic.svg" />
+                    </span>
+                    <p className="price">2eth</p>
+                  </div>
+                  <div className="sales">
+                    <span>
+                      <Image width={35} height={35} src="/icons/timer.svg" />
+                    </span>
+                    <p>Sale ends October, 3rd 2022</p>
+                  </div>
+                </PriceInfo>
+                <CTA>
+                  <Filled_CTA_Button>Buy Now</Filled_CTA_Button>
+                  <Filled_CTA_Button backgroundColor="#fff" color="#5C95FF">
+                    Make an offer
+                  </Filled_CTA_Button>
+                </CTA>
+                <PriceChart />
+                <Listing />
+              </RightColumn>
+            </BodyContainer>
 
-          <ColoredBackground></ColoredBackground>
+            <ColoredBackground></ColoredBackground>
+          </Spin>
         </ProfileContainer>
       </RootContainer>
     </>
