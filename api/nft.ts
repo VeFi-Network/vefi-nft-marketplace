@@ -51,10 +51,10 @@ export function getAllNFTsByNetwork(network: string, page: number): Promise<NFTM
   });
 }
 
-export function getNFTByIdAndNetwork(id: number, network: string, page: number): Promise<NFTModel> {
+export function getNFTByIdAndNetwork(collectionId: string, id: number, network: string): Promise<NFTModel> {
   return new Promise((resolve, reject) => {
     baseAxios
-      .get(`/api/nft/${network}/${id}/byId?page=${page}`)
+      .get(`/api/nft/${network}/${collectionId}/${id}/byId`)
       .then(res => handleResponse(res, resolve, reject))
       .catch(reject);
   });
@@ -95,6 +95,15 @@ export function getAllCollectionsByOwner(network: string, token: string, page: n
   return new Promise((resolve, reject) => {
     baseAxios
       .get(`/api/collection/${network}/byOwner?page=${page}`, { headers: { Authorization: `Bearer ${token}` } })
+      .then(res => handleResponse(res, resolve, reject))
+      .catch(reject);
+  });
+}
+
+export function getCollectionById(network: string, id: string): Promise<CollectionModel> {
+  return new Promise((resolve, reject) => {
+    baseAxios
+      .get(`/api/collection/${network}/${id}/byNetwork`)
       .then(res => handleResponse(res, resolve, reject))
       .catch(reject);
   });

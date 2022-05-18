@@ -5,7 +5,7 @@ import NFTCard from '../../components/Card/NftCard';
 import FilterProperty from '../../components/Filter';
 import FIlterBy from '../../components/Filter/FIlterBy';
 import Navbar from '../../components/Navbar';
-import UserBanner from '../../components/Profile/UserBanner';
+import UserBanner from '../../components/Collections/CollectionBanner';
 import { NFTCollection, NFTUserCollectionInfo, UsersWrapper } from '../../styles/users.styled';
 
 const Users = () => {

@@ -19,12 +19,13 @@ type CollectionMetadata = {
   bannerURI: string;
   symbol: string;
   owner: string;
+  description: string;
 };
 
 export interface CollectionModel {
   collectionName: string;
   collectionCategory: CollectionCategory;
-  metadata?: CollectionMetadata;
+  metadata: CollectionMetadata;
   collectionId: string;
   timeStamp: number;
   collectionSymbol: string;

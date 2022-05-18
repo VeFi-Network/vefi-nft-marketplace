@@ -4,6 +4,7 @@ import { hexlify } from '@ethersproject/bytes';
 import { useWeb3React } from '@web3-react/core';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import type Web3 from 'web3';
+import chains from '../../chains.json';
 
 type Web3ContextType = {
   account?: string | null;
@@ -20,7 +21,7 @@ const injectedConnector = new InjectedConnector({
 });
 
 export const Web3ContextProvider = ({ children }: any) => {
-  const { library, account, activate, deactivate, active, chainId, connector } = useWeb3React<Web3>();
+  const { library, account, activate, deactivate, active, chainId } = useWeb3React<Web3>();
   const { reload } = useRouter();
 
   const connectOrDisconnectWeb3 = useCallback(() => {
