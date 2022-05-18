@@ -203,7 +203,7 @@ const ProfileStats = styled.div`
   }
 `;
 
-const CollectionName = styled.p`
+const ItemName = styled.p`
   font-size: 70px;
   margin: 0;
   font-weight: bold;
@@ -305,18 +305,6 @@ export default function NFT() {
                 <ProfileStats>
                   <div className="stat">
                     <span className="icon">
-                      <Image width={20} height={20} src="/icons/people.svg" />
-                    </span>
-                    <p className="info">20 Owners</p>
-                  </div>
-                  <div className="stat">
-                    <span className="icon">
-                      <Image width={20} height={20} src="/icons/apps.svg" />
-                    </span>
-                    <p className="info">50 Total</p>
-                  </div>
-                  <div className="stat">
-                    <span className="icon">
                       <Image width={20} height={20} src="/icons/eye.svg" />
                     </span>
                     <p className="info">3.5k Views</p>
@@ -328,23 +316,8 @@ export default function NFT() {
                     <p className="info">1.5k Likes</p>
                   </div>
                 </ProfileStats>
-                <CollectionName>Lost In Space</CollectionName>
-                <PriceInfo>
-                  <div className="nft_price">
-                    <span>
-                      <Image width={50} height={50} src="/icons/eth_classic.svg" />
-                    </span>
-                    <p className="price">2eth</p>
-                  </div>
-                  <div className="sales">
-                    <span>
-                      <Image width={35} height={35} src="/icons/timer.svg" />
-                    </span>
-                    <p>Sale ends October, 3rd 2022</p>
-                  </div>
-                </PriceInfo>
+                <ItemName>{nftById.metadata?.name || 'NFT Name'}</ItemName>
                 <CTA>
-                  <Filled_CTA_Button>Buy Now</Filled_CTA_Button>
                   <Filled_CTA_Button backgroundColor="#fff" color="#5C95FF">
                     Make an offer
                   </Filled_CTA_Button>
