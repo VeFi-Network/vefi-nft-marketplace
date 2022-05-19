@@ -12,7 +12,7 @@ const NFTCard = ({ model, onClick }: Props) => {
     <>
       <NFTArt>
         <div className="nft__image">
-          <img src={model.metadata?.imageURI} width={200} height={200} alt="nft user" />
+          <img src={model?.metadata?.imageURI} width={200} height={200} alt="nft user" />
         </div>
         <div className="nft__footer">
           {/* <div className="nft__prev__users">
@@ -28,8 +28,8 @@ const NFTCard = ({ model, onClick }: Props) => {
           </div> */}
           <div className="nft__footer__info__left">
             <div className="title">
-              <h2>{model.metadata?.name}</h2>
-              <p>{model.metadata?.owner}</p>
+              <h2>{model?.metadata?.name}</h2>
+              <p>{model?.metadata?.owner}</p>
             </div>
           </div>
           <div className="nft__footer__info__right">
