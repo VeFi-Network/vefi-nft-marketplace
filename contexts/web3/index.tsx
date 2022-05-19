@@ -4,6 +4,7 @@ import { hexlify } from '@ethersproject/bytes';
 import { useWeb3React } from '@web3-react/core';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import type Web3 from 'web3';
+import chains from '../../chains.json';
 
 type Web3ContextType = {
   account?: string | null;
@@ -16,11 +17,11 @@ type Web3ContextType = {
 const Web3Context = createContext<Web3ContextType>({} as Web3ContextType);
 
 const injectedConnector = new InjectedConnector({
-  supportedChainIds: [97, 56, 32520, 64668],
+  supportedChainIds: [97, 56, 32520, 64668]
 });
 
 export const Web3ContextProvider = ({ children }: any) => {
-  const { library, account, activate, deactivate, active, chainId, connector } = useWeb3React<Web3>();
+  const { library, account, activate, deactivate, active, chainId } = useWeb3React<Web3>();
   const { reload } = useRouter();
 
   const connectOrDisconnectWeb3 = useCallback(() => {
@@ -42,7 +43,7 @@ export const Web3ContextProvider = ({ children }: any) => {
         ethereum
           .request({
             method: 'wallet_switchEthereumChain',
-            params: [{ chainId: hexlify(chain) }],
+            params: [{ chainId: hexlify(chain) }]
           })
           .then(() => reload())
           .catch((error: any) => {

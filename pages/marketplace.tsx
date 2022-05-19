@@ -70,7 +70,7 @@ const FilterAndGrey = styled.div`
   flex-direction: column;
 `;
 
-export default function marketplace({}: Props) {
+export default function Marketplace({}: Props) {
   return (
     <>
       <MainContainer>

@@ -1,15 +1,14 @@
-import Image from 'next/image';
 import { NFTUserInfo, UserNFTBanner, UserNFTInfo } from '../../styles/users.styled';
 
-const UserBanner = ({ children }: any) => {
+const CollectionBanner = ({ children, bannerSrc, imageSrc }: any) => {
   return (
     <>
       <div className="user__header__banner">
-        <UserNFTBanner bg="/objects/bg.png" />
+        <UserNFTBanner bg={bannerSrc} />
         <div className="nft__wrapper">
           <UserNFTInfo>
             <div className="display__pics">
-              <Image src="/nft/nft01.png" height="100px" width="100px" alt="user pics" />
+              <img src={imageSrc} height="100px" width="100px" alt="image" />
             </div>
             {children}
           </UserNFTInfo>
@@ -23,4 +22,4 @@ const UserBanner = ({ children }: any) => {
   );
 };
 
-export default UserBanner;
+export default CollectionBanner;

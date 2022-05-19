@@ -18,7 +18,7 @@ const notification = (
             </div>
           </a>
         ),
-        key: '0',
+        key: '0'
       },
       {
         label: (
@@ -33,7 +33,7 @@ const notification = (
             </div>
           </a>
         ),
-        key: '1',
+        key: '1'
       },
       {
         label: (
@@ -48,8 +48,8 @@ const notification = (
             </div>
           </a>
         ),
-        key: '2',
-      },
+        key: '2'
+      }
     ]}
   />
 );

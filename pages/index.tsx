@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Filled_CTA_Button from '../components/Button/CTA/Filled';
 import Ghost_CTA_Button from '../components/Button/Ghost';
@@ -8,6 +8,8 @@ import Card from '../components/Card';
 import Background from '../components/AnimatedBackground';
 import { FaQuestion } from 'react-icons/fa';
 import { Button } from 'antd';
+import _ from 'lodash';
+import { useAPIContext } from '../contexts/api/index';
 
 const MainContainer = styled.div`
   display: flex;
@@ -217,7 +219,8 @@ const ParentNFTCont = styled.div``;
 const NFTSubCont = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: center;
   margin-top: -120px;
   width: 100%;
   gap: 20px;
@@ -226,27 +229,6 @@ const NFTSubCont = styled.div`
   transition: all 300ms ease-in-out;
   opacity: 1;
   height: 400px;
-`;
-
-const PaddedSpace = styled.div`
-  min-width: 50px;
-`;
-
-const NFTScrollableContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  display: none;
-  align-items: center;
-  margin-top: 20px;
-
-  height: 415px;
-
-  flex-direction: row;
-  gap: 25px;
-  overflow-x: auto;
-  transition-duration: 500ms;
-  opacity: 1;
 `;
 
 const DiscoverAndAnimate = styled.div`
@@ -314,6 +296,7 @@ const RoundBlueLine = styled.div`
     }
   }
 `;
+
 const FooterHelpIcon = styled.div`
   position: absolute;
   bottom: 0;
@@ -335,6 +318,7 @@ const FooterHelpIcon = styled.div`
     color: #fff;
   }
 `;
+
 const Footer = styled.footer`
   width: 100%;
   width: calc(100% - 150px);
@@ -400,8 +384,22 @@ const Footer = styled.footer`
   }
 `;
 
+const NoItemContainer = styled.div`
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
 export default function Homepage() {
   const [searchValue, setSearchValue] = useState('');
+  const { allCollections, loadAllCollections } = useAPIContext();
+
+  useEffect(() => {
+    (() => {
+      loadAllCollections(1);
+    })();
+  }, []);
 
   return (
     <>
@@ -461,12 +459,22 @@ export default function Homepage() {
           <ParentNFTCont>
             <NFTContainer className="nft-container">
               <NFTSubCont>
-                <Card collectionName="God of War" NFTImageURI="/nft/nft01.png" NFTPrice="247" NFTName="ToomuchLag" />
-                <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest" />
-                <Card collectionName="Lost in Space" NFTImageURI="/nft/nft03.png" NFTPrice="2" NFTName="Wereywanle" />
-                <Card collectionName="Lost in Space" NFTImageURI="/nft/nft03.png" NFTPrice="2" NFTName="Wereywanle" />
-                <Card collectionName="Lost in Space" NFTImageURI="/nft/nft03.png" NFTPrice="2" NFTName="Wereywanle" />
-                <Card collectionName="Lost in Space" NFTImageURI="/nft/nft03.png" NFTPrice="2" NFTName="Wereywanle" />
+                {allCollections.length === 0 ? (
+                  <NoItemContainer>
+                    <span style={{ color: '#f5f5f5', fontSize: 30, fontFamily: 'Rubik' }}>No Item To Display</span>
+                  </NoItemContainer>
+                ) : (
+                  _.map(allCollections, collection => (
+                    <Card
+                      name={collection.collectionName}
+                      price="0"
+                      owner={collection.metadata.owner}
+                      imageURI={collection.metadata.imageURI}
+                      key={collection.collectionId}
+                      linkTo={`/collections/${collection.collectionId}`}
+                    />
+                  ))
+                )}
               </NFTSubCont>
             </NFTContainer>
           </ParentNFTCont>

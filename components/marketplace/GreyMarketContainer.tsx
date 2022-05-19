@@ -137,53 +137,53 @@ const topSellersList = [
   {
     name: 'Beasyzakustler',
     verified: true,
-    imageUrl: '/marketplace/topSellers/1.png',
+    imageUrl: '/marketplace/topSellers/1.png'
   },
   {
     name: 'Cassy Mcconnell',
     verified: false,
-    imageUrl: '/marketplace/topSellers/2.png',
+    imageUrl: '/marketplace/topSellers/2.png'
   },
   {
     name: 'Coben Day',
     verified: true,
-    imageUrl: '/marketplace/topSellers/3.png',
+    imageUrl: '/marketplace/topSellers/3.png'
   },
   {
     name: 'Bradly Giles',
     verified: false,
-    imageUrl: '/marketplace/topSellers/1.png',
+    imageUrl: '/marketplace/topSellers/1.png'
   },
   {
     name: 'Saim Roth',
     verified: false,
-    imageUrl: '/marketplace/topSellers/4.png',
+    imageUrl: '/marketplace/topSellers/4.png'
   },
   {
     name: 'Dylan Bowen',
     verified: false,
-    imageUrl: '/marketplace/topSellers/5.png',
+    imageUrl: '/marketplace/topSellers/5.png'
   },
   {
     name: 'Heini Fitzpatrick',
     verified: false,
-    imageUrl: '/marketplace/topSellers/8.png',
+    imageUrl: '/marketplace/topSellers/8.png'
   },
   {
     name: 'Neshawn Glover',
     verified: false,
-    imageUrl: '/marketplace/topSellers/6.png',
+    imageUrl: '/marketplace/topSellers/6.png'
   },
   {
     name: 'Nelson Daugherty',
     verified: false,
-    imageUrl: '/marketplace/topSellers/7.png',
+    imageUrl: '/marketplace/topSellers/7.png'
   },
   {
     name: 'Shiloh York',
     verified: true,
-    imageUrl: '/marketplace/topSellers/8.png',
-  },
+    imageUrl: '/marketplace/topSellers/8.png'
+  }
 ];
 
 type Props = {};

@@ -4,10 +4,11 @@ import Button from '../Button/Ghost';
 import Link from 'next/link';
 
 type Props = {
-  collectionName: string;
-  NFTName: string;
-  NFTPrice: string;
-  NFTImageURI: string;
+  name: string;
+  owner: string;
+  price: string;
+  imageURI: string;
+  linkTo: string;
 };
 
 const CardContainer = styled.div`
@@ -81,28 +82,28 @@ const CardFooter = styled.div`
   color: #fff;
 `;
 
-const Avatars = styled.div`
-  z-index: 99;
-  display: flex;
-  flex-direction: row;
-  margin-left: -30px !important;
-  position: absolute;
-  top: 65%;
-  left: 20%;
-  gap: 10px;
-  img {
-    z-index: 999;
-    border: 2px solid #fff !important;
-    object-fit: cover;
-    border-radius: 50%;
-    width: 100%;
-    height: 100%;
-  }
-  .avatar {
-    margin-left: -25px;
-    overflow: hidden;
-  }
-`;
+// const Avatars = styled.div`
+//   z-index: 99;
+//   display: flex;
+//   flex-direction: row;
+//   margin-left: -30px !important;
+//   position: absolute;
+//   top: 65%;
+//   left: 20%;
+//   gap: 10px;
+//   img {
+//     z-index: 999;
+//     border: 2px solid #fff !important;
+//     object-fit: cover;
+//     border-radius: 50%;
+//     width: 100%;
+//     height: 100%;
+//   }
+//   .avatar {
+//     margin-left: -25px;
+//     overflow: hidden;
+//   }
+// `;
 
 const CardFooterItem = styled.div`
   display: flex;
@@ -167,36 +168,22 @@ const Card = (props: Props) => {
   return (
     <CardContainer>
       <CardHeader>
-        <Image src={props.NFTImageURI} width={329} height={378} />
+        <img src={props.imageURI} width={329} height={378} />
       </CardHeader>
-      <Avatars>
-        <div className="avatar">
-          <Image src="/avatar/user01.png" width={30} height={30} />
-        </div>
-        <div className="avatar">
-          <Image src="/avatar/user01.png" width={30} height={30} />
-        </div>
-        <div className="avatar">
-          <Image src="/avatar/user01.png" width={30} height={30} />
-        </div>
-        <div className="avatar">
-          <Image src="/avatar/user01.png" width={30} height={30} />
-        </div>
-      </Avatars>
       <CardFooterContainer>
         <CardFooter>
           <CardFooterItem>
             <div className="nft-meta-data">
-              <span className="nft_collection_name">{props.collectionName}</span>
-              <span className="nft_name">{props.NFTName}</span>
+              <span className="nft_collection_name">{props.name}</span>
+              <span className="nft_name">{props.owner}</span>
             </div>
             <div className="nft-price-info">
               <div className="price">
                 <Image src="/icons/eth_classic.svg" width={20} height={20} />
 
-                <div>{props.NFTPrice}eth</div>
+                <div>{props.price}eth</div>
               </div>
-              <Link href="/">
+              <Link href={props.linkTo}>
                 <a>
                   <Button borderThickness="1px" borderRadius="4px">
                     View
