@@ -10,6 +10,7 @@ import { FaQuestion } from 'react-icons/fa';
 import { Button } from 'antd';
 import _ from 'lodash';
 import { useAPIContext } from '../contexts/api/index';
+import MainFooter from '../components/Footer';
 
 const MainContainer = styled.div`
   display: flex;
@@ -500,7 +501,10 @@ export default function Homepage() {
             <FaQuestion />
           </div>
         </FooterHelpIcon>
+        
+
       </MainContainer>
+      <MainFooter/>
     </>
   );
 }
