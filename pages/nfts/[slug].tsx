@@ -32,7 +32,6 @@ const Banner = styled.div`
   border-bottom: 5px solid #5c95ff;
   height: 98px;
   background-size: no-repeat;
-  background-height: 100%;
   background-image: url('/objects/solarSystem.png');
   display: flex;
   justify-content: center;
