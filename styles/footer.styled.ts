@@ -9,10 +9,13 @@ export const Container = styled.div`
 
   @media screen and (max-width: 768px) {
     flex-direction: column;
+    width:100% ;
+    padding:40px 15px ;
   }
 `;
 export const SubDiv1 = styled.div`
   flex: 1;
+  width:100% ;
 
   .stay_loop {
     .loop_text {
@@ -46,6 +49,12 @@ export const SubDiv1 = styled.div`
     display: flex;
     align-items: center;
 
+    div{
+        @media screen and (max-width: 768px) {
+          width:100% ;
+        }
+    }
+
     input {
       background: #ffffff;
       border-radius: 11px;
@@ -58,6 +67,11 @@ export const SubDiv1 = styled.div`
       &::placeholder {
         color: #828282;
       }
+
+      @media screen and (max-width: 768px) {
+          width:100% ;
+          margin-bottom: 10px;
+        }
     }
 
     button {
@@ -75,9 +89,23 @@ export const SubDiv1 = styled.div`
       line-height: 140%;
       display: flex;
       align-items: center;
+      justify-content:center ;
       color: #ffffff;
+
+      @media screen and (max-width: 768px) {
+          width:100% ;
+          margin: 0;
+          text-align:center ;
+        }
     }
+
+    @media screen and (max-width: 768px) {
+          flex-direction:column ;
+          width:100% ;
+        }
   }
+
+
 `;
 export const SubDiv2 = styled.div`
   flex: 1;
