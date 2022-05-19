@@ -5,26 +5,25 @@ const ListingTable = styled.div`
   margin-top: 3rem;
   width: 612px;
   height: 419px;
-  background: linear-gradient(254.33deg, rgba(255, 255, 255, 0.1) 1.71%, rgba(255, 255, 255, 0.05) 99.35%);
-  backdrop-filter: blur(16.86px);
-  /* Note: backdrop-filter has minimal browser support */
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 20px;
   padding: 30px;
-  border: 1px solid #383838;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 `;
 
 const ListingTableHeading = styled.div`
   display: flex;
   column-gap: 10px;
-  font-size: 18px;
+  font-size: 1.3rem;
   font-weight: bold;
   padding: 5px 0;
   position: sticky;
 `;
 
 const ListingTableBody = styled.table`
-  width: 580px;
+  width: 100%;
   margin: 10px 0;
+  border: 1px solid #ccc;
   border-spacing: 10px;
   .price {
     display: flex;
@@ -35,6 +34,11 @@ const ListingTableBody = styled.table`
   }
   thead {
     text-align: left;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
   }
   .user {
     display: flex;
@@ -49,23 +53,32 @@ const ListingTableBody = styled.table`
     margin-top: 10px;
   }
   thead tr {
-    display: block;
+    display: flex;
+    background: red;
+    width: 100%;
+    justify-content: space-evenly;
+
+    th {
+      border: 1px solid #ccc;
+      justify-content: left;
+    }
   }
   tbody {
-    display: block;
     overflow-y: auto;
     height: 250px;
-    text-align: left;
+
     width: 100%;
-  }
-  .unit_price {
-    padding-left: 1.4rem !important;
-  }
-  .quantity {
-    padding-left: 2.3rem !important;
-  }
-  .expiry_date {
-    padding-left: 3.8rem !important;
+    background: green;
+    justify-content: left;
+
+    tr {
+      display: flex;
+      justify-content: space-evenly;
+
+      td {
+        border: 1px solid #ccc;
+      }
+    }
   }
 `;
 

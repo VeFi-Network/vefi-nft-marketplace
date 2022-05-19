@@ -1,21 +1,22 @@
 import styled from 'styled-components';
 import Image from 'next/image';
+import { FiChevronsDown, FiTag } from 'react-icons/fi';
 
 const ChartContainer = styled.div`
   margin-top: 3rem;
   width: 612px;
   height: 419px;
-  background: linear-gradient(254.33deg, rgba(255, 255, 255, 0.1) 1.71%, rgba(255, 255, 255, 0.05) 99.35%);
-  backdrop-filter: blur(16.86px);
-  /* Note: backdrop-filter has minimal browser support */
+  background: rgba(255, 255, 255, 0.1);
+
   border-radius: 20px;
   padding: 30px;
-  border: 1px solid #383838;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 `;
 
 const ChartFilter = styled.div`
   display: flex;
   column-gap: 15px;
+  align-items: center;
 `;
 
 const ChartHeader = styled.div`
@@ -24,8 +25,13 @@ const ChartHeader = styled.div`
   align-items: center;
   font-size: 18px;
   font-weight: bold;
+  gap: 10px;
   img {
     margin-top: 3px !important;
+  }
+  span:first-child {
+    color: #5c95ff;
+    transform: rotate(75deg);
   }
 `;
 
@@ -80,29 +86,16 @@ const PriceChart = () => {
         <ChartFilter>
           <ChartHeader>
             <span>
-              <Image src="/icons/price-tag.svg" width={20} height={20} />
+              <FiTag />
             </span>
-            Price History
+            <span>Price History</span>
           </ChartHeader>
           <FilterBtn>
-            Weekly{' '}
-            <div style={{ marginTop: -1 }}>
-              <Image width="12px" height="9px" src="/icons/downIcon.svg" />
-            </div>
+            Weekly <FiChevronsDown />
           </FilterBtn>
         </ChartFilter>
-        <ChartLine src="/icons/chart-line.svg" />
-        <Chart>
-          <div>
-            <hr />
-            <hr />
-            <hr />
-            <hr />
-            <hr />
-            <hr />
-            <hr />
-          </div>
-        </Chart>
+
+        <Chart />
       </ChartContainer>
     </>
   );
