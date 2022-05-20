@@ -182,7 +182,8 @@ export const NFTUserCollectionInfo = styled.div`
         display: flex;
         background: #373943;
         width: 100%;
-
+        height: 30px;
+        z-index: 3;
         border-radius: 8px;
         color: rgba(255, 255, 255, 0.3);
         align-items: center;
@@ -222,7 +223,7 @@ export const NFTUserCollectionInfo = styled.div`
         align-items: center;
         gap: 10px;
         padding-bottom: 8px;
-
+        color:#fff !important;
         transition: all 0.3s ease-in;
         &:hover {
           color: rgba(255, 255, 255, 0.7);
@@ -234,10 +235,13 @@ export const NFTUserCollectionInfo = styled.div`
         span {
           display: flex;
           align-items: center;
-          color: rgba(255, 255, 255, 0.3);
+          color: #fff !important;
           &:last-child {
             font-size: 0.9rem;
           }
+        }
+        button.grid_btn{
+          background-color:#373943;
         }
 
         .sort__display {
@@ -541,3 +545,15 @@ export const CardFooterItem = styled.div`
     cursor: pointer;
   }
 `;
+
+
+export const ButtonContainer = styled.div`
+  position:absolute;
+  margin:10px;
+  display:flex;
+  justify-content:flex-end;
+  column-gap:10px;
+  top:0;
+  z-index:9;
+  right:0;
+`
