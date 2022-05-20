@@ -1,4 +1,4 @@
-import { Button, Spin } from 'antd';
+import { Spin } from 'antd';
 import Navbar from '../../components/Navbar';
 import styled from 'styled-components';
 import Image from 'next/image';
@@ -8,8 +8,7 @@ import PriceChart from '../../components/PriceChart/index';
 import { usePageQuery } from '../../hooks/query';
 import { useAPIContext } from '../../contexts/api';
 import { useEffect, useState } from 'react';
-import { FaEye, FaHeart } from 'react-icons/fa';
-import { FiEye, FiHeart } from 'react-icons/fi';
+import { FiEye, FiHeart, FiInfo } from 'react-icons/fi';
 
 const RootContainer = styled.div`
   width: 100%;
@@ -22,13 +21,16 @@ const NavContainer = styled.div`
 const ProfileContainer = styled.div`
   min-height: 100vh;
   width: 100%;
-  max-width: 2000px;
-  min-width: 1000px;
+
   background: #0c0c0c;
   padding-top: 10px;
   padding-bottom: 30px;
   overflow: hidden;
   position: relative;
+
+  @media screen and (max-width: 760px) {
+    width: 100%;
+  }
 `;
 
 const Banner = styled.div`
@@ -42,12 +44,22 @@ const Banner = styled.div`
   background-size: cover;
   justify-content: center;
   align-items: center;
+  position: relative;
+  @media screen and (max-width: 760px) {
+    height: 150px;
+    margin: 0px auto;
+    flex-direction: column;
+  }
 `;
 
 const BannerCaption = styled.h3`
   font-weight: bold;
   color: #fff;
   font-size: 40px;
+  @media screen and (max-width: 760px) {
+    text-align: center;
+    font-size: 2rem;
+  }
 `;
 
 const ProfileAvatar = styled.div`
@@ -59,6 +71,13 @@ const ProfileAvatar = styled.div`
   left: 80%;
   background: ${(props: any) => `url(${props.background})`} no-repeat;
   background-size: 100% 100%;
+  @media screen and (max-width: 760px) {
+    left: auto;
+    align-items: center;
+    top: 50%;
+    justify-content: center;
+    text-align: center;
+  }
 `;
 
 const CollectionInfoCont = styled.div`
@@ -93,6 +112,9 @@ const CollectionInfoCont = styled.div`
       color: #5c95ff;
     }
   }
+  @media screen and (max-width: 760px) {
+    padding-top: 60px;
+  }
 `;
 
 const ColoredBackground = styled.div`
@@ -116,6 +138,13 @@ const BodyContainer = styled.div`
   margin: 0 auto;
   justify-content: center;
   gap: 20px;
+
+  @media screen and (max-width: 760px) {
+    width: 90%;
+    margin: 0 auto;
+
+    flex-direction: column;
+  }
 `;
 const LeftColumn = styled.div`
   flex: 0.3;
@@ -130,6 +159,24 @@ const LeftColumn = styled.div`
     border-radius: 21px;
     object-fit: cover;
   }
+  @media screen and (max-width: 760px) {
+    margin: 0 auto;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: 330px !important;
+      height: 400px !important;
+      object-fit: cover;
+    }
+  }
+  @media screen and (max-width: 320px) {
+    img {
+      width: 300px !important;
+      height: 400px !important;
+      object-fit: cover;
+    }
+  }
 `;
 const RightColumn = styled.div`
   flex: 0.7;
@@ -139,6 +186,10 @@ const RightColumn = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+
+  @media screen and (max-width: 760px) {
+    width: 100%;
+  }
 `;
 const ProfileAvatarCard = styled.div``;
 
@@ -155,6 +206,13 @@ const LikeButtonContainer = styled.div`
   border-radius: 12px;
   :hover {
     cursor: pointer;
+  }
+  @media screen and (max-width: 760px) {
+    img {
+      object-fit: contain;
+      width: 40px !important;
+      height: 40px !important ;
+    }
   }
 `;
 
@@ -177,10 +235,15 @@ const DescriptionContainer = styled.div`
   padding: 30px;
   border: 1px solid #383838;
   overflow-y: scroll;
+  @media screen and (max-width: 760px) {
+    width: 100%;
+    height: max-content;
+  }
 `;
 
 const DescriptionHeading = styled.h3`
   display: flex;
+  align-items: center;
   column-gap: 10px;
   font-size: 18px;
   color: rgba(255, 255, 255, 0.8);
@@ -214,6 +277,11 @@ const ProfileStats = styled.div`
     font-size: 20px;
     align-items: center;
   }
+  @media screen and (max-width: 760px) {
+    .stat {
+      font-size: 0.9rem;
+    }
+  }
 `;
 
 const ItemName = styled.p`
@@ -221,38 +289,11 @@ const ItemName = styled.p`
   line-height: 3.4rem;
   margin: 0 0 25px 0;
   font-weight: bold;
-`;
 
-const PriceInfo = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  column-gap: 1.5rem;
-  padding: 0;
-  height: 50px;
-  margin: 10px 0;
-  .nft_price {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    column-gap: 1px;
-  }
-  .price {
-    font-size: 40px;
-    font-weight: bold;
-  }
-  .nft_price img {
-    margin: 5px 0 0 0 !important;
-  }
-  .sales {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    column-gap: 1px;
-  }
-  .sales p {
-    font-size: 30px;
-    overflow: hidden;
+  @media screen and (max-width: 760px) {
+    font-size: 1.5rem;
+    line-height: 1.8rem;
+    margin: 10px 0 25px 0;
   }
 `;
 
@@ -308,7 +349,7 @@ export default function NFT() {
 
                 <DescriptionContainer>
                   <DescriptionHeading>
-                    <Image src="/icons/info.svg" alt="Info Icon" width={20} height={20} />
+                    <FiInfo />
                     Description
                   </DescriptionHeading>
                   <DescriptionText>{nftById.metadata?.description || 'No Description Available'}</DescriptionText>

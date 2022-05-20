@@ -11,6 +11,10 @@ const ChartContainer = styled.div`
   border-radius: 20px;
   padding: 30px;
   border: 1px solid rgba(255, 255, 255, 0.2);
+
+  @media screen and (max-width: 760px) {
+    width: 100%;
+  }
 `;
 
 const ChartFilter = styled.div`
