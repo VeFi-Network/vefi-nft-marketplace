@@ -105,7 +105,7 @@ const CreateProfile = () => {
                                         <Label htmlFor="banner_image">Banner Image URL<sup>*</sup></Label>
                                         <InputText id="banner_image" type="text" required  />
                                     </FormGroup>
-                                  <Button type="submit">Create</Button>
+                                  <Button type="submit">Create Profile</Button>
                                 </Form>
                             </FormContainer>
                         </div>

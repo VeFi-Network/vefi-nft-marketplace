@@ -105,7 +105,7 @@ const UpdateProfile = () => {
                                         <Label htmlFor="banner_image">Banner Image URL<sup>*</sup></Label>
                                         <InputText id="banner_image" type="text" required  />
                                     </FormGroup>
-                                  <Button type="submit">Update</Button>
+                                  <Button type="submit">Update Profile</Button>
                                 </Form>
                             </FormContainer>
                         </div>
