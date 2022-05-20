@@ -24,8 +24,8 @@ const NavContainer = styled.nav`
 `;
 
 const NavBrand = styled.div`
-  padding: 0 10px;
   z-index: 2;
+  padding-left: 50px;
 `;
 
 const NavLinks = styled.div`
@@ -63,7 +63,6 @@ const UserWallet = styled.div`
     align-items: center;
     column-gap: 0.5rem;
     padding-right: 10px;
-
     transition-duration: 250ms;
 
     &:hover {

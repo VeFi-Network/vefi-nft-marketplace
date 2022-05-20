@@ -16,7 +16,8 @@ const MainContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background: #0c0c0c;
+  /* background: #0c0c0c; */
+
   width: 100%;
   position: relative;
 `;
@@ -26,11 +27,11 @@ const MarketplaceContainer = styled.div`
   width: 100%;
 
   background: #0c0c0c;
-  padding-left: 55px;
-  padding-top: 20px;
-  padding-bottom: 30px;
   overflow: hidden;
-
+  .main__container__wrapper {
+    width: 100%;
+    margin: 0 auto;
+  }
   @media screen and (max-width: 760px) {
     width: 100%;
     padding-left: 0px;
@@ -78,32 +79,33 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const FilterByText = styled.div`
-  margin-top: -240px;
-  margin-left: 55px;
-  font-family: 'Rubik';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 19px;
-  color: #ebf8ff;
-
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-
-  @media screen and (max-width: 769px) {
-    margin: 20px;
-  }
-`;
-
 const FilterContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 24px;
-  margin-top: 21px;
-  margin-left: 55px;
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -270px;
 
+  .filter__wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px;
+    .filter__top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ccc;
+    }
+    .filter__bottom {
+      display: flex;
+      margin-top: 10px;
+      gap: 10px;
+
+      @media screen and (max-width: 760px) {
+        flex-direction: column;
+      }
+    }
+  }
   @media screen and (max-width: 769px) {
     width: 90%;
     margin: 0px auto;
@@ -171,65 +173,49 @@ const SearchBar = styled.div`
     width: 150px;
   }
 `;
+const NFTSubCont = styled.div`
+  width: 90%;
+  margin: 0px auto;
+  overflow-x: scroll;
+  margin-top: -50px;
+  transition: all 0.3s ease-in;
+  .nft__sub__container {
+    display: flex;
+    width: max-content;
+    gap: 8px;
+    transition: all 0.3s ease-in;
+  }
+`;
 
-const NFTContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  align-items: center;
-
-  transition: all 300ms ease-in-out;
+export const NFTContainer = styled.div`
+  transition: all 0.3s linear;
   opacity: 1;
   z-index: 3;
   background: linear-gradient(254.33deg, rgba(255, 255, 255, 0.1) 1.71%, rgba(255, 255, 255, 0.05) 99.35%);
   backdrop-filter: blur(16.86px);
   border-radius: 20px 20px 0px 0px;
-  width: -moz-calc(100% - 150px);
-  width: -webkit-calc(100% - 150px);
-  width: -o-calc(100% - 150px);
-  width: calc(100% - 150px);
-  height: 400px;
+  width: 90%;
+  min-height: 400px;
   margin: 0px auto;
   margin-top: 80px;
   border: 1px solid #383838;
-
+  transition: all 0.3s linear;
   @media screen and (max-width: 769px) {
     width: 95%;
   }
-`;
 
-const NFTTransparentContainer = styled.div`
-  margin-left: 55px;
-
-  border-radius: 20px 20px 0px 0px;
-  box-sizing: border-box;
-
-  width: -moz-calc(100% - 150px);
-  width: -webkit-calc(100% - 150px);
-  width: -o-calc(100% - 150px);
-  width: calc(100% - 150px);
-  border: 1px solid #383838;
-  z-index: 1;
-  opacity: 0;
-  transition: opacity 0.3s ease-out;
+  &:hover {
+    padding-bottom: 40px;
+    transition: all 0.3s linear;
+    ${NFTSubCont} {
+      margin-top: 40px;
+      padding-bottom: 20px;
+      transition: all 0.3s linear;
+    }
+  }
 `;
 
 const ParentNFTCont = styled.div``;
-
-const NFTSubCont = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  margin-top: -120px;
-  width: 100%;
-  gap: 20px;
-  overflow-x: scroll;
-
-  transition: all 300ms ease-in-out;
-  opacity: 1;
-  height: 400px;
-`;
 
 const DiscoverAndAnimate = styled.div`
   display: flex;
@@ -238,19 +224,9 @@ const DiscoverAndAnimate = styled.div`
   position: relative;
 `;
 
-const SeeMore = styled.div`
-  color: white;
-  display: none;
-  margin-left: 90%;
-  margin-top: 15px;
-  cursor: pointer;
-  flex-direction: row;
-  gap: 15px;
-`;
-
 const DiscoverPart = styled.div`
   flex: 0.5;
-
+  margin-left: 50px;
   @media screen and (max-width: 760px) {
     width: 100%;
     margin: 0px auto;
@@ -273,11 +249,16 @@ const AnimatePart = styled.div`
 `;
 
 const ExploreNFT = styled.div`
-  height: 585px;
-  width: 97px;
-
+  height: 100%;
+  width: 60px;
   position: absolute;
-  margin-left: -60px;
+  margin-left: 0;
+
+  img {
+    width: 60px !important;
+    height: 100vh !important;
+    object-fit: contain;
+  }
   @media screen and (max-width: 760px) {
     display: none;
   }
@@ -389,6 +370,14 @@ const NoItemContainer = styled.div`
   flex: 1;
   justify-content: center;
   align-items: center;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1200px;
+  background: linear-gradient(254.33deg, rgba(255, 255, 255, 0.1) 1.71%, rgba(255, 255, 255, 0.05) 99.35%);
+  backdrop-filter: blur(16.86px);
+  padding: 50px 0;
+  border-radius: 20px;
+  margin-top: 50px;
 `;
 
 export default function Homepage() {
@@ -405,79 +394,91 @@ export default function Homepage() {
     <>
       <MainContainer>
         <MarketplaceContainer>
-          <Navbar />
-          <DiscoverAndAnimate>
-            <ExploreNFT>
-              <Image width="97px" height="585px" src="/icons/exploreNFT.png" />
-            </ExploreNFT>
-            <DiscoverPart>
-              <RoundBlueLine>
-                <Image width="149px" height="80px" src="/objects/round.svg" />
-              </RoundBlueLine>
-              <DiscoverText>Discover, collect, and sell extraordinary NFTs</DiscoverText>
-              <ButtonContainer>
-                <Filled_CTA_Button>Get Started</Filled_CTA_Button>
-                <Ghost_CTA_Button>Become a Creator</Ghost_CTA_Button>
-              </ButtonContainer>
-            </DiscoverPart>
-            <AnimatePart>
-              <Background />
-            </AnimatePart>
-          </DiscoverAndAnimate>
+          <div className="main__container__wrapper">
+            <div className="header">
+              <Navbar />
+            </div>
+            <DiscoverAndAnimate>
+              <ExploreNFT>
+                <Image width="97px" height="585px" src="/icons/exploreNFT.png" />
+              </ExploreNFT>
+              <DiscoverPart>
+                <RoundBlueLine>
+                  <Image width="149px" height="80px" src="/objects/round.svg" />
+                </RoundBlueLine>
+                <DiscoverText>Discover, collect, and sell extraordinary NFTs</DiscoverText>
+                <ButtonContainer>
+                  <Filled_CTA_Button>Get Started</Filled_CTA_Button>
+                  <Ghost_CTA_Button>Become a Creator</Ghost_CTA_Button>
+                </ButtonContainer>
+              </DiscoverPart>
+              <AnimatePart>
+                <Background />
+              </AnimatePart>
+            </DiscoverAndAnimate>
 
-          <FilterByText>
-            <Image height={18} width={18} src="/icons/filter.svg" />
-            <div> Filter by</div>
-          </FilterByText>
-          <FilterContainer>
-            <FilterAllBtn>All</FilterAllBtn>
-            <FilterBtn>
-              Top Selling{' '}
-              <div style={{ marginTop: -1 }}>
-                <Image width="12px" height="9px" src="/icons/downIcon.svg" />
-              </div>
-            </FilterBtn>
-            <FilterBtn>
-              Price{' '}
-              <div style={{ marginTop: -1 }}>
-                <Image width="12px" height="9px" src="/icons/downIcon.svg" />
-              </div>
-            </FilterBtn>
-            <SearchBar>
-              <Image height="18px" width="18px" src={'/icons/search.svg'} />{' '}
-              <input
-                className="input"
-                value={searchValue}
-                placeholder="Search artwork"
-                onChange={e => {
-                  setSearchValue(e.target.value);
-                }}
-                onClick={() => setSearchValue('')}
-              />
-            </SearchBar>
-          </FilterContainer>
-          <ParentNFTCont>
-            <NFTContainer className="nft-container">
-              <NFTSubCont>
-                {allCollections.length === 0 ? (
-                  <NoItemContainer>
-                    <span style={{ color: '#f5f5f5', fontSize: 30, fontFamily: 'Rubik' }}>No Item To Display</span>
-                  </NoItemContainer>
-                ) : (
-                  _.map(allCollections, collection => (
-                    <Card
-                      name={collection.collectionName}
-                      price="0"
-                      owner={collection.metadata.owner}
-                      imageURI={collection.metadata.imageURI}
-                      key={collection.collectionId}
-                      linkTo={`/collections/${collection.collectionId}`}
+            <FilterContainer>
+              <div className="filter__wrapper">
+                <div className="filter__top">
+                  <Image height={18} width={18} src="/icons/filter.svg" />
+                  <div> Filter by</div>
+                </div>
+                <div className="filter__bottom">
+                  <FilterAllBtn>All</FilterAllBtn>
+                  <FilterBtn>
+                    Top Selling{' '}
+                    <div style={{ marginTop: -1 }}>
+                      <Image width="12px" height="9px" src="/icons/downIcon.svg" />
+                    </div>
+                  </FilterBtn>
+                  <FilterBtn>
+                    Price{' '}
+                    <div style={{ marginTop: -1 }}>
+                      <Image width="12px" height="9px" src="/icons/downIcon.svg" />
+                    </div>
+                  </FilterBtn>
+                  <SearchBar>
+                    <Image height="18px" width="18px" src={'/icons/search.svg'} />{' '}
+                    <input
+                      className="input"
+                      value={searchValue}
+                      placeholder="Search artwork"
+                      onChange={e => {
+                        setSearchValue(e.target.value);
+                      }}
+                      onClick={() => setSearchValue('')}
                     />
-                  ))
-                )}
-              </NFTSubCont>
-            </NFTContainer>
-          </ParentNFTCont>
+                  </SearchBar>
+                </div>
+              </div>
+            </FilterContainer>
+            <ParentNFTCont>
+              {allCollections.length === 0 ? (
+                <NoItemContainer>
+                  <span style={{ color: '#f5f5f5', fontSize: 30, fontFamily: 'Rubik' }}>No Item To Display</span>
+                </NoItemContainer>
+              ) : (
+                <NFTContainer className="nft-container">
+                  <NFTSubCont>
+                    <div className="nft__sub__container">
+                      {_.map(allCollections, collection => (
+                        <>
+                          <Card
+                            name={collection?.collectionName}
+                            price="0"
+                            owner={collection?.metadata.owner}
+                            imageURI={collection?.metadata.imageURI}
+                            key={collection?.collectionId}
+                            linkTo={`/collections/${collection?.collectionId}`}
+                          />
+                        </>
+                      ))}
+                    </div>
+                  </NFTSubCont>
+                </NFTContainer>
+              )}
+            </ParentNFTCont>
+          </div>
           <Footer>
             <div className="footer__container">
               <div className="footer__left">
