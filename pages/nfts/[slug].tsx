@@ -52,33 +52,33 @@ const Banner = styled.div`
   }
 `;
 
-const BannerCaption = styled.h3`
-  font-weight: bold;
-  color: #fff;
-  font-size: 40px;
-  @media screen and (max-width: 760px) {
-    text-align: center;
-    font-size: 2rem;
-  }
-`;
+// const BannerCaption = styled.h3`
+//   font-weight: bold;
+//   color: #fff;
+//   font-size: 40px;
+//   @media screen and (max-width: 760px) {
+//     text-align: center;
+//     font-size: 2rem;
+//   }
+// `;
 
-const ProfileAvatar = styled.div`
-  border: 5px solid #5c95ff;
-  border-radius: 50%;
-  width: 125px;
-  height: 125px;
-  position: absolute;
-  left: 80%;
-  background: ${(props: any) => `url(${props.background})`} no-repeat;
-  background-size: 100% 100%;
-  @media screen and (max-width: 760px) {
-    left: auto;
-    align-items: center;
-    top: 50%;
-    justify-content: center;
-    text-align: center;
-  }
-`;
+// const ProfileAvatar = styled.div`
+//   border: 5px solid #5c95ff;
+//   border-radius: 50%;
+//   width: 125px;
+//   height: 125px;
+//   position: absolute;
+//   left: 80%;
+//   background: ${(props: any) => `url(${props.background})`} no-repeat;
+//   background-size: 100% 100%;
+//   @media screen and (max-width: 760px) {
+//     left: auto;
+//     align-items: center;
+//     top: 50%;
+//     justify-content: center;
+//     text-align: center;
+//   }
+// `;
 
 const CollectionInfoCont = styled.div`
   margin-top: 15px;
@@ -128,7 +128,7 @@ const ColoredBackground = styled.div`
 `;
 
 const BodyContainer = styled.div`
-  margin-top: 40px;
+  margin-top: 45px;
   padding: 10px;
   display: flex;
   justify-content: center;
@@ -326,10 +326,10 @@ export default function NFT() {
           </NavContainer>
 
           <Spin spinning={isLoading}>
-            <Banner background={collectionById.metadata.bannerURI}>
+            {/* <Banner background={collectionById.metadata.bannerURI}>
               <BannerCaption>{collectionById.collectionName || 'Collection Name'}</BannerCaption>
               <ProfileAvatar background={collectionById.metadata.imageURI} />
-            </Banner>
+            </Banner> */}
 
             <CollectionInfoCont>
               <div className="creator">
@@ -344,7 +344,7 @@ export default function NFT() {
                   <LikeButtonContainer>
                     <LikeButton src="/icons/dark-heart.png" />
                   </LikeButtonContainer>
-                  <img src={nftById.metadata?.imageURI} alt="NFT Image" width={398} height={398} />
+                  <img src={nftById.metadata?.imageURI} alt="NFT Image" width={398} height={598} />
                 </ProfileAvatarCard>
 
                 <DescriptionContainer>
@@ -373,9 +373,9 @@ export default function NFT() {
                 <ItemName>{nftById.metadata?.name || 'NFT Name'}</ItemName>
                 <div className="button__wrapper">
                   <CTA>
-                    <Filled_CTA_Button backgroundColor="#5C95FF" color="#fff">
+                    {/* <Filled_CTA_Button backgroundColor="#5C95FF" color="#fff">
                       Buy Now
-                    </Filled_CTA_Button>
+                    </Filled_CTA_Button> */}
                     <Filled_CTA_Button backgroundColor="#fff" color="#5C95FF">
                       Make an offer
                     </Filled_CTA_Button>
