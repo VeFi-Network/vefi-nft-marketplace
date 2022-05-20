@@ -193,12 +193,12 @@ export default function GreyMarketContainer({}: Props) {
     <GreyContainerMain>
       <NFTScrollableContainer>
         <PaddedSpace />
-        <Card collectionName="God of War" NFTImageURI="/nft/nft01.png" NFTPrice="247" NFTName="ToomuchLag"></Card>
-        <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
-        <Card collectionName="Lost in Space" NFTImageURI="/nft/nft03.png" NFTPrice="2" NFTName="Wereywanle"></Card>
-        <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
-        <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
-        <Card collectionName="Lost in Space" NFTImageURI="/nft/nft03.png" NFTPrice="2" NFTName="Wereywanle"></Card>
+        <Card name="God of War" imageURI="/nft/nft01.png" price="247" owner="ToomuchLag" linkTo=""></Card>
+        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo=""></Card>
+        <Card name="Lost in Space" imageURI="/nft/nft03.png" price="2" owner="Wereywanle" linkTo=""></Card>
+        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo=""></Card>
+        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo=""></Card>
+        <Card name="Lost in Space" imageURI="/nft/nft03.png" price="2" owner="Wereywanle" linkTo=""></Card>
 
         <PaddedSpace />
       </NFTScrollableContainer>
@@ -223,24 +223,24 @@ export default function GreyMarketContainer({}: Props) {
 
       <NFTScrollableContainer>
         <PaddedSpace />
-        <Card collectionName="God of War" NFTImageURI="/nft/nft01.png" NFTPrice="247" NFTName="ToomuchLag"></Card>
-        <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
-        <Card collectionName="Lost in Space" NFTImageURI="/nft/nft03.png" NFTPrice="2" NFTName="Wereywanle"></Card>
-        <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
-        <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
-        <Card collectionName="Lost in Space" NFTImageURI="/nft/nft03.png" NFTPrice="2" NFTName="Wereywanle"></Card>
+        <Card name="God of War" imageURI="/nft/nft01.png" price="247" owner="ToomuchLag" linkTo=""></Card>
+        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo=""></Card>
+        <Card name="Lost in Space" imageURI="/nft/nft03.png" price="2" owner="Wereywanle" linkTo=""></Card>
+        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo=""></Card>
+        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo=""></Card>
+        <Card name="Lost in Space" imageURI="/nft/nft03.png" price="2" owner="Wereywanle" linkTo=""></Card>
 
         <PaddedSpace />
       </NFTScrollableContainer>
 
       <NFTScrollableContainer>
         <PaddedSpace />
-        <Card collectionName="God of War" NFTImageURI="/nft/nft01.png" NFTPrice="247" NFTName="ToomuchLag"></Card>
-        <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
-        <Card collectionName="Lost in Space" NFTImageURI="/nft/nft03.png" NFTPrice="2" NFTName="Wereywanle"></Card>
-        <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
-        <Card collectionName="Rolling Ape" NFTImageURI="/nft/nft02.png" NFTPrice="7" NFTName="Unknowest"></Card>
-        <Card collectionName="Lost in Space" NFTImageURI="/nft/nft03.png" NFTPrice="2" NFTName="Wereywanle"></Card>
+        <Card name="God of War" imageURI="/nft/nft01.png" price="247" owner="ToomuchLag" linkTo=""></Card>
+        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo=""></Card>
+        <Card name="Lost in Space" imageURI="/nft/nft03.png" price="2" owner="Wereywanle" linkTo=""></Card>
+        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo=""></Card>
+        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo=""></Card>
+        <Card name="Lost in Space" imageURI="/nft/nft03.png" price="2" owner="Wereywanle" linkTo=""></Card>
 
         <PaddedSpace />
       </NFTScrollableContainer>
