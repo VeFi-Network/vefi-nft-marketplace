@@ -30,11 +30,11 @@ const PaddedSpace = styled.div`
 const NFTScrollableContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   display: flex;
   align-items: center;
   margin-top: 20px;
-  width: 1130px;
+  width:100%;
   height: 415px;
   flex-direction: row;
   gap: 46px;

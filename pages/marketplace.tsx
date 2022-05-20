@@ -32,7 +32,6 @@ const MarketplaceContainer = styled.div`
 const NavbarContainer = styled.div`
   width: 1400px;
   min-width: 1000px;
-  position: fixed;
   padding-left: 100px;
   z-index: 3;
 
