@@ -14,9 +14,8 @@ type Props = {
 const CardContainer = styled.div`
   position: relative;
   top: 0;
-  width: 358px;
+  min-width: 300px;
   z-index: 3;
-
   cursor: pointer;
   height: 380px;
   margin-right: 5px;
@@ -80,7 +79,7 @@ const CardFooter = styled.div`
 const CardFooterItem = styled.div`
   display: flex;
   flex-direction: row;
-  min-width: 328.27px;
+  width: 100%;
   justify-content: space-between;
   height: 121px;
   margin-top: 15px;
