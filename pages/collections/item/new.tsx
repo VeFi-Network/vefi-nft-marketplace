@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Navbar from '../../../components/Navbar';
-import Image from 'next/image';
 import Filled_CTA_Button from '../../../components/Button/CTA/Filled';
+import { pinFile,  pinJson } from '../../../api/ipfs';
+import FileContainer from '../../../components/Collections/FileContainer';
+import DropdownComponent from '../../../components/Collections/Dropdown';
+import DynamicDropdown from '../../../components/Collections/DynamicDropdown';
 
 type Props = {};
 
@@ -70,20 +73,6 @@ const ParentExploreAndData = styled.div`
     color: #ebf8ff;
     margin-top: 11px;
   }
-
-  .dotted-div {
-    width: 356px;
-    height: 177px;
-    border: 2px dashed #5c95ff;
-    border-radius: 11px;
-    margin-top: 29px;
-
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-  }
-
   .blue {
     color: #5c95ff;
   }
@@ -233,67 +222,6 @@ const ParentExploreAndData = styled.div`
     color: #5c95ff;
   }
 
-  .dropdown-cont {
-    display: flex;
-    flex-direction: row;
-    gap: 27px;
-  }
-`;
-
-const Dropdown = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 10px;
-  gap: 11px;
-  background: #373943;
-  border-radius: 11px;
-  width: ${(props: { width: string }) => (props.width ? props.width : '155.78px')};
-  height: 37px;
-  cursor: pointer;
-
-  font-family: 'Rubik';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 17px;
-
-  margin-top: ${(props: { top: string }) => (props.top ? props.top : '36px')};
-
-  color: #5c95ff;
-
-  .cross {
-    font-size: 22px;
-  }
-`;
-
-const DropdownContainer = styled.div`
-  width: ${(props: { width: string }) => (props.width ? props.width : '155.78px')};
-  background: #373943;
-  border-radius: 11px;
-  position: absolute;
-
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  margin-top: 30px;
-  margin-left: -10px;
-  z-index: 3;
-
-  .drop-el {
-    height: 38px;
-    display: flex;
-    align-items: center;
-    padding-left: 10px;
-
-    &:hover {
-      opacity: 0.5;
-    }
-  }
-`;
-
-const FieldsDiv = styled.div`
-  border: 1px solid red;
 `;
 
 const Heading = styled.div`
@@ -319,6 +247,7 @@ export default function NewCollection({}: Props) {
   const [checkbox2, setCheckbox2] = useState(false);
 
   const [traitsList, setTraitList] = useState(['Select Trait']);
+  const [traitsDropdownList, setTraitsDropdown] = useState<boolean[]>([false]);
 
   const [colDropdown, setColDropdown] = useState(false);
   const [colValue, setColVal] = useState('Select collection');
@@ -328,6 +257,141 @@ export default function NewCollection({}: Props) {
 
   const [labelDropdown, setLabelDropdown] = useState(false);
   const [labelValue, setLabelValue] = useState('Select label');
+
+  const [file, setFile] = useState<any | null>(null);
+
+  const [nftData,setNftData] = useState({
+    name:"",
+    owner:"",
+    externalLink:"",
+    description:""
+    
+  })
+
+  const setProperty = (e:any)=>{
+    setNftData(
+      {...nftData,
+        [e.target.name]:e.target.value
+      }
+    )
+  }
+
+
+  const checkTraitsList=()=>{
+    for(let item of traitsList){
+      if(item=='Select Trait')
+        return false;
+    }
+    return true;
+  }
+
+  const [btnEnabled,setBtnEnabled] = useState(false);
+
+  const allConditionsSatisfied = ()=>{
+    if(file && nftData.name!='' && nftData.description!='' && nftData.owner!='' && labelValue!='Select label' && checkTraitsList()){
+      return true;
+    }
+    else{
+      return false;
+    }
+
+  }
+
+  const resetAllFields = ()=>{
+    setNftData({
+      name:"",
+      owner:"",
+      externalLink:"",
+      description:""
+      
+    });
+    setFile(null);
+    setLabelValue('Select label');
+    setTraitList(['Select Trait']);
+    setColVal('Select collection');
+    setPropertiesValue('Select properties');
+
+  }
+
+  useEffect(()=>{
+    if(allConditionsSatisfied()==btnEnabled){
+      // Do nothing --- preventing unncecessary state change
+    }
+    else{
+       if(allConditionsSatisfied()){
+      setBtnEnabled(true);
+    }
+    else{
+      setBtnEnabled(false);
+    }
+    }
+
+
+   
+  },[nftData,file,traitsList,labelValue])
+
+
+
+  const createNftButton = async()=>{
+    try{
+      if(allConditionsSatisfied()){
+        console.log("Pinning File");
+        const formData = new FormData();
+        formData.append("file", file.file);
+        let respObj;
+        // Pin Image File
+        pinFile(formData).then((res:any)=>{
+          console.log(res);
+          if(res?.response?.CID && res?.response?.fileURI)
+          {
+            window.open(res.response.fileURI);
+            //pin JSON
+            pinJson({
+              name: nftData.name,
+              description: nftData.description,
+              image: `ipfs://${res.response.CID}`,
+              imageCID: res.response.CID,
+              fileURI: res.response.fileURI,
+              owner: nftData.owner,
+              label: labelValue,
+              traits: traitsList.toString(),  
+            }).then((pinResponse:any)=>{
+              console.log(pinResponse);
+              if(pinResponse?.response?.CID && pinResponse?.response?.itemURI)
+              {
+              window.open(pinResponse.response.itemURI);
+              resetAllFields();
+              }
+              else{
+                console.log("Item API did not return accepted format");
+              }
+            }).catch((err)=>{
+              console.log("Inner Catch Block Error ==" +err);
+            })
+          }
+          else{
+            console.log("File API did not return accepted format");
+          }
+         
+        }).catch((e)=>{
+          console.log("Catch block error" +e);
+        })
+
+     
+
+
+      }
+      else{
+        console.log("Enter all details");
+      }
+      }
+    catch(e){
+      console.log("Error Occured ===" +e);
+    }
+      
+  }
+
+
   return (
     <MainContainer>
       <NavbarContainer>
@@ -345,16 +409,14 @@ export default function NewCollection({}: Props) {
           <span className="blue"> Max size 40mb</span>
         </div>
 
-        <div className="dotted-div">
-          <Image src="/collection/dummyImage.svg" width="56px" height="56px" />
-        </div>
+        <FileContainer file={file} setFile={setFile} type={1} />
 
         <Heading className="heading">
           Name<span className="blue">*</span>
         </Heading>
 
         <div className="input-div">
-          <input type="text" className="inp" placeholder="Item Name" />
+          <input value={nftData.name} name="name" onChange={setProperty} type="text" className="inp" placeholder="Item Name" />
         </div>
 
         <Heading className="heading">
@@ -362,7 +424,7 @@ export default function NewCollection({}: Props) {
         </Heading>
 
         <div className="input-div">
-          <input type="text" className="inp" placeholder="Paste the owner address of the NFT" />
+          <input type="text" value={nftData.owner} onChange={setProperty} name="owner" className="inp" placeholder="Paste the owner address of the NFT" />
         </div>
 
         <Heading className="heading">External link</Heading>
@@ -373,7 +435,7 @@ export default function NewCollection({}: Props) {
         </div>
 
         <div className="input-div">
-          <input type="text" className="inp" placeholder="https//Yoursite.io/item/567" />
+          <input type="text" value={nftData.externalLink} onChange={setProperty} name="externalLink" className="inp" placeholder="https//Yoursite.io/item/567" />
         </div>
 
         <Heading top={'48px'}>
@@ -390,6 +452,7 @@ export default function NewCollection({}: Props) {
             id=""
             placeholder="provide a detailed description of your item"
             rows={7}
+            value={nftData.description} onChange={setProperty} name="description"
           ></textarea>
         </div>
 
@@ -397,32 +460,18 @@ export default function NewCollection({}: Props) {
 
         <div className="text">This is the collection where your item will appear.</div>
 
-        <Dropdown
-          onClick={() => {
-            setColDropdown(!colDropdown);
-          }}
-        >
-          {colValue}
-          {colValue == 'Select collection' && (
-            <Image width="12px" style={{ zIndex: 1 }} height="11px" src="/icons/downIcon.svg" />
-          )}
-          {colDropdown && (
-            <DropdownContainer>
-              <div onClick={() => setColVal('Collection 1')} className="drop-el">
-                Collection 1
-              </div>
-              <div onClick={() => setColVal('Collection 2')} className="drop-el">
-                Collection 2
-              </div>
-              <div onClick={() => setColVal('Collection 3')} className="drop-el">
-                Collection 3
-              </div>
-              <div onClick={() => setColVal('Collection 4')} className="drop-el">
-                Collection 4
-              </div>
-            </DropdownContainer>
-          )}
-        </Dropdown>
+
+        <DropdownComponent 
+          dropdown={colDropdown} 
+          setDropdown={setColDropdown} 
+          value={colValue} 
+          setValue={setColVal}
+          dropDownList={['Collection 1','Collection 2','Collection 3','Collection 4']} 
+          defaultValue={'Select collection'} 
+          width={'155.78px'}  
+          top={'36px'}        
+        />
+
 
         <Heading top={'33px'}>Properties</Heading>
 
@@ -430,32 +479,18 @@ export default function NewCollection({}: Props) {
           Textual traits that show up as rectangles you can <br /> choose more than one
         </div>
 
-        <Dropdown
-          onClick={() => {
-            setPropDropdown(!propDropdown);
-          }}
-        >
-          {propertiesValue}{' '}
-          {propertiesValue == 'Select properties' && (
-            <Image width="12px" style={{ zIndex: 1 }} height="11px" src="/icons/downIcon.svg" />
-          )}
-          {propDropdown && (
-            <DropdownContainer>
-              <div onClick={() => setPropertiesValue('Property 1')} className="drop-el">
-                Property 1
-              </div>
-              <div onClick={() => setPropertiesValue('Property 2')} className="drop-el">
-                Property 2
-              </div>
-              <div onClick={() => setPropertiesValue('Property 3')} className="drop-el">
-                Property 3
-              </div>
-              <div onClick={() => setPropertiesValue('Property 4')} className="drop-el">
-                Property 4
-              </div>
-            </DropdownContainer>
-          )}
-        </Dropdown>
+        <DropdownComponent
+         dropdown={propDropdown} 
+         setDropdown={setPropDropdown} 
+         value={propertiesValue} 
+         setValue={setPropertiesValue} 
+         dropDownList={['Property 1','Property 2','Property 3','Property 4']} 
+         defaultValue={'Select properties'} 
+         width={'155.78px'}  
+         top={'36px'}  
+         
+        />
+        
 
         <Heading top={'33px'}>
           Traits <span className="blue">*</span>
@@ -463,29 +498,18 @@ export default function NewCollection({}: Props) {
 
         <div className="text">Select the NFT Traits</div>
 
-        <div className="dropdown-cont">
-          {traitsList &&
-            traitsList.map((trait, i) => (
-              <Dropdown key={i} width="150px" top="27px">
-                {trait} <Image width="12px" style={{ zIndex: 1 }} height="11px" src="/icons/downIcon.svg" />
-              </Dropdown>
-            ))}
-
-          <Dropdown
-            onClick={() => {
-              if (traitsList.length < 4) {
-                let newTraitList = [...traitsList];
-                newTraitList.push('Select Trait');
-                console.log(newTraitList);
-                setTraitList(newTraitList);
-              }
-            }}
-            width="130px"
-            top="27px"
-          >
-            <span className="cross">+</span> Add Trait
-          </Dropdown>
-        </div>
+        <DynamicDropdown 
+        dropDownList={traitsDropdownList} 
+        setDropdownList={setTraitsDropdown}
+        valueList={traitsList}
+        setValueList={setTraitList}
+        name={'Trait'} 
+        dropDownValueList={['Trait 1','Trait 2','Trait 3','Trait 4']} 
+        defaultValue={'Select Trait'} 
+        width={'150px'} 
+        top={'27px'} 
+        hideFirst={true}    
+           />
 
         <Heading top={'33px'}>
           Labels<span className="blue">*</span>
@@ -493,34 +517,17 @@ export default function NewCollection({}: Props) {
 
         <div className="text">Select between Legendary, Rare, Iconic, Super-Rare</div>
 
-        <Dropdown
-          width="130px"
-          top="20px"
-          onClick={() => {
-            setLabelDropdown(!labelDropdown);
-          }}
-        >
-          {labelValue}{' '}
-          {labelValue == 'Select label' && (
-            <Image width="12px" style={{ zIndex: 1 }} height="11px" src="/icons/downIcon.svg" />
-          )}
-          {labelDropdown && (
-            <DropdownContainer width="130px">
-              <div onClick={() => setLabelValue('Legendary')} className="drop-el">
-                Legendary
-              </div>
-              <div onClick={() => setLabelValue('Rare')} className="drop-el">
-                Rare
-              </div>
-              <div onClick={() => setLabelValue('Iconic')} className="drop-el">
-                Iconic
-              </div>
-              <div onClick={() => setLabelValue('Super-Rare')} className="drop-el">
-                Super-Rare
-              </div>
-            </DropdownContainer>
-          )}
-        </Dropdown>
+        <DropdownComponent 
+          dropdown={labelDropdown} 
+          setDropdown={setLabelDropdown}
+          value={labelValue} 
+          setValue={setLabelValue} 
+          dropDownList={['Legendary','Rare','Iconic','Super-Rare']}
+          defaultValue={'Select label'}
+          width={'130px'}
+          top={'20px'}          
+
+        />
 
         <Heading top={'33px'}>Unlockable content</Heading>
 
@@ -546,7 +553,14 @@ export default function NewCollection({}: Props) {
           </label>
         </div>
 
-        <Filled_CTA_Button style={{ width: 90, height: 42, marginTop: 33 }}>Create</Filled_CTA_Button>
+        {
+          btnEnabled? (
+            <Filled_CTA_Button onClick={createNftButton} style={{ width: 90, height: 42, marginTop: 33 }}>Create</Filled_CTA_Button>
+          ): (
+            <Filled_CTA_Button onClick={createNftButton} style={{background: 'grey',width:250,  marginTop: 33 }}>Please fill all required details</Filled_CTA_Button>
+          )
+        }
+     
       </ParentExploreAndData>
       <StyledExploreNft src="/icons/exploreNFT.png" />
       <ColoredBackground></ColoredBackground>
