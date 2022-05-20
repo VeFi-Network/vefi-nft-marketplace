@@ -193,12 +193,12 @@ export default function GreyMarketContainer({}: Props) {
     <GreyContainerMain>
       <NFTScrollableContainer>
         <PaddedSpace />
-        <Card name="God of War" imageURI="/nft/nft01.png" price="247" owner="ToomuchLag" linkTo=""></Card>
-        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo=""></Card>
-        <Card name="Lost in Space" imageURI="/nft/nft03.png" price="2" owner="Wereywanle" linkTo=""></Card>
-        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo=""></Card>
-        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo=""></Card>
-        <Card name="Lost in Space" imageURI="/nft/nft03.png" price="2" owner="Wereywanle" linkTo=""></Card>
+        <Card name="God of War" imageURI="/nft/nft01.png" price="247" owner="ToomuchLag" linkTo="/marketplace"></Card>
+        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo="/marketplace"></Card>
+        <Card name="Lost in Space" imageURI="/nft/nft03.png" price="2" owner="Wereywanle" linkTo="/marketplace"></Card>
+        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo="/marketplace"></Card>
+        <Card name="Lost in Space" imageURI="/nft/nft03.png" price="2" owner="Wereywanle" linkTo="/marketplace"></Card>
+        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo="/marketplace"></Card>
 
         <PaddedSpace />
       </NFTScrollableContainer>
@@ -223,24 +223,23 @@ export default function GreyMarketContainer({}: Props) {
 
       <NFTScrollableContainer>
         <PaddedSpace />
-        <Card name="God of War" imageURI="/nft/nft01.png" price="247" owner="ToomuchLag" linkTo=""></Card>
-        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo=""></Card>
-        <Card name="Lost in Space" imageURI="/nft/nft03.png" price="2" owner="Wereywanle" linkTo=""></Card>
-        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo=""></Card>
-        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo=""></Card>
-        <Card name="Lost in Space" imageURI="/nft/nft03.png" price="2" owner="Wereywanle" linkTo=""></Card>
-
+        <Card name="God of War" imageURI="/nft/nft01.png" price="247" owner="ToomuchLag" linkTo="/marketplace"></Card>
+        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo="/marketplace"></Card>
+        <Card name="Lost in Space" imageURI="/nft/nft03.png" price="2" owner="Wereywanle" linkTo="/marketplace"></Card>
+        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo="/marketplace"></Card>
+        <Card name="Lost in Space" imageURI="/nft/nft03.png" price="2" owner="Wereywanle" linkTo="/marketplace"></Card>
+        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo="/marketplace"></Card>
         <PaddedSpace />
       </NFTScrollableContainer>
 
       <NFTScrollableContainer>
         <PaddedSpace />
-        <Card name="God of War" imageURI="/nft/nft01.png" price="247" owner="ToomuchLag" linkTo=""></Card>
-        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo=""></Card>
-        <Card name="Lost in Space" imageURI="/nft/nft03.png" price="2" owner="Wereywanle" linkTo=""></Card>
-        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo=""></Card>
-        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo=""></Card>
-        <Card name="Lost in Space" imageURI="/nft/nft03.png" price="2" owner="Wereywanle" linkTo=""></Card>
+        <Card name="God of War" imageURI="/nft/nft01.png" price="247" owner="ToomuchLag" linkTo="/marketplace"></Card>
+        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo="/marketplace"></Card>
+        <Card name="Lost in Space" imageURI="/nft/nft03.png" price="2" owner="Wereywanle" linkTo="/marketplace"></Card>
+        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo="/marketplace"></Card>
+        <Card name="Lost in Space" imageURI="/nft/nft03.png" price="2" owner="Wereywanle" linkTo="/marketplace"></Card>
+        <Card name="Rolling Ape" imageURI="/nft/nft02.png" price="7" owner="Unknowest" linkTo="/marketplace"></Card>
 
         <PaddedSpace />
       </NFTScrollableContainer>

@@ -442,7 +442,7 @@ export default function Homepage() {
                     <input
                       className="input"
                       value={searchValue}
-                      placeholder="Search artwork"
+                      placeholder="Search Collection"
                       onChange={e => {
                         setSearchValue(e.target.value);
                       }}
