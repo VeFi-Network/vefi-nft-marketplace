@@ -62,7 +62,7 @@ const FilterAllBtn = styled.button`
 const SearchBar = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   padding: 10px 20px 10px 10px;
   background: #373943;
   border-radius: 11px;
