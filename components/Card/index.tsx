@@ -17,7 +17,7 @@ const CardContainer = styled.div`
   min-width: 300px;
   z-index: 3;
   cursor: pointer;
-  height: 380px;
+  min-height: 380px;
   margin-right: 5px;
   border-radius: 21px 21px 0 0;
 `;
