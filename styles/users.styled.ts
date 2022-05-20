@@ -509,7 +509,7 @@ export const CardFooterItem = styled.div`
     display: flex;
     flex-direction: column;
     padding: 15px;
-    margin-top:1.0rem;
+    margin-top:0.3rem;
     row-gap: 0.3rem;
     align-items: center;
     height:50px;
