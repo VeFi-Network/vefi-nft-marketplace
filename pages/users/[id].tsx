@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaBars, FaHandHoldingUsd, FaRegEyeSlash, FaSearch } from 'react-icons/fa';
 import { FiBarChart, FiChevronDown, FiEyeOff, FiGrid, FiHeart, FiList, FiRotateCcw, FiTag } from 'react-icons/fi';
-import NFTCard from '../../components/Card/NftCard';
+import Card from '../../components/Card/UserProfileCard';
 import FilterProperty from '../../components/Filter';
 import FIlterBy from '../../components/Filter/FIlterBy';
 import Navbar from '../../components/Navbar';
@@ -65,7 +65,7 @@ const Users = () => {
           </div>
           <NFTCollection>
             <div className="container">
-              <NFTCard />
+              <Card />
             </div>
           </NFTCollection>
         </NFTUserCollectionInfo>
