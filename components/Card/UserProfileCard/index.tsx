@@ -7,10 +7,9 @@ import Image from 'next/image';
 type Props = {
   model: NFTModel;
   onClick?: (event: any) => void;
-  price?:string;
 };
 
-const NFTCard = ({ model, onClick,price }: Props) => {
+const NFTCard = ({ model, onClick }: Props) => {
   return (
     <>
       <CardContainer>
@@ -27,7 +26,7 @@ const NFTCard = ({ model, onClick,price }: Props) => {
               <div className="nft-price-info">
                 <div className="price">
                   <Image src="/icons/eth_classic.svg" width={20} height={20} />
-                  <div>{price}2 eth</div>
+                  <div>2 eth</div>
                 </div>
                 <Button borderThickness="1px" width="65px" borderRadius="4px" fontSize="12px" padding="5px 20px">
                   Sell
