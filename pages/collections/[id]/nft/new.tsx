@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Navbar from '../../../../components/Navbar';
 import Image from 'next/image';
 import Filled_CTA_Button from '../../../../components/Button/CTA/Filled';
+import FileContainer from '../../../../components/Collections/FileContainer';
+import DropdownComponent from '../../../../components/Collections/Dropdown';
+import DynamicDropdown from '../../../../components/Collections/DynamicDropdown';
+import { pinFile, pinJson } from '../../../../api/ipfs';
 
 type Props = {};
 
@@ -50,17 +54,6 @@ const ParentExploreAndData = styled.div`
     margin-top: 80px;
   }
 
-  .round-dot {
-    border: 2px dashed #5c95ff;
-    border-radius: 50%;
-    width: 108px;
-    height: 108px;
-    margin-top: 27px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
 
   .white-text {
     font-family: 'Rubik';
@@ -82,31 +75,9 @@ const ParentExploreAndData = styled.div`
     margin-top: 11px;
   }
 
-  .dotted-div {
-    width: 356px;
-    height: 177px;
-    border: 2px dashed #5c95ff;
-    border-radius: 11px;
-    margin-top: 27px;
+ 
 
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-  }
 
-  .dotted-div-small {
-    width: 356px;
-    height: 130px;
-    border: 2px dashed #5c95ff;
-    border-radius: 11px;
-    margin-top: 27px;
-
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-  }
 
   .blue {
     color: #5c95ff;
@@ -261,30 +232,7 @@ const ParentExploreAndData = styled.div`
   margin-bottom: 50px;
 `;
 
-const DropdownContainer = styled.div`
-  width: ${(props: { width: string }) => (props.width ? props.width : '155.78px')};
-  background: #373943;
-  border-radius: 11px;
-  position: absolute;
 
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  margin-top: 30px;
-  margin-left: -10px;
-  z-index: 3;
-
-  .drop-el {
-    height: 38px;
-    display: flex;
-    align-items: center;
-    padding-left: 10px;
-
-    &:hover {
-      opacity: 0.5;
-    }
-  }
-`;
 
 const Heading = styled.div`
   margin-top: ${(props: { top: string }) => (props.top ? props.top : '58px')};
@@ -296,36 +244,7 @@ const Heading = styled.div`
   color: #ebf8ff;
 `;
 
-const Dropdown = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 10px;
-  gap: 11px;
-  background: #373943;
-  border-radius: 11px;
-  width: ${(props: { width: string }) => (props.width ? props.width : '155.78px')};
-  height: 37px;
-  cursor: pointer;
 
-  font-family: 'Rubik';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 17px;
-
-  margin-top: ${(props: { top: string }) => (props.top ? props.top : '36px')};
-
-  color: #5c95ff;
-
-  .cross {
-    font-size: 22px;
-  }
-`;
-
-const FieldsDiv = styled.div`
-  border: 1px solid red;
-`;
 
 const StyledExploreNft = styled.img`
   height: 585px;
@@ -337,12 +256,162 @@ const StyledExploreNft = styled.img`
 export default function NewNFT({}: Props) {
   const [checkbox, setCheckbox] = useState(false);
   const [paymentTokenList, setPaymentTokenList] = useState<string[]>([]);
+  const [paymentDropdownList, setPaymentDropdown] = useState<boolean[]>([false]);
 
   const [categoryDropdown, setCatDropdown] = useState(false);
   const [categoryValue, setCatVal] = useState('Add Category');
 
   const [blockchainDropdown, setBlockchainDropdown] = useState(false);
   const [blockValue, setBlockValue] = useState('Select Blockchain');
+  
+  const [logoFile,setLogoFile] = useState<any | null>(null);
+  const [featuredFile,setFeatured] = useState<any | null>(null);
+  const [bannerFile,setBannerFile] = useState<any | null>(null);
+
+
+  const [collectionItem,setCollectionItem] = useState({
+    name:"",
+    symbol:"",
+    feeReciever:"",
+    url:"",
+    description:"",
+    feePercentage:""
+    
+  })
+
+  const setProperty = (e:any)=>{
+    setCollectionItem(
+      {...collectionItem,
+        [e.target.name]:e.target.value
+      }
+    )
+  }
+
+  const [btnEnabled,setBtnEnabled] = useState(false);
+
+  const allConditionsSatisfied = ()=>{
+    if(logoFile && bannerFile &&  collectionItem.name!='' && collectionItem.description!='' && collectionItem.symbol!='' && collectionItem.feeReciever!='' && collectionItem.feePercentage!='' && collectionItem.url ){
+      return true;
+    }
+    else{
+      return false;
+    }
+
+  }
+
+  const resetAllFields = ()=>{
+    setCollectionItem({
+      name:"",
+      symbol:"",
+      feeReciever:"",
+      url:"",
+      description:"",
+      feePercentage:""
+      
+    });
+    setLogoFile(null);
+    setBannerFile(null);
+    setPaymentTokenList([]);
+    
+
+  }
+  
+  useEffect(()=>{
+    if(allConditionsSatisfied()==btnEnabled){
+      // Do nothing --- preventing unncecessary state change
+    }
+    else{
+       if(allConditionsSatisfied()){
+      setBtnEnabled(true);
+    }
+    else{
+      setBtnEnabled(false);
+    }
+    }
+
+
+   
+  },[collectionItem,logoFile,bannerFile]);
+
+
+  const createNftButton = async()=>{
+    try{
+      if(allConditionsSatisfied() ){
+        console.log("Pinning File");
+        const formData = new FormData();
+        formData.append("file", logoFile?.file);
+        // Pin Image File
+        pinFile(formData).then((res:any)=>{
+      
+          if(res?.response?.CID && res?.response?.fileURI)
+          {
+            console.log("Logo file pinned");
+            window.open(res.response.fileURI);
+            const formData2 = new FormData();
+            formData2.append("file", bannerFile?.file);
+            pinFile(formData2).then((response2:any)=>{
+                console.log(response2);  
+              if(response2?.response?.CID && response2?.response?.fileURI){
+                  console.log("Banner file pinned");
+                  window.open(response2.response.fileURI);
+                  //pin JSOn 
+
+                  pinJson({
+                    
+                    name: collectionItem.name,
+                    description: collectionItem.description,
+                    logoImage: `ipfs://${res.response.CID}`,
+                    logoCID: res.response.CID,
+                    logofileURI: res.response.fileURI,
+                    bannerImage: `ipfs://${response2.response.CID}`,
+                    bannerCID: response2.response.fileURI,
+                    symbol: collectionItem.symbol,
+                    feeReciever: collectionItem.feeReciever,
+                    url: collectionItem.url,
+                    feePercentage: collectionItem.feePercentage
+
+
+                  }).then((pinResponse:any)=>{
+                    console.log(pinResponse);
+                    if(pinResponse?.response?.CID && pinResponse?.response?.itemURI)
+                    {
+                    window.open(pinResponse.response.itemURI);
+                    resetAllFields();
+                    }
+                    else{
+                      console.log("Item API did not return accepted format");
+                    }
+                  }).catch((err)=>{
+                    console.log("Inner Catch Block Error ==" +err);
+                  })
+                } 
+                else{
+                  console.log("Banner File API did not return accepted format");
+                }
+            })
+          }
+          else{
+            console.log("Logo File API did not return accepted format");
+          }
+         
+        }).catch((e)=>{
+          console.log("Catch block error" +e);
+        })
+
+     
+
+
+      }
+      else{
+        console.log("Enter all details");
+      }
+      }
+    catch(e){
+      console.log("Error Occured ===" +e);
+    }
+      
+  }
+
   return (
     <MainContainer>
       <NavbarContainer>
@@ -359,12 +428,10 @@ export default function NewNFT({}: Props) {
           This image will also be used for navigation 350x350 <br /> recomended.
         </div>
 
-        <div className="round-dot">
-          <Image src="/collection/dummyImage.svg" width="56px" height="56px" />
-        </div>
+        <FileContainer file={logoFile} setFile={setLogoFile} type={2} /> 
 
         <Heading top={'56px'}>
-          Featured Image <span className="blue">*</span>
+          Featured Image 
         </Heading>
 
         <div className="text">
@@ -372,9 +439,7 @@ export default function NewNFT({}: Props) {
           <br /> areas in VefiNft. <span className="blue">(Optional)</span>
         </div>
 
-        <div className="dotted-div">
-          <Image src="/collection/dummyImage.svg" width="56px" height="56px" />
-        </div>
+        <FileContainer file={featuredFile} setFile={setFeatured} type={1}/>
 
         <Heading top={'56px'}>
           Banner Image <span className="blue">*</span>
@@ -385,16 +450,14 @@ export default function NewNFT({}: Props) {
           <br /> change on different device 1440x250 recomended <br /> <span className="blue">(Optional)</span>
         </div>
 
-        <div className="dotted-div-small">
-          <Image src="/collection/dummyImage.svg" width="56px" height="56px" />
-        </div>
+        <FileContainer file={bannerFile} setFile={setBannerFile} type={3} />
 
         <Heading className="heading">
           Name<span className="blue">*</span>
         </Heading>
 
         <div className="input-div">
-          <input type="text" className="inp" placeholder="Item Name" />
+          <input type="text"  value={collectionItem.name} onChange={setProperty} name="name" className="inp" placeholder="Item Name" />
         </div>
 
         <Heading top="30px">
@@ -402,7 +465,7 @@ export default function NewNFT({}: Props) {
         </Heading>
 
         <div className="input-div">
-          <input type="text" className="inp" placeholder="Symbol of collection" />
+          <input value={collectionItem.symbol} onChange={setProperty} name="symbol" type="text" className="inp" placeholder="Symbol of collection" />
         </div>
 
         <Heading top="30px">
@@ -411,6 +474,9 @@ export default function NewNFT({}: Props) {
 
         <div className="input-div">
           <input
+            value={collectionItem.feeReciever}
+            name="feeReciever"
+            onChange={setProperty}
             type="text"
             className="inp"
             placeholder="Address that receives the fees paid for minting NFTs in this collection "
@@ -426,7 +492,7 @@ export default function NewNFT({}: Props) {
         </div>
 
         <div className="input-div">
-          <input type="text" className="inp" placeholder="https//vefinft.io/assets/lost-in-space" />
+          <input   value={collectionItem.url} onChange={setProperty} name="url" type="text" className="inp" placeholder="https//vefinft.io/assets/lost-in-space" />
         </div>
 
         <Heading top="27px">
@@ -443,36 +509,21 @@ export default function NewNFT({}: Props) {
             id=""
             placeholder="provide a detailed description of your item"
             rows={7}
+            value={collectionItem.description} onChange={setProperty} name="description"
           ></textarea>
         </div>
 
-        <Dropdown
-          onClick={() => {
-            setCatDropdown(!categoryDropdown);
-          }}
+
+        <DropdownComponent
+          dropdown={categoryDropdown}
+          setDropdown={setCatDropdown}
+          value={categoryValue}
+          setValue={setCatVal}
+          defaultValue={'Add Category'}
+          dropDownList={['Category 1','Category 2','Category 3','Category 4']}
           width="135px"
-        >
-          {categoryValue}
-          {categoryValue == 'Add Category' && (
-            <Image width="12px" style={{ zIndex: 1 }} height="11px" src="/icons/downIcon.svg" />
-          )}
-          {categoryDropdown && (
-            <DropdownContainer width="135px">
-              <div onClick={() => setCatVal('Category 1')} className="drop-el">
-                Category 1
-              </div>
-              <div onClick={() => setCatVal('Category 2')} className="drop-el">
-                Category 2
-              </div>
-              <div onClick={() => setCatVal('Category 3')} className="drop-el">
-                Category 3
-              </div>
-              <div onClick={() => setCatVal('Category 4')} className="drop-el">
-                Category 4
-              </div>
-            </DropdownContainer>
-          )}
-        </Dropdown>
+          top={'36px'}  
+        />
 
         <Heading top="64px">
           Royalties<span className="blue">*</span>
@@ -486,7 +537,7 @@ export default function NewNFT({}: Props) {
         <Heading top="25px">Percentage fee</Heading>
 
         <div className="input-div-small">
-          <input type="text" className="inp" placeholder="0.000" />
+          <input   value={collectionItem.feePercentage} onChange={setProperty} name="feePercentage" type="text" className="inp" placeholder="0.000" />
         </div>
 
         <Heading top="39px">Blockchain</Heading>
@@ -495,67 +546,34 @@ export default function NewNFT({}: Props) {
           Sellect the blockchain where you’d like new items from this <br /> collection to be added by defult.
         </div>
 
-        <Dropdown
-          onClick={() => {
-            setBlockchainDropdown(!blockchainDropdown);
-          }}
-          width="170px"
-          top="27px"
-        >
-          {blockValue}
-          {blockValue == 'Select Blockchain' && (
-            <Image width="12px" style={{ zIndex: 1 }} height="11px" src="/icons/downIcon.svg" />
-          )}
-          {blockchainDropdown && (
-            <DropdownContainer width="170px">
-              <div onClick={() => setBlockValue('Blockchain 1')} className="drop-el">
-                Blockchain 1
-              </div>
-              <div onClick={() => setBlockValue('Blockchain 2')} className="drop-el">
-                Blockchain 2
-              </div>
-              <div onClick={() => setBlockValue('Blockchain 3')} className="drop-el">
-                Blockchain 3
-              </div>
-              <div onClick={() => setBlockValue('Blockchain 4')} className="drop-el">
-                Blockchain 4
-              </div>
-            </DropdownContainer>
-          )}
-        </Dropdown>
+        <DropdownComponent 
+          dropdown={blockchainDropdown} 
+          setDropdown={setBlockchainDropdown} 
+          value={blockValue} 
+          setValue={setBlockValue}
+          dropDownList={['Ethereum','Binance','Polygon','Arbitrum']} 
+          defaultValue={'Select Blockchain'} 
+          width={'170px'}  
+          top={'36px'}        
+        />
 
         <Heading top="39px">payment tokens</Heading>
 
         <div className="text">These tokens may be used to buy and sell your items</div>
 
-        <div className="dropdown-cont">
-          <Dropdown width="150px" top="27px">
-            <Image width="17px" style={{ zIndex: 1, borderRadius: '50%' }} height="17px" src="/logo/eth.jpg" /> Ethereum{' '}
-            <Image width="12px" style={{ zIndex: 1 }} height="11px" src="/icons/downIcon.svg" />
-          </Dropdown>
 
-          {paymentTokenList &&
-            paymentTokenList.map((coin, i) => (
-              <Dropdown key={i} width="150px" top="27px">
-                {coin} <Image width="12px" style={{ zIndex: 1 }} height="11px" src="/icons/downIcon.svg" />
-              </Dropdown>
-            ))}
-
-          <Dropdown
-            onClick={() => {
-              if (paymentTokenList.length < 3) {
-                let newTokenList = [...paymentTokenList];
-                newTokenList.push('Select Token');
-                console.log(newTokenList);
-                setPaymentTokenList(newTokenList);
-              }
-            }}
-            width="130px"
-            top="27px"
-          >
-            <span className="cross">+</span> Add Token
-          </Dropdown>
-        </div>
+        <DynamicDropdown 
+        dropDownList={paymentDropdownList} 
+        setDropdownList={setPaymentDropdown} 
+        valueList={paymentTokenList} 
+        setValueList={setPaymentTokenList} 
+        name={'Token'} 
+        dropDownValueList={['Ethereum','Matic','Cardano']} 
+        defaultValue={'Select Token'} 
+        width={'150px'} 
+        top={'27px'}    
+        hideFirst={false}    
+        />
 
         <Heading top={'52px'}>Explicit and sensitive content</Heading>
 
@@ -568,7 +586,13 @@ export default function NewNFT({}: Props) {
           </label>
         </div>
 
-        <Filled_CTA_Button style={{ width: 90, height: 42, marginTop: 33 }}>Create</Filled_CTA_Button>
+        {
+          btnEnabled? (
+            <Filled_CTA_Button onClick={createNftButton} style={{ width: 90, height: 42, marginTop: 33 }}>Create</Filled_CTA_Button>
+          ): (
+            <Filled_CTA_Button onClick={createNftButton} style={{background: 'grey',width:250,  marginTop: 33 }}>Please fill all required details</Filled_CTA_Button>
+          )
+        }
       </ParentExploreAndData>
       <StyledExploreNft src="/icons/exploreNFT.png" />
       <ColoredBackground></ColoredBackground>
