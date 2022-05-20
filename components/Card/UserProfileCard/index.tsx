@@ -1,6 +1,12 @@
 import React from 'react';
 import { NFTModel } from '../../../api/models/nft';
-import { CardHeader, CardContainer, CardFooter, CardFooterContainer, CardFooterItem } from '../../../styles/users.styled';
+import {
+  CardHeader,
+  CardContainer,
+  CardFooter,
+  CardFooterContainer,
+  CardFooterItem
+} from '../../../styles/users.styled';
 import Button from '../../../components/Button/Ghost';
 import Image from 'next/image';
 
@@ -28,8 +34,15 @@ const NFTCard = ({ model, onClick }: Props) => {
                   <Image src="/icons/eth_classic.svg" width={20} height={20} />
                   <div>2 eth</div>
                 </div>
-                <Button borderThickness="1px" width="65px" borderRadius="4px" fontSize="12px" padding="5px 20px">
-                  Sell
+                <Button
+                  onClick={onClick}
+                  borderThickness="1px"
+                  width="65px"
+                  borderRadius="4px"
+                  fontSize="12px"
+                  padding="5px 20px"
+                >
+                  View
                 </Button>
               </div>
             </CardFooterItem>

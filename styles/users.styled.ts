@@ -3,7 +3,7 @@ import styled from 'styled-components';
 type Props = {
   cardWidth?: string;
   cardHeight?: string;
-}
+};
 
 export const UsersWrapper = styled.div`
   background: #0c0c0c;
@@ -223,7 +223,7 @@ export const NFTUserCollectionInfo = styled.div`
         align-items: center;
         gap: 10px;
         padding-bottom: 8px;
-        color:#fff !important;
+        color: #fff !important;
         transition: all 0.3s ease-in;
         &:hover {
           color: rgba(255, 255, 255, 0.7);
@@ -240,8 +240,8 @@ export const NFTUserCollectionInfo = styled.div`
             font-size: 0.9rem;
           }
         }
-        button.grid_btn{
-          background-color:#373943;
+        button.grid_btn {
+          background-color: #373943;
         }
 
         .sort__display {
@@ -296,13 +296,13 @@ export const NFTUserCollectionInfo = styled.div`
 
 export const NFTCollection = styled.div`
   width: 100%;
-  display:flex;
+  display: flex;
   justify-content: flex-start;
   .container {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    flex-direction:row;
+    flex-direction: row;
     row-gap: 30px;
     margin: 30px 0;
     justify-content: space-between;
@@ -422,8 +422,8 @@ export const CardContainer = styled.div`
   position: relative;
   top: 0;
   left: 0rem;
-  max-width: ${(props:Props) => props.cardWidth || "300px"};
-  height: ${(props:Props) => props.cardHeight || "380px"};
+  max-width: ${(props: Props) => props.cardWidth || '300px'};
+  height: ${(props: Props) => props.cardHeight || '380px'};
   align-self: center;
   z-index: 3;
   transition-duration: 250ms;
@@ -513,10 +513,10 @@ export const CardFooterItem = styled.div`
     display: flex;
     flex-direction: column;
     padding: 15px;
-    margin-top:0.3rem;
+    margin-top: 0.3rem;
     row-gap: 0.3rem;
     align-items: center;
-    height:50px;
+    height: 50px;
     .price {
       display: flex;
       align-items: center;
@@ -546,14 +546,13 @@ export const CardFooterItem = styled.div`
   }
 `;
 
-
 export const ButtonContainer = styled.div`
-  position:absolute;
-  margin:10px;
-  display:flex;
-  justify-content:flex-end;
-  column-gap:10px;
-  top:0;
-  z-index:9;
-  right:0;
-`
+  position: absolute;
+  margin: 10px;
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 10px;
+  top: 0;
+  z-index: 9;
+  right: 0;
+`;

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Navbar from '../../../../components/Navbar';
-import Image from 'next/image';
 import Filled_CTA_Button from '../../../../components/Button/CTA/Filled';
 import FileContainer from '../../../../components/Collections/FileContainer';
 import DropdownComponent from '../../../../components/Collections/Dropdown';
@@ -245,19 +244,10 @@ const StyledExploreNft = styled.img`
   top: 361px;
 `;
 export default function NewNFT({}: Props) {
-  const [checkbox, setCheckbox] = useState(false);
-  const [paymentTokenList, setPaymentTokenList] = useState<string[]>([]);
-  const [paymentDropdownList, setPaymentDropdown] = useState<boolean[]>([false]);
-
-  const [categoryDropdown, setCatDropdown] = useState(false);
-  const [categoryValue, setCatVal] = useState('Add Category');
+  const [avatarImage, setAvatarImage] = useState<any>(null);
+  const [dropdownShown, setDropdownShown] = useState<boolean>(false);
 
   const [blockchainDropdown, setBlockchainDropdown] = useState(false);
-  const [blockValue, setBlockValue] = useState('Select Blockchain');
-
-  const [logoFile, setLogoFile] = useState<any | null>(null);
-  const [featuredFile, setFeatured] = useState<any | null>(null);
-  const [bannerFile, setBannerFile] = useState<any | null>(null);
 
   const [collectionItem, setCollectionItem] = useState({
     name: '',
