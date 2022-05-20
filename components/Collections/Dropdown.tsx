@@ -1,17 +1,17 @@
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 
 type Props = {
-    dropdown:boolean,
-    setDropdown: any,
-    value: string
-    setValue: any
-    dropDownList: string[],
-    defaultValue: string,
-    width: string,
-    top: string
-}
+  setDropdown: any;
+  dropdown: boolean;
+  value: string;
+  onChange: (value: any) => void;
+  dropDownList: string[];
+  defaultValue: string;
+  width: string;
+  top: string;
+};
 
 const DropdownMain = styled.div`
   display: flex;
@@ -40,8 +40,6 @@ const DropdownMain = styled.div`
   }
 `;
 
-
-
 const DropdownContainer = styled.div`
   width: ${(props: { width: string }) => (props.width ? props.width : '155.78px')};
   background: #373943;
@@ -67,43 +65,36 @@ const DropdownContainer = styled.div`
   }
 `;
 
-
-export default function DropdownComponent(
-    {
-    dropdown,
-    setDropdown,
-    value,
-    setValue,
-    dropDownList,
-    defaultValue,
-    width,
-    top
-    }: Props) {
+export default function DropdownComponent({
+  setDropdown,
+  dropdown,
+  value,
+  onChange,
+  dropDownList,
+  defaultValue,
+  width,
+  top
+}: Props) {
   return (
     <DropdownMain
-    onClick={() => {
-      setDropdown(!dropdown);
-    }}
-    width={width}
-    top={top}
-  >
-    {value}
-    {value == defaultValue && (
+      onClick={() => {
+        setDropdown(!dropdown);
+      }}
+      width={width}
+      top={top}
+    >
+      {value}
       <Image width="12px" style={{ zIndex: 1 }} height="11px" src="/icons/downIcon.svg" />
-    )}
-    {dropdown && (
-      <DropdownContainer width={width}>
-          {
-              dropDownList && dropDownList.map((data,index)=>(
-                <div key={index} onClick={() => setValue(data)} className="drop-el">
-                 {data}
-                </div>
-              ))
-          }
-       
-      
-      </DropdownContainer>
-    )}
-  </DropdownMain>
-  )
+      {dropdown && (
+        <DropdownContainer width={width}>
+          {dropDownList &&
+            dropDownList.map((data, index) => (
+              <div key={index} onClick={() => onChange(data)} className="drop-el">
+                {data}
+              </div>
+            ))}
+        </DropdownContainer>
+      )}
+    </DropdownMain>
+  );
 }

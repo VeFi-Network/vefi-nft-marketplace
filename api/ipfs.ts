@@ -5,7 +5,7 @@ const baseAxios = axios.create({
   baseURL: IPFS_API
 });
 
-export function pinJson(json: any) {
+export function pinJson(json: any): Promise<any> {
   return new Promise((resolve, reject) => {
     baseAxios
       .post('/ipfs/json', json)
@@ -16,7 +16,7 @@ export function pinJson(json: any) {
   });
 }
 
-export function pinFile(formData: any) {
+export function pinFile(formData: any): Promise<any> {
   return new Promise((resolve, reject) => {
     baseAxios
       .post('/ipfs/file', formData, {
