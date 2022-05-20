@@ -8,6 +8,7 @@ import PriceChart from '../../components/PriceChart/index';
 import { usePageQuery } from '../../hooks/query';
 import { useAPIContext } from '../../contexts/api';
 import { useEffect, useState } from 'react';
+import { FiEye, FiHeart, FiInfo } from 'react-icons/fi';
 
 const RootContainer = styled.div`
   width: 100%;
@@ -20,13 +21,16 @@ const NavContainer = styled.div`
 const ProfileContainer = styled.div`
   min-height: 100vh;
   width: 100%;
-  max-width: 2000px;
-  min-width: 1000px;
+
   background: #0c0c0c;
   padding-top: 10px;
   padding-bottom: 30px;
   overflow: hidden;
   position: relative;
+
+  @media screen and (max-width: 760px) {
+    width: 100%;
+  }
 `;
 
 const Banner = styled.div`
@@ -35,17 +39,27 @@ const Banner = styled.div`
   border-top: 5px solid #5c95ff;
   border-bottom: 5px solid #5c95ff;
   height: 98px;
-  background-size: 100% 100%;
-  background-image: ${(props: any) => `url(${props.background})`};
+  background: ${(props: any) => `url(${props.background})`} no-repeat;
   display: flex;
+  background-size: cover;
   justify-content: center;
   align-items: center;
+  position: relative;
+  @media screen and (max-width: 760px) {
+    height: 150px;
+    margin: 0px auto;
+    flex-direction: column;
+  }
 `;
 
 const BannerCaption = styled.h3`
   font-weight: bold;
   color: #fff;
   font-size: 40px;
+  @media screen and (max-width: 760px) {
+    text-align: center;
+    font-size: 2rem;
+  }
 `;
 
 const ProfileAvatar = styled.div`
@@ -57,6 +71,13 @@ const ProfileAvatar = styled.div`
   left: 80%;
   background: ${(props: any) => `url(${props.background})`} no-repeat;
   background-size: 100% 100%;
+  @media screen and (max-width: 760px) {
+    left: auto;
+    align-items: center;
+    top: 50%;
+    justify-content: center;
+    text-align: center;
+  }
 `;
 
 const CollectionInfoCont = styled.div`
@@ -91,6 +112,9 @@ const CollectionInfoCont = styled.div`
       color: #5c95ff;
     }
   }
+  @media screen and (max-width: 760px) {
+    padding-top: 60px;
+  }
 `;
 
 const ColoredBackground = styled.div`
@@ -107,14 +131,24 @@ const BodyContainer = styled.div`
   margin-top: 40px;
   padding: 10px;
   display: flex;
-  flex-direction: row;
   justify-content: center;
   width: 100%;
   color: #fff;
+  max-width: 1200px;
+  margin: 0 auto;
   justify-content: center;
+  gap: 20px;
+
+  @media screen and (max-width: 760px) {
+    width: 90%;
+    margin: 0 auto;
+
+    flex-direction: column;
+  }
 `;
 const LeftColumn = styled.div`
-  width: 40%;
+  flex: 0.3;
+  width: 100%;
   display: flex;
   max-height: auto;
   flex-direction: column;
@@ -123,15 +157,39 @@ const LeftColumn = styled.div`
   padding: 10px;
   img {
     border-radius: 21px;
+    object-fit: cover;
+  }
+  @media screen and (max-width: 760px) {
+    margin: 0 auto;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: 330px !important;
+      height: 400px !important;
+      object-fit: cover;
+    }
+  }
+  @media screen and (max-width: 320px) {
+    img {
+      width: 300px !important;
+      height: 400px !important;
+      object-fit: cover;
+    }
   }
 `;
 const RightColumn = styled.div`
-  width: 60%;
+  flex: 0.7;
+  width: 100%;
   padding: 10px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+
+  @media screen and (max-width: 760px) {
+    width: 100%;
+  }
 `;
 const ProfileAvatarCard = styled.div``;
 
@@ -149,6 +207,13 @@ const LikeButtonContainer = styled.div`
   :hover {
     cursor: pointer;
   }
+  @media screen and (max-width: 760px) {
+    img {
+      object-fit: contain;
+      width: 40px !important;
+      height: 40px !important ;
+    }
+  }
 `;
 
 const LikeButton = styled.img`
@@ -164,81 +229,71 @@ const DescriptionContainer = styled.div`
   width: 400px;
   height: 504px;
   border-radius: 20px;
-  margin-top: 15px;
+  margin-top: 25px;
   background: linear-gradient(254.33deg, rgba(255, 255, 255, 0.1) 1.71%, rgba(255, 255, 255, 0.05) 99.35%);
   backdrop-filter: blur(16.86px);
   padding: 30px;
   border: 1px solid #383838;
+  overflow-y: scroll;
+  @media screen and (max-width: 760px) {
+    width: 100%;
+    height: max-content;
+  }
 `;
 
 const DescriptionHeading = styled.h3`
   display: flex;
+  align-items: center;
   column-gap: 10px;
   font-size: 18px;
+  color: rgba(255, 255, 255, 0.8);
 `;
 
 const DescriptionText = styled.p`
-  font-size: 20px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.5);
   height: 400px;
   overflow: auto;
 `;
 
 const ProfileStats = styled.div`
-  padding-top: 30px;
+  padding-top: 50px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  column-gap: 10px;
+  column-gap: 15px;
   .stat {
     display: flex;
-    flex-direction: row;
+    gap: 5px;
     align-items: center;
-    column-gap: 10px;
-  }
-  img {
-    margin-top: 5px !important;
+    font-size: 1.4rem;
+
+    span {
+      display: flex;
+    }
   }
   .info {
+    display: flex;
     font-size: 20px;
+    align-items: center;
+  }
+  @media screen and (max-width: 760px) {
+    .stat {
+      font-size: 0.9rem;
+    }
   }
 `;
 
-const CollectionName = styled.p`
-  font-size: 70px;
-  margin: 0;
+const ItemName = styled.p`
+  font-size: 3rem;
+  line-height: 3.4rem;
+  margin: 0 0 25px 0;
   font-weight: bold;
-`;
 
-const PriceInfo = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  column-gap: 1.5rem;
-  padding: 0;
-  height: 50px;
-  margin: 10px 0;
-  .nft_price {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    column-gap: 1px;
-  }
-  .price {
-    font-size: 40px;
-    font-weight: bold;
-  }
-  .nft_price img {
-    margin: 5px 0 0 0 !important;
-  }
-  .sales {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    column-gap: 1px;
-  }
-  .sales p {
-    font-size: 30px;
-    overflow: hidden;
+  @media screen and (max-width: 760px) {
+    font-size: 1.5rem;
+    line-height: 1.8rem;
+    margin: 10px 0 25px 0;
   }
 `;
 
@@ -246,7 +301,6 @@ const CTA = styled.div`
   display: flex;
   flex-direction: row;
   column-gap: 1rem;
-  height: 42px;
 `;
 
 export default function NFT() {
@@ -279,7 +333,7 @@ export default function NFT() {
 
             <CollectionInfoCont>
               <div className="creator">
-                Created By: <div className="blue"> {nftById.metadata?.owner || 'NFT owner'}</div>{' '}
+                Created By: <div className="blue"> {nftById?.metadata?.owner || 'NFT owner'}</div>{' '}
                 <Image src="/icons/verification.svg" alt="" width="20px" height="20px" className="tick" />
               </div>
             </CollectionInfoCont>
@@ -290,12 +344,12 @@ export default function NFT() {
                   <LikeButtonContainer>
                     <LikeButton src="/icons/dark-heart.png" />
                   </LikeButtonContainer>
-                  <img src={nftById.metadata?.imageURI} alt="NFT Image" width={398} height={498} />
+                  <img src={nftById.metadata?.imageURI} alt="NFT Image" width={398} height={398} />
                 </ProfileAvatarCard>
 
                 <DescriptionContainer>
                   <DescriptionHeading>
-                    <Image src="/icons/info.svg" alt="Info Icon" width={20} height={20} />
+                    <FiInfo />
                     Description
                   </DescriptionHeading>
                   <DescriptionText>{nftById.metadata?.description || 'No Description Available'}</DescriptionText>
@@ -304,57 +358,35 @@ export default function NFT() {
               <RightColumn>
                 <ProfileStats>
                   <div className="stat">
-                    <span className="icon">
-                      <Image width={20} height={20} src="/icons/people.svg" />
+                    <span>
+                      <FiEye />
                     </span>
-                    <p className="info">20 Owners</p>
+                    <span>3.5k Views</span>
                   </div>
                   <div className="stat">
-                    <span className="icon">
-                      <Image width={20} height={20} src="/icons/apps.svg" />
+                    <span>
+                      <FiHeart />
                     </span>
-                    <p className="info">50 Total</p>
-                  </div>
-                  <div className="stat">
-                    <span className="icon">
-                      <Image width={20} height={20} src="/icons/eye.svg" />
-                    </span>
-                    <p className="info">3.5k Views</p>
-                  </div>
-                  <div className="stat">
-                    <span className="icon">
-                      <Image width={20} height={20} src="/icons/heart.svg" />
-                    </span>
-                    <p className="info">1.5k Likes</p>
+                    <span>1.5k Likes</span>
                   </div>
                 </ProfileStats>
-                <CollectionName>Lost In Space</CollectionName>
-                <PriceInfo>
-                  <div className="nft_price">
-                    <span>
-                      <Image width={50} height={50} src="/icons/eth_classic.svg" />
-                    </span>
-                    <p className="price">2eth</p>
-                  </div>
-                  <div className="sales">
-                    <span>
-                      <Image width={35} height={35} src="/icons/timer.svg" />
-                    </span>
-                    <p>Sale ends October, 3rd 2022</p>
-                  </div>
-                </PriceInfo>
-                <CTA>
-                  <Filled_CTA_Button>Buy Now</Filled_CTA_Button>
-                  <Filled_CTA_Button backgroundColor="#fff" color="#5C95FF">
-                    Make an offer
-                  </Filled_CTA_Button>
-                </CTA>
+                <ItemName>{nftById.metadata?.name || 'NFT Name'}</ItemName>
+                <div className="button__wrapper">
+                  <CTA>
+                    <Filled_CTA_Button backgroundColor="#5C95FF" color="#fff">
+                      Buy Now
+                    </Filled_CTA_Button>
+                    <Filled_CTA_Button backgroundColor="#fff" color="#5C95FF">
+                      Make an offer
+                    </Filled_CTA_Button>
+                  </CTA>
+                </div>
                 <PriceChart />
                 <Listing />
               </RightColumn>
             </BodyContainer>
 
-            <ColoredBackground></ColoredBackground>
+            {/* <ColoredBackground></ColoredBackground> */}
           </Spin>
         </ProfileContainer>
       </RootContainer>

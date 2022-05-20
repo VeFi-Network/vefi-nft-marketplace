@@ -83,6 +83,24 @@ a {
 .ant-dropdown-arrow::before {
   background: var(--bg-lightdark) !important;
 }
+.ant-table {
+  background: transparent !important;
+}
+
+.ant-table-thead > tr > th {
+  background: transparent !important;
+  border-bottom: none !important;
+  color: #ccc !important;
+}
+.ant-table-row {
+  color: #ccc !important;
+}
+.ant-table-cell-row-hover {
+  background: #373943 !important;
+}
+.ant-table-tbody > tr > td {
+  border-bottom: none !important;
+}
 .select__chain__wrap {
   background: rgba(0, 0, 0, 0.3);
 }
