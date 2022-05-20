@@ -1,5 +1,10 @@
 import styled from 'styled-components';
 
+type Props = {
+  cardWidth?: string;
+  cardHeight?: string;
+}
+
 export const UsersWrapper = styled.div`
   background: #0c0c0c;
   width: 100%;
@@ -177,7 +182,8 @@ export const NFTUserCollectionInfo = styled.div`
         display: flex;
         background: #373943;
         width: 100%;
-
+        height: 30px;
+        z-index: 3;
         border-radius: 8px;
         color: rgba(255, 255, 255, 0.3);
         align-items: center;
@@ -217,7 +223,7 @@ export const NFTUserCollectionInfo = styled.div`
         align-items: center;
         gap: 10px;
         padding-bottom: 8px;
-
+        color:#fff !important;
         transition: all 0.3s ease-in;
         &:hover {
           color: rgba(255, 255, 255, 0.7);
@@ -229,10 +235,13 @@ export const NFTUserCollectionInfo = styled.div`
         span {
           display: flex;
           align-items: center;
-          color: rgba(255, 255, 255, 0.3);
+          color: #fff !important;
           &:last-child {
             font-size: 0.9rem;
           }
+        }
+        button.grid_btn{
+          background-color:#373943;
         }
 
         .sort__display {
@@ -287,122 +296,264 @@ export const NFTUserCollectionInfo = styled.div`
 
 export const NFTCollection = styled.div`
   width: 100%;
-
+  display:flex;
+  justify-content: flex-start;
   .container {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    flex-direction:row;
+    row-gap: 30px;
     margin: 30px 0;
-    justify-content: flex-start;
+    justify-content: space-between;
   }
 `;
 
-export const NFTArt = styled.div`
-  width: 250px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 58.79%, #000 92.21%);
-  overflow: hidden;
-  border-top-right-radius: 8px;
-  border-top-left-radius: 8px;
-  cursor: pointer;
-  .nft__image {
-    width: 100%;
-    display: flex;
-    margin-top: 20px;
-    margin-bottom: -40px;
-    img {
-      width: 100% !important;
-      height: 250px !important;
-      object-fit: contain;
-    }
-  }
-  .nft__footer {
-    display: flex;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 15px 10px;
-    backdrop-filter: blur(10px);
-    color: #fff;
-    align-items: center;
-    position: relative;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+// export const NFTArt = styled.div`
+//   width: 250px;
+//   background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 58.79%, #000 92.21%);
+//   overflow: hidden;
+//   border-top-right-radius: 8px;
+//   border-top-left-radius: 8px;
+//   cursor: pointer;
+//   .nft__image {
+//     width: 100%;
+//     display: flex;
+//     margin-bottom: -40px;
+//     img {
+//       width: 100% !important;
+//       height: 250px !important;
+//       object-fit: contain;
+//       margin:0 auto;
+//     }
+//   }
+//   .nft__footer {
+//     display: flex;
+//     background: rgba(255, 255, 255, 0.2);
+//     padding: 15px 10px;
+//     backdrop-filter: blur(10px);
+//     color: #fff;
+//     align-items: center;
+//     position: relative;
+//     justify-content: space-between;
+//     align-items: center;
+//     border-top: 1px solid rgba(255, 255, 255, 0.2);
 
-    .nft__prev__users {
-      width: 90%;
-      position: absolute;
-      top: 0;
+//     .nft__prev__users {
+//       width: 90%;
+//       position: absolute;
+//       top: 0;
+//       display: flex;
+//       margin-top: -15px;
+//       span {
+//         width: 30px;
+//         height: 30px;
+//         display: flex;
+//         align-items: center;
+//         justify-content: center;
+//         border-radius: 50%;
+//         overflow: hidden;
+//         img {
+//           object-fit: cover;
+//         }
+//         &:nth-child(2),
+//         &:nth-child(3),
+//         &:nth-child(4),
+//         &:nth-child(5) {
+//           margin-left: -10px;
+//         }
+//       }
+//     }
+//     .nft__footer__info__left {
+//       flex: 0.6;
+//       display: flex;
+//       .title {
+//         h2 {
+//           font-size: 0.98rem;
+//           margin: 0;
+//           color: rgba(255, 255, 255, 0.8);
+//           text-transform: capitalize;
+//         }
+//         p {
+//           margin: 0;
+//           font-size: 0.7rem;
+//           border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+//           width: max-content;
+//           color: rgba(255, 255, 255, 0.5);
+//         }
+//       }
+//     }
+//     .nft__footer__info__right {
+//       flex: 0.4;
+//       text-align: right;
+//       button {
+//         border: 1px solid rgba(255, 255, 255, 0.4);
+//         padding: 8px 15px;
+//         background: transparent;
+//         border-radius: 5px;
+//         margin-top: 5px;
+//         color: rgba(255, 255, 255, 0.7);
+//         font-size: 0.7rem;
+//         cursor: pointer;
+//       }
+//       .price__value {
+//         font-size: 1.5rem;
+//         font-weight: 600;
+//         color: rgba(255, 255, 255, 0.7);
+//       }
+//     }
+//   }
+//   @media screen and (max-width: 760px) {
+//     gap: 2px !important;
+//     width: 300px !important;
+//     margin-bottom: 10px !important;
+//     .nft__image {
+//       margin-top: 0 !important;
+//       img {
+//         width: 100% !important;
+//         height: 300px !important;
+//         object-fit: cover;
+//       }
+//     }
+//   }
+// `;
+
+export const CardContainer = styled.div`
+  position: relative;
+  top: 0;
+  left: 0rem;
+  max-width: ${(props:Props) => props.cardWidth || "300px"};
+  height: ${(props:Props) => props.cardHeight || "380px"};
+  align-self: center;
+  z-index: 3;
+  transition-duration: 250ms;
+
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1);
+    top: 5px;
+    position: relative;
+  }
+  border-radius: 21px 21px 0 0;
+`;
+
+export const CardHeader = styled.div`
+  z-index: 1;
+  img {
+    border-radius: 21px 21px 0 0;
+    width: 100% !important;
+    height: 380px !important;
+    object-fit: cover !important;
+  }
+`;
+
+export const CardFooterContainer = styled.div`
+  background-color: transparent;
+  background: linear-gradient(137.43deg, rgba(255, 255, 255, 0.5) 3.89%, rgba(255, 255, 255, 0.2) 100%);
+  border-top: 0.841717px solid #ffffff;
+  z-index: 5;
+  backdrop-filter: blur(16.83px);
+  cursor: pointer;
+  height: 112.26px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+`;
+
+export const CardFooter = styled.div`
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  color: #fff;
+`;
+
+// const Avatars = styled.div`
+//   z-index: 99;
+//   display: flex;
+//   flex-direction: row;
+//   margin-left: -30px !important;
+//   position: absolute;
+//   top: 65%;
+//   left: 20%;
+//   gap: 10px;
+//   img {
+//     z-index: 999;
+//     border: 2px solid #fff !important;
+//     object-fit: cover;
+//     border-radius: 50%;
+//     width: 100%;
+//     height: 100%;
+//   }
+//   .avatar {
+//     margin-left: -25px;
+//     overflow: hidden;
+//   }
+// `;
+
+export const CardFooterItem = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  height: 121px;
+  margin-top: 15px;
+  padding: 10px 0;
+  cursor: pointer;
+  .nft-meta-data {
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px;
+    row-gap: 10px;
+    margin-top: 20px;
+  }
+  .nft-price-info {
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    margin-top:0.3rem;
+    row-gap: 0.3rem;
+    align-items: center;
+    height:50px;
+    .price {
       display: flex;
-      margin-top: -15px;
-      span {
-        width: 30px;
-        height: 30px;
+      align-items: center;
+
+      img {
         display: flex;
         align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        overflow: hidden;
-        img {
-          object-fit: cover;
-        }
-        &:nth-child(2),
-        &:nth-child(3),
-        &:nth-child(4),
-        &:nth-child(5) {
-          margin-left: -10px;
-        }
-      }
-    }
-    .nft__footer__info__left {
-      flex: 0.6;
-      display: flex;
-      .title {
-        h2 {
-          font-size: 0.98rem;
-          margin: 0;
-          color: rgba(255, 255, 255, 0.8);
-          text-transform: capitalize;
-        }
-        p {
-          margin: 0;
-          font-size: 0.7rem;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-          width: max-content;
-          color: rgba(255, 255, 255, 0.5);
-        }
-      }
-    }
-    .nft__footer__info__right {
-      flex: 0.4;
-      text-align: right;
-      button {
-        border: 1px solid rgba(255, 255, 255, 0.4);
-        padding: 8px 15px;
-        background: transparent;
-        border-radius: 5px;
-        margin-top: 5px;
-        color: rgba(255, 255, 255, 0.7);
-        font-size: 0.7rem;
-        cursor: pointer;
-      }
-      .price__value {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: rgba(255, 255, 255, 0.7);
+        object-fit: contain;
+        margin-top: 2px !important;
       }
     }
   }
-  @media screen and (max-width: 760px) {
-    gap: 2px !important;
-    width: 300px !important;
-    margin-bottom: 10px !important;
-    .nft__image {
-      margin-top: 0 !important;
-      img {
-        width: 100% !important;
-        height: 300px !important;
-        object-fit: cover;
-      }
-    }
+  .nft_name {
+    font-size: 12px;
+    padding: 3px 0;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .nft_name span {
+    margin: 10px 0;
+    text-align: center;
+  }
+  .nft_collection_name {
+    font-size: 15px;
+    cursor: pointer;
   }
 `;
+
+
+export const ButtonContainer = styled.div`
+  position:absolute;
+  margin:10px;
+  display:flex;
+  justify-content:flex-end;
+  column-gap:10px;
+  top:0;
+  z-index:9;
+  right:0;
+`
