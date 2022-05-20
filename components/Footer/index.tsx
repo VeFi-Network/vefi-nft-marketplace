@@ -1,5 +1,15 @@
+import Image from 'next/image';
 import React from 'react';
-import { Container, SubDiv1, SubDiv2 } from '../../styles/footer.styled';
+import Logo from '../../public/logo/vefi_nft_logo.svg'
+import {FaFacebook, FaGithub, FaTelegram} from 'react-icons/fa'
+import {AiFillTwitterCircle} from 'react-icons/ai'
+import 
+{ Container, 
+  FootLink, 
+  SubDiv1, 
+  SubDiv2 
+}  from '../../styles/footer.styled';
+import Link from 'next/link';
 
 function MainFooter() {
   return (
@@ -22,13 +32,177 @@ function MainFooter() {
                 </div>
             </form>
         </div>
+        <div className='logo_container'>
+          <Image src={Logo} height={40} />
+        </div>
+        <div className="community">
+          <h5 className="join">Join Our Community</h5>
+          <div className='socials'>
+          <FaGithub className='icon'/>
+            <FaTelegram className='icon'/>
+            <AiFillTwitterCircle className='icon'/>
+            <FaFacebook className='icon'/>
+          </div>
+        </div>
       </SubDiv1>
       <SubDiv2>
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde, eos. Perferendis maiores molestias itaque enim
-        deleniti modi animi expedita rerum minima illo at suscipit, quidem velit! Nesciunt ducimus earum corrupti?
+<div className="marketplace">
+  <h2 className="nav_section">Marketplace</h2>
+  {
+    marketplaceArray
+    .slice(0, 10)
+    .map(({ label, path}:any) => (
+
+      <FootLink>
+        <Link href={path}>
+        <a>{label}</a>
+        </Link>
+      </FootLink>
+
+      ))
+  }
+
+</div>
+<div className="my_account">
+<div>
+<h2 className="nav_section">My Account</h2>
+{
+    marketplaceArray
+    .slice(10, 14)
+    .map(({ label, path}:any) => (
+
+      <FootLink>
+        <Link href={path}>
+        <a>{label}</a>
+        </Link>
+      </FootLink>
+
+      ))
+  }
+</div>
+<div>
+<h2 className="nav_section">Stats</h2>
+{
+    marketplaceArray
+    .slice(14, 16)
+    .map(({ label, path}:any) => (
+
+      <FootLink>
+        <Link href={path}>
+        <a>{label}</a>
+        </Link>
+      </FootLink>
+
+      ))
+  }
+
+</div>
+
+</div>
+<div className="company">
+<h2 className="nav_section">Company</h2>
+{
+    marketplaceArray
+    .slice(14, 18)
+    .map(({ label, path}:any) => (
+
+      <FootLink>
+        <Link href={path}>
+        <a>{label}</a>
+        </Link>
+      </FootLink>
+
+      ))
+  }
+
+</div>
+
+    
       </SubDiv2>
     </Container>
   );
 }
 
 export default MainFooter;
+
+const marketplaceArray = [
+  {
+    label: 'All Nfts',
+    path:  '#'
+  },
+  {
+    label: 'Arts',
+    path:  '#'
+  },
+  {
+    label: 'Sports Memorabilla',
+    path:  '#'
+  },
+  {
+    label: 'Collectibles',
+    path:  '#'
+  },
+  {
+    label: 'Video-Games Sticker',
+    path:  '#'
+  },
+  {
+    label: 'Virtual Land',
+    path:  '#'
+  },
+  {
+    label: 'Memes ',
+    path:  '#'
+  },
+  {
+    label: 'Music',
+    path:  '#'
+  },
+  {
+    label: 'Ticketing',
+    path:  '#'
+  },
+  {
+    label: 'Domain Names',
+    path:  '#'
+  }, {
+    label: 'Profile',
+    path:  '#'
+  },
+  {
+    label: 'My Favourites',
+    path:  '#'
+  },
+  {
+    label: 'Watchlist',
+    path:  '#'
+  },
+  {
+    label: 'My Collection',
+    path:  '#'
+  },
+  {
+    label: 'Ranking',
+    path:  '#'
+  },
+  {
+    label: 'Activity',
+    path:  '#'
+  },
+  {
+    label: 'About',
+    path:  '#'
+  },
+  {
+    label: 'Careers',
+    path:  '#'
+  },
+  {
+    label: 'Ventures',
+    path:  '#'
+  },
+  {
+    label: 'Grants',
+    path:  '#'
+  },
+]

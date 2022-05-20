@@ -11,6 +11,7 @@ import { Button } from 'antd';
 import _ from 'lodash';
 import { useAPIContext } from '../contexts/api/index';
 import MainFooter from '../components/Footer';
+import Hero from '../components/Hero';
 
 const MainContainer = styled.div`
   display: flex;
@@ -392,6 +393,10 @@ const NoItemContainer = styled.div`
   align-items: center;
 `;
 
+const HeroContainer = styled.div`
+
+`
+
 export default function Homepage() {
   const [searchValue, setSearchValue] = useState('');
   const { allCollections, loadAllCollections } = useAPIContext();
@@ -494,6 +499,8 @@ export default function Homepage() {
               </div>
             </div>
           </Footer>
+          <HeroContainer>          <Hero/>
+</HeroContainer>
         </MarketplaceContainer>
 
         <FooterHelpIcon>
