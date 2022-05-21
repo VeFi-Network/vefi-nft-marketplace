@@ -87,7 +87,7 @@ export default function Marketplace({}: Props) {
             </FilterAndGrey>
             <ColoredBackground></ColoredBackground>
           </ParentGreyAndExploreNFT>
-          <MainFooter/>
+          <MainFooter />
         </MarketplaceContainer>
       </MainContainer>
     </>

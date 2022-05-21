@@ -481,7 +481,7 @@ export default function NewCollection({}: Props) {
           </div>
 
           <Filled_CTA_Button disabled={!allConditionsSatisfied()} onClick={createCollection} style={{ marginTop: 33 }}>
-            {allConditionsSatisfied() ? 'Create' : 'Please fill in the required fields'}
+            {allConditionsSatisfied() ? 'Create' : 'Please fill in the required fields correctly'}
           </Filled_CTA_Button>
         </ParentExploreAndData>
       </Spin>
