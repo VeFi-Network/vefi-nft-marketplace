@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ethAddress from 'ethereum-address';
 import styled from 'styled-components';
 import Navbar from '../../../components/Navbar';
 import Filled_CTA_Button from '../../../components/Button/CTA/Filled';
@@ -248,6 +249,7 @@ export default function NewCollection({}: Props) {
   const [bannerImage, setBannerImage] = useState<any>(null);
   const [avatarImage, setAvatarImage] = useState<any>(null);
   const [dropdownShown, setDropdownShown] = useState<boolean>(false);
+  const [paymentReceiver, setPaymentReceiver] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [tip, setTip] = useState<string>('');
 
@@ -276,7 +278,8 @@ export default function NewCollection({}: Props) {
       !!collectionMetadata.symbol &&
       collectionMetadata.name.length >= 4 &&
       collectionMetadata.owner.length >= 4 &&
-      collectionMetadata.symbol.length >= 3
+      collectionMetadata.symbol.length >= 3 &&
+      ethAddress.isAddress(paymentReceiver)
     );
   };
 
@@ -409,6 +412,21 @@ export default function NewCollection({}: Props) {
             />
           </div>
 
+          <Heading className="heading">
+            Payment Receiver<span className="blue">*</span>
+          </Heading>
+
+          <div className="input-div">
+            <input
+              type="text"
+              value={paymentReceiver}
+              onChange={event => setPaymentReceiver(event.target.value)}
+              name="paymentReceiver"
+              className="inp"
+              placeholder="Address that receives the fees for every NFTs minted in this collection."
+            />
+          </div>
+
           <Heading top={'48px'}>
             Description<span className="blue">*</span>
           </Heading>
@@ -463,7 +481,7 @@ export default function NewCollection({}: Props) {
           </div>
 
           <Filled_CTA_Button disabled={!allConditionsSatisfied()} onClick={createCollection} style={{ marginTop: 33 }}>
-            {allConditionsSatisfied() ? 'Create' : 'Please fill in the required fields'}
+            {allConditionsSatisfied() ? 'Create' : 'Please fill in the required fields correctly'}
           </Filled_CTA_Button>
         </ParentExploreAndData>
       </Spin>

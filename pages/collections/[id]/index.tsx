@@ -121,7 +121,14 @@ const Collection = () => {
                 </div>
               </div>
               <div className="create__collection__btn">
-                <Button icon={<FaPlus />}>Create New Item</Button>
+                <Button
+                  onClick={() => {
+                    router.push(`/collections/${id}/nft/new`);
+                  }}
+                  icon={<FaPlus />}
+                >
+                  Create New Item
+                </Button>
               </div>
             </div>
             <NFTCollection>

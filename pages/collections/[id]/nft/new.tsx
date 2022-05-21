@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { FaPlus, FaMinus } from 'react-icons/fa';
+import { v4 as uuid } from 'uuid';
 import styled from 'styled-components';
+import _ from 'lodash';
 import Navbar from '../../../../components/Navbar';
-import Image from 'next/image';
 import Filled_CTA_Button from '../../../../components/Button/CTA/Filled';
 import FileContainer from '../../../../components/Collections/FileContainer';
 import DropdownComponent from '../../../../components/Collections/Dropdown';
 import DynamicDropdown from '../../../../components/Collections/DynamicDropdown';
 import { pinFile, pinJson } from '../../../../api/ipfs';
+import { NFTLevels, NFTMetadata } from '../../../../api/models/nft';
 
 type Props = {};
 
@@ -119,8 +122,9 @@ const ParentExploreAndData = styled.div`
       width: 468px;
       outline: none;
       background: transparent;
-      padding-left: 16px;
+      padding: 16px;
       color: rgba(255, 255, 255, 0.58);
+      font-size: 12px;
     }
   }
 
@@ -170,6 +174,8 @@ const ParentExploreAndData = styled.div`
       display: inline-block;
       width: 32.2px;
       height: 21px;
+      color: #fff;
+      padding: 3px;
     }
 
     .switch input {
@@ -203,7 +209,7 @@ const ParentExploreAndData = styled.div`
     }
 
     input:checked + .slider {
-      background-color: grey;
+      background-color: #59981a;
     }
 
     input:focus + .slider {
@@ -245,138 +251,49 @@ const StyledExploreNft = styled.img`
   top: 361px;
 `;
 export default function NewNFT({}: Props) {
-  const [checkbox, setCheckbox] = useState(false);
-  const [paymentTokenList, setPaymentTokenList] = useState<string[]>([]);
-  const [paymentDropdownList, setPaymentDropdown] = useState<boolean[]>([false]);
+  const [avatarImage, setAvatarImage] = useState<any>(null);
+  const [dropdownShown, setDropdownShown] = useState<boolean>(false);
+  const [traitsIDs, setTraitsIDs] = useState<string[]>([uuid()]);
 
-  const [categoryDropdown, setCatDropdown] = useState(false);
-  const [categoryValue, setCatVal] = useState('Add Category');
-
-  const [blockchainDropdown, setBlockchainDropdown] = useState(false);
-  const [blockValue, setBlockValue] = useState('Select Blockchain');
-
-  const [logoFile, setLogoFile] = useState<any | null>(null);
-  const [featuredFile, setFeatured] = useState<any | null>(null);
-  const [bannerFile, setBannerFile] = useState<any | null>(null);
-
-  const [collectionItem, setCollectionItem] = useState({
+  const [nftMetadata, setNftMetadata] = useState<Omit<NFTMetadata, 'imageURI'>>({
     name: '',
-    symbol: '',
-    feeReciever: '',
-    url: '',
+    owner: '',
     description: '',
-    feePercentage: ''
+    traits: [],
+    levels: [],
+    externalLink: '',
+    isExplicit: false
   });
 
   const setProperty = (e: any) => {
-    setCollectionItem({ ...collectionItem, [e.target.name]: e.target.value });
+    setNftMetadata(metadata => ({ ...metadata, [e.target.name]: e.target.value }));
   };
 
-  const [btnEnabled, setBtnEnabled] = useState(false);
-
-  const allConditionsSatisfied = () => {
-    if (
-      logoFile &&
-      bannerFile &&
-      collectionItem.name != '' &&
-      collectionItem.description != '' &&
-      collectionItem.symbol != '' &&
-      collectionItem.feeReciever != '' &&
-      collectionItem.feePercentage != '' &&
-      collectionItem.url
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+  const allConditionsSatisfied = (): boolean => {
+    return (
+      !!avatarImage &&
+      nftMetadata.name.length >= 7 &&
+      nftMetadata.owner.length >= 4 &&
+      nftMetadata.traits.length > 0 &&
+      nftMetadata.levels.length > 0
+    );
   };
 
   const resetAllFields = () => {
-    setCollectionItem({
+    setNftMetadata({
       name: '',
-      symbol: '',
-      feeReciever: '',
-      url: '',
+      owner: '',
       description: '',
-      feePercentage: ''
+      traits: [],
+      levels: [],
+      externalLink: '',
+      isExplicit: false
     });
-    setLogoFile(null);
-    setBannerFile(null);
-    setPaymentTokenList([]);
+    setAvatarImage(null);
   };
 
-  useEffect(() => {
-    if (allConditionsSatisfied() == btnEnabled) {
-      // Do nothing --- preventing unncecessary state change
-    } else {
-      if (allConditionsSatisfied()) {
-        setBtnEnabled(true);
-      } else {
-        setBtnEnabled(false);
-      }
-    }
-  }, [collectionItem, logoFile, bannerFile]);
-
-  const createNftButton = async () => {
+  const mintNFT = async () => {
     try {
-      if (allConditionsSatisfied()) {
-        console.log('Pinning File');
-        const formData = new FormData();
-        formData.append('file', logoFile?.file);
-        // Pin Image File
-        pinFile(formData)
-          .then((res: any) => {
-            if (res?.response?.CID && res?.response?.fileURI) {
-              console.log('Logo file pinned');
-              window.open(res.response.fileURI);
-              const formData2 = new FormData();
-              formData2.append('file', bannerFile?.file);
-              pinFile(formData2).then((response2: any) => {
-                console.log(response2);
-                if (response2?.response?.CID && response2?.response?.fileURI) {
-                  console.log('Banner file pinned');
-                  window.open(response2.response.fileURI);
-                  //pin JSOn
-
-                  pinJson({
-                    name: collectionItem.name,
-                    description: collectionItem.description,
-                    logoImage: `ipfs://${res.response.CID}`,
-                    logoCID: res.response.CID,
-                    logofileURI: res.response.fileURI,
-                    bannerImage: `ipfs://${response2.response.CID}`,
-                    bannerCID: response2.response.fileURI,
-                    symbol: collectionItem.symbol,
-                    feeReciever: collectionItem.feeReciever,
-                    url: collectionItem.url,
-                    feePercentage: collectionItem.feePercentage
-                  })
-                    .then((pinResponse: any) => {
-                      console.log(pinResponse);
-                      if (pinResponse?.response?.CID && pinResponse?.response?.itemURI) {
-                        window.open(pinResponse.response.itemURI);
-                        resetAllFields();
-                      } else {
-                        console.log('Item API did not return accepted format');
-                      }
-                    })
-                    .catch(err => {
-                      console.log('Inner Catch Block Error ==' + err);
-                    });
-                } else {
-                  console.log('Banner File API did not return accepted format');
-                }
-              });
-            } else {
-              console.log('Logo File API did not return accepted format');
-            }
-          })
-          .catch(e => {
-            console.log('Catch block error' + e);
-          });
-      } else {
-        console.log('Enter all details');
-      }
     } catch (e) {
       console.log('Error Occured ===' + e);
     }
@@ -388,37 +305,18 @@ export default function NewNFT({}: Props) {
         <Navbar />
       </NavbarContainer>
       <ParentExploreAndData>
-        <div className="title">Create your Collection</div>
+        <div className="title">Mint your NFT.</div>
 
         <Heading top={'31px'}>
-          Logo Image <span className="blue">*</span>
+          Avatar <span className="blue">*</span>
         </Heading>
 
         <div className="text">
-          This image will also be used for navigation 350x350 <br /> recomended.
+          Supported File Types: JPG, JPEG, PNG, GIF, WEBP
+          <span className="blue"> Max size 40mb</span>
         </div>
 
-        <FileContainer file={logoFile} setFile={setLogoFile} type={2} />
-
-        <Heading top={'56px'}>Featured Image</Heading>
-
-        <div className="text">
-          This image will be used to feature your artwork on the <br /> home page category pages or other promotional{' '}
-          <br /> areas in VefiNft. <span className="blue">(Optional)</span>
-        </div>
-
-        <FileContainer file={featuredFile} setFile={setFeatured} type={1} />
-
-        <Heading top={'56px'}>
-          Banner Image <span className="blue">*</span>
-        </Heading>
-
-        <div className="text">
-          This image will appear at the top of your collection <br /> page avoid to add too much text, as the dimension{' '}
-          <br /> change on different device 1440x250 recomended <br /> <span className="blue">(Optional)</span>
-        </div>
-
-        <FileContainer file={bannerFile} setFile={setBannerFile} type={3} />
+        <FileContainer file={avatarImage} setFile={setAvatarImage} type={2} />
 
         <Heading className="heading">
           Name<span className="blue">*</span>
@@ -427,149 +325,152 @@ export default function NewNFT({}: Props) {
         <div className="input-div">
           <input
             type="text"
-            value={collectionItem.name}
+            value={nftMetadata.name}
             onChange={setProperty}
             name="name"
             className="inp"
-            placeholder="Item Name"
+            placeholder="Name of this asset."
           />
         </div>
 
-        <Heading top="30px">
-          Symbol<span className="blue">*</span>
+        <Heading className="heading">
+          Owner<span className="blue">*</span>
         </Heading>
 
         <div className="input-div">
           <input
-            value={collectionItem.symbol}
-            onChange={setProperty}
-            name="symbol"
             type="text"
+            value={nftMetadata.owner}
+            onChange={setProperty}
+            name="owner"
             className="inp"
-            placeholder="Symbol of collection"
+            placeholder="Owner of this asset (can be an Ethereum address or an ENS name)."
           />
         </div>
 
-        <Heading top="30px">
-          Fee Reciever<span className="blue">*</span>
-        </Heading>
+        <Heading top="27px">External URL</Heading>
 
         <div className="input-div">
           <input
-            value={collectionItem.feeReciever}
-            name="feeReciever"
+            value={nftMetadata.externalLink}
             onChange={setProperty}
+            name="externalLink"
             type="text"
             className="inp"
-            placeholder="Address that receives the fees paid for minting NFTs in this collection "
+            placeholder="An external URL containing more information about this asset."
           />
         </div>
 
-        <Heading top="27px">
-          URL<span className="blue">*</span>
-        </Heading>
-
-        <div className="text">
-          Customize your URL on VefiNft, Must only contain <br /> lover case Letters, numbers and Hyphens.
-        </div>
-
-        <div className="input-div">
-          <input
-            value={collectionItem.url}
-            onChange={setProperty}
-            name="url"
-            type="text"
-            className="inp"
-            placeholder="https//vefinft.io/assets/lost-in-space"
-          />
-        </div>
-
-        <Heading top="27px">
-          Description<span className="blue">*</span>
-        </Heading>
-
-        <div className="text">
-          <span className="blue">Note</span> Syntax is supported. 1 to 2000 words only.
-        </div>
+        <Heading top="27px">Description</Heading>
 
         <div className="text-area">
           <textarea
             className="real-text-area"
             id=""
-            placeholder="provide a detailed description of your item"
+            placeholder="Provide a detailed description of your item."
             rows={7}
-            value={collectionItem.description}
+            value={nftMetadata.description}
             onChange={setProperty}
             name="description"
           ></textarea>
         </div>
 
-        <DropdownComponent
-          dropdown={categoryDropdown}
-          setDropdown={setCatDropdown}
-          value={categoryValue}
-          setValue={setCatVal}
-          defaultValue={'Add Category'}
-          dropDownList={['Category 1', 'Category 2', 'Category 3', 'Category 4']}
-          width="135px"
-          top={'36px'}
-        />
+        <Heading top="27px">Levels</Heading>
 
-        <Heading top="64px">
-          Royalties<span className="blue">*</span>
+        <div className="switch-cont">
+          <div className="text">Set this item's levels</div>
+
+          {_.map(Object.values(NFTLevels).sort(), val => (
+            <div
+              key={val}
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexDirection: 'column',
+                margin: 2
+              }}
+            >
+              <label className="switch">
+                <input
+                  type="checkbox"
+                  checked={nftMetadata.levels.includes(val)}
+                  onChange={() => {
+                    if (!nftMetadata.levels.includes(val))
+                      setNftMetadata({ ...nftMetadata, levels: [...nftMetadata.levels, val] });
+                    else setNftMetadata({ ...nftMetadata, levels: nftMetadata.levels.filter(level => level !== val) });
+                  }}
+                />
+                <span className="slider round"></span>
+              </label>
+              <span className="blue" style={{ fontSize: 12 }}>
+                {val}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <Heading top="27px">
+          Traits<span className="blue">*</span>
         </Heading>
+        <div className="text">Set this item's traits.</div>
 
-        <div className="text">
-          Collect a fee when a user Re-sells an item you originally created. <br /> this is deducted from the final sale
-          price and paid monthly to a <br /> payout adress of your choosen.
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: 10 }}>
+          <div style={{ flexBasis: '90%', flexGrow: 1 }}>
+            {_.map(traitsIDs, (id, index) => (
+              <div className="input-div" key={id} style={{ width: 200 }}>
+                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <div style={{ flexBasis: '90%', flexGrow: 1 }}>
+                    <input
+                      value={nftMetadata.traits[index]}
+                      onChange={event => {
+                        const traits = nftMetadata.traits;
+                        traits[index] = event.target.value;
+                        setNftMetadata({ ...nftMetadata, traits });
+                      }}
+                      name={`trait-${id}`}
+                      type="text"
+                      className="inp"
+                      style={{ width: 'inherit' }}
+                      placeholder="Enter trait."
+                    />
+                  </div>
+                  <div style={{ flexBasis: '5%', flexGrow: 1 }}></div>
+                  <div style={{ flexBasis: '5%', flexGrow: 1, marginLeft: 10 }}>
+                    <Filled_CTA_Button
+                      disabled={traitsIDs.length === 1}
+                      style={{
+                        textAlign: 'center',
+                        width: 25,
+                        height: 25,
+                        fontSize: 17,
+                        padding: 4,
+                        background: traitsIDs.length === 1 ? 'grey' : undefined
+                      }}
+                      onClick={() => {
+                        setTraitsIDs(traitsIDs.filter(val => val !== id));
+                        const traits = nftMetadata.traits;
+                        traits.splice(index, 1);
+                        setNftMetadata({ ...nftMetadata, traits });
+                      }}
+                    >
+                      <FaMinus />
+                    </Filled_CTA_Button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ flexBasis: '5%', flexGrow: 1 }}></div>
+          <div style={{ flexBasis: '5%', flexGrow: 1, marginTop: 10 }}>
+            <Filled_CTA_Button
+              onClick={() => setTraitsIDs([...traitsIDs, uuid()])}
+              style={{ textAlign: 'center', width: 25, height: 25, fontSize: 17, padding: 4 }}
+            >
+              <FaPlus />
+            </Filled_CTA_Button>
+          </div>
         </div>
-
-        <Heading top="25px">Percentage fee</Heading>
-
-        <div className="input-div-small">
-          <input
-            value={collectionItem.feePercentage}
-            onChange={setProperty}
-            name="feePercentage"
-            type="text"
-            className="inp"
-            placeholder="0.000"
-          />
-        </div>
-
-        <Heading top="39px">Blockchain</Heading>
-
-        <div className="text">
-          Sellect the blockchain where you’d like new items from this <br /> collection to be added by defult.
-        </div>
-
-        <DropdownComponent
-          dropdown={blockchainDropdown}
-          setDropdown={setBlockchainDropdown}
-          value={blockValue}
-          setValue={setBlockValue}
-          dropDownList={['Ethereum', 'Binance', 'Polygon', 'Arbitrum']}
-          defaultValue={'Select Blockchain'}
-          width={'170px'}
-          top={'36px'}
-        />
-
-        <Heading top="39px">payment tokens</Heading>
-
-        <div className="text">These tokens may be used to buy and sell your items</div>
-
-        <DynamicDropdown
-          dropDownList={paymentDropdownList}
-          setDropdownList={setPaymentDropdown}
-          valueList={paymentTokenList}
-          setValueList={setPaymentTokenList}
-          name={'Token'}
-          dropDownValueList={['Ethereum', 'Matic', 'Cardano']}
-          defaultValue={'Select Token'}
-          width={'150px'}
-          top={'27px'}
-          hideFirst={false}
-        />
 
         <Heading top={'52px'}>Explicit and sensitive content</Heading>
 
@@ -577,20 +478,17 @@ export default function NewNFT({}: Props) {
           <div className="text">Set this collection as explicit and sensitive content</div>
 
           <label className="switch">
-            <input type="checkbox" checked={checkbox} onChange={() => setCheckbox(!checkbox)} />
+            <input
+              type="checkbox"
+              checked={nftMetadata.isExplicit}
+              onChange={() => setNftMetadata({ ...nftMetadata, isExplicit: !nftMetadata.isExplicit })}
+            />
             <span className="slider round"></span>
           </label>
         </div>
-
-        {btnEnabled ? (
-          <Filled_CTA_Button onClick={createNftButton} style={{ width: 90, height: 42, marginTop: 33 }}>
-            Create
-          </Filled_CTA_Button>
-        ) : (
-          <Filled_CTA_Button onClick={createNftButton} style={{ background: 'grey', width: 250, marginTop: 33 }}>
-            Please fill all required details
-          </Filled_CTA_Button>
-        )}
+        <Filled_CTA_Button disabled={!allConditionsSatisfied()} onClick={mintNFT} style={{ marginTop: 33 }}>
+          {allConditionsSatisfied() ? 'Create' : 'Please fill in all required fields correctly'}
+        </Filled_CTA_Button>
       </ParentExploreAndData>
       <StyledExploreNft src="/icons/exploreNFT.png" />
       <ColoredBackground></ColoredBackground>

@@ -1,8 +1,8 @@
-enum NFTLevels {
+export enum NFTLevels {
   LEGENDARY = 'LEGENDARY',
   RARE = 'RARE',
   ICONIC = 'ICONIC',
-  SUPERRARE = 'SUPERRARE'
+  SUPERRARE = 'SUPER RARE'
 }
 
 export type NFTMetadata = {
@@ -12,6 +12,8 @@ export type NFTMetadata = {
   imageURI: string;
   traits: Array<string>;
   levels: Array<NFTLevels>;
+  externalLink?: string;
+  isExplicit: boolean;
 };
 
 export interface NFTModel {

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { FaChessBoard, FaUserCircle } from 'react-icons/fa';
 import { FiEye, FiHeart, FiLogOut, FiSettings, FiUser } from 'react-icons/fi';
 
-const menu = (
+const MenuItem = (
   <Menu
     items={[
       {
@@ -108,4 +108,4 @@ const menu = (
   />
 );
 
-export default menu;
+export default MenuItem;
