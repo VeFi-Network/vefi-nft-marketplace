@@ -4,7 +4,7 @@ import * as ethAddress from 'eth-address';
 import { useState } from 'react';
 import Link from 'next/link';
 import { Button, Drawer, Dropdown, Tooltip } from 'antd';
-import { FiChevronDown, FiPlus, FiUser } from 'react-icons/fi';
+import { FiChevronDown, FiMoreHorizontal, FiPlus, FiUser } from 'react-icons/fi';
 import Menu from '../Profile/Menu';
 import { useWeb3Context } from '../../contexts/web3/index';
 import { useAPIContext } from '../../contexts/api/index';
@@ -118,15 +118,15 @@ const Navbar = () => {
               <Image src="/icons/envelope.svg" width={15} height={15} />
             </div>
 
-            <Dropdown overlay={Menu} trigger={['click']} placement="bottom" arrow>
-              <div className="icon">
-                <Image src="/icons/notification.svg" width={15} height={15} />
-              </div>
-            </Dropdown>
-
             <div className="icon" onClick={() => setVisible(!visible)}>
               <Image src="/icons/wallet.svg" width={15} height={15} />
             </div>
+            <Dropdown overlay={Menu} trigger={['click']} placement="bottom" arrow>
+              <div className="icon">
+                <FiMoreHorizontal />
+              </div>
+            </Dropdown>
+
             {!active ? (
               <>
                 <Button className="connectBtn" onClick={() => setVisible(!visible)}>
