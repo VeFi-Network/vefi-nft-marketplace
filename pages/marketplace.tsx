@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Navbar from '../components/Navbar';
 import GreyMarketContainer from '../components/marketplace/GreyMarketContainer';
 import FilterComponent from '../components/marketplace/FilterComponent';
+import MainFooter from '../components/Footer';
 
 type Props = {};
 
@@ -86,6 +87,7 @@ export default function Marketplace({}: Props) {
             </FilterAndGrey>
             <ColoredBackground></ColoredBackground>
           </ParentGreyAndExploreNFT>
+          <MainFooter/>
         </MarketplaceContainer>
       </MainContainer>
     </>
