@@ -6,6 +6,7 @@ import FileContainer from '../../../../components/Collections/FileContainer';
 import DropdownComponent from '../../../../components/Collections/Dropdown';
 import DynamicDropdown from '../../../../components/Collections/DynamicDropdown';
 import { pinFile, pinJson } from '../../../../api/ipfs';
+import { NFTMetadata } from '../../../../api/models/nft';
 
 type Props = {};
 
@@ -249,124 +250,41 @@ export default function NewNFT({}: Props) {
 
   const [blockchainDropdown, setBlockchainDropdown] = useState(false);
 
-  const [collectionItem, setCollectionItem] = useState({
+  const [nftMetadata, setNftMetadata] = useState<Omit<NFTMetadata, 'imageURI'>>({
     name: '',
-    symbol: '',
-    feeReciever: '',
-    url: '',
+    owner: '',
     description: '',
-    feePercentage: ''
+    traits: [],
+    levels: []
   });
 
   const setProperty = (e: any) => {
-    setCollectionItem({ ...collectionItem, [e.target.name]: e.target.value });
+    setNftMetadata(metadata => ({ ...metadata, [e.target.name]: e.target.value }));
   };
 
-  const [btnEnabled, setBtnEnabled] = useState(false);
-
-  const allConditionsSatisfied = () => {
-    if (
-      logoFile &&
-      bannerFile &&
-      collectionItem.name != '' &&
-      collectionItem.description != '' &&
-      collectionItem.symbol != '' &&
-      collectionItem.feeReciever != '' &&
-      collectionItem.feePercentage != '' &&
-      collectionItem.url
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+  const allConditionsSatisfied = (): boolean => {
+    return (
+      !!avatarImage &&
+      nftMetadata.name.length >= 7 &&
+      nftMetadata.owner.length >= 4 &&
+      nftMetadata.traits.length > 0 &&
+      nftMetadata.levels.length > 0
+    );
   };
 
   const resetAllFields = () => {
-    setCollectionItem({
+    setNftMetadata({
       name: '',
-      symbol: '',
-      feeReciever: '',
-      url: '',
+      owner: '',
       description: '',
-      feePercentage: ''
+      traits: [],
+      levels: []
     });
-    setLogoFile(null);
-    setBannerFile(null);
-    setPaymentTokenList([]);
+    setAvatarImage(null);
   };
 
-  useEffect(() => {
-    if (allConditionsSatisfied() == btnEnabled) {
-      // Do nothing --- preventing unncecessary state change
-    } else {
-      if (allConditionsSatisfied()) {
-        setBtnEnabled(true);
-      } else {
-        setBtnEnabled(false);
-      }
-    }
-  }, [collectionItem, logoFile, bannerFile]);
-
-  const createNftButton = async () => {
+  const mintNFT = async () => {
     try {
-      if (allConditionsSatisfied()) {
-        console.log('Pinning File');
-        const formData = new FormData();
-        formData.append('file', logoFile?.file);
-        // Pin Image File
-        pinFile(formData)
-          .then((res: any) => {
-            if (res?.response?.CID && res?.response?.fileURI) {
-              console.log('Logo file pinned');
-              window.open(res.response.fileURI);
-              const formData2 = new FormData();
-              formData2.append('file', bannerFile?.file);
-              pinFile(formData2).then((response2: any) => {
-                console.log(response2);
-                if (response2?.response?.CID && response2?.response?.fileURI) {
-                  console.log('Banner file pinned');
-                  window.open(response2.response.fileURI);
-                  //pin JSOn
-
-                  pinJson({
-                    name: collectionItem.name,
-                    description: collectionItem.description,
-                    logoImage: `ipfs://${res.response.CID}`,
-                    logoCID: res.response.CID,
-                    logofileURI: res.response.fileURI,
-                    bannerImage: `ipfs://${response2.response.CID}`,
-                    bannerCID: response2.response.fileURI,
-                    symbol: collectionItem.symbol,
-                    feeReciever: collectionItem.feeReciever,
-                    url: collectionItem.url,
-                    feePercentage: collectionItem.feePercentage
-                  })
-                    .then((pinResponse: any) => {
-                      console.log(pinResponse);
-                      if (pinResponse?.response?.CID && pinResponse?.response?.itemURI) {
-                        window.open(pinResponse.response.itemURI);
-                        resetAllFields();
-                      } else {
-                        console.log('Item API did not return accepted format');
-                      }
-                    })
-                    .catch(err => {
-                      console.log('Inner Catch Block Error ==' + err);
-                    });
-                } else {
-                  console.log('Banner File API did not return accepted format');
-                }
-              });
-            } else {
-              console.log('Logo File API did not return accepted format');
-            }
-          })
-          .catch(e => {
-            console.log('Catch block error' + e);
-          });
-      } else {
-        console.log('Enter all details');
-      }
     } catch (e) {
       console.log('Error Occured ===' + e);
     }
@@ -378,37 +296,18 @@ export default function NewNFT({}: Props) {
         <Navbar />
       </NavbarContainer>
       <ParentExploreAndData>
-        <div className="title">Create your Collection</div>
+        <div className="title">Mint your NFT.</div>
 
         <Heading top={'31px'}>
-          Logo Image <span className="blue">*</span>
+          Avatar <span className="blue">*</span>
         </Heading>
 
         <div className="text">
-          This image will also be used for navigation 350x350 <br /> recomended.
+          Supported File Types: JPG, JPEG, PNG, GIF, WEBP
+          <span className="blue"> Max size 40mb</span>
         </div>
 
-        <FileContainer file={logoFile} setFile={setLogoFile} type={2} />
-
-        <Heading top={'56px'}>Featured Image</Heading>
-
-        <div className="text">
-          This image will be used to feature your artwork on the <br /> home page category pages or other promotional{' '}
-          <br /> areas in VefiNft. <span className="blue">(Optional)</span>
-        </div>
-
-        <FileContainer file={featuredFile} setFile={setFeatured} type={1} />
-
-        <Heading top={'56px'}>
-          Banner Image <span className="blue">*</span>
-        </Heading>
-
-        <div className="text">
-          This image will appear at the top of your collection <br /> page avoid to add too much text, as the dimension{' '}
-          <br /> change on different device 1440x250 recomended <br /> <span className="blue">(Optional)</span>
-        </div>
-
-        <FileContainer file={bannerFile} setFile={setBannerFile} type={3} />
+        <FileContainer file={avatarImage} setFile={setAvatarImage} type={2} />
 
         <Heading className="heading">
           Name<span className="blue">*</span>
@@ -417,7 +316,7 @@ export default function NewNFT({}: Props) {
         <div className="input-div">
           <input
             type="text"
-            value={collectionItem.name}
+            value={nftMetadata.name}
             onChange={setProperty}
             name="name"
             className="inp"
@@ -571,16 +470,9 @@ export default function NewNFT({}: Props) {
             <span className="slider round"></span>
           </label>
         </div>
-
-        {btnEnabled ? (
-          <Filled_CTA_Button onClick={createNftButton} style={{ width: 90, height: 42, marginTop: 33 }}>
-            Create
+          <Filled_CTA_Button disabled={!allConditionsSatisfied()} onClick={mintNFT} style={{ background: 'grey', width: 250, marginTop: 33 }}>
+            {}
           </Filled_CTA_Button>
-        ) : (
-          <Filled_CTA_Button onClick={createNftButton} style={{ background: 'grey', width: 250, marginTop: 33 }}>
-            Please fill all required details
-          </Filled_CTA_Button>
-        )}
       </ParentExploreAndData>
       <StyledExploreNft src="/icons/exploreNFT.png" />
       <ColoredBackground></ColoredBackground>

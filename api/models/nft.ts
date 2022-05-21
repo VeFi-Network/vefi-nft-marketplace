@@ -1,8 +1,8 @@
-enum NFTLevels {
+export enum NFTLevels {
   LEGENDARY = 'LEGENDARY',
   RARE = 'RARE',
   ICONIC = 'ICONIC',
-  SUPERRARE = 'SUPERRARE'
+  SUPERRARE = 'SUPER-RARE'
 }
 
 export type NFTMetadata = {
