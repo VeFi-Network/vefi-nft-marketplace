@@ -10,14 +10,15 @@ import { useWeb3Context } from '../../contexts/web3/index';
 import { useAPIContext } from '../../contexts/api/index';
 
 const NavContainer = styled.nav`
-  max-width: 100%;
+  margin: 0 auto;
+  width: calc(100% - 150px);
   display: flex;
   .navbar__container {
     display: flex;
     width: 100%;
     justify-content: space-between;
     align-items: center;
-    margin: 0 50px;
+
     height: 60px;
 
     @media screen and (max-width: 760px) {
@@ -42,14 +43,12 @@ const NavContainer = styled.nav`
 
 const NavBrand = styled.div`
   z-index: 2;
-  padding-left: 50px;
 `;
 
 const NavLinks = styled.div`
   display: flex;
   flex-direction: row;
   column-gap: 0.5rem;
-  padding: 0 10px;
   .icon {
     background-color: #373943;
     border-radius: 50%;

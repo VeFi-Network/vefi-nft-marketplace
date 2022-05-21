@@ -1,95 +1,159 @@
-import React from 'react';
-import styled from 'styled-components';
+import { Button } from 'antd';
+import { FiFilter, FiPlus, FiSearch } from 'react-icons/fi';
 import Navbar from '../components/Navbar';
-import GreyMarketContainer from '../components/marketplace/GreyMarketContainer';
-import FilterComponent from '../components/marketplace/FilterComponent';
+import { CollectionWrapper, FilterWrapper, MarktePlaceWrapper, SellersWrapper } from '../styles/Market.styled';
+import { Select } from 'antd';
+import Card from '../components/Card';
+
 import MainFooter from '../components/Footer';
+import SellerInfo from '../components/SellerInfo';
+const { Option } = Select;
 
-type Props = {};
-
-const MainContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  background: #0c0c0c;
-  width: 100%;
-  position: relative;
-`;
-
-const MarketplaceContainer = styled.div`
-  min-height: 100vh;
-  width: 100vw;
-  background: #0c0c0c;
-  padding-top: 20px;
-  padding-bottom: 30px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-`;
-
-const NavbarContainer = styled.div`
-  width: 1400px;
-  min-width: 1000px;
-  padding-left: 100px;
-  z-index: 3;
-
-  @media (max-width: 1280px) {
-    width: 1100px;
-    min-width: 700px;
-    padding-left: 0px;
-  }
-`;
-
-const StyledViewNft = styled.img`
-  height: 585px;
-  width: 97px;
-  margin-top: 52px;
-`;
-
-const ColoredBackground = styled.div`
-  width: 964px;
-  height: 1048px;
-  background: url('/objects/marketplaceObjects.svg') no-repeat;
-  position: absolute;
-  top: -5%;
-  right: 0%;
-  z-index: 0;
-`;
-
-const ParentGreyAndExploreNFT = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-`;
-
-const FilterAndGrey = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-export default function Marketplace({}: Props) {
+const Market = () => {
   return (
     <>
-      <MainContainer>
-        <MarketplaceContainer>
-          <NavbarContainer>
-            <Navbar />
-          </NavbarContainer>
-
-          <ParentGreyAndExploreNFT>
-            <StyledViewNft src="/icons/exploreNFT.png" />
-            <FilterAndGrey>
-              <FilterComponent />
-              <GreyMarketContainer />
-            </FilterAndGrey>
-            <ColoredBackground></ColoredBackground>
-          </ParentGreyAndExploreNFT>
-          <MainFooter />
-        </MarketplaceContainer>
-      </MainContainer>
+      <MarktePlaceWrapper>
+        <div className="marketplace__container">
+          <Navbar />
+        </div>
+        <div className="container">
+          <FilterWrapper>
+            <div className="filter__heading">
+              <FiFilter />
+              Filter By
+            </div>
+            <div className="filter__body">
+              <div className="filter__left">
+                <div className="box">
+                  <Button className="btn">All</Button>
+                </div>
+                <div className="box">
+                  <Select labelInValue defaultValue={{ value: 'Top selling' }}>
+                    <Option value="">Select</Option>
+                  </Select>
+                </div>
+                <div className="box">
+                  <Select labelInValue defaultValue={{ value: 'Price' }}>
+                    <Option value="">Price</Option>
+                  </Select>
+                </div>
+                <div className="box input__box">
+                  <div className="input__wrapper">
+                    <FiSearch />
+                    <input type="text" placeholder="Search artwork" />
+                  </div>
+                </div>
+              </div>
+              <div className="filter__right">
+                <Button icon={<FiPlus />}>Create New Item</Button>
+              </div>
+            </div>
+          </FilterWrapper>
+          <div className="wrapper">
+            <CollectionWrapper>
+              <div className="collection__container">
+                <Card
+                  name="Collection Name"
+                  price="0"
+                  owner="owner name"
+                  imageURI="/nft/nft01.png"
+                  key="1"
+                  linkTo="/"
+                />
+                <Card
+                  name="Collection Name"
+                  price="0"
+                  owner="owner name"
+                  imageURI="/nft/nft02.png"
+                  key="1"
+                  linkTo="/"
+                />
+                <Card
+                  name="Collection Name"
+                  price="0"
+                  owner="owner name"
+                  imageURI="/nft/nft01.png"
+                  key="1"
+                  linkTo="/"
+                />
+                <Card
+                  name="Collection Name"
+                  price="0"
+                  owner="owner name"
+                  imageURI="/nft/nft03.png"
+                  key="1"
+                  linkTo="/"
+                />
+                <Card
+                  name="Collection Name"
+                  price="0"
+                  owner="owner name"
+                  imageURI="/nft/nft03.png"
+                  key="1"
+                  linkTo="/"
+                />
+              </div>
+            </CollectionWrapper>
+            <SellersWrapper>
+              <div className="sellers__container">
+                <SellerInfo imageURI="/marketplace/topSellers/1.png" name="John Doe" linkTo="/" />
+                <SellerInfo imageURI="/marketplace/topSellers/2.png" name="John Doe" linkTo="/" />
+                <SellerInfo imageURI="/marketplace/topSellers/3.png" name="John Doe" linkTo="/" />
+                <SellerInfo imageURI="/marketplace/topSellers/4.png" name="John Doe" linkTo="/" />
+                <SellerInfo imageURI="/marketplace/topSellers/5.png" name="John Doe" linkTo="/" />
+                <SellerInfo imageURI="/marketplace/topSellers/6.png" name="John Doe" linkTo="/" />
+              </div>
+            </SellersWrapper>
+            <CollectionWrapper>
+              <div className="collection__container collections">
+                <Card
+                  name="Collection Name"
+                  price="0"
+                  owner="owner name"
+                  imageURI="/nft/nft01.png"
+                  key="1"
+                  linkTo="/"
+                />
+                <Card
+                  name="Collection Name"
+                  price="0"
+                  owner="owner name"
+                  imageURI="/nft/nft02.png"
+                  key="1"
+                  linkTo="/"
+                />
+                <Card
+                  name="Collection Name"
+                  price="0"
+                  owner="owner name"
+                  imageURI="/nft/nft01.png"
+                  key="1"
+                  linkTo="/"
+                />
+                <Card
+                  name="Collection Name"
+                  price="0"
+                  owner="owner name"
+                  imageURI="/nft/nft03.png"
+                  key="1"
+                  linkTo="/"
+                />
+                <Card
+                  name="Collection Name"
+                  price="0"
+                  owner="owner name"
+                  imageURI="/nft/nft03.png"
+                  key="1"
+                  linkTo="/"
+                />
+              </div>
+            </CollectionWrapper>
+          </div>
+        </div>
+      </MarktePlaceWrapper>
+      <MainFooter />
     </>
   );
-}
+};
+
+export default Market;
