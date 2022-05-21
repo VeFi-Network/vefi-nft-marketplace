@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ethersproject/bytes": "^5.6.1",
+    "@types/react-slick": "^0.23.8",
     "@web3-react/core": "^6.1.9",
     "@web3-react/injected-connector": "^6.0.7",
     "antd": "^4.20.4",
@@ -19,8 +20,11 @@
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-icons": "^4.3.1",
+    "react-slick": "^0.29.0",
     "sharp": "^0.30.4",
+    "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.5",
+    "swiper": "^8.1.5",
     "web3": "^1.7.3"
   },
   "devDependencies": {
