@@ -97,7 +97,7 @@ const UserWallet = styled.div`
 `;
 
 const Navbar = () => {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const [walletConnected, setWalletConnected] = useState(false);
   return (
     <>
