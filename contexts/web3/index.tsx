@@ -10,8 +10,10 @@ type Web3ContextType = {
   account?: string | null;
   library?: Web3;
   chainId?: number;
+  active: boolean;
   connectOrDisconnectWeb3: () => void;
   switchChain: (chain: number) => void;
+  disconnectWeb3: () => void;
 };
 
 const Web3Context = createContext<Web3ContextType>({} as Web3ContextType);
@@ -33,6 +35,10 @@ export const Web3ContextProvider = ({ children }: any) => {
       deactivate();
       console.log('Web3 disconnected!');
     }
+  }, [active]);
+
+  const disconnectWeb3 = useCallback(() => {
+    if (active) deactivate();
   }, [active]);
 
   const switchChain = useCallback(
@@ -67,7 +73,9 @@ export const Web3ContextProvider = ({ children }: any) => {
   }, []);
 
   return (
-    <Web3Context.Provider value={{ account, library, chainId, connectOrDisconnectWeb3, switchChain }}>
+    <Web3Context.Provider
+      value={{ account, library, chainId, connectOrDisconnectWeb3, switchChain, disconnectWeb3, active }}
+    >
       {children}
     </Web3Context.Provider>
   );

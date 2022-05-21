@@ -363,10 +363,6 @@ export default function NewNFT({}: Props) {
 
         <Heading top="27px">Description</Heading>
 
-        <div className="text">
-          <span className="blue">Note</span> Syntax is supported. 1 to 2000 words only.
-        </div>
-
         <div className="text-area">
           <textarea
             className="real-text-area"
@@ -440,7 +436,7 @@ export default function NewNFT({}: Props) {
                     />
                   </div>
                   <div style={{ flexBasis: '5%', flexGrow: 1 }}></div>
-                  <div style={{ flexBasis: '5%', flexGrow: 1 }}>
+                  <div style={{ flexBasis: '5%', flexGrow: 1, marginLeft: 10 }}>
                     <Filled_CTA_Button
                       disabled={traitsIDs.length === 1}
                       style={{
@@ -466,7 +462,7 @@ export default function NewNFT({}: Props) {
             ))}
           </div>
           <div style={{ flexBasis: '5%', flexGrow: 1 }}></div>
-          <div style={{ flexBasis: '5%', flexGrow: 1 }}>
+          <div style={{ flexBasis: '5%', flexGrow: 1, marginTop: 10 }}>
             <Filled_CTA_Button
               onClick={() => setTraitsIDs([...traitsIDs, uuid()])}
               style={{ textAlign: 'center', width: 25, height: 25, fontSize: 17, padding: 4 }}

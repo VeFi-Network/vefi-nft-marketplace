@@ -15,6 +15,7 @@
     "@web3-react/injected-connector": "^6.0.7",
     "antd": "^4.20.4",
     "axios": "^0.26.1",
+    "eth-address": "^1.0.1",
     "ethereum-address": "^0.0.4",
     "lodash": "^4.17.21",
     "next": "12.1.5",
