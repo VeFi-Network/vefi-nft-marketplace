@@ -14,10 +14,10 @@ type Props = {
 const CardContainer = styled.div`
   position: relative;
   top: 0;
-  min-width: 300px;
+  width: 355px;
   z-index: 3;
   cursor: pointer;
-  min-height: 380px;
+  height: 380px;
   margin-right: 5px;
   border-radius: 21px 21px 0 0;
 `;
