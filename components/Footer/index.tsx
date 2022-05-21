@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import React from 'react';
-import Logo from '../../public/logo/vefi_nft_logo.svg';
 import { FaFacebook, FaGithub, FaTelegram } from 'react-icons/fa';
 import { AiFillTwitterCircle } from 'react-icons/ai';
 import { Container, FootLink, SubDiv1, SubDiv2 } from '../../styles/footer.styled';
@@ -28,7 +27,7 @@ function MainFooter() {
           </form>
         </div>
         <div className="logo_container">
-          <Image src={Logo} height={40} />
+          <Image src="/logo/vefi_nft_logo.svg" height={40} width={100} />
         </div>
         <div className="community">
           <h5 className="join">Join Our Community</h5>

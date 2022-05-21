@@ -7,6 +7,7 @@ import Card from '../components/Card';
 
 import MainFooter from '../components/Footer';
 import SellerInfo from '../components/SellerInfo';
+import Image from 'next/image';
 const { Option } = Select;
 
 const Market = () => {
@@ -17,6 +18,9 @@ const Market = () => {
           <Navbar />
         </div>
         <div className="container">
+          <div className="exploreNft">
+            <Image src="/icons/exploreNFT.png" width={50} height={500} alt="exploreNFT" />
+          </div>
           <FilterWrapper>
             <div className="filter__heading">
               <FiFilter />

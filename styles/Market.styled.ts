@@ -10,12 +10,26 @@ export const MarktePlaceWrapper = styled.section`
   height: max-content;
   padding-bottom: 80px;
 
+  .marketplace__container {
+    position: relative;
+  }
   .container {
     width: calc(100% - 150px);
     margin: 0 auto;
 
     @media screen and (max-width: 760px) {
       width: 90%;
+    }
+    .exploreNft {
+      position: absolute;
+      left: 0;
+      z-index: 1;
+      height: max-content;
+
+      img {
+        width: 100% !important;
+        height: 100% !important;
+      }
     }
   }
   .wrapper {
