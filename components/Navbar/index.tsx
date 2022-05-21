@@ -1,10 +1,13 @@
 import Image from 'next/image';
 import styled from 'styled-components';
+import * as ethAddress from 'eth-address';
 import { useState } from 'react';
 import Link from 'next/link';
 import { Button, Drawer, Dropdown, Tooltip } from 'antd';
 import { FiChevronDown, FiPlus, FiUser } from 'react-icons/fi';
-import menu from '../Profile/Menu';
+import Menu from '../Profile/Menu';
+import { useWeb3Context } from '../../contexts/web3/index';
+import { useAPIContext } from '../../contexts/api/index';
 
 const NavContainer = styled.nav`
   max-width: 100%;
@@ -98,7 +101,8 @@ const UserWallet = styled.div`
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
-  const [walletConnected, setWalletConnected] = useState(false);
+  const { active, connectOrDisconnectWeb3, account } = useWeb3Context();
+  const { authenticatedUser } = useAPIContext();
   return (
     <>
       <NavContainer>
@@ -115,7 +119,7 @@ const Navbar = () => {
               <Image src="/icons/envelope.svg" width={15} height={15} />
             </div>
 
-            <Dropdown overlay={menu} trigger={['click']} placement="bottom" arrow>
+            <Dropdown overlay={Menu} trigger={['click']} placement="bottom" arrow>
               <div className="icon">
                 <Image src="/icons/notification.svg" width={15} height={15} />
               </div>
@@ -124,7 +128,7 @@ const Navbar = () => {
             <div className="icon" onClick={() => setVisible(!visible)}>
               <Image src="/icons/wallet.svg" width={15} height={15} />
             </div>
-            {!walletConnected ? (
+            {!active ? (
               <>
                 <Button className="connectBtn" onClick={() => setVisible(!visible)}>
                   Connect Wallet
@@ -137,7 +141,13 @@ const Navbar = () => {
                     <div className="wallet_icon">
                       <Image src="/icons/eth.svg" width={15} height={15} />
                     </div>
-                    <div>0xF2255c5F...</div>
+                    <div>
+                      {!!authenticatedUser
+                        ? authenticatedUser.name
+                        : !!account
+                        ? ethAddress.formatEthAddress(account)
+                        : ''}
+                    </div>
                   </div>
                 </UserWallet>
               </>
@@ -147,7 +157,7 @@ const Navbar = () => {
       </NavContainer>
       <Drawer title="" placement="right" onClose={() => setVisible(!visible)} visible={visible}>
         <div className="wallet__body">
-          {walletConnected ? (
+          {active ? (
             <>
               <div className="wallet__header">
                 <div className="wallet__setting">
@@ -155,7 +165,7 @@ const Navbar = () => {
                     <Image src="/icons/eth.svg" width={20} height={20} alt="wallet" />
                   </div>
                   <div className="wallet__setting__title">
-                    <Dropdown overlay={menu} trigger={['click']}>
+                    <Dropdown overlay={Menu} trigger={['click']}>
                       <a onClick={e => e.preventDefault()}>
                         <div style={{ color: 'var(--text-light)' }}>My Profile</div>
                       </a>
@@ -168,7 +178,13 @@ const Navbar = () => {
                     <Image src="/icons/eth.svg" width={20} height={20} alt="wallet" />
                   </div>
                   <div className="chain__id">
-                    <span>0x6234...</span>
+                    <span>
+                      {!!authenticatedUser
+                        ? authenticatedUser.name
+                        : !!account
+                        ? ethAddress.formatEthAddress(account)
+                        : ''}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -241,7 +257,7 @@ const Navbar = () => {
                       >
                         wallet
                       </Tooltip>{' '}
-                      Providers or create a new one.
+                      providers or create a new one.
                     </p>
                   </div>
                   <div className="connect__wallet__provider">
@@ -249,7 +265,7 @@ const Navbar = () => {
                       <div className="provider__logo">
                         <Image src="/logo/metamask.svg" width={20} height={20} alt="metamask" />
                       </div>
-                      <div className="provider__name">
+                      <div className="provider__name" onClick={connectOrDisconnectWeb3}>
                         MetaMask <span>Popular</span>
                       </div>
                     </div>

@@ -383,9 +383,7 @@ const NoItemContainer = styled.div`
   margin-top: 50px;
 `;
 
-const HeroContainer = styled.div`
-
-`
+const HeroContainer = styled.div``;
 
 export default function Homepage() {
   const [searchValue, setSearchValue] = useState('');
@@ -501,8 +499,10 @@ export default function Homepage() {
               </div>
             </div>
           </Footer>
-          <HeroContainer>          <Hero/>
-</HeroContainer>
+          <HeroContainer>
+            {' '}
+            <Hero />
+          </HeroContainer>
         </MarketplaceContainer>
 
         <FooterHelpIcon>
@@ -510,10 +510,8 @@ export default function Homepage() {
             <FaQuestion />
           </div>
         </FooterHelpIcon>
-        
-
       </MainContainer>
-      <MainFooter/>
+      <MainFooter />
     </>
   );
 }

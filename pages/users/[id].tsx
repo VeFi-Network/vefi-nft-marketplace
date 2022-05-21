@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaBars, FaHandHoldingUsd, FaRegEyeSlash, FaSearch, FaRegUser,FaUserEdit } from 'react-icons/fa';
+import { FaBars, FaHandHoldingUsd, FaRegEyeSlash, FaSearch, FaRegUser, FaUserEdit } from 'react-icons/fa';
 import { FiBarChart, FiChevronDown, FiEyeOff, FiGrid, FiHeart, FiList, FiRotateCcw, FiTag } from 'react-icons/fi';
 import Card from '../../components/Card/UserProfileCard';
 import FilterProperty from '../../components/Filter';
@@ -10,7 +10,6 @@ import { NFTCollection, NFTUserCollectionInfo, UsersWrapper, ButtonContainer } f
 import Link from 'next/link';
 import Button from '../../components/Button/Ghost';
 import FilledButton from '../../components/Button/CTA/Filled';
-
 
 const Users = () => {
   return (

@@ -152,21 +152,21 @@ export const SubDiv2 = styled.div`
       color: #ffffff;
     }
 
-    @media screen and (max-width:768px){
-    margin:30px 0 ;
-  }
+    @media screen and (max-width: 768px) {
+      margin: 30px 0;
+    }
   }
 
   .my_account {
     flex: 1;
-    display:flex;
-    flex-direction:column ;
-    justify-content:space-between ;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
-    div{
-      @media screen and (max-width:768px){
-    margin:10px 0 ;
-  }
+    div {
+      @media screen and (max-width: 768px) {
+        margin: 10px 0;
+      }
     }
     .nav_section {
       font-family: 'Monument Extended' sans-serif;
@@ -177,9 +177,9 @@ export const SubDiv2 = styled.div`
       color: #ffffff;
     }
 
-    @media screen and (max-width:768px){
-    margin:20px 0 ;
-  }
+    @media screen and (max-width: 768px) {
+      margin: 20px 0;
+    }
   }
 
   .company {
@@ -193,28 +193,26 @@ export const SubDiv2 = styled.div`
       color: #ffffff;
     }
 
-    @media screen and (max-width:768px){
-    margin:20px 0 ;
-  }
+    @media screen and (max-width: 768px) {
+      margin: 20px 0;
+    }
   }
 
-  @media screen and (max-width:768px){
-    flex-direction:column ;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
   }
 `;
 
-export const FootLink = styled.div` 
-margin: 10px 0;
+export const FootLink = styled.div`
+  margin: 10px 0;
 
-a{
-  text-decoration:none ;
-  font-family: 'Roboto';
-font-style: normal;
-font-weight: 400;
-font-size: 16px;
-line-height: 19px;
-color: #FFFFFF;
-}
-
-
-`
+  a {
+    text-decoration: none;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    color: #ffffff;
+  }
+`;

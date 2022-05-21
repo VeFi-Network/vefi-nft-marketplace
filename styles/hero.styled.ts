@@ -21,10 +21,9 @@ export const Container = styled.div`
     padding: 50px 20px;
     text-align: center;
 
-
-    @media screen and (max-width:900px){
-        font-size:25px ;
-        line-height:100% ;
+    @media screen and (max-width: 900px) {
+      font-size: 25px;
+      line-height: 100%;
     }
   }
 
@@ -37,7 +36,6 @@ export const Container = styled.div`
     .swiper-container {
       width: 100%;
 
-        
       @media screen and (max-width: 900px) {
         .swiper-container {
           width: 900px;
@@ -49,8 +47,6 @@ export const Container = styled.div`
           width: 640px;
         }
       }
-
-      
     }
 
     .slider_item_container {
