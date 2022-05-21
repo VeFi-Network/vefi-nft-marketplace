@@ -18,7 +18,7 @@ export const Container = styled.div`
     font-size: 30px;
     line-height: 140%;
     color: #ffffff;
-    padding:20px 0 ;
+    padding: 20px 0;
   }
 
   .slider_con {
@@ -27,8 +27,23 @@ export const Container = styled.div`
     color: white;
     padding: 30px;
 
-    .swiper-container{
-        width:100% ;
+    .swiper-container {
+      width: 100%;
+
+        
+      @media screen and (max-width: 900px) {
+        .swiper-container {
+          width: 900px;
+        }
+      }
+
+      @media screen and (max-width: 640px) {
+        .swiper-container {
+          width: 640px;
+        }
+      }
+
+      
     }
 
     .slider_item_container {
@@ -45,7 +60,7 @@ export const Container = styled.div`
         display: flex;
         align-items: center;
         justify-content: center;
-        filter: blur(.5px) ;
+        filter: blur(0.5px);
       }
 
       .title {

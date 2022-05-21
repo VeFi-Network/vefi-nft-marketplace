@@ -25,7 +25,24 @@ function Hero() {
         <Swiper
          modules={[Navigation, Pagination, Scrollbar, A11y]}
          spaceBetween={50}
-         slidesPerView={3}
+         breakpoints={{
+           1024:{
+            width: 1024,
+            slidesPerView:3
+           },
+           900:{
+             width:900,
+             slidesPerView:3
+           },
+           768:{
+            width:768,
+            slidesPerView:1
+           }
+
+         }}
+         
+
+         
         //  navigation
          pagination={{ clickable: true }}
         //  onSlideChange={() => console.log('slide change')}
