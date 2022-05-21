@@ -15,7 +15,7 @@ const MainContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   /* background: #0c0c0c; */
 
   width: 100%;
@@ -179,6 +179,7 @@ const NFTSubCont = styled.div`
   overflow-x: scroll;
   margin-top: -50px;
   transition: all 0.3s ease-in;
+
   .nft__sub__container {
     display: flex;
     width: max-content;
