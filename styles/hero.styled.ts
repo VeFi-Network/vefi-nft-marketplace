@@ -18,7 +18,14 @@ export const Container = styled.div`
     font-size: 30px;
     line-height: 140%;
     color: #ffffff;
-    padding: 20px 0;
+    padding: 50px 20px;
+    text-align: center;
+
+
+    @media screen and (max-width:900px){
+        font-size:25px ;
+        line-height:100% ;
+    }
   }
 
   .slider_con {
