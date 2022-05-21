@@ -1,12 +1,16 @@
 import React from 'react';
-import { FaBars, FaHandHoldingUsd, FaRegEyeSlash, FaSearch } from 'react-icons/fa';
+import { FaBars, FaHandHoldingUsd, FaRegEyeSlash, FaSearch, FaRegUser,FaUserEdit } from 'react-icons/fa';
 import { FiBarChart, FiChevronDown, FiEyeOff, FiGrid, FiHeart, FiList, FiRotateCcw, FiTag } from 'react-icons/fi';
-import NFTCard from '../../components/Card/NftCard';
+import Card from '../../components/Card/UserProfileCard';
 import FilterProperty from '../../components/Filter';
 import FIlterBy from '../../components/Filter/FIlterBy';
 import Navbar from '../../components/Navbar';
 import UserBanner from '../../components/Collections/CollectionBanner';
-import { NFTCollection, NFTUserCollectionInfo, UsersWrapper } from '../../styles/users.styled';
+import { NFTCollection, NFTUserCollectionInfo, UsersWrapper, ButtonContainer } from '../../styles/users.styled';
+import Link from 'next/link';
+import Button from '../../components/Button/Ghost';
+import FilledButton from '../../components/Button/CTA/Filled';
+
 
 const Users = () => {
   return (
@@ -24,7 +28,22 @@ const Users = () => {
               <p>Joined September 2022</p>
             </div>
           </div>
+          <ButtonContainer>
+            <Link href="/users/profile/create">
+              <Button>
+                <FaRegUser />
+                Create Profile
+              </Button>
+            </Link>
+            <Link href="/users/profile/update">
+              <FilledButton>
+                <FaUserEdit />
+                Update Profile
+              </FilledButton>
+            </Link>
+          </ButtonContainer>
         </UserBanner>
+
         <NFTUserCollectionInfo>
           <FIlterBy>
             <div className="properties">
@@ -56,7 +75,7 @@ const Users = () => {
                   <button>
                     <FaBars />
                   </button>
-                  <button>
+                  <button className="grid_btn">
                     <FiGrid />
                   </button>
                 </div>
@@ -65,7 +84,7 @@ const Users = () => {
           </div>
           <NFTCollection>
             <div className="container">
-              <NFTCard />
+              <Card />
             </div>
           </NFTCollection>
         </NFTUserCollectionInfo>

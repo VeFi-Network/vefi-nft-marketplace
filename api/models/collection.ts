@@ -9,10 +9,11 @@ export enum CollectionCategory {
   FASHION = 'FASHION',
   GAMING = 'GAMING',
   UTILITY = 'UTILITY',
-  REAL_ESTATE = 'REAL ESTATE'
+  REAL_ESTATE = 'REAL ESTATE',
+  CARTOONS = 'CARTOONS'
 }
 
-type CollectionMetadata = {
+export type CollectionMetadata = {
   name: string;
   category: CollectionCategory;
   imageURI: string;
@@ -20,6 +21,7 @@ type CollectionMetadata = {
   symbol: string;
   owner: string;
   description: string;
+  hasExplicitContent: boolean;
 };
 
 export interface CollectionModel {

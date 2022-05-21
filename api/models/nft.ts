@@ -5,7 +5,7 @@ enum NFTLevels {
   SUPERRARE = 'SUPERRARE'
 }
 
-type NFTMetadata = {
+export type NFTMetadata = {
   name: string;
   description: string;
   owner: string;

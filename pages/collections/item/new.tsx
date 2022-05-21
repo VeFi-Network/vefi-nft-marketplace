@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Navbar from '../../../components/Navbar';
-import Image from 'next/image';
 import Filled_CTA_Button from '../../../components/Button/CTA/Filled';
+import { pinFile, pinJson } from '../../../api/ipfs';
+import FileContainer from '../../../components/Collections/FileContainer';
+import DropdownComponent from '../../../components/Collections/Dropdown';
+import { CollectionMetadata, CollectionCategory } from '../../../api/models/collection';
+import { Spin } from 'antd';
 
 type Props = {};
 
@@ -14,6 +18,7 @@ const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow-y: scroll;
 `;
 
 const NavbarContainer = styled.div`
@@ -70,20 +75,6 @@ const ParentExploreAndData = styled.div`
     color: #ebf8ff;
     margin-top: 11px;
   }
-
-  .dotted-div {
-    width: 356px;
-    height: 177px;
-    border: 2px dashed #5c95ff;
-    border-radius: 11px;
-    margin-top: 29px;
-
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-  }
-
   .blue {
     color: #5c95ff;
   }
@@ -111,8 +102,9 @@ const ParentExploreAndData = styled.div`
       width: 468px;
       outline: none;
       background: transparent;
-      padding-left: 16px;
+      padding: 16px;
       color: rgba(255, 255, 255, 0.58);
+      font-size: 12px;
     }
   }
 
@@ -189,7 +181,7 @@ const ParentExploreAndData = styled.div`
     }
 
     input:checked + .slider {
-      background-color: grey;
+      background-color: #59981a;
     }
 
     input:focus + .slider {
@@ -232,68 +224,6 @@ const ParentExploreAndData = styled.div`
 
     color: #5c95ff;
   }
-
-  .dropdown-cont {
-    display: flex;
-    flex-direction: row;
-    gap: 27px;
-  }
-`;
-
-const Dropdown = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 10px;
-  gap: 11px;
-  background: #373943;
-  border-radius: 11px;
-  width: ${(props: { width: string }) => (props.width ? props.width : '155.78px')};
-  height: 37px;
-  cursor: pointer;
-
-  font-family: 'Rubik';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 17px;
-
-  margin-top: ${(props: { top: string }) => (props.top ? props.top : '36px')};
-
-  color: #5c95ff;
-
-  .cross {
-    font-size: 22px;
-  }
-`;
-
-const DropdownContainer = styled.div`
-  width: ${(props: { width: string }) => (props.width ? props.width : '155.78px')};
-  background: #373943;
-  border-radius: 11px;
-  position: absolute;
-
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  margin-top: 30px;
-  margin-left: -10px;
-  z-index: 3;
-
-  .drop-el {
-    height: 38px;
-    display: flex;
-    align-items: center;
-    padding-left: 10px;
-
-    &:hover {
-      opacity: 0.5;
-    }
-  }
-`;
-
-const FieldsDiv = styled.div`
-  border: 1px solid red;
 `;
 
 const Heading = styled.div`
@@ -315,239 +245,228 @@ const StyledExploreNft = styled.img`
 `;
 
 export default function NewCollection({}: Props) {
-  const [checkbox1, setCheckbox1] = useState(false);
-  const [checkbox2, setCheckbox2] = useState(false);
+  const [bannerImage, setBannerImage] = useState<any>(null);
+  const [avatarImage, setAvatarImage] = useState<any>(null);
+  const [dropdownShown, setDropdownShown] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [tip, setTip] = useState<string>('');
 
-  const [traitsList, setTraitList] = useState(['Select Trait']);
+  const [collectionMetadata, setCollectionMetadata] = useState<Omit<Omit<CollectionMetadata, 'imageURI'>, 'bannerURI'>>(
+    {
+      name: '',
+      owner: '',
+      category: CollectionCategory.ART,
+      description: '',
+      symbol: '',
+      hasExplicitContent: false
+    }
+  );
 
-  const [colDropdown, setColDropdown] = useState(false);
-  const [colValue, setColVal] = useState('Select collection');
+  const setProperty = (e: any) => {
+    setCollectionMetadata({ ...collectionMetadata, [e.target.name]: e.target.value });
+  };
 
-  const [propDropdown, setPropDropdown] = useState(false);
-  const [propertiesValue, setPropertiesValue] = useState('Select properties');
+  const allConditionsSatisfied = (): boolean => {
+    return (
+      !!bannerImage &&
+      !!avatarImage &&
+      !!collectionMetadata.name &&
+      !!collectionMetadata.owner &&
+      !!collectionMetadata.category &&
+      !!collectionMetadata.symbol &&
+      collectionMetadata.name.length >= 4 &&
+      collectionMetadata.owner.length >= 4 &&
+      collectionMetadata.symbol.length >= 3
+    );
+  };
 
-  const [labelDropdown, setLabelDropdown] = useState(false);
-  const [labelValue, setLabelValue] = useState('Select label');
+  const resetAllFields = () => {
+    setCollectionMetadata({
+      name: '',
+      owner: '',
+      description: '',
+      category: CollectionCategory.ART,
+      symbol: '',
+      hasExplicitContent: false
+    });
+    setBannerImage(null);
+    setAvatarImage(null);
+  };
+
+  const createCollection = async () => {
+    try {
+      setIsLoading(true);
+      const bannerFormData = new FormData();
+
+      // Append the banner file to the form data.
+      bannerFormData.append('file', bannerImage.file);
+
+      // Pin file to IPFS
+      setTip('Pinning banner to IPFS');
+      const bannerPinningResponse = await pinFile(bannerFormData);
+
+      const avatarFormData = new FormData();
+
+      // Append the avatar file to the form data.
+      avatarFormData.append('file', avatarImage.file);
+
+      // Pin file to IPFS
+      setTip('Pinning avatar to IPFS');
+      const avatarPinningResponse = await pinFile(avatarFormData);
+
+      if (allConditionsSatisfied()) {
+        setTip('Pinning metadata to IPFS');
+        const jsonPinningResponse = await pinJson({
+          ...collectionMetadata,
+          imageURI: avatarPinningResponse.response.fileURI,
+          bannerURI: bannerPinningResponse.response.fileURI
+        });
+        resetAllFields();
+        console.log(jsonPinningResponse);
+      }
+
+      setIsLoading(false);
+      setTip('');
+    } catch (error: any) {
+      setIsLoading(false);
+      console.log(error);
+    }
+  };
+
   return (
     <MainContainer>
       <NavbarContainer>
         <Navbar />
       </NavbarContainer>
-      <ParentExploreAndData>
-        <div className="title">Create new item</div>
+      <Spin spinning={isLoading} size="large" tip={tip}>
+        <ParentExploreAndData>
+          <div className="title">Create New Collection</div>
 
-        <div className="white-text">
-          Image, Video, Audio or 3D model<span className="blue">*</span>
-        </div>
+          <Heading className="heading">
+            Collection Banner <span className="blue">*</span>
+          </Heading>
 
-        <div className="text">
-          File type supported: jpg, png, gif, Mp4, SVG, WEBM, <br /> Mp3, WAV, OGG, GLB, GLTF,{' '}
-          <span className="blue"> Max size 40mb</span>
-        </div>
-
-        <div className="dotted-div">
-          <Image src="/collection/dummyImage.svg" width="56px" height="56px" />
-        </div>
-
-        <Heading className="heading">
-          Name<span className="blue">*</span>
-        </Heading>
-
-        <div className="input-div">
-          <input type="text" className="inp" placeholder="Item Name" />
-        </div>
-
-        <Heading className="heading">
-          Owner<span className="blue">*</span>
-        </Heading>
-
-        <div className="input-div">
-          <input type="text" className="inp" placeholder="Paste the owner address of the NFT" />
-        </div>
-
-        <Heading className="heading">External link</Heading>
-
-        <div className="text">
-          VefiNft will include a link to this URL on this item’s <br /> detail page so users can click to learn more
-          about it <br /> so you are welcome to link your own web page with <br /> more details.
-        </div>
-
-        <div className="input-div">
-          <input type="text" className="inp" placeholder="https//Yoursite.io/item/567" />
-        </div>
-
-        <Heading top={'48px'}>
-          Description<span className="blue">*</span>
-        </Heading>
-
-        <div className="text">
-          The description will be included on the item <br /> detail page underneath its image.
-        </div>
-
-        <div className="text-area">
-          <textarea
-            className="real-text-area"
-            id=""
-            placeholder="provide a detailed description of your item"
-            rows={7}
-          ></textarea>
-        </div>
-
-        <Heading top={'38px'}>Collection</Heading>
-
-        <div className="text">This is the collection where your item will appear.</div>
-
-        <Dropdown
-          onClick={() => {
-            setColDropdown(!colDropdown);
-          }}
-        >
-          {colValue}
-          {colValue == 'Select collection' && (
-            <Image width="12px" style={{ zIndex: 1 }} height="11px" src="/icons/downIcon.svg" />
-          )}
-          {colDropdown && (
-            <DropdownContainer>
-              <div onClick={() => setColVal('Collection 1')} className="drop-el">
-                Collection 1
-              </div>
-              <div onClick={() => setColVal('Collection 2')} className="drop-el">
-                Collection 2
-              </div>
-              <div onClick={() => setColVal('Collection 3')} className="drop-el">
-                Collection 3
-              </div>
-              <div onClick={() => setColVal('Collection 4')} className="drop-el">
-                Collection 4
-              </div>
-            </DropdownContainer>
-          )}
-        </Dropdown>
-
-        <Heading top={'33px'}>Properties</Heading>
-
-        <div className="text">
-          Textual traits that show up as rectangles you can <br /> choose more than one
-        </div>
-
-        <Dropdown
-          onClick={() => {
-            setPropDropdown(!propDropdown);
-          }}
-        >
-          {propertiesValue}{' '}
-          {propertiesValue == 'Select properties' && (
-            <Image width="12px" style={{ zIndex: 1 }} height="11px" src="/icons/downIcon.svg" />
-          )}
-          {propDropdown && (
-            <DropdownContainer>
-              <div onClick={() => setPropertiesValue('Property 1')} className="drop-el">
-                Property 1
-              </div>
-              <div onClick={() => setPropertiesValue('Property 2')} className="drop-el">
-                Property 2
-              </div>
-              <div onClick={() => setPropertiesValue('Property 3')} className="drop-el">
-                Property 3
-              </div>
-              <div onClick={() => setPropertiesValue('Property 4')} className="drop-el">
-                Property 4
-              </div>
-            </DropdownContainer>
-          )}
-        </Dropdown>
-
-        <Heading top={'33px'}>
-          Traits <span className="blue">*</span>
-        </Heading>
-
-        <div className="text">Select the NFT Traits</div>
-
-        <div className="dropdown-cont">
-          {traitsList &&
-            traitsList.map((trait, i) => (
-              <Dropdown key={i} width="150px" top="27px">
-                {trait} <Image width="12px" style={{ zIndex: 1 }} height="11px" src="/icons/downIcon.svg" />
-              </Dropdown>
-            ))}
-
-          <Dropdown
-            onClick={() => {
-              if (traitsList.length < 4) {
-                let newTraitList = [...traitsList];
-                newTraitList.push('Select Trait');
-                console.log(newTraitList);
-                setTraitList(newTraitList);
-              }
-            }}
-            width="130px"
-            top="27px"
-          >
-            <span className="cross">+</span> Add Trait
-          </Dropdown>
-        </div>
-
-        <Heading top={'33px'}>
-          Labels<span className="blue">*</span>
-        </Heading>
-
-        <div className="text">Select between Legendary, Rare, Iconic, Super-Rare</div>
-
-        <Dropdown
-          width="130px"
-          top="20px"
-          onClick={() => {
-            setLabelDropdown(!labelDropdown);
-          }}
-        >
-          {labelValue}{' '}
-          {labelValue == 'Select label' && (
-            <Image width="12px" style={{ zIndex: 1 }} height="11px" src="/icons/downIcon.svg" />
-          )}
-          {labelDropdown && (
-            <DropdownContainer width="130px">
-              <div onClick={() => setLabelValue('Legendary')} className="drop-el">
-                Legendary
-              </div>
-              <div onClick={() => setLabelValue('Rare')} className="drop-el">
-                Rare
-              </div>
-              <div onClick={() => setLabelValue('Iconic')} className="drop-el">
-                Iconic
-              </div>
-              <div onClick={() => setLabelValue('Super-Rare')} className="drop-el">
-                Super-Rare
-              </div>
-            </DropdownContainer>
-          )}
-        </Dropdown>
-
-        <Heading top={'33px'}>Unlockable content</Heading>
-
-        <div className="switch-cont">
           <div className="text">
-            Include unlockable contents that can only be revield <br /> by the owner of the item.
+            Supported File Types: JPG, JPEG, PNG, GIF, WEBP
+            <span className="blue"> Max size 40mb</span>
           </div>
 
-          <label className="switch">
-            <input type="checkbox" checked={checkbox1} onChange={() => setCheckbox1(!checkbox1)} />
-            <span className="slider round"></span>
-          </label>
-        </div>
+          <FileContainer file={bannerImage} setFile={setBannerImage} type={1} />
 
-        <Heading top={'36px'}>Explicit and sensitive content</Heading>
+          <Heading className="heading">
+            Collection Avatar <span className="blue">*</span>
+          </Heading>
 
-        <div className="switch-cont">
-          <div className="text">Set this collection as explicit and sensitive content</div>
+          <div className="text">
+            Supported File Types: JPG, JPEG, PNG, GIF, WEBP
+            <span className="blue"> Max size 40mb</span>
+          </div>
 
-          <label className="switch">
-            <input type="checkbox" checked={checkbox2} onChange={() => setCheckbox2(!checkbox2)} />
-            <span className="slider round"></span>
-          </label>
-        </div>
+          <FileContainer file={avatarImage} setFile={setAvatarImage} type={1} />
 
-        <Filled_CTA_Button style={{ width: 90, height: 42, marginTop: 33 }}>Create</Filled_CTA_Button>
-      </ParentExploreAndData>
+          <Heading className="heading">
+            Name<span className="blue">*</span>
+          </Heading>
+
+          <div className="input-div">
+            <input
+              value={collectionMetadata.name}
+              name="name"
+              onChange={setProperty}
+              type="text"
+              className="inp"
+              placeholder="Name of your collection"
+            />
+          </div>
+
+          <Heading className="heading">
+            Owner<span className="blue">*</span>
+          </Heading>
+
+          <div className="input-div">
+            <input
+              type="text"
+              value={collectionMetadata.owner}
+              onChange={setProperty}
+              name="owner"
+              className="inp"
+              placeholder="Owner of this collection (Could be an Ethereum address or an ENS name)."
+            />
+          </div>
+
+          <Heading className="heading">
+            Symbol<span className="blue">*</span>
+          </Heading>
+
+          <div className="input-div">
+            <input
+              type="text"
+              value={collectionMetadata.symbol}
+              onChange={setProperty}
+              name="symbol"
+              className="inp"
+              placeholder="Collection symbol."
+            />
+          </div>
+
+          <Heading top={'48px'}>
+            Description<span className="blue">*</span>
+          </Heading>
+
+          <div className="text">Describe your collection.</div>
+
+          <div className="text-area">
+            <textarea
+              className="real-text-area"
+              id=""
+              placeholder="Provide a detailed description of your collection."
+              rows={7}
+              value={collectionMetadata.description}
+              onChange={setProperty}
+              name="description"
+            ></textarea>
+          </div>
+
+          <Heading top={'38px'}>Collection Category</Heading>
+
+          <div className="text">This is the category your collection belongs to.</div>
+
+          <DropdownComponent
+            dropdown={dropdownShown}
+            setDropdown={setDropdownShown}
+            value={collectionMetadata.category}
+            onChange={value => setCollectionMetadata({ ...collectionMetadata, category: value })}
+            dropDownList={Object.values(CollectionCategory).sort()}
+            defaultValue={collectionMetadata.category}
+            width={'155.78px'}
+            top={'36px'}
+          />
+
+          <Heading top={'36px'}>Explicit and sensitive content.</Heading>
+
+          <div className="switch-cont">
+            <div className="text">Set this collection as having explicit and sensitive content.</div>
+
+            <label className="switch">
+              <input
+                type="checkbox"
+                checked={collectionMetadata.hasExplicitContent}
+                onChange={() =>
+                  setCollectionMetadata({
+                    ...collectionMetadata,
+                    hasExplicitContent: !collectionMetadata.hasExplicitContent
+                  })
+                }
+              />
+              <span className="slider round"></span>
+            </label>
+          </div>
+
+          <Filled_CTA_Button disabled={!allConditionsSatisfied()} onClick={createCollection} style={{ marginTop: 33 }}>
+            {allConditionsSatisfied() ? 'Create' : 'Please fill in the required fields'}
+          </Filled_CTA_Button>
+        </ParentExploreAndData>
+      </Spin>
       <StyledExploreNft src="/icons/exploreNFT.png" />
       <ColoredBackground></ColoredBackground>
     </MainContainer>

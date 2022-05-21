@@ -14,41 +14,12 @@ type Props = {
 const CardContainer = styled.div`
   position: relative;
   top: 0;
-  min-width: 328.27px;
+  min-width: 300px;
   z-index: 3;
-
-  transition-duration: 250ms;
-
   cursor: pointer;
-
-  &:hover {
-    transform: scale(1);
-    top: 5px;
-    position: relative;
-  }
-  height: 380px;
+  min-height: 380px;
+  margin-right: 5px;
   border-radius: 21px 21px 0 0;
-  &:first-child {
-    margin-left: 90%;
-    @media screen and (min-width: 1401px) and (max-width: 1600px) {
-      margin-left: 55.5%;
-    }
-    @media screen and (min-width: 761px) and (max-width: 1400px) {
-      margin-left: 85%;
-    }
-    @media screen and (min-width: 376px) and (max-width: 760px) {
-      margin-left: 460%;
-    }
-    @media screen and (min-width: 321px) and (max-width: 375px) {
-      margin-left: 513%;
-    }
-    @media screen and (max-width: 320px) {
-      margin-left: 610%;
-    }
-  }
-  &:last-child {
-    margin-right: 30px;
-  }
 `;
 
 const CardHeader = styled.div`
@@ -63,7 +34,7 @@ const CardHeader = styled.div`
 
 const CardFooterContainer = styled.div`
   background-color: transparent;
-  background: linear-gradient(137.43deg, rgba(255, 255, 255, 0.5) 3.89%, rgba(255, 255, 255, 0.2) 100%);
+  background: rgba(255, 255, 255, 0.3);
   border-top: 0.841717px solid #ffffff;
   z-index: 5;
   backdrop-filter: blur(16.83px);
@@ -79,7 +50,7 @@ const CardFooter = styled.div`
   height: 85px;
   display: flex;
   align-items: center;
-  color: #fff;
+  color: #0c0c0c;
 `;
 
 // const Avatars = styled.div`
@@ -108,7 +79,7 @@ const CardFooter = styled.div`
 const CardFooterItem = styled.div`
   display: flex;
   flex-direction: row;
-  min-width: 328.27px;
+  width: 100%;
   justify-content: space-between;
   height: 121px;
   margin-top: 15px;
@@ -167,33 +138,34 @@ const CardFooterItem = styled.div`
 const Card = (props: Props) => {
   return (
     <CardContainer>
-      <CardHeader>
-        <img src={props.imageURI} width={329} height={378} />
-      </CardHeader>
-      <CardFooterContainer>
-        <CardFooter>
-          <CardFooterItem>
-            <div className="nft-meta-data">
-              <span className="nft_collection_name">{props.name}</span>
-              <span className="nft_name">{props.owner}</span>
-            </div>
-            <div className="nft-price-info">
-              <div className="price">
-                <Image src="/icons/eth_classic.svg" width={20} height={20} />
+      <Link href={props.linkTo}>
+        <a>
+          <CardHeader>
+            <img src={props.imageURI} width={329} height={378} />
+          </CardHeader>
+          <CardFooterContainer>
+            <CardFooter>
+              <CardFooterItem>
+                <div className="nft-meta-data">
+                  <span className="nft_collection_name">{props.name}</span>
+                  <span className="nft_name">{props.owner}</span>
+                </div>
+                <div className="nft-price-info">
+                  <div className="price">
+                    <Image src="/icons/eth_classic.svg" width={20} height={20} />
 
-                <div>{props.price}eth</div>
-              </div>
-              <Link href={props.linkTo}>
-                <a>
+                    <div>{props.price}eth</div>
+                  </div>
+
                   <Button borderThickness="1px" borderRadius="4px">
                     View
                   </Button>
-                </a>
-              </Link>
-            </div>
-          </CardFooterItem>
-        </CardFooter>
-      </CardFooterContainer>
+                </div>
+              </CardFooterItem>
+            </CardFooter>
+          </CardFooterContainer>
+        </a>
+      </Link>
     </CardContainer>
   );
 };

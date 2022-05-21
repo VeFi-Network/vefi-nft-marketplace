@@ -2,7 +2,7 @@ import { Button, Spin } from 'antd';
 import Link from 'next/link';
 import { FaBars, FaChevronDown, FaPlus } from 'react-icons/fa';
 import { FiBarChart, FiGrid } from 'react-icons/fi';
-import NFTCard from '../../../components/Card/NftCard';
+import NFTCard from '../../../components/Card/UserProfileCard';
 import FilterProperty from '../../../components/Filter';
 import FIlterBy from '../../../components/Filter/FIlterBy';
 import Navbar from '../../../components/Navbar';
