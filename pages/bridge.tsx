@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { FaArrowRight, FaChevronDown } from 'react-icons/fa';
 import { FiSearch } from 'react-icons/fi';
 import Navbar from '../components/Navbar';
+import MainFooter from '../components/Footer';
 import {
   BridgeBackground,
   BridgeChainWrapper,
@@ -62,6 +63,7 @@ const Bridge = () => {
             </div>
           </BridgeContainer>
         </BridgeBackground>
+        <MainFooter/>
       </SectionWrapper>
       <Modal
         visible={isModalVisible}

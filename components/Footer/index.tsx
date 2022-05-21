@@ -53,7 +53,7 @@ function MainFooter() {
     .slice(0, 10)
     .map(({ label, path}:any) => (
 
-      <FootLink>
+      <FootLink key={path}>
         <Link href={path}>
         <a>{label}</a>
         </Link>
@@ -71,7 +71,7 @@ function MainFooter() {
     .slice(10, 14)
     .map(({ label, path}:any) => (
 
-      <FootLink>
+      <FootLink key={path}>
         <Link href={path}>
         <a>{label}</a>
         </Link>
@@ -87,7 +87,7 @@ function MainFooter() {
     .slice(14, 16)
     .map(({ label, path}:any) => (
 
-      <FootLink>
+      <FootLink key={path}>
         <Link href={path}>
         <a>{label}</a>
         </Link>
@@ -106,7 +106,7 @@ function MainFooter() {
     .slice(14, 18)
     .map(({ label, path}:any) => (
 
-      <FootLink>
+      <FootLink key={path}>
         <Link href={path}>
         <a>{label}</a>
         </Link>
