@@ -12,6 +12,8 @@ import _ from 'lodash';
 import { useAPIContext } from '../contexts/api/index';
 import MainFooter from '../components/Footer';
 import Hero from '../components/Hero';
+import { Category } from '../styles/CartegoryCard.styled';
+import CartegoryCard from '../components/Card/CartegoryCard';
 
 const MainContainer = styled.div`
   display: flex;
@@ -383,9 +385,7 @@ const NoItemContainer = styled.div`
   margin-top: 50px;
 `;
 
-const HeroContainer = styled.div`
-
-`
+const HeroContainer = styled.div``;
 
 export default function Homepage() {
   const [searchValue, setSearchValue] = useState('');
@@ -485,6 +485,20 @@ export default function Homepage() {
                 </NFTContainer>
               )}
             </ParentNFTCont>
+            <Category>
+              <div className="category__container">
+                <div className="category__heading">
+                  <h2>Browse by Category</h2>
+                </div>
+                <div className="cartegory__card__listing">
+                  <CartegoryCard name="Art" image="/nft/nft01.png" />
+                  <CartegoryCard name="Sports Memorbilla" image="/nft/nft02.png" />
+                  <CartegoryCard name="Sports Memorbilla" image="/nft/nft02.png" />
+                  <CartegoryCard name="Sports Memorbilla" image="/nft/nft02.png" />
+                  <CartegoryCard name="Sports Memorbilla" image="/nft/nft02.png" />
+                </div>
+              </div>
+            </Category>
           </div>
           <Footer>
             <div className="footer__container">
@@ -501,19 +515,18 @@ export default function Homepage() {
               </div>
             </div>
           </Footer>
-          <HeroContainer>          <Hero/>
-</HeroContainer>
+          <HeroContainer>
+            {' '}
+            <Hero />
+          </HeroContainer>
         </MarketplaceContainer>
-
-        <FooterHelpIcon>
-          <div className="help">
-            <FaQuestion />
-          </div>
-        </FooterHelpIcon>
-        
-
       </MainContainer>
-      <MainFooter/>
+      <MainFooter />
+      <FooterHelpIcon>
+        <div className="help">
+          <FaQuestion />
+        </div>
+      </FooterHelpIcon>
     </>
   );
 }
