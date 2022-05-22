@@ -1,3 +1,5 @@
+import { AccountModel } from './account';
+
 export enum NFTLevels {
   LEGENDARY = 'LEGENDARY',
   RARE = 'RARE',
@@ -25,4 +27,5 @@ export interface NFTModel {
   network: string;
   owner: string;
   metadata?: NFTMetadata;
+  topBuyers?: Array<AccountModel>;
 }

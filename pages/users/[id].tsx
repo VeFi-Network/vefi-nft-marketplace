@@ -1,7 +1,7 @@
 import React from 'react';
-import { FaBars, FaHandHoldingUsd, FaRegEyeSlash, FaSearch, FaRegUser, FaUserEdit } from 'react-icons/fa';
+import { FaBars, FaHandHoldingUsd, FaRegEyeSlash, FaRegUser, FaUserEdit } from 'react-icons/fa';
 import { FiBarChart, FiChevronDown, FiEyeOff, FiGrid, FiHeart, FiList, FiRotateCcw, FiTag } from 'react-icons/fi';
-import Card from '../../components/Card/UserProfileCard';
+import Card from '../../components/Card/NFTCard';
 import FilterProperty from '../../components/Filter';
 import FIlterBy from '../../components/Filter/FIlterBy';
 import Navbar from '../../components/Navbar';
@@ -10,8 +10,10 @@ import { NFTCollection, NFTUserCollectionInfo, UsersWrapper, ButtonContainer } f
 import Link from 'next/link';
 import Button from '../../components/Button/Ghost';
 import FilledButton from '../../components/Button/CTA/Filled';
+import { useAPIContext } from '../../contexts/api/index';
 
 const Users = () => {
+  const { authenticatedUser } = useAPIContext();
   return (
     <>
       <UsersWrapper>
@@ -20,7 +22,7 @@ const Users = () => {
           <div className="user__info">
             <div className="username">
               <h2>
-                Unnamed <span></span>
+                {authenticatedUser?.name || 'Unnamed'} <span></span>
               </h2>
             </div>
             <div className="join__date">
@@ -28,18 +30,22 @@ const Users = () => {
             </div>
           </div>
           <ButtonContainer>
-            <Link href="/users/profile/create">
-              <Button>
-                <FaRegUser />
-                Create Profile
-              </Button>
-            </Link>
-            <Link href="/users/profile/update">
-              <FilledButton>
-                <FaUserEdit />
-                Update Profile
-              </FilledButton>
-            </Link>
+            {!authenticatedUser && (
+              <Link href="/users/profile/create">
+                <Button>
+                  <FaRegUser />
+                  Create Profile
+                </Button>
+              </Link>
+            )}
+            {!!authenticatedUser && (
+              <Link href="/users/profile/update">
+                <FilledButton>
+                  <FaUserEdit />
+                  Update Profile
+                </FilledButton>
+              </Link>
+            )}
           </ButtonContainer>
         </UserBanner>
 

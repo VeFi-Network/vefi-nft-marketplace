@@ -7,7 +7,7 @@ import {
   CardFooterContainer,
   CardFooterItem
 } from '../../../styles/users.styled';
-import Button from '../../../components/Button/Ghost';
+import Button from '../../Button/Ghost';
 import Image from 'next/image';
 
 type Props = {

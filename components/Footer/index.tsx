@@ -43,7 +43,7 @@ function MainFooter() {
         <div className="marketplace">
           <h2 className="nav_section">Marketplace</h2>
           {marketplaceArray.slice(0, 10).map(({ label, path }: any) => (
-            <FootLink key={path}>
+            <FootLink key={label}>
               <Link href={path}>
                 <a>{label}</a>
               </Link>
@@ -54,7 +54,7 @@ function MainFooter() {
           <div>
             <h2 className="nav_section">My Account</h2>
             {marketplaceArray.slice(10, 14).map(({ label, path }: any) => (
-              <FootLink key={path}>
+              <FootLink key={label}>
                 <Link href={path}>
                   <a>{label}</a>
                 </Link>
@@ -64,7 +64,7 @@ function MainFooter() {
           <div>
             <h2 className="nav_section">Stats</h2>
             {marketplaceArray.slice(14, 16).map(({ label, path }: any) => (
-              <FootLink key={path}>
+              <FootLink key={label}>
                 <Link href={path}>
                   <a>{label}</a>
                 </Link>
@@ -75,7 +75,7 @@ function MainFooter() {
         <div className="company">
           <h2 className="nav_section">Company</h2>
           {marketplaceArray.slice(14, 18).map(({ label, path }: any) => (
-            <FootLink key={path}>
+            <FootLink key={label}>
               <Link href={path}>
                 <a>{label}</a>
               </Link>
