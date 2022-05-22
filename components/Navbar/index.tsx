@@ -67,6 +67,7 @@ const NavLinks = styled.div`
   }
   z-index: 2;
 `;
+
 const UserWallet = styled.div`
   border-radius: 50%;
   .wallet_container {
@@ -121,7 +122,7 @@ const Navbar = () => {
             <div className="icon" onClick={() => setVisible(!visible)}>
               <Image src="/icons/wallet.svg" width={15} height={15} />
             </div>
-            <Dropdown overlay={Menu} trigger={['click']} placement="bottom" arrow>
+            <Dropdown overlay={<Menu />} trigger={['click']} placement="bottom" arrow>
               <div className="icon">
                 <FiMoreHorizontal />
               </div>
@@ -164,7 +165,7 @@ const Navbar = () => {
                     <Image src="/icons/eth.svg" width={20} height={20} alt="wallet" />
                   </div>
                   <div className="wallet__setting__title">
-                    <Dropdown overlay={Menu} trigger={['click']}>
+                    <Dropdown overlay={<Menu />} trigger={['click']}>
                       <a onClick={e => e.preventDefault()}>
                         <div style={{ color: 'var(--text-light)' }}>My Profile</div>
                       </a>

@@ -2,7 +2,7 @@ import { Button, Spin } from 'antd';
 import Link from 'next/link';
 import { FaBars, FaChevronDown, FaPlus } from 'react-icons/fa';
 import { FiBarChart, FiGrid } from 'react-icons/fi';
-import NFTCard from '../../../components/Card/UserProfileCard';
+import NFTCard from '../../../components/Card/NFTCard';
 import FilterProperty from '../../../components/Filter';
 import FIlterBy from '../../../components/Filter/FIlterBy';
 import Navbar from '../../../components/Navbar';
@@ -18,7 +18,14 @@ import { useRouter } from 'next/router';
 const Collection = () => {
   const router = useRouter();
   const { id } = usePageQuery();
-  const { collectionById, nftsByCollection, loadCollectionById, loadNFTsByCollection } = useAPIContext();
+  const {
+    collectionById,
+    nftsByCollection,
+    itemsInCollection,
+    loadCollectionById,
+    loadNFTsByCollection,
+    loadNumberOfItemsInCollection
+  } = useAPIContext();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -26,6 +33,7 @@ const Collection = () => {
     if (!!id) {
       loadCollectionById(id as string);
       loadNFTsByCollection(id as string, 1);
+      loadNumberOfItemsInCollection(id as string);
       setIsLoading(false);
     }
   }, [id]);
@@ -54,27 +62,21 @@ const Collection = () => {
             <div className="user__nft__statistics">
               <div className="stat">
                 <div className="count">
-                  <h1>10</h1>
+                  <h1>{itemsInCollection}</h1>
                 </div>
                 <div className="label">Items</div>
               </div>
               <div className="stat">
                 <div className="count">
-                  <h1>20</h1>
-                </div>
-                <div className="label">Item</div>
-              </div>
-              <div className="stat">
-                <div className="count">
                   <h1>2.0</h1>
                 </div>
-                <div className="label">Floor Price</div>
+                <div className="label">Offers Made</div>
               </div>
               <div className="stat">
                 <div className="count">
                   <h1>20.5</h1>
                 </div>
-                <div className="label">Volumn traided</div>
+                <div className="label">Successful Sales</div>
               </div>
             </div>
           </NFTUserStats>

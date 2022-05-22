@@ -91,6 +91,24 @@ export function getAllCollections(network: string, page: number): Promise<Collec
   });
 }
 
+export function getTopSellingCollections(network: string, page: number): Promise<CollectionModel[]> {
+  return new Promise((resolve, reject) => {
+    baseAxios
+      .get(`/api/collection/${network}/topSelling?page=${page}`)
+      .then(res => handleResponse(res, resolve, reject))
+      .catch(reject);
+  });
+}
+
+export function getCollectionsByItems(network: string, page: number): Promise<CollectionModel[]> {
+  return new Promise((resolve, reject) => {
+    baseAxios
+      .get(`/api/collection/${network}/assets?page=${page}`)
+      .then(res => handleResponse(res, resolve, reject))
+      .catch(reject);
+  });
+}
+
 export function getAllCollectionsByOwner(network: string, token: string, page: number): Promise<CollectionModel[]> {
   return new Promise((resolve, reject) => {
     baseAxios
@@ -104,6 +122,15 @@ export function getCollectionById(network: string, id: string): Promise<Collecti
   return new Promise((resolve, reject) => {
     baseAxios
       .get(`/api/collection/${network}/${id}/byNetwork`)
+      .then(res => handleResponse(res, resolve, reject))
+      .catch(reject);
+  });
+}
+
+export function countAllItemsByCollection(network: string, collectionId: string): Promise<number> {
+  return new Promise((resolve, reject) => {
+    baseAxios
+      .get(`/api/nft/${network}/${collectionId}/count`)
       .then(res => handleResponse(res, resolve, reject))
       .catch(reject);
   });

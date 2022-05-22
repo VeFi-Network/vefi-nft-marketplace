@@ -7,12 +7,16 @@ import {
   getAllNFTsByNetwork,
   signToken,
   getAuthenticatedUser,
-  getCollectionById
+  getCollectionById,
+  getCollectionsByItems,
+  getAllCollections,
+  getNFTByIdAndNetwork,
+  countAllItemsByCollection,
+  getTopSellingCollections
 } from '../../api/nft';
 import chains from '../../chains.json';
 import { useWeb3Context } from '../web3/index';
 import { CollectionModel } from '../../api/models/collection';
-import { getAllCollections, getNFTByIdAndNetwork } from '../../api/nft';
 
 export enum APIErrorPoint {
   NFT_BY_ID,
@@ -22,7 +26,8 @@ export enum APIErrorPoint {
   TOKEN_LOAD,
   AUTH_USER,
   ALL_COLLECTIONS,
-  COLLECTION_BY_ID
+  COLLECTION_BY_ID,
+  COUNT_COLLECTION_ITEMS
 }
 
 type APIContextType = {
@@ -31,10 +36,15 @@ type APIContextType = {
   nftsByCollection: Array<NFTModel>;
   nftsByNetwork: Array<NFTModel>;
   allCollections: Array<CollectionModel>;
+  topSellingCollections: Array<CollectionModel>;
+  collectionsByAssets: Array<CollectionModel>;
   collectionById: CollectionModel;
+  itemsInCollection: number;
   isUserAuthenticated: boolean;
   authenticatedUser?: AccountModel;
   loadAllCollections: (page?: number) => void;
+  loadTopSellingCollections: (page?: number) => void;
+  loadCollectionsByAssets: (page?: number) => void;
   loadCollectionById: (id: string) => void;
   loadAuthUser: () => void;
   loadToken: (accountId: any) => void;
@@ -42,6 +52,7 @@ type APIContextType = {
   loadNFTsByUser: (page?: number) => void;
   loadNFTsByCollection: (collection: string, page?: number) => void;
   loadNFTsByNetwork: (page?: number) => void;
+  loadNumberOfItemsInCollection: (collectionId: string) => void;
   error?: {
     point: APIErrorPoint;
     message: string;
@@ -60,6 +71,9 @@ export const APIContextProvider = ({ children }: any) => {
   const [collectionById, setCollectionById] = useState<CollectionModel>({
     metadata: { imageURI: '', bannerURI: '' }
   } as CollectionModel);
+  const [itemsInCollection, setItemsInCollection] = useState<number>(0);
+  const [topSellingCollections, setTopSellingCollections] = useState<Array<CollectionModel>>([]);
+  const [collectionsByAssets, setCollectionsByAssets] = useState<Array<CollectionModel>>([]);
   const [authenticatedUser, setAuthenticatedUser] = useState<AccountModel>();
   const [isUserAuthenticated, setIsUserAuthenticated] = useState<boolean>(false);
   const [token, setToken] = useState<string>('');
@@ -120,11 +134,32 @@ export const APIContextProvider = ({ children }: any) => {
       .catch((error: any) => setError({ point: APIErrorPoint.ALL_COLLECTIONS, message: error.message }));
   };
 
+  const loadTopSellingCollections = (page: number = 1) => {
+    clearError();
+    getTopSellingCollections(network, page)
+      .then(setTopSellingCollections)
+      .catch((error: any) => setError({ point: APIErrorPoint.ALL_COLLECTIONS, message: error.message }));
+  };
+
+  const loadCollectionsByAssets = (page: number = 1) => {
+    clearError();
+    getCollectionsByItems(network, page)
+      .then(setCollectionsByAssets)
+      .catch((error: any) => setError({ point: APIErrorPoint.ALL_COLLECTIONS, message: error.message }));
+  };
+
   const loadCollectionById = (id: string) => {
     clearError();
     getCollectionById(network, id)
       .then(setCollectionById)
       .catch((error: any) => setError({ point: APIErrorPoint.COLLECTION_BY_ID, message: error.message }));
+  };
+
+  const loadNumberOfItemsInCollection = (collectionId: string) => {
+    clearError();
+    countAllItemsByCollection(network, collectionId)
+      .then(setItemsInCollection)
+      .catch((error: any) => setError({ point: APIErrorPoint.COUNT_COLLECTION_ITEMS, message: error.message }));
   };
 
   useEffect(() => {
@@ -148,7 +183,10 @@ export const APIContextProvider = ({ children }: any) => {
         nftsByCollection,
         nftsByNetwork,
         allCollections,
+        collectionsByAssets,
+        topSellingCollections,
         collectionById,
+        itemsInCollection,
         loadNFTById,
         loadNFTsByUser,
         loadNFTsByCollection,
@@ -156,7 +194,10 @@ export const APIContextProvider = ({ children }: any) => {
         loadToken,
         loadAuthUser,
         loadAllCollections,
+        loadCollectionsByAssets,
+        loadTopSellingCollections,
         loadCollectionById,
+        loadNumberOfItemsInCollection,
         isUserAuthenticated,
         authenticatedUser,
         error
