@@ -90,11 +90,10 @@ const FilterContainer = styled.div`
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-
   .filter__wrapper {
     display: flex;
     flex-direction: column;
-    padding: 0 20px;
+
     .filter__top {
       display: flex;
       align-items: center;
@@ -140,7 +139,6 @@ const FilterContainer = styled.div`
 const FilterBtn = styled.button`
   background: ${(props: any) => (props.isActive ? '#5C95FF' : '#373943 ')};
   border-radius: 11px;
-
   font-family: 'Rubik';
   font-style: normal;
   font-weight: 400;
@@ -151,7 +149,7 @@ const FilterBtn = styled.button`
   padding: 10px 50px 10px 10px;
 
   cursor: pointer;
-
+  align-items: center;
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -226,13 +224,14 @@ const ParentNFTCont = styled.div``;
 const DiscoverAndAnimate = styled.div`
   display: flex;
   width: 100%;
+  height: 450px;
   flex-direction: row;
   position: relative;
 `;
 
 const DiscoverPart = styled.div`
   flex: 0.5;
-  margin-left: 50px;
+  margin-left: 20px;
   @media screen and (max-width: 760px) {
     width: 100%;
     margin: 0px auto;
