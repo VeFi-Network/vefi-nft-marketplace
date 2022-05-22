@@ -9,6 +9,7 @@ const GreyContainerMain = styled.div`
   padding-bottom: 20px;
   background: linear-gradient(254.33deg, rgba(255, 255, 255, 0.1) 1.71%, rgba(255, 255, 255, 0.05) 99.35%);
   backdrop-filter: blur(16.86px);
+
   border-radius: 20px;
   margin-top: 50px;
   z-index: 2;

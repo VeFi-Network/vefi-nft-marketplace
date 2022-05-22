@@ -17,7 +17,7 @@ import Image from 'next/image';
 function Hero() {
   return (
     <Container>
-      <h3>Create and sell your NFTs</h3>
+      <h3>Create and sell your NFTs.</h3>
       <div className="slider_con">
         <Swiper
           modules={[Navigation, Pagination, Scrollbar, A11y]}

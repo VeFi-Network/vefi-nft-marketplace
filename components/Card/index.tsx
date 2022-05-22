@@ -11,7 +11,7 @@ type Props = {
   linkTo: string;
 };
 
-const CardContainer = styled.div`
+export const CardContainer = styled.div`
   position: relative;
   top: 0;
   width: 355px;
@@ -20,6 +20,12 @@ const CardContainer = styled.div`
   height: 380px;
   margin-right: 5px;
   border-radius: 21px 21px 0 0;
+
+  .bg {
+    background: rgba(0, 0, 0, 0.4) !important;
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const CardHeader = styled.div`
@@ -33,9 +39,8 @@ const CardHeader = styled.div`
 `;
 
 const CardFooterContainer = styled.div`
-  background-color: transparent;
-  background: rgba(255, 255, 255, 0.3);
-  border-top: 0.841717px solid #ffffff;
+  background: rgba(255, 255, 255, 0.2);
+  border-top: 0.841717px solid rgba(0, 0, 0, 0.1);
   z-index: 5;
   backdrop-filter: blur(16.83px);
   cursor: pointer;
@@ -48,9 +53,10 @@ const CardFooterContainer = styled.div`
 const CardFooter = styled.div`
   width: 100%;
   height: 85px;
+  font-family: 'Rubik';
   display: flex;
   align-items: center;
-  color: #0c0c0c;
+  color: rgba(255, 255, 255, 0.9);
 `;
 
 // const Avatars = styled.div`
@@ -129,7 +135,7 @@ const CardFooterItem = styled.div`
     text-align: center;
   }
   .nft_collection_name {
-    font-size: 20px;
+    font-size: 1rem;
     font-weight: bolder;
     cursor: pointer;
   }
@@ -144,25 +150,27 @@ const Card = (props: Props) => {
             <img src={props.imageURI} width={329} height={378} />
           </CardHeader>
           <CardFooterContainer>
-            <CardFooter>
-              <CardFooterItem>
-                <div className="nft-meta-data">
-                  <span className="nft_collection_name">{props.name}</span>
-                  <span className="nft_name">{props.owner}</span>
-                </div>
-                <div className="nft-price-info">
-                  <div className="price">
-                    <Image src="/icons/eth_classic.svg" width={20} height={20} />
-
-                    <div>{props.price}eth</div>
+            <div className="bg">
+              <CardFooter>
+                <CardFooterItem>
+                  <div className="nft-meta-data">
+                    <span className="nft_collection_name">{props.name}</span>
+                    <span className="nft_name">{props.owner}</span>
                   </div>
+                  <div className="nft-price-info">
+                    <div className="price">
+                      <Image src="/icons/eth_classic.svg" width={20} height={20} />
 
-                  <Button borderThickness="1px" borderRadius="4px">
-                    View
-                  </Button>
-                </div>
-              </CardFooterItem>
-            </CardFooter>
+                      <div>{props.price}eth</div>
+                    </div>
+
+                    <Button borderThickness="1px" borderRadius="4px">
+                      View
+                    </Button>
+                  </div>
+                </CardFooterItem>
+              </CardFooter>
+            </div>
           </CardFooterContainer>
         </a>
       </Link>
