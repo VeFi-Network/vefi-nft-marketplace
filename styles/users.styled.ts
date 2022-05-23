@@ -36,7 +36,7 @@ export const UserNFTBanner = styled.div`
 `;
 
 export const UserNFTInfo = styled.div`
-  width: 200px;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
   margin-top: -90px;
@@ -302,10 +302,10 @@ export const NFTCollection = styled.div`
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+    gap: 20px;
     flex-direction: row;
     row-gap: 30px;
     margin: 30px 0;
-    justify-content: space-between;
   }
 `;
 
@@ -442,18 +442,16 @@ export const CardHeader = styled.div`
   z-index: 1;
   img {
     border-radius: 21px 21px 0 0;
-    width: 100% !important;
+    width: 300px !important;
     height: 380px !important;
     object-fit: cover !important;
   }
 `;
 
 export const CardFooterContainer = styled.div`
-  background-color: transparent;
-  background: linear-gradient(137.43deg, rgba(255, 255, 255, 0.5) 3.89%, rgba(255, 255, 255, 0.2) 100%);
-  border-top: 0.841717px solid #ffffff;
+  background: rgba(255, 255, 255, 0.3);
   z-index: 5;
-  backdrop-filter: blur(16.83px);
+  backdrop-filter: blur(10px);
   cursor: pointer;
   height: 112.26px;
   position: absolute;
@@ -497,10 +495,11 @@ export const CardFooterItem = styled.div`
   flex-direction: row;
   width: 100%;
   justify-content: space-between;
-  height: 121px;
+  height: 112.26px;
   margin-top: 15px;
-  padding: 10px 0;
+
   cursor: pointer;
+  background: rgba(0, 0, 0, 0.4);
   .nft-meta-data {
     display: flex;
     flex-direction: column;
@@ -517,6 +516,7 @@ export const CardFooterItem = styled.div`
     row-gap: 0.3rem;
     align-items: center;
     height: 50px;
+
     .price {
       display: flex;
       align-items: center;

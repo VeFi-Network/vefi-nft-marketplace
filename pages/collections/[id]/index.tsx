@@ -14,6 +14,7 @@ import { useAPIContext } from '../../../contexts/api/index';
 import { useEffect, useState } from 'react';
 import _ from 'lodash';
 import { useRouter } from 'next/router';
+import MainFooter from '../../../components/Footer';
 
 const Collection = () => {
   const router = useRouter();
@@ -133,22 +134,25 @@ const Collection = () => {
                 </Button>
               </div>
             </div>
-            <NFTCollection>
+            <NFTCollection style={{ marginTop: '-50px' }}>
               <div className="container">
                 {_.map(nftsByCollection, nft => (
-                  <NFTCard
-                    model={nft}
-                    onClick={() => {
-                      router.push(`/nfts/${collectionById.collectionId}:${nft.tokenId}`);
-                    }}
-                    key={nft.id}
-                  />
+                  <>
+                    <NFTCard
+                      model={nft}
+                      onClick={() => {
+                        router.push(`/nfts/${collectionById.collectionId}:${nft.tokenId}`);
+                      }}
+                      key={nft.id}
+                    />
+                  </>
                 ))}
               </div>
             </NFTCollection>
           </NFTUserCollectionInfo>
         </Spin>
       </UsersWrapper>
+      <MainFooter />
     </>
   );
 };
