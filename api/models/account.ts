@@ -1,4 +1,4 @@
-type AccountMetadata = {
+export type AccountMetadata = {
   imageURI: string;
   bannerURI: string;
   name: string;

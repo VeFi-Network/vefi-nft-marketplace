@@ -10,8 +10,10 @@ const baseAxios = axios.create({
 
 function handleResponse(res: AxiosResponse, resolve: any, reject: any) {
   if (res.status >= 400)
-    if (!!res.data && !!res.data.error) reject(new Error(res.data.error));
-    else reject(new Error(`API responded with ${res.status}`));
+    if (!!res.data && !!res.data.error) {
+      reject(new Error(res.data.error));
+      console.log(res.data);
+    } else reject(new Error(`API responded with ${res.status}`));
   else resolve(res.data.result);
 }
 

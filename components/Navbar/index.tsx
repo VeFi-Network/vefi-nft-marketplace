@@ -273,7 +273,9 @@ const Navbar = () => {
                       <div className="provider__logo">
                         <Image src="/logo/wallet.svg" width={20} height={20} alt="walletConnect" />
                       </div>
-                      <div className="provider__name" onClick={connectWalletConnect}>WalletConnect</div>
+                      <div className="provider__name" onClick={connectWalletConnect}>
+                        WalletConnect
+                      </div>
                     </div>
                   </div>
                 </div>

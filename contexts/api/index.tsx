@@ -94,9 +94,10 @@ export const APIContextProvider = ({ children }: any) => {
 
   const loadAuthUser = () => {
     clearError();
-    getAuthenticatedUser(token)
-      .then(setAuthenticatedUser)
-      .catch((error: any) => setError({ point: APIErrorPoint.AUTH_USER, message: error.message }));
+    if (!!token || !!localStorage.getItem('VEFI_NFT_TOKEN'))
+      getAuthenticatedUser(token.trim().length > 0 ? token : (localStorage.getItem('VEFI_NFT_TOKEN') as string))
+        .then(setAuthenticatedUser)
+        .catch((error: any) => setError({ point: APIErrorPoint.AUTH_USER, message: error.message }));
   };
 
   const loadNFTById = (collectionId: string, id: number) => {
