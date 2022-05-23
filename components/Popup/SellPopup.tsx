@@ -21,6 +21,7 @@ const MainSellContainer = styled.div`
     opacity: ${(props:{open:boolean})=>props.open?"1":"0"};
     transition-timing-function: ease-out;
     transition-duration: 500ms;
+    z-index: 5;
 
     .img-title{
         display: flex;
@@ -36,7 +37,7 @@ const MainSellContainer = styled.div`
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 10;
+         
             .nft-img{
                 border-radius: 14px;
               
