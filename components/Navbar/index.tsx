@@ -101,7 +101,7 @@ const UserWallet = styled.div`
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
-  const { active, connectOrDisconnectWeb3, account } = useWeb3Context();
+  const { active, connectMetamask, connectWalletConnect, account } = useWeb3Context();
   const { authenticatedUser } = useAPIContext();
   return (
     <>
@@ -265,7 +265,7 @@ const Navbar = () => {
                       <div className="provider__logo">
                         <Image src="/logo/metamask.svg" width={20} height={20} alt="metamask" />
                       </div>
-                      <div className="provider__name" onClick={connectOrDisconnectWeb3}>
+                      <div className="provider__name" onClick={connectMetamask}>
                         MetaMask <span>Popular</span>
                       </div>
                     </div>
@@ -273,7 +273,7 @@ const Navbar = () => {
                       <div className="provider__logo">
                         <Image src="/logo/wallet.svg" width={20} height={20} alt="walletConnect" />
                       </div>
-                      <div className="provider__name">WalletConnect</div>
+                      <div className="provider__name" onClick={connectWalletConnect}>WalletConnect</div>
                     </div>
                   </div>
                 </div>
