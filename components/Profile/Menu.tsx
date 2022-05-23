@@ -2,10 +2,12 @@ import { Menu } from 'antd';
 import Link from 'next/link';
 import { FaChessBoard, FaUserCircle, FaLink } from 'react-icons/fa';
 import { FiEye, FiHeart, FiLogOut, FiSettings } from 'react-icons/fi';
-import { useWeb3Context } from '../../contexts/web3/index';
+import { useWeb3Context } from '../../contexts/web3';
+import { useAPIContext } from '../../contexts/api/index';
 
 const MenuItem = () => {
   const { disconnectWallet, account, active } = useWeb3Context();
+  const { logout } = useAPIContext();
 
   return (
     <Menu
@@ -61,19 +63,6 @@ const MenuItem = () => {
             <a href="https://www.antgroup.com">
               <div className="listItem">
                 <div className="icon">
-                  <FiSettings />
-                </div>
-                <div className="text">Settings</div>
-              </div>
-            </a>
-          ),
-          key: '3'
-        },
-        {
-          label: (
-            <a href="https://www.antgroup.com">
-              <div className="listItem">
-                <div className="icon">
                   <FiHeart />
                 </div>
                 <div className="text">Favorites</div>
@@ -105,6 +94,7 @@ const MenuItem = () => {
               onClick={e => {
                 e.preventDefault();
                 disconnectWallet();
+                logout();
               }}
             >
               <div className="listItem">

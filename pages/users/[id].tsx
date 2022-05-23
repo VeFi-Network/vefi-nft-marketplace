@@ -18,7 +18,7 @@ const Users = () => {
     <>
       <UsersWrapper>
         <Navbar />
-        <UserBanner>
+        <UserBanner bannerUrl={authenticatedUser?.metadata.bannerURI} avatarUrl={authenticatedUser?.metadata.imageURI}>
           <div className="user__info">
             <div className="username">
               <h2>
@@ -26,7 +26,7 @@ const Users = () => {
               </h2>
             </div>
             <div className="join__date">
-              <p>Joined September 2022</p>
+              <p>Joined {authenticatedUser?.createdAt as string}</p>
             </div>
           </div>
           <ButtonContainer>

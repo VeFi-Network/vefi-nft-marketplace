@@ -10,4 +10,5 @@ export interface AccountModel {
   email: string;
   metadataURI: string;
   metadata: AccountMetadata;
+  createdAt?: string;
 }

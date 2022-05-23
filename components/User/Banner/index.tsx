@@ -2,22 +2,22 @@ import { UserNFTBanner, UserNFTInfo, NFTUserInfo } from '../../../styles/users.s
 import Avatar from '../Avatar';
 
 type Props = {
-    bannerSrcUrl?: string;
+    bannerUrl?: string;
     children?: any;
-    avatarSrcUrl?: string;
+    avatarUrl?: string;
     avatarWidth?: string;
     avatarHeight?: string;
 }
 
-const UserBanner = ({ bannerSrcUrl, children, avatarSrcUrl, avatarWidth, avatarHeight }: Props) => {
+const UserBanner = ({ bannerUrl, children, avatarUrl, avatarWidth, avatarHeight }: Props) => {
     return (
         <>
             <div className="user__header__banner">
-                <UserNFTBanner bg={bannerSrcUrl} />
+                <UserNFTBanner bg={bannerUrl} />
                 <div className="nft__wrapper">
                     <UserNFTInfo>
                         <div className="display__pics">
-                            <Avatar avatarSrcUrl={avatarSrcUrl} width={avatarWidth} height={avatarHeight} />
+                            <Avatar avatarSrcUrl={avatarUrl} width={avatarWidth} height={avatarHeight} />
                         </div>
                         {children}
                     </UserNFTInfo>
