@@ -9,6 +9,8 @@ import { usePageQuery } from '../../hooks/query';
 import { useAPIContext } from '../../contexts/api';
 import { useEffect, useState } from 'react';
 import { FiEye, FiHeart, FiInfo } from 'react-icons/fi';
+import SellPopup from '../../components/Popup/SellPopup';
+import OfferPopup from '../../components/Popup/OfferPopup';
 
 const RootContainer = styled.div`
   width: 100%;
@@ -303,10 +305,17 @@ const CTA = styled.div`
   column-gap: 1rem;
 `;
 
+const ParentContainer = styled.div`
+
+`;
+
 export default function NFT() {
   const { slug } = usePageQuery();
   const { nftById, collectionById, loadCollectionById, loadNFTById } = useAPIContext();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [sellModal,setSellModal] = useState(false);
+  const [offerModal,setOfferModal] = useState(false);
+  const [transition,setTransition] = useState(false);
 
   useEffect(() => {
     if (!!slug) {
@@ -317,9 +326,25 @@ export default function NFT() {
     }
   }, [slug]);
 
+
+
+  const handleBackgroundClick = ()=>{
+    if(offerModal){
+      setTransition(false);
+      setTimeout(()=>setOfferModal(false),500);
+    }
+    if(sellModal){
+      setTransition(false);
+      setTimeout(()=>setSellModal(false),500);
+    }
+    
+  }
+
+
+
   return (
-    <>
-      <RootContainer>
+    <ParentContainer>
+      <RootContainer onClick={handleBackgroundClick} open={transition}>
         <ProfileContainer>
           <NavContainer>
             <Navbar />
@@ -376,8 +401,22 @@ export default function NFT() {
                     {/* <Filled_CTA_Button backgroundColor="#5C95FF" color="#fff">
                       Buy Now
                     </Filled_CTA_Button> */}
-                    <Filled_CTA_Button backgroundColor="#fff" color="#5C95FF">
+                    <Filled_CTA_Button 
+                    onClick={(e:any)=>{
+                      e.stopPropagation();
+                      setOfferModal(!offerModal);
+                      setTimeout(()=>setTransition(true),10);
+                      }} 
+                    backgroundColor="#fff" color="#5C95FF">
                       Make an offer
+                    </Filled_CTA_Button>
+                    <Filled_CTA_Button 
+                    onClick={(e:any)=>{
+                      e.stopPropagation();
+                      setSellModal(!sellModal);
+                      setTimeout(()=>setTransition(true),10);
+                      }} backgroundColor="#fff" color="#5C95FF">
+                      Sell
                     </Filled_CTA_Button>
                   </CTA>
                 </div>
@@ -390,6 +429,9 @@ export default function NFT() {
           </Spin>
         </ProfileContainer>
       </RootContainer>
-    </>
+
+      <SellPopup  transition={transition} nftById={nftById} modal={sellModal} setModal={setSellModal} />
+      <OfferPopup transition={transition} nftById={nftById} modal={offerModal} setModal={setOfferModal} />
+    </ParentContainer>
   );
 }
