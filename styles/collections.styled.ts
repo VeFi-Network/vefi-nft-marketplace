@@ -8,6 +8,7 @@ export const NFTCollectionWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+
     h2 {
       color: #fff;
       font-weight: 800;
@@ -72,6 +73,7 @@ export const NFTCollectionDescription = styled.div`
   margin: 0 auto;
   max-width: 800px;
   margin-bottom: 30px;
+
   .container {
     display: flex;
     justify-content: center;
