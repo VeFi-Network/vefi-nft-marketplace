@@ -5,7 +5,7 @@ import Card from '../../components/Card/NFTCard';
 import FilterProperty from '../../components/Filter';
 import FIlterBy from '../../components/Filter/FIlterBy';
 import Navbar from '../../components/Navbar';
-import UserBanner from '../../components/Collections/CollectionBanner';
+import UserBanner from '../../components/User/Banner';
 import { NFTCollection, NFTUserCollectionInfo, UsersWrapper, ButtonContainer } from '../../styles/users.styled';
 import Link from 'next/link';
 import Button from '../../components/Button/Ghost';
