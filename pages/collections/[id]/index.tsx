@@ -137,7 +137,7 @@ const Collection = () => {
             <NFTCollection style={{ marginTop: '-50px' }}>
               <div className="container">
                 {_.map(nftsByCollection, nft => (
-                  <>
+                  <div key={nft.tokenId}>
                     <NFTCard
                       model={nft}
                       onClick={() => {
@@ -145,7 +145,7 @@ const Collection = () => {
                       }}
                       key={nft.id}
                     />
-                  </>
+                  </div>
                 ))}
               </div>
             </NFTCollection>

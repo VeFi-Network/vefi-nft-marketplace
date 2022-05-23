@@ -1,15 +1,52 @@
 import { Button } from 'antd';
-import { FiFilter, FiPlus, FiSearch } from 'react-icons/fi';
+import { FiFilter, FiPlus, FiSearch, FiChevronRight, FiChevronLeft } from 'react-icons/fi';
+import styled from 'styled-components';
 import Navbar from '../components/Navbar';
 import { CollectionWrapper, FilterWrapper, MarktePlaceWrapper, SellersWrapper } from '../styles/Market.styled';
 import { Select } from 'antd';
 import Card from '../components/Card';
-
 import MainFooter from '../components/Footer';
 import SellerInfo from '../components/SellerInfo';
+import { useAPIContext } from '../contexts/api/index';
+import { useEffect, useState } from 'react';
+import _ from 'lodash';
+
 const { Option } = Select;
 
+const PaginationContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Paginator = styled.button`
+  border: 1px solid #f5f5f5;
+  width: 30px;
+  height: 30px;
+  fontsize: 10px;
+  background: transparent;
+  cursor: pointer;
+
+  &:disabled {
+    border: none;
+  }
+`;
+
 const Market = () => {
+  const { allOngoingSales, loadAllOngoingSales } = useAPIContext();
+  const [salesPage, setSalesPage] = useState<number>(1);
+
+  useEffect(() => {
+    (() => {
+      loadAllOngoingSales(1);
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (salesPage) loadAllOngoingSales(salesPage);
+  }, [salesPage]);
+
   return (
     <>
       <MarktePlaceWrapper>
@@ -53,50 +90,53 @@ const Market = () => {
             </div>
           </FilterWrapper>
           <div className="wrapper">
-            <CollectionWrapper>
-              <div className="collection__container">
-                <Card
-                  name="Collection Name"
-                  price="0"
-                  owner="owner name"
-                  imageURI="/nft/nft01.png"
-                  key="1"
-                  linkTo="/"
-                />
-                <Card
-                  name="Collection Name"
-                  price="0"
-                  owner="owner name"
-                  imageURI="/nft/nft02.png"
-                  key="1"
-                  linkTo="/"
-                />
-                <Card
-                  name="Collection Name"
-                  price="0"
-                  owner="owner name"
-                  imageURI="/nft/nft01.png"
-                  key="1"
-                  linkTo="/"
-                />
-                <Card
-                  name="Collection Name"
-                  price="0"
-                  owner="owner name"
-                  imageURI="/nft/nft03.png"
-                  key="1"
-                  linkTo="/"
-                />
-                <Card
-                  name="Collection Name"
-                  price="0"
-                  owner="owner name"
-                  imageURI="/nft/nft03.png"
-                  key="1"
-                  linkTo="/"
-                />
+            <PaginationContainer>
+              <CollectionWrapper>
+                <div className="collection__container">
+                  {_.map(allOngoingSales, sale => (
+                    <div key={sale.marketId}>
+                      <Card
+                        name={sale.nft?.metadata?.name as string}
+                        imageURI={sale.nft?.metadata?.imageURI as string}
+                        owner={sale.nft?.metadata?.owner as string}
+                        linkTo={`/nfts/${sale.nft?.collectionId}:${sale.nft?.tokenId}?isSale=${true}&marketId=${
+                          sale.marketId
+                        }`}
+                        price={sale.price.toString()}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </CollectionWrapper>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  margin: '0.5em',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: 14
+                }}
+              >
+                <Paginator
+                  disabled={salesPage === 1}
+                  onClick={() => {
+                    setSalesPage(page => page - 1);
+                  }}
+                  style={{ margin: 4 }}
+                >
+                  <FiChevronLeft style={{ color: '#f5f5f5' }} />
+                </Paginator>
+                <Paginator
+                  onClick={() => {
+                    setSalesPage(page => page + 1);
+                  }}
+                  style={{ margin: 4 }}
+                >
+                  <FiChevronRight style={{ color: '#f5f5f5' }} />
+                </Paginator>
               </div>
-            </CollectionWrapper>
+            </PaginationContainer>
             <SellersWrapper>
               <div className="sellers__container">
                 <SellerInfo imageURI="/marketplace/topSellers/1.png" name="John Doe" linkTo="/" />

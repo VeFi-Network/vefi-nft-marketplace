@@ -5,7 +5,7 @@ import { FiEye, FiHeart, FiLogOut, FiSettings } from 'react-icons/fi';
 import { useWeb3Context } from '../../contexts/web3/index';
 
 const MenuItem = () => {
-  const { disconnectWeb3, account, active } = useWeb3Context();
+  const { disconnectWallet, account, active } = useWeb3Context();
 
   return (
     <Menu
@@ -104,7 +104,7 @@ const MenuItem = () => {
               href="#"
               onClick={e => {
                 e.preventDefault();
-                disconnectWeb3();
+                disconnectWallet();
               }}
             >
               <div className="listItem">

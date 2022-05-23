@@ -12,11 +12,13 @@ import {
   getAllCollections,
   getNFTByIdAndNetwork,
   countAllItemsByCollection,
-  getTopSellingCollections
+  getTopSellingCollections,
+  getAllOngoingSales
 } from '../../api/nft';
 import chains from '../../chains.json';
 import { useWeb3Context } from '../web3/index';
 import { CollectionModel } from '../../api/models/collection';
+import { SaleModel } from '../../api/models/sale';
 
 export enum APIErrorPoint {
   NFT_BY_ID,
@@ -27,7 +29,8 @@ export enum APIErrorPoint {
   AUTH_USER,
   ALL_COLLECTIONS,
   COLLECTION_BY_ID,
-  COUNT_COLLECTION_ITEMS
+  COUNT_COLLECTION_ITEMS,
+  ALL_SALES
 }
 
 type APIContextType = {
@@ -38,6 +41,7 @@ type APIContextType = {
   allCollections: Array<CollectionModel>;
   topSellingCollections: Array<CollectionModel>;
   collectionsByAssets: Array<CollectionModel>;
+  allOngoingSales: Array<SaleModel>;
   collectionById: CollectionModel;
   itemsInCollection: number;
   isUserAuthenticated: boolean;
@@ -53,6 +57,7 @@ type APIContextType = {
   loadNFTsByCollection: (collection: string, page?: number) => void;
   loadNFTsByNetwork: (page?: number) => void;
   loadNumberOfItemsInCollection: (collectionId: string) => void;
+  loadAllOngoingSales: (page?: number) => void;
   error?: {
     point: APIErrorPoint;
     message: string;
@@ -74,6 +79,7 @@ export const APIContextProvider = ({ children }: any) => {
   const [itemsInCollection, setItemsInCollection] = useState<number>(0);
   const [topSellingCollections, setTopSellingCollections] = useState<Array<CollectionModel>>([]);
   const [collectionsByAssets, setCollectionsByAssets] = useState<Array<CollectionModel>>([]);
+  const [allOngoingSales, setAllOngoinSales] = useState<Array<SaleModel>>([]);
   const [authenticatedUser, setAuthenticatedUser] = useState<AccountModel>();
   const [isUserAuthenticated, setIsUserAuthenticated] = useState<boolean>(false);
   const [token, setToken] = useState<string>('');
@@ -94,9 +100,10 @@ export const APIContextProvider = ({ children }: any) => {
 
   const loadAuthUser = () => {
     clearError();
-    getAuthenticatedUser(token)
-      .then(setAuthenticatedUser)
-      .catch((error: any) => setError({ point: APIErrorPoint.AUTH_USER, message: error.message }));
+    if (!!token || !!localStorage.getItem('VEFI_NFT_TOKEN'))
+      getAuthenticatedUser(token.trim().length > 0 ? token : (localStorage.getItem('VEFI_NFT_TOKEN') as string))
+        .then(setAuthenticatedUser)
+        .catch((error: any) => setError({ point: APIErrorPoint.AUTH_USER, message: error.message }));
   };
 
   const loadNFTById = (collectionId: string, id: number) => {
@@ -162,6 +169,13 @@ export const APIContextProvider = ({ children }: any) => {
       .catch((error: any) => setError({ point: APIErrorPoint.COUNT_COLLECTION_ITEMS, message: error.message }));
   };
 
+  const loadAllOngoingSales = (page: number = 1) => {
+    clearError();
+    getAllOngoingSales(network, page)
+      .then(setAllOngoinSales)
+      .catch((error: any) => setError({ point: APIErrorPoint.ALL_SALES, message: error.message }));
+  };
+
   useEffect(() => {
     if (!!localStorage.getItem('VEFI_NFT_TOKEN')) {
       setToken(localStorage.getItem('VEFI_NFT_TOKEN') as string);
@@ -187,6 +201,7 @@ export const APIContextProvider = ({ children }: any) => {
         topSellingCollections,
         collectionById,
         itemsInCollection,
+        allOngoingSales,
         loadNFTById,
         loadNFTsByUser,
         loadNFTsByCollection,
@@ -198,6 +213,7 @@ export const APIContextProvider = ({ children }: any) => {
         loadTopSellingCollections,
         loadCollectionById,
         loadNumberOfItemsInCollection,
+        loadAllOngoingSales,
         isUserAuthenticated,
         authenticatedUser,
         error

@@ -7,7 +7,7 @@ type Props = {
   dropdown: boolean;
   value: any;
   onChange: (value: any) => void;
-  dropDownList:  any[];
+  dropDownList: any[];
   width: string;
   top: string;
 };
@@ -38,17 +38,17 @@ const DropdownMain = styled.div`
     font-size: 22px;
   }
 
-  .logo-container{
+  .logo-container {
     border-radius: 50%;
     width: 18px;
     height: 18px;
-    background: #EDF0F4;
+    background: #edf0f4;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     margin-right: 10px;
-}
+  }
 `;
 
 const DropdownContainer = styled.div`
@@ -74,8 +74,6 @@ const DropdownContainer = styled.div`
       opacity: 0.5;
     }
   }
-
- 
 `;
 
 export default function DropdownComponentWithIcon({
@@ -95,9 +93,9 @@ export default function DropdownComponentWithIcon({
       width={width}
       top={top}
     >
-         <div className="logo-container">
-                <Image width="12px" height="12px" src={dropDownList[value].image} />
-         </div>
+      <div className="logo-container">
+        <Image width="12px" height="12px" src={dropDownList[value].image} />
+      </div>
       {dropDownList[value].name}
       <Image width="12px" style={{ zIndex: 1 }} height="11px" src="/icons/downIcon.svg" />
       {dropdown && (
@@ -105,9 +103,9 @@ export default function DropdownComponentWithIcon({
           {dropDownList &&
             dropDownList.map((data, index) => (
               <div key={index} onClick={() => onChange(index)} className="drop-el">
-                   <div className="logo-container">
-                            <Image width="12px" height="12px" src={dropDownList[index].image} />
-                    </div>
+                <div className="logo-container">
+                  <Image width="12px" height="12px" src={dropDownList[index].image} />
+                </div>
                 {data.name}
               </div>
             ))}

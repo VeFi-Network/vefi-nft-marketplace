@@ -401,7 +401,8 @@ export default function Homepage() {
     collectionsByAssets,
     loadAllCollections,
     loadTopSellingCollections,
-    loadCollectionsByAssets
+    loadCollectionsByAssets,
+    loadAuthUser
   } = useAPIContext();
   const [list, setList] = useState<CollectionModel[]>([]);
   const [activeBtn, setActiveBtn] = useState<ActiveBtn>(ActiveBtn.ALL);
@@ -409,6 +410,7 @@ export default function Homepage() {
 
   useEffect(() => {
     (() => {
+      loadAuthUser();
       loadAllCollections(1);
       loadTopSellingCollections(1);
       loadCollectionsByAssets(1);
@@ -440,7 +442,9 @@ export default function Homepage() {
                 <DiscoverText>Discover, collect, and sell extraordinary NFTs</DiscoverText>
                 <ButtonContainer>
                   <Filled_CTA_Button onClick={() => router.replace('/marketplace')}>Get Started</Filled_CTA_Button>
-                  <Ghost_CTA_Button>Become a Creator</Ghost_CTA_Button>
+                  <Ghost_CTA_Button onClick={() => router.replace('/collections/item/new')}>
+                    Become a Creator
+                  </Ghost_CTA_Button>
                 </ButtonContainer>
               </DiscoverPart>
               <AnimatePart>
@@ -506,18 +510,23 @@ export default function Homepage() {
                 <NFTContainer className="nft-container">
                   <NFTSubCont>
                     <div className="nft__sub__container">
-                      {_.map(list, collection => (
-                        <>
-                          <Card
-                            name={collection?.collectionName}
-                            price="0"
-                            owner={collection?.metadata.owner}
-                            imageURI={collection?.metadata.imageURI}
-                            key={collection?.collectionId}
-                            linkTo={`/collections/${collection?.collectionId}`}
-                          />
-                        </>
-                      ))}
+                      {_.map(
+                        list.filter(model => {
+                          if (searchValue.trim().length > 0) return model.collectionName.includes(searchValue);
+                          else return model;
+                        }),
+                        collection => (
+                          <div key={collection.collectionId}>
+                            <Card
+                              name={collection?.collectionName}
+                              price="0"
+                              owner={collection?.metadata.owner}
+                              imageURI={collection?.metadata.imageURI}
+                              linkTo={`/collections/${collection?.collectionId}`}
+                            />
+                          </div>
+                        )
+                      )}
                     </div>
                   </NFTSubCont>
                 </NFTContainer>

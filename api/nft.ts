@@ -3,6 +3,7 @@ import { NFT_API } from './constants';
 import { NFTModel } from './models/nft';
 import { CollectionModel } from './models/collection';
 import { AccountModel } from './models/account';
+import { SaleModel } from './models/sale';
 
 const baseAxios = axios.create({
   baseURL: NFT_API
@@ -10,8 +11,10 @@ const baseAxios = axios.create({
 
 function handleResponse(res: AxiosResponse, resolve: any, reject: any) {
   if (res.status >= 400)
-    if (!!res.data && !!res.data.error) reject(new Error(res.data.error));
-    else reject(new Error(`API responded with ${res.status}`));
+    if (!!res.data && !!res.data.error) {
+      reject(new Error(res.data.error));
+      console.log(res.data);
+    } else reject(new Error(`API responded with ${res.status}`));
   else resolve(res.data.result);
 }
 
@@ -131,6 +134,15 @@ export function countAllItemsByCollection(network: string, collectionId: string)
   return new Promise((resolve, reject) => {
     baseAxios
       .get(`/api/nft/${network}/${collectionId}/count`)
+      .then(res => handleResponse(res, resolve, reject))
+      .catch(reject);
+  });
+}
+
+export function getAllOngoingSales(network: string, page: number): Promise<Array<SaleModel>> {
+  return new Promise((resolve, reject) => {
+    baseAxios
+      .get(`/api/sale/${network}/allOngoing?page=${page}`)
       .then(res => handleResponse(res, resolve, reject))
       .catch(reject);
   });
