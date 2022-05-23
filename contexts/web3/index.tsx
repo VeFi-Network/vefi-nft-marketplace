@@ -10,6 +10,7 @@ type Web3ContextType = {
   library?: Web3;
   chainId?: number;
   active: boolean;
+  error?: Error;
   connectMetamask: () => void;
   connectWalletConnect: () => void;
   disconnectWallet: () => void;
@@ -31,7 +32,7 @@ const walletConnectConnector = new WalletConnectConnector({
 });
 
 export const Web3ContextProvider = ({ children }: any) => {
-  const { library, account, activate, deactivate, active, chainId } = useWeb3React<Web3>();
+  const { library, account, activate, deactivate, active, chainId, error } = useWeb3React<Web3>();
 
   const connectMetamask = useCallback(() => {
     if (!active) {
@@ -65,7 +66,7 @@ export const Web3ContextProvider = ({ children }: any) => {
 
   return (
     <Web3Context.Provider
-      value={{ account, library, chainId, connectMetamask, connectWalletConnect, disconnectWallet, active }}
+      value={{ account, library, chainId, connectMetamask, connectWalletConnect, disconnectWallet, active, error }}
     >
       {children}
     </Web3Context.Provider>

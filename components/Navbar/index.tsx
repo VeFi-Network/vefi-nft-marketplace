@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import * as ethAddress from 'eth-address';
 import { useState } from 'react';
 import Link from 'next/link';
-import { Button, Drawer, Dropdown, Tooltip } from 'antd';
+import { Button, Drawer, Dropdown, Tooltip, Alert } from 'antd';
 import { FiChevronDown, FiMoreHorizontal, FiPlus, FiUser } from 'react-icons/fi';
 import Menu from '../Profile/Menu';
-import { useWeb3Context } from '../../contexts/web3/index';
-import { useAPIContext } from '../../contexts/api/index';
+import { useWeb3Context } from '../../contexts/web3';
+import { useAPIContext } from '../../contexts/api';
 
 const NavContainer = styled.nav`
   margin: 0 auto;
@@ -101,10 +101,11 @@ const UserWallet = styled.div`
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
-  const { active, connectMetamask, connectWalletConnect, account } = useWeb3Context();
+  const { active, connectMetamask, connectWalletConnect, account, error: web3Error } = useWeb3Context();
   const { authenticatedUser } = useAPIContext();
   return (
     <>
+      {!!web3Error && <Alert type="error" message={web3Error.message} />}
       <NavContainer>
         <div className="navbar__container">
           <NavBrand>

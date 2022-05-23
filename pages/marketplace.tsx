@@ -36,7 +36,7 @@ const Paginator = styled.button`
 const Market = () => {
   const { allOngoingSales, loadAllOngoingSales } = useAPIContext();
   const [salesPage, setSalesPage] = useState<number>(1);
-  
+
   useEffect(() => {
     (() => {
       loadAllOngoingSales(1);
@@ -44,8 +44,7 @@ const Market = () => {
   }, []);
 
   useEffect(() => {
-    if (salesPage)
-      loadAllOngoingSales(salesPage);
+    if (salesPage) loadAllOngoingSales(salesPage);
   }, [salesPage]);
 
   return (
