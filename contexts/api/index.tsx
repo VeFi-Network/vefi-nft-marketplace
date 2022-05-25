@@ -15,7 +15,6 @@ import {
   getTopSellingCollections,
   getAllOngoingSales
 } from '../../api/nft';
-import chains from '../../chains.json';
 import { useWeb3Context } from '../web3/index';
 import { CollectionModel } from '../../api/models/collection';
 import { SaleModel } from '../../api/models/sale';
@@ -58,6 +57,7 @@ type APIContextType = {
   loadNFTsByNetwork: (page?: number) => void;
   loadNumberOfItemsInCollection: (collectionId: string) => void;
   loadAllOngoingSales: (page?: number) => void;
+  logout: () => void;
   error?: {
     point: APIErrorPoint;
     message: string;
@@ -83,9 +83,7 @@ export const APIContextProvider = ({ children }: any) => {
   const [authenticatedUser, setAuthenticatedUser] = useState<AccountModel>();
   const [isUserAuthenticated, setIsUserAuthenticated] = useState<boolean>(false);
   const [token, setToken] = useState<string>('');
-
-  const { chainId } = useWeb3Context();
-  const network = chains['97'].appName;
+  const { network } = useWeb3Context();
 
   const clearError = () => {
     setError(undefined);
@@ -176,6 +174,11 @@ export const APIContextProvider = ({ children }: any) => {
       .catch((error: any) => setError({ point: APIErrorPoint.ALL_SALES, message: error.message }));
   };
 
+  const logout = () => {
+    clearError();
+    setAuthenticatedUser(undefined);
+    localStorage.clear();
+  };
   useEffect(() => {
     if (!!localStorage.getItem('VEFI_NFT_TOKEN')) {
       setToken(localStorage.getItem('VEFI_NFT_TOKEN') as string);
@@ -214,6 +217,7 @@ export const APIContextProvider = ({ children }: any) => {
         loadCollectionById,
         loadNumberOfItemsInCollection,
         loadAllOngoingSales,
+        logout,
         isUserAuthenticated,
         authenticatedUser,
         error

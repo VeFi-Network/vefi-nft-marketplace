@@ -1,14 +1,15 @@
-import { Spin } from 'antd';
+import { Spin, Tag } from 'antd';
 import Navbar from '../../components/Navbar';
 import styled from 'styled-components';
 import Image from 'next/image';
+import _ from 'lodash';
 import Filled_CTA_Button from '../../components/Button/CTA/Filled';
 import Listing from '../../components/ListingTable/index';
 import PriceChart from '../../components/PriceChart/index';
 import { usePageQuery } from '../../hooks/query';
 import { useAPIContext } from '../../contexts/api';
 import { useEffect, useState } from 'react';
-import { FiEye, FiHeart, FiInfo } from 'react-icons/fi';
+import { FiEye, FiHeart, FiInfo, FiLink, FiTag } from 'react-icons/fi';
 import SellPopup from '../../components/Popup/SellPopup';
 import OfferPopup from '../../components/Popup/OfferPopup';
 import { useWeb3Context } from '../../contexts/web3/index';
@@ -353,7 +354,7 @@ export default function NFT() {
 
             <CollectionInfoCont>
               <div className="creator">
-                Created By: <div className="blue"> {nftById?.metadata?.owner || 'NFT owner'}</div>{' '}
+                Owner: <div className="blue"> {nftById?.metadata?.owner || 'NFT owner'}</div>{' '}
                 <Image src="/icons/verification.svg" alt="" width="20px" height="20px" className="tick" />
               </div>
             </CollectionInfoCont>
@@ -373,6 +374,38 @@ export default function NFT() {
                     Description
                   </DescriptionHeading>
                   <DescriptionText>{nftById.metadata?.description || 'No Description Available'}</DescriptionText>
+                  {!!nftById.metadata?.externalLink && nftById.metadata?.externalLink?.trim().length > 0 && (
+                    <>
+                      <DescriptionHeading>
+                        <FiLink />
+                        External Link
+                      </DescriptionHeading>
+                      <p>
+                        <a
+                          style={{ textDecoration: 'none', fontSize: 14, color: '#f5f5f5' }}
+                          href={nftById.metadata.externalLink}
+                          target="_blank"
+                        >
+                          {nftById.metadata.externalLink}
+                        </a>
+                      </p>
+                    </>
+                  )}
+                  {!!nftById.metadata?.traits && (
+                    <>
+                      <DescriptionHeading>
+                        <FiTag />
+                        Traits
+                      </DescriptionHeading>
+                      <p>
+                        {_.map(nftById.metadata.traits, trait => (
+                          <Tag closable={false} color="purple" key={trait}>
+                            {trait}
+                          </Tag>
+                        ))}
+                      </p>
+                    </>
+                  )}
                 </DescriptionContainer>
               </LeftColumn>
               <RightColumn>
@@ -432,7 +465,7 @@ export default function NFT() {
         </ProfileContainer>
       </RootContainer>
 
-      <SellPopup transition={transition} nftById={nftById} modal={sellModal} setModal={setSellModal} />
+      <SellPopup transition={transition} nft={nftById} modal={sellModal} setModal={setSellModal} />
       <OfferPopup transition={transition} nftById={nftById} modal={offerModal} setModal={setOfferModal} />
     </ParentContainer>
   );

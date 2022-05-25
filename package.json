@@ -9,7 +9,10 @@
     "format": "prettier --write **/**/*.{css,js,json,ts,tsx}"
   },
   "dependencies": {
+    "@ethersproject/abi": "^5.6.3",
     "@ethersproject/bytes": "^5.6.1",
+    "@ethersproject/constants": "^5.6.1",
+    "@ethersproject/units": "^5.6.1",
     "@types/react-slick": "^0.23.8",
     "@types/swiper": "^6.0.0",
     "@web3-react/core": "^6.1.9",

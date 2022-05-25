@@ -1,6 +1,6 @@
 import { Button, Spin } from 'antd';
 import Link from 'next/link';
-import { FaBars, FaChevronDown, FaPlus } from 'react-icons/fa';
+import { FaBars, FaChevronDown, FaPlus, FaExclamationTriangle } from 'react-icons/fa';
 import { FiBarChart, FiGrid } from 'react-icons/fi';
 import NFTCard from '../../../components/Card/NFTCard';
 import FilterProperty from '../../../components/Filter';
@@ -85,6 +85,12 @@ const Collection = () => {
             <div className="container">
               <p>{collectionById.metadata.description || 'No Description Available'}</p>
             </div>
+            {collectionById.metadata.hasExplicitContent && (
+              <div className="container">
+                <FaExclamationTriangle style={{ color: 'red' }} />{' '}
+                <span style={{ fontSize: 15, color: 'red', marginLeft: 5 }}>Explicit Content!</span>
+              </div>
+            )}
           </NFTCollectionDescription>
           <NFTUserCollectionInfo>
             <FIlterBy>
