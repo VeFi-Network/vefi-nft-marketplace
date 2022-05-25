@@ -1,3 +1,6 @@
+// @ts-ignore
+import ethAddress from 'ethereum-address';
+import { formatEthAddress } from 'eth-address';
 import React from 'react';
 import { NFTModel } from '../../../api/models/nft';
 import {
@@ -27,7 +30,11 @@ const NFTCard = ({ model, onClick }: Props) => {
             <CardFooterItem>
               <div className="nft-meta-data">
                 <span className="nft_collection_name">{model?.metadata?.name}</span>
-                <span className="nft_name">{model?.metadata?.owner}</span>
+                <span className="nft_name">
+                  {ethAddress.isAddress(model.metadata?.owner)
+                    ? formatEthAddress(model.metadata?.owner as string)
+                    : model.metadata?.owner}
+                </span>
               </div>
               <div className="nft-price-info">
                 <div className="price">

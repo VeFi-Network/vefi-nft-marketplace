@@ -15,7 +15,6 @@ import {
   getTopSellingCollections,
   getAllOngoingSales
 } from '../../api/nft';
-import chains from '../../chains.json';
 import { useWeb3Context } from '../web3/index';
 import { CollectionModel } from '../../api/models/collection';
 import { SaleModel } from '../../api/models/sale';
@@ -84,9 +83,7 @@ export const APIContextProvider = ({ children }: any) => {
   const [authenticatedUser, setAuthenticatedUser] = useState<AccountModel>();
   const [isUserAuthenticated, setIsUserAuthenticated] = useState<boolean>(false);
   const [token, setToken] = useState<string>('');
-
-  const { chainId } = useWeb3Context();
-  const network = chains['97'].appName;
+  const { network } = useWeb3Context();
 
   const clearError = () => {
     setError(undefined);

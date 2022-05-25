@@ -3,7 +3,14 @@
     "appName": "smartchain",
     "chainRpc": "https://data-seed-prebsc-1-s1.binance.org:8545/",
     "symbol": "BNB",
-    "explorerUrl": "https://testnet.bscscan.com",
+    "explorerUrl": "https://testnet.bscscan.com/",
     "name": "Binance Smartchain Testnet"
+  },
+  "80001": {
+    "appName": "polygon",
+    "chainRpc": "https://matic-mumbai.chainstacklabs.com",
+    "symbol": "MATIC",
+    "explorerUrl": "https://mumbai.polygonscan.com/",
+    "name": "Polygon Mumbai Testnet"
   }
 }

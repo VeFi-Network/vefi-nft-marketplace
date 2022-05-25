@@ -1,15 +1,21 @@
+// @ts-ignore
+import ethAddress from 'ethereum-address';
 import React, { useEffect, useState } from 'react';
 import { FaPlus, FaMinus } from 'react-icons/fa';
+import { Spin, message } from 'antd';
 import { v4 as uuid } from 'uuid';
 import styled from 'styled-components';
 import _ from 'lodash';
+import type Web3 from 'web3';
 import Navbar from '../../../../components/Navbar';
 import Filled_CTA_Button from '../../../../components/Button/CTA/Filled';
 import FileContainer from '../../../../components/Collections/FileContainer';
-import DropdownComponent from '../../../../components/Collections/Dropdown';
-import DynamicDropdown from '../../../../components/Collections/DynamicDropdown';
 import { pinFile, pinJson } from '../../../../api/ipfs';
 import { NFTLevels, NFTMetadata } from '../../../../api/models/nft';
+import marketPlaceAbi from '../../../../assets/abis/Marketplace.json';
+import { addresses, CONSTANTS } from '../../../../assets';
+import { useWeb3Context } from '../../../../contexts/web3';
+import { usePageQuery } from '../../../../hooks/query';
 
 type Props = {};
 
@@ -250,14 +256,28 @@ const StyledExploreNft = styled.img`
   left: 7px;
   top: 361px;
 `;
+
+const NoItemContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+`;
+
 export default function NewNFT({}: Props) {
+  const { account, library, chainId, explorerUrl, active } = useWeb3Context();
   const [avatarImage, setAvatarImage] = useState<any>(null);
-  const [dropdownShown, setDropdownShown] = useState<boolean>(false);
   const [traitsIDs, setTraitsIDs] = useState<string[]>([uuid()]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [tip, setTip] = useState<string>('');
+  const [collection, setCollection] = useState<string>('');
+  const [mintFor, setMintFor] = useState<string>('');
+
+  const { id } = usePageQuery();
 
   const [nftMetadata, setNftMetadata] = useState<Omit<NFTMetadata, 'imageURI'>>({
     name: '',
-    owner: '',
+    owner: account as string,
     description: '',
     traits: [],
     levels: [],
@@ -275,7 +295,8 @@ export default function NewNFT({}: Props) {
       nftMetadata.name.length >= 7 &&
       nftMetadata.owner.length >= 4 &&
       nftMetadata.traits.length > 0 &&
-      nftMetadata.levels.length > 0
+      nftMetadata.levels.length > 0 &&
+      ethAddress.isAddress(mintFor)
     );
   };
 
@@ -294,202 +315,281 @@ export default function NewNFT({}: Props) {
 
   const mintNFT = async () => {
     try {
-    } catch (e) {
-      console.log('Error Occured ===' + e);
+      const formData = new FormData();
+      formData.append('file', avatarImage.file);
+
+      if (allConditionsSatisfied()) {
+        setIsLoading(true);
+        setTip('Pinning avatar to IPFS');
+
+        const avatarPinningResponse = await pinFile(formData);
+
+        setTip('Pinning metadata to IPFS');
+        const jsonPinningResponse = await pinJson({
+          ...nftMetadata,
+          imageURI: avatarPinningResponse.response.fileURI
+        });
+
+        const contract = new (library as Web3).eth.Contract(marketPlaceAbi as any, addresses[chainId as number]);
+
+        setTip('Now minting asset');
+        const nftMintingResponse = await contract.methods
+          .mintNFT(collection, jsonPinningResponse.response.itemURI, mintFor)
+          .send({
+            from: account,
+            value: CONSTANTS.feesPerNetwork[chainId as number].nftMintFee.toHexString()
+          });
+
+        resetAllFields();
+        message.success(
+          <>
+            <span style={{ fontSize: 15 }}>NFT successfully minted!</span>
+            <a
+              style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
+              href={explorerUrl.concat('tx/' + nftMintingResponse.transactionHash)}
+              target="_blank"
+            >
+              View on explorer!
+            </a>
+          </>,
+          15
+        );
+      }
+
+      setIsLoading(false);
+      setTip('');
+    } catch (e: any) {
+      setIsLoading(false);
+      message.error(e.message);
     }
   };
+
+  useEffect(() => {
+    if (!!id) setCollection(id as string);
+  }, [id]);
 
   return (
     <MainContainer>
       <NavbarContainer>
         <Navbar />
       </NavbarContainer>
-      <ParentExploreAndData>
-        <div className="title">Mint your NFT.</div>
+      <Spin spinning={isLoading} tip={tip} size="large">
+        <ParentExploreAndData>
+          {!active ? (
+            <NoItemContainer>
+              <div style={{ marginTop: '10em' }}>
+                <span style={{ color: '#dc143c', fontSize: 30 }}>Please connect your wallet!</span>
+              </div>
+            </NoItemContainer>
+          ) : (
+            <>
+              <div className="title">Mint your NFT.</div>
 
-        <Heading top={'31px'}>
-          Avatar <span className="blue">*</span>
-        </Heading>
+              <Heading top={'31px'}>
+                Avatar <span className="blue">*</span>
+              </Heading>
 
-        <div className="text">
-          Supported File Types: JPG, JPEG, PNG, GIF, WEBP
-          <span className="blue"> Max size 40mb</span>
-        </div>
+              <div className="text">
+                Supported File Types: JPG, JPEG, PNG, GIF, WEBP
+                <span className="blue"> Max size 40mb</span>
+              </div>
 
-        <FileContainer file={avatarImage} setFile={setAvatarImage} type={2} />
+              <FileContainer file={avatarImage} setFile={setAvatarImage} type={2} />
 
-        <Heading className="heading">
-          Name<span className="blue">*</span>
-        </Heading>
+              <Heading className="heading">
+                Name<span className="blue">*</span>
+              </Heading>
 
-        <div className="input-div">
-          <input
-            type="text"
-            value={nftMetadata.name}
-            onChange={setProperty}
-            name="name"
-            className="inp"
-            placeholder="Name of this asset."
-          />
-        </div>
-
-        <Heading className="heading">
-          Owner<span className="blue">*</span>
-        </Heading>
-
-        <div className="input-div">
-          <input
-            type="text"
-            value={nftMetadata.owner}
-            onChange={setProperty}
-            name="owner"
-            className="inp"
-            placeholder="Owner of this asset (can be an Ethereum address or an ENS name)."
-          />
-        </div>
-
-        <Heading top="27px">External URL</Heading>
-
-        <div className="input-div">
-          <input
-            value={nftMetadata.externalLink}
-            onChange={setProperty}
-            name="externalLink"
-            type="text"
-            className="inp"
-            placeholder="An external URL containing more information about this asset."
-          />
-        </div>
-
-        <Heading top="27px">Description</Heading>
-
-        <div className="text-area">
-          <textarea
-            className="real-text-area"
-            id=""
-            placeholder="Provide a detailed description of your item."
-            rows={7}
-            value={nftMetadata.description}
-            onChange={setProperty}
-            name="description"
-          ></textarea>
-        </div>
-
-        <Heading top="27px">Levels</Heading>
-
-        <div className="switch-cont">
-          <div className="text">Set this item's levels</div>
-
-          {_.map(Object.values(NFTLevels).sort(), val => (
-            <div
-              key={val}
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                flexDirection: 'column',
-                margin: 2
-              }}
-            >
-              <label className="switch">
+              <div className="input-div">
                 <input
-                  type="checkbox"
-                  checked={nftMetadata.levels.includes(val)}
-                  onChange={() => {
-                    if (!nftMetadata.levels.includes(val))
-                      setNftMetadata({ ...nftMetadata, levels: [...nftMetadata.levels, val] });
-                    else setNftMetadata({ ...nftMetadata, levels: nftMetadata.levels.filter(level => level !== val) });
-                  }}
+                  type="text"
+                  value={nftMetadata.name}
+                  onChange={setProperty}
+                  name="name"
+                  className="inp"
+                  placeholder="Name of this asset."
                 />
-                <span className="slider round"></span>
-              </label>
-              <span className="blue" style={{ fontSize: 12 }}>
-                {val}
-              </span>
-            </div>
-          ))}
-        </div>
+              </div>
 
-        <Heading top="27px">
-          Traits<span className="blue">*</span>
-        </Heading>
-        <div className="text">Set this item's traits.</div>
+              <Heading className="heading">
+                Owner<span className="blue">*</span>
+              </Heading>
 
-        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: 10 }}>
-          <div style={{ flexBasis: '90%', flexGrow: 1 }}>
-            {_.map(traitsIDs, (id, index) => (
-              <div className="input-div" key={id} style={{ width: 200 }}>
-                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <div style={{ flexBasis: '90%', flexGrow: 1 }}>
-                    <input
-                      value={nftMetadata.traits[index]}
-                      onChange={event => {
-                        const traits = nftMetadata.traits;
-                        traits[index] = event.target.value;
-                        setNftMetadata({ ...nftMetadata, traits });
-                      }}
-                      name={`trait-${id}`}
-                      type="text"
-                      className="inp"
-                      style={{ width: 'inherit' }}
-                      placeholder="Enter trait."
-                    />
+              <div className="input-div">
+                <input
+                  type="text"
+                  value={nftMetadata.owner}
+                  onChange={setProperty}
+                  name="owner"
+                  className="inp"
+                  placeholder="Owner of this asset (can be an Ethereum address or an ENS name)."
+                />
+              </div>
+
+              <Heading className="heading">
+                For<span className="blue">*</span>
+              </Heading>
+
+              <div className="input-div">
+                <input
+                  type="text"
+                  value={mintFor}
+                  onChange={e => setMintFor(e.target.value)}
+                  name="owner"
+                  className="inp"
+                  placeholder="Address this asset is being minted for."
+                />
+              </div>
+
+              <Heading top="27px">External URL</Heading>
+
+              <div className="input-div">
+                <input
+                  value={nftMetadata.externalLink}
+                  onChange={setProperty}
+                  name="externalLink"
+                  type="text"
+                  className="inp"
+                  placeholder="An external URL containing more information about this asset."
+                />
+              </div>
+
+              <Heading top="27px">Description</Heading>
+
+              <div className="text-area">
+                <textarea
+                  className="real-text-area"
+                  id=""
+                  placeholder="Provide a detailed description of your item."
+                  rows={7}
+                  value={nftMetadata.description}
+                  onChange={setProperty}
+                  name="description"
+                ></textarea>
+              </div>
+
+              <Heading top="27px">Levels</Heading>
+
+              <div className="switch-cont">
+                <div className="text">Set this item's levels</div>
+
+                {_.map(Object.values(NFTLevels).sort(), val => (
+                  <div
+                    key={val}
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      flexDirection: 'column',
+                      margin: 2
+                    }}
+                  >
+                    <label className="switch">
+                      <input
+                        type="checkbox"
+                        checked={nftMetadata.levels.includes(val)}
+                        onChange={() => {
+                          if (!nftMetadata.levels.includes(val))
+                            setNftMetadata({ ...nftMetadata, levels: [...nftMetadata.levels, val] });
+                          else
+                            setNftMetadata({
+                              ...nftMetadata,
+                              levels: nftMetadata.levels.filter(level => level !== val)
+                            });
+                        }}
+                      />
+                      <span className="slider round"></span>
+                    </label>
+                    <span className="blue" style={{ fontSize: 12 }}>
+                      {val}
+                    </span>
                   </div>
-                  <div style={{ flexBasis: '5%', flexGrow: 1 }}></div>
-                  <div style={{ flexBasis: '5%', flexGrow: 1, marginLeft: 10 }}>
-                    <Filled_CTA_Button
-                      disabled={traitsIDs.length === 1}
-                      style={{
-                        textAlign: 'center',
-                        width: 25,
-                        height: 25,
-                        fontSize: 17,
-                        padding: 4,
-                        background: traitsIDs.length === 1 ? 'grey' : undefined
-                      }}
-                      onClick={() => {
-                        setTraitsIDs(traitsIDs.filter(val => val !== id));
-                        const traits = nftMetadata.traits;
-                        traits.splice(index, 1);
-                        setNftMetadata({ ...nftMetadata, traits });
-                      }}
-                    >
-                      <FaMinus />
-                    </Filled_CTA_Button>
-                  </div>
+                ))}
+              </div>
+
+              <Heading top="27px">
+                Traits<span className="blue">*</span>
+              </Heading>
+              <div className="text">Set this item's traits.</div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: 10 }}>
+                <div style={{ flexBasis: '90%', flexGrow: 1 }}>
+                  {_.map(traitsIDs, (id, index) => (
+                    <div className="input-div" key={id} style={{ width: 200 }}>
+                      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <div style={{ flexBasis: '90%', flexGrow: 1 }}>
+                          <input
+                            value={nftMetadata.traits[index]}
+                            onChange={event => {
+                              const traits = nftMetadata.traits;
+                              traits[index] = event.target.value;
+                              setNftMetadata({ ...nftMetadata, traits });
+                            }}
+                            name={`trait-${id}`}
+                            type="text"
+                            className="inp"
+                            style={{ width: 'inherit' }}
+                            placeholder="Enter trait."
+                          />
+                        </div>
+                        <div style={{ flexBasis: '5%', flexGrow: 1 }}></div>
+                        <div style={{ flexBasis: '5%', flexGrow: 1, marginLeft: 10 }}>
+                          <Filled_CTA_Button
+                            disabled={traitsIDs.length === 1}
+                            style={{
+                              textAlign: 'center',
+                              width: 25,
+                              height: 25,
+                              fontSize: 17,
+                              padding: 4,
+                              background: traitsIDs.length === 1 ? 'grey' : undefined
+                            }}
+                            onClick={() => {
+                              setTraitsIDs(traitsIDs.filter(val => val !== id));
+                              const traits = nftMetadata.traits;
+                              traits.splice(index, 1);
+                              setNftMetadata({ ...nftMetadata, traits });
+                            }}
+                          >
+                            <FaMinus />
+                          </Filled_CTA_Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ flexBasis: '5%', flexGrow: 1 }}></div>
+                <div style={{ flexBasis: '5%', flexGrow: 1, marginTop: 10 }}>
+                  <Filled_CTA_Button
+                    onClick={() => setTraitsIDs([...traitsIDs, uuid()])}
+                    style={{ textAlign: 'center', width: 25, height: 25, fontSize: 17, padding: 4 }}
+                  >
+                    <FaPlus />
+                  </Filled_CTA_Button>
                 </div>
               </div>
-            ))}
-          </div>
-          <div style={{ flexBasis: '5%', flexGrow: 1 }}></div>
-          <div style={{ flexBasis: '5%', flexGrow: 1, marginTop: 10 }}>
-            <Filled_CTA_Button
-              onClick={() => setTraitsIDs([...traitsIDs, uuid()])}
-              style={{ textAlign: 'center', width: 25, height: 25, fontSize: 17, padding: 4 }}
-            >
-              <FaPlus />
-            </Filled_CTA_Button>
-          </div>
-        </div>
 
-        <Heading top={'52px'}>Explicit and sensitive content</Heading>
+              <Heading top={'52px'}>Explicit and sensitive content</Heading>
 
-        <div className="switch-cont">
-          <div className="text">Set this collection as explicit and sensitive content</div>
+              <div className="switch-cont">
+                <div className="text">Set this collection as explicit and sensitive content</div>
 
-          <label className="switch">
-            <input
-              type="checkbox"
-              checked={nftMetadata.isExplicit}
-              onChange={() => setNftMetadata({ ...nftMetadata, isExplicit: !nftMetadata.isExplicit })}
-            />
-            <span className="slider round"></span>
-          </label>
-        </div>
-        <Filled_CTA_Button disabled={!allConditionsSatisfied()} onClick={mintNFT} style={{ marginTop: 33 }}>
-          {allConditionsSatisfied() ? 'Create' : 'Please fill in all required fields correctly'}
-        </Filled_CTA_Button>
-      </ParentExploreAndData>
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    checked={nftMetadata.isExplicit}
+                    onChange={() => setNftMetadata({ ...nftMetadata, isExplicit: !nftMetadata.isExplicit })}
+                  />
+                  <span className="slider round"></span>
+                </label>
+              </div>
+              <Filled_CTA_Button disabled={!allConditionsSatisfied()} onClick={mintNFT} style={{ marginTop: 33 }}>
+                {allConditionsSatisfied() ? 'Create' : 'Please fill in all required fields correctly'}
+              </Filled_CTA_Button>
+            </>
+          )}{' '}
+        </ParentExploreAndData>
+      </Spin>
       <StyledExploreNft src="/icons/exploreNFT.png" />
       <ColoredBackground></ColoredBackground>
     </MainContainer>

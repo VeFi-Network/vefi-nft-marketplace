@@ -16,6 +16,7 @@ import { Category } from '../styles/CartegoryCard.styled';
 import CartegoryCard from '../components/Card/CartegoryCard';
 import { useRouter } from 'next/router';
 import { CollectionModel } from '../api/models/collection';
+import { useWeb3Context } from '../contexts/web3/index';
 
 const MainContainer = styled.div`
   display: flex;
@@ -407,6 +408,7 @@ export default function Homepage() {
   const [list, setList] = useState<CollectionModel[]>([]);
   const [activeBtn, setActiveBtn] = useState<ActiveBtn>(ActiveBtn.ALL);
   const router = useRouter();
+  const { network } = useWeb3Context();
 
   useEffect(() => {
     (() => {
@@ -415,7 +417,7 @@ export default function Homepage() {
       loadTopSellingCollections(1);
       loadCollectionsByAssets(1);
     })();
-  }, []);
+  }, [network]);
 
   useEffect(() => {
     if (!!allCollections) {

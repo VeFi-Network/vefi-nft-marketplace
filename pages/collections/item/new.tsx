@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+// @ts-ignore
+import ethAddress from 'ethereum-address';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Navbar from '../../../components/Navbar';
 import Filled_CTA_Button from '../../../components/Button/CTA/Filled';
@@ -6,9 +8,13 @@ import { pinFile, pinJson } from '../../../api/ipfs';
 import FileContainer from '../../../components/Collections/FileContainer';
 import DropdownComponent from '../../../components/Collections/Dropdown';
 import { CollectionMetadata, CollectionCategory } from '../../../api/models/collection';
-import { Spin } from 'antd';
+import { Spin, message } from 'antd';
+import type Web3 from 'web3';
 import MainFooter from '../../../components/Footer';
-import { useWeb3Context } from '../../../contexts/web3/index';
+import { useWeb3Context } from '../../../contexts/web3';
+import marketPlaceAbi from '../../../assets/abis/Marketplace.json';
+import { addresses, CONSTANTS } from '../../../assets';
+import { useAPIContext } from '../../../contexts/api';
 
 type Props = {};
 
@@ -254,18 +260,20 @@ const NoItemContainer = styled.div`
 `;
 
 export default function NewCollection({}: Props) {
-  const { active } = useWeb3Context();
+  const { active, library, chainId, explorerUrl, account } = useWeb3Context();
+  const { authenticatedUser } = useAPIContext();
 
   const [bannerImage, setBannerImage] = useState<any>(null);
   const [avatarImage, setAvatarImage] = useState<any>(null);
   const [dropdownShown, setDropdownShown] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [tip, setTip] = useState<string>('');
+  const [paymentReceiver, setPaymentReceiver] = useState<string>('');
 
   const [collectionMetadata, setCollectionMetadata] = useState<Omit<Omit<CollectionMetadata, 'imageURI'>, 'bannerURI'>>(
     {
       name: '',
-      owner: '',
+      owner: !!authenticatedUser ? authenticatedUser.name : (account as string),
       category: CollectionCategory.ART,
       description: '',
       symbol: '',
@@ -287,7 +295,8 @@ export default function NewCollection({}: Props) {
       !!collectionMetadata.symbol &&
       collectionMetadata.name.length >= 4 &&
       collectionMetadata.owner.length >= 4 &&
-      collectionMetadata.symbol.length >= 3
+      collectionMetadata.symbol.length >= 3 &&
+      ethAddress.isAddress(paymentReceiver)
     );
   };
 
@@ -332,15 +341,45 @@ export default function NewCollection({}: Props) {
           imageURI: avatarPinningResponse.response.fileURI,
           bannerURI: bannerPinningResponse.response.fileURI
         });
+
+        const contract = new (library as Web3).eth.Contract(marketPlaceAbi as any, addresses[chainId as number]);
+
+        setTip('Deploying collection contract.');
+
+        const deploymentResponse = await contract.methods
+          .deployCollection(
+            collectionMetadata.name,
+            collectionMetadata.symbol,
+            collectionMetadata.category,
+            paymentReceiver,
+            jsonPinningResponse.response.itemURI
+          )
+          .send({
+            value: CONSTANTS.feesPerNetwork[chainId as number].collectionDeployFee.toHexString(),
+            from: account
+          });
+
         resetAllFields();
-        console.log(jsonPinningResponse);
+        message.success(
+          <>
+            <span style={{ fontSize: 15 }}>Collection successfully deployed!</span>
+            <a
+              style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
+              href={explorerUrl.concat('tx/' + deploymentResponse.transactionHash)}
+              target="_blank"
+            >
+              View on explorer!
+            </a>
+          </>,
+          15
+        );
       }
 
       setIsLoading(false);
       setTip('');
     } catch (error: any) {
       setIsLoading(false);
-      console.log(error);
+      message.error(error.message);
     }
   };
 
@@ -426,6 +465,21 @@ export default function NewCollection({}: Props) {
                     name="symbol"
                     className="inp"
                     placeholder="Collection symbol."
+                  />
+                </div>
+
+                <Heading className="heading">
+                  Payment Receiver<span className="blue">*</span>
+                </Heading>
+
+                <div className="input-div">
+                  <input
+                    type="text"
+                    value={paymentReceiver}
+                    onChange={e => setPaymentReceiver(e.target.value)}
+                    name="symbol"
+                    className="inp"
+                    placeholder="Address that receives minting fees."
                   />
                 </div>
 

@@ -10,7 +10,8 @@ export enum CollectionCategory {
   GAMING = 'GAMING',
   UTILITY = 'UTILITY',
   REAL_ESTATE = 'REAL ESTATE',
-  CARTOONS = 'CARTOONS'
+  CARTOONS = 'CARTOONS',
+  MOVIES = 'MOVIES'
 }
 
 export type CollectionMetadata = {

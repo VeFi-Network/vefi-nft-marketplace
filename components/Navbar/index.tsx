@@ -9,6 +9,11 @@ import Menu from '../Profile/Menu';
 import { useWeb3Context } from '../../contexts/web3';
 import { useAPIContext } from '../../contexts/api';
 
+const chainIcons = {
+  97: '/icons/binance.svg',
+  80001: '/icons/matic.svg'
+};
+
 const NavContainer = styled.nav`
   margin: 0 auto;
   width: calc(100% - 150px);
@@ -101,7 +106,7 @@ const UserWallet = styled.div`
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
-  const { active, connectMetamask, connectWalletConnect, account, error: web3Error } = useWeb3Context();
+  const { active, connectMetamask, connectWalletConnect, account, error: web3Error, chainId } = useWeb3Context();
   const { authenticatedUser } = useAPIContext();
   return (
     <>
@@ -140,7 +145,7 @@ const Navbar = () => {
                 <UserWallet onClick={() => setVisible(!visible)}>
                   <div className="wallet_container">
                     <div className="wallet_icon">
-                      <Image src="/icons/eth.svg" width={15} height={15} />
+                      <Image src={chainIcons[chainId as keyof typeof chainIcons]} width={15} height={15} />
                     </div>
                     <div>
                       {!!authenticatedUser

@@ -1,3 +1,6 @@
+// @ts-ignore
+import ethAddress from 'ethereum-address';
+import { formatEthAddress } from 'eth-address';
 import styled from 'styled-components';
 import Image from 'next/image';
 import Button from '../Button/Ghost';
@@ -155,7 +158,9 @@ const Card = (props: Props) => {
                 <CardFooterItem>
                   <div className="nft-meta-data">
                     <span className="nft_collection_name">{props.name}</span>
-                    <span className="nft_name">{props.owner}</span>
+                    <span className="nft_name">
+                      {ethAddress.isAddress(props.owner) ? formatEthAddress(props.owner) : props.owner}
+                    </span>
                   </div>
                   <div className="nft-price-info">
                     <div className="price">

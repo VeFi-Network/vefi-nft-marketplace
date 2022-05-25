@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useContext, useCallback } from 'react';
+import React, { createContext, useEffect, useContext, useCallback, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
@@ -11,6 +11,8 @@ type Web3ContextType = {
   chainId?: number;
   active: boolean;
   error?: Error;
+  network: string;
+  explorerUrl: string;
   connectMetamask: () => void;
   connectWalletConnect: () => void;
   disconnectWallet: () => void;
@@ -19,7 +21,7 @@ type Web3ContextType = {
 const Web3Context = createContext<Web3ContextType>({} as Web3ContextType);
 
 const injectedConnector = new InjectedConnector({
-  supportedChainIds: [97, 56, 32520, 64668]
+  supportedChainIds: [97, 56, 32520, 64668, 80001]
 });
 
 const walletConnectConnector = new WalletConnectConnector({
@@ -28,11 +30,13 @@ const walletConnectConnector = new WalletConnectConnector({
   },
   qrcode: true,
   bridge: 'https://bridge.walletconnect.org',
-  supportedChainIds: [97, 56, 32520, 64668]
+  supportedChainIds: [97, 56, 32520, 64668, 80001]
 });
 
 export const Web3ContextProvider = ({ children }: any) => {
   const { library, account, activate, deactivate, active, chainId, error } = useWeb3React<Web3>();
+  const [network, setNetwork] = useState<string>('smartchain');
+  const [explorerUrl, setExplorerUrl] = useState<string>(chains['97'].explorerUrl);
 
   const connectMetamask = useCallback(() => {
     if (!active) {
@@ -64,9 +68,27 @@ export const Web3ContextProvider = ({ children }: any) => {
     });
   }, []);
 
+  useEffect(() => {
+    if (!!chainId) {
+      setNetwork(chains[chainId.toString() as keyof typeof chains].appName);
+      setExplorerUrl(chains[chainId.toString() as keyof typeof chains].explorerUrl);
+    }
+  }, [chainId]);
+
   return (
     <Web3Context.Provider
-      value={{ account, library, chainId, connectMetamask, connectWalletConnect, disconnectWallet, active, error }}
+      value={{
+        account,
+        library,
+        chainId,
+        connectMetamask,
+        connectWalletConnect,
+        disconnectWallet,
+        active,
+        network,
+        explorerUrl,
+        error
+      }}
     >
       {children}
     </Web3Context.Provider>

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
+import { FiChevronDown } from 'react-icons/fi';
 
 type Props = {
   setDropdown: any;
@@ -94,15 +95,15 @@ export default function DropdownComponentWithIcon({
       top={top}
     >
       <div className="logo-container">
-        <Image width="12px" height="12px" src={dropDownList[value].image} />
+        <Image width="12px" height="12px" src={value.image} />
       </div>
-      {dropDownList[value].name}
-      <Image width="12px" style={{ zIndex: 1 }} height="11px" src="/icons/downIcon.svg" />
+      {value.name}
+      <FiChevronDown width={12} style={{ zIndex: 1 }} />
       {dropdown && (
         <DropdownContainer width={width}>
           {dropDownList &&
             dropDownList.map((data, index) => (
-              <div key={index} onClick={() => onChange(index)} className="drop-el">
+              <div key={index} onClick={() => onChange(data)} className="drop-el">
                 <div className="logo-container">
                   <Image width="12px" height="12px" src={dropDownList[index].image} />
                 </div>
