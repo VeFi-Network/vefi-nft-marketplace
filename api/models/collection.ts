@@ -36,4 +36,5 @@ export interface CollectionModel {
   collectionURI: string;
   network: string;
   id: number;
+  floorPrice?: number;
 }

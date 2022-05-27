@@ -9,7 +9,7 @@ import Link from 'next/link';
 type Props = {
   name: string;
   owner: string;
-  price: string;
+  price?: string;
   imageURI: string;
   linkTo: string;
 };
@@ -163,11 +163,13 @@ const Card = (props: Props) => {
                     </span>
                   </div>
                   <div className="nft-price-info">
-                    <div className="price">
-                      <Image src="/icons/eth_classic.svg" width={20} height={20} />
+                    {props.price && (
+                      <div className="price">
+                        <Image src="/icons/eth_classic.svg" width={20} height={20} />
 
-                      <div>{props.price}eth</div>
-                    </div>
+                        <div>{props.price}eth</div>
+                      </div>
+                    )}
 
                     <Button borderThickness="1px" borderRadius="4px">
                       View

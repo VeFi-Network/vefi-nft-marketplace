@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import styled from 'styled-components';
 import * as ethAddress from 'eth-address';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Button, Drawer, Dropdown, Tooltip, Alert } from 'antd';
 import { FiChevronDown, FiMoreHorizontal, FiPlus, FiUser } from 'react-icons/fi';
@@ -11,7 +11,8 @@ import { useAPIContext } from '../../contexts/api';
 
 const chainIcons = {
   97: '/icons/binance.svg',
-  80001: '/icons/matic.svg'
+  80001: '/icons/matic.svg',
+  4: '/icons/eth.svg'
 };
 
 const NavContainer = styled.nav`
@@ -108,6 +109,7 @@ const Navbar = () => {
   const [visible, setVisible] = useState(false);
   const { active, connectMetamask, connectWalletConnect, account, error: web3Error, chainId } = useWeb3Context();
   const { authenticatedUser } = useAPIContext();
+
   return (
     <>
       {!!web3Error && <Alert type="error" message={web3Error.message} />}
@@ -149,7 +151,7 @@ const Navbar = () => {
                     </div>
                     <div>
                       {!!authenticatedUser
-                        ? authenticatedUser.name
+                        ? authenticatedUser.name || ethAddress.formatEthAddress(account as string)
                         : !!account
                         ? ethAddress.formatEthAddress(account)
                         : ''}
@@ -186,7 +188,7 @@ const Navbar = () => {
                   <div className="chain__id">
                     <span>
                       {!!authenticatedUser
-                        ? authenticatedUser.name
+                        ? authenticatedUser.name || ethAddress.formatEthAddress(account as string)
                         : !!account
                         ? ethAddress.formatEthAddress(account)
                         : ''}

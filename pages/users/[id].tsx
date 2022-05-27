@@ -1,7 +1,13 @@
 import React from 'react';
-import { FaBars, FaHandHoldingUsd, FaRegEyeSlash, FaRegUser, FaUserEdit } from 'react-icons/fa';
-import { FiBarChart, FiChevronDown, FiEyeOff, FiGrid, FiHeart, FiList, FiRotateCcw, FiTag } from 'react-icons/fi';
-import Card from '../../components/Card/NFTCard';
+import { FaBars, FaRegUser, FaUserEdit } from 'react-icons/fa';
+import {
+  FiBarChart,
+  FiGrid,
+  FiHeart,
+  FiList,
+  FiUserPlus
+} from 'react-icons/fi';
+import NFTCard from '../../components/Card/NFTCard';
 import FilterProperty from '../../components/Filter';
 import FIlterBy from '../../components/Filter/FIlterBy';
 import Navbar from '../../components/Navbar';
@@ -18,7 +24,10 @@ const Users = () => {
     <>
       <UsersWrapper>
         <Navbar />
-        <UserBanner bannerUrl={authenticatedUser?.metadata.bannerURI} avatarUrl={authenticatedUser?.metadata.imageURI}>
+        <UserBanner
+          bannerUrl={authenticatedUser?.metadata?.bannerURI || ''}
+          avatarUrl={authenticatedUser?.metadata?.imageURI || ''}
+        >
           <div className="user__info">
             <div className="username">
               <h2>
@@ -30,7 +39,7 @@ const Users = () => {
             </div>
           </div>
           <ButtonContainer>
-            {!authenticatedUser && (
+            {(!authenticatedUser || !authenticatedUser.email) && (
               <Link href="/users/profile/create">
                 <Button>
                   <FaRegUser />
@@ -38,7 +47,7 @@ const Users = () => {
                 </Button>
               </Link>
             )}
-            {!!authenticatedUser && (
+            {!!authenticatedUser && !!authenticatedUser.email && (
               <Link href="/users/profile/update">
                 <FilledButton>
                   <FaUserEdit />
@@ -52,13 +61,9 @@ const Users = () => {
         <NFTUserCollectionInfo>
           <FIlterBy>
             <div className="properties">
-              <FilterProperty icon={<FaHandHoldingUsd />} count="20" label="Collected" />
-              <FilterProperty icon={<FaRegEyeSlash />} count="20" label="created" />
-              <FilterProperty icon={<FiEyeOff />} label="hidden" count={0} />
-              <FilterProperty icon={<FiList />} label="offers" count={0} />
-              <FilterProperty icon={<FiHeart />} label="favorited" count={1} />
-              <FilterProperty icon={<FiRotateCcw />} label="activity" count={1} />
-              <FilterProperty icon={<FiTag />} label="listing" count={<FiChevronDown />} />
+              <FilterProperty icon={<FiUserPlus />} count="20" label="created" />
+              <FilterProperty icon={<FiList />} label="watchlist" count={0} />
+              <FilterProperty icon={<FiHeart />} label="favorites" count={1} />
             </div>
           </FIlterBy>
           <div className="sort__collection">
@@ -88,9 +93,7 @@ const Users = () => {
             </div>
           </div>
           <NFTCollection>
-            <div className="container">
-              <Card />
-            </div>
+            <div className="container">{/* <Card /> */}</div>
           </NFTCollection>
         </NFTUserCollectionInfo>
       </UsersWrapper>

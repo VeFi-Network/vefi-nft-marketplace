@@ -21,22 +21,20 @@ type Web3ContextType = {
 const Web3Context = createContext<Web3ContextType>({} as Web3ContextType);
 
 const injectedConnector = new InjectedConnector({
-  supportedChainIds: [97, 56, 32520, 64668, 80001]
+  supportedChainIds: [97, 56, 32520, 64668, 80001, 4]
 });
 
 const walletConnectConnector = new WalletConnectConnector({
-  rpc: {
-    97: process.env.NEXT_PUBLIC_BSC_TESTNET_RPC as string
-  },
   qrcode: true,
   bridge: 'https://bridge.walletconnect.org',
-  supportedChainIds: [97, 56, 32520, 64668, 80001]
+  supportedChainIds: [97, 56, 32520, 64668, 80001, 4]
 });
 
 export const Web3ContextProvider = ({ children }: any) => {
   const { library, account, activate, deactivate, active, chainId, error } = useWeb3React<Web3>();
   const [network, setNetwork] = useState<string>('smartchain');
   const [explorerUrl, setExplorerUrl] = useState<string>(chains['97'].explorerUrl);
+  const [tried, setTried] = useState<boolean>(false);
 
   const connectMetamask = useCallback(() => {
     if (!active) {
@@ -62,11 +60,19 @@ export const Web3ContextProvider = ({ children }: any) => {
     injectedConnector.isAuthorized().then(isAuth => {
       if (isAuth) {
         activate(injectedConnector, undefined, true).then(() => {
-          console.log('Web3 connected');
+          setTried(true);
         });
+      } else {
+        setTried(true);
       }
     });
   }, []);
+
+  useEffect(() => {
+    if (!tried && active) {
+      setTried(true);
+    }
+  }, [tried, active]);
 
   useEffect(() => {
     if (!!chainId) {

@@ -1,11 +1,21 @@
+import { formatEthAddress } from 'eth-address';
 import styled from 'styled-components';
-import Image from 'next/image';
 import { Table } from 'antd';
 import Link from 'next/link';
+import { FiList } from 'react-icons/fi';
+import { OrderModel, OrderStatus } from '../../api/models/order';
+import Filled_CTA_Button from '../Button/CTA/Filled';
+
+type Props = {
+  datasource: Array<OrderModel>;
+  acceptanceButtonEnabled: boolean;
+  rejectionButtonEnabled: boolean;
+  onAcceptClick: (orderId: string) => void;
+  onRejectClick: (orderId: string) => void;
+};
 
 const ListingTable = styled.div`
   margin-top: 3rem;
-  width: 612px;
   height: 419px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 20px;
@@ -26,55 +36,12 @@ const ListingTableHeading = styled.div`
   position: sticky;
 `;
 
-function Listing() {
-  const dataSource = [
-    {
-      key: '1',
-      unit_price: 'Mike',
-      usd_unit_price: 32,
-      quantity: '10 Downing Street',
-      expiration: '20th Oct, 2022',
-      from: 'Wereywanle'
-    }
-  ];
-
-  const columns = [
-    {
-      title: 'Unit Price',
-      dataIndex: 'unit_price',
-      key: 'unit_price'
-    },
-    {
-      title: 'USD Unit Price',
-      dataIndex: 'usd_unit_price',
-      key: 'usd_unit_price'
-    },
-    {
-      title: 'Quantity',
-      dataIndex: 'quantity',
-      key: 'quantity'
-    },
-    {
-      title: 'Expiration',
-      dataIndex: 'expiration',
-      key: 'expiration'
-    },
-    {
-      title: 'From',
-      dataIndex: 'from',
-      key: 'from',
-      render: (text: any) => (
-        <Link href="/">
-          <a>{text}</a>
-        </Link>
-      )
-    }
-  ];
+function Listing({ datasource, acceptanceButtonEnabled, rejectionButtonEnabled, onAcceptClick, onRejectClick }: Props) {
   return (
     <>
       <ListingTable>
         <ListingTableHeading>
-          <Image src="/icons/list.svg" width={20} height={20} />
+          <FiList color="#5c95ff" />
           Listings
         </ListingTableHeading>
         {/* <table style={{ border: '1px solid #ccc', width: '100%' }}>
@@ -107,7 +74,102 @@ function Listing() {
             </tr>
           </tbody>
         </table> */}
-        <Table dataSource={dataSource} columns={columns} />
+        <Table
+          dataSource={datasource
+            .map(data => ({
+              ...data,
+              key: `${data.id}`
+            }))
+            .sort((a, b) => b.amount - a.amount)}
+          columns={[
+            {
+              title: 'Order ID',
+              dataIndex: 'orderId',
+              key: 'orderId',
+              render: (orderId: string) => <span>{orderId.substring(0, 7) + '...'}</span>
+            },
+            {
+              title: 'Price',
+              dataIndex: 'amount',
+              key: 'amount'
+            },
+            {
+              title: 'Creator',
+              dataIndex: 'creator',
+              key: 'creator',
+              render: (c: string) => <Link href={`/users/${c}?tab=created`}>{formatEthAddress(c, 4)}</Link>
+            },
+            {
+              title: 'Date',
+              dataIndex: 'timeStamp',
+              key: 'timeStamp',
+              render: (val: number) => <span>{new Date(val * 1000).toUTCString()}</span>
+            },
+            {
+              title: 'Status',
+              dataIndex: 'status',
+              key: 'status',
+              render: (val: OrderStatus) => (
+                <span
+                  style={{
+                    color:
+                      val === OrderStatus.STARTED
+                        ? 'yellow'
+                        : val === OrderStatus.ACCEPTED
+                        ? 'green'
+                        : val === OrderStatus.REJECTED
+                        ? 'orangered'
+                        : val === OrderStatus.CANCELLED
+                        ? 'red'
+                        : 'blue'
+                  }}
+                >
+                  {val}
+                </span>
+              )
+            },
+            {
+              title: 'Actions',
+              dataIndex: 'orderId',
+              key: 'orderId',
+              render: (orderId: string, record) => (
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: 8
+                  }}
+                >
+                  <div style={{ marginRight: 3 }}>
+                    <Filled_CTA_Button
+                      disabled={!acceptanceButtonEnabled || record.status !== OrderStatus.STARTED}
+                      onClick={() => onAcceptClick(orderId)}
+                      style={{
+                        background:
+                          acceptanceButtonEnabled && record.status === OrderStatus.STARTED ? undefined : 'grey'
+                      }}
+                    >
+                      Accept
+                    </Filled_CTA_Button>
+                  </div>
+                  <div style={{ marginLeft: 3 }}>
+                    <Filled_CTA_Button
+                      disabled={!rejectionButtonEnabled || record.status !== OrderStatus.STARTED}
+                      onClick={() => onRejectClick(orderId)}
+                      style={{
+                        background: rejectionButtonEnabled && record.status === OrderStatus.STARTED ? 'red' : 'grey'
+                      }}
+                    >
+                      Reject
+                    </Filled_CTA_Button>
+                  </div>
+                </div>
+              )
+            }
+          ]}
+        />
       </ListingTable>
     </>
   );

@@ -275,7 +275,7 @@ export default function NewNFT({}: Props) {
 
   const { id } = usePageQuery();
 
-  const [nftMetadata, setNftMetadata] = useState<Omit<NFTMetadata, 'imageURI'>>({
+  const [nftMetadata, setNftMetadata] = useState<Omit<NFTMetadata, 'image'>>({
     name: '',
     owner: account as string,
     description: '',
@@ -327,7 +327,7 @@ export default function NewNFT({}: Props) {
         setTip('Pinning metadata to IPFS');
         const jsonPinningResponse = await pinJson({
           ...nftMetadata,
-          imageURI: avatarPinningResponse.response.fileURI
+          image: avatarPinningResponse.response.fileURI
         });
 
         const contract = new (library as Web3).eth.Contract(marketPlaceAbi as any, addresses[chainId as number]);
@@ -343,7 +343,7 @@ export default function NewNFT({}: Props) {
         resetAllFields();
         message.success(
           <>
-            <span style={{ fontSize: 15 }}>NFT successfully minted!</span>
+            <span style={{ fontSize: 15 }}>NFT successfully minted!</span>{' '}
             <a
               style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
               href={explorerUrl.concat('tx/' + nftMintingResponse.transactionHash)}

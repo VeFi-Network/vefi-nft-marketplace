@@ -28,6 +28,12 @@ const Collection = () => {
     loadNumberOfItemsInCollection
   } = useAPIContext();
 
+  const kFormatter = (num: number): string | number => {
+    return Math.abs(num) > 999
+      ? Math.sign(num) * parseFloat((Math.abs(num) / 1000).toFixed(1)) + 'k'
+      : Math.sign(num) * Math.abs(num);
+  };
+
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -63,15 +69,15 @@ const Collection = () => {
             <div className="user__nft__statistics">
               <div className="stat">
                 <div className="count">
-                  <h1>{itemsInCollection}</h1>
+                  <h1>{kFormatter(itemsInCollection)}</h1>
                 </div>
                 <div className="label">Items</div>
               </div>
               <div className="stat">
                 <div className="count">
-                  <h1>2.0</h1>
+                  <h1>{kFormatter(collectionById.floorPrice || 0)}</h1>
                 </div>
-                <div className="label">Offers Made</div>
+                <div className="label">Floor Price</div>
               </div>
               <div className="stat">
                 <div className="count">

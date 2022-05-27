@@ -1,6 +1,17 @@
 import styled from 'styled-components';
-import Image from 'next/image';
-import { FiChevronsDown, FiTag } from 'react-icons/fi';
+import { Chart as ChartJs, CategoryScale, LinearScale, LineElement, PointElement } from 'chart.js';
+import { Line } from 'react-chartjs-2';
+import { FiTag } from 'react-icons/fi';
+import { useState } from 'react';
+import { Periods } from './period';
+
+ChartJs.register(CategoryScale, LinearScale, LineElement, PointElement);
+
+type Props = {
+  timestamps: Array<number>;
+  prices: Array<number>;
+  onChange?: (period: Periods) => void;
+};
 
 const ChartContainer = styled.div`
   margin-top: 3rem;
@@ -40,24 +51,22 @@ const ChartHeader = styled.div`
 `;
 
 const FilterBtn = styled.button`
-  background: #373943;
+  background: ${(props: any) => (props.isActive ? '#5C95FF' : '#373943 ')};
   border-radius: 11px;
-
   font-family: 'Rubik';
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  line-height: 17px;
   border: none;
 
-  color: #5c95ff;
-  padding: 10px;
+  color: #ccc;
+  padding: 3px 5px;
 
   cursor: pointer;
-
+  align-items: center;
   display: flex;
   flex-direction: row;
-  gap: 11px;
+  gap: 10px;
 `;
 
 const Chart = styled.div`
@@ -75,15 +84,24 @@ const Chart = styled.div`
     color: #4f4d4d !important;
   }
 `;
-const ChartLine = styled.img`
-  position: relative !important;
-  z-index: 9;
-  top: 3rem;
-  left: 5rem;
-  filter: drop-shadow(0 0 30px #5c95ff) !important;
-`;
 
-const PriceChart = () => {
+const PriceChart = ({ timestamps, prices, onChange }: Props) => {
+  const months: { [key: number]: string } = {
+    1: 'Jan',
+    2: 'Feb',
+    3: 'Mar',
+    4: 'Apr',
+    5: 'May',
+    6: 'Jun',
+    7: 'Jul',
+    8: 'Aug',
+    9: 'Sep',
+    10: 'Oct',
+    11: 'Nov',
+    12: 'Dec'
+  };
+
+  const [period, setPeriod] = useState<Periods>(Periods.ONE_HOUR);
   return (
     <>
       <ChartContainer>
@@ -94,12 +112,73 @@ const PriceChart = () => {
             </span>
             <span>Price History</span>
           </ChartHeader>
-          <FilterBtn>
-            Weekly <FiChevronsDown />
+          <FilterBtn
+            onClick={() => {
+              setPeriod(Periods.ONE_HOUR);
+
+              if (!!onChange) {
+                onChange(Periods.ONE_HOUR);
+              }
+            }}
+            isActive={period === Periods.ONE_HOUR}
+          >
+            1 Hour
+          </FilterBtn>
+          <FilterBtn
+            onClick={() => {
+              setPeriod(Periods.TWO_DAYS);
+
+              if (!!onChange) {
+                onChange(Periods.TWO_DAYS);
+              }
+            }}
+            isActive={period === Periods.TWO_DAYS}
+          >
+            2 Days
+          </FilterBtn>
+          <FilterBtn
+            onClick={() => {
+              setPeriod(Periods.SEVEN_DAYS);
+
+              if (!!onChange) {
+                onChange(Periods.SEVEN_DAYS);
+              }
+            }}
+            isActive={period === Periods.SEVEN_DAYS}
+          >
+            7 Days
+          </FilterBtn>
+          <FilterBtn
+            onClick={() => {
+              setPeriod(Periods.THIRTY_DAYS);
+
+              if (!!onChange) {
+                onChange(Periods.THIRTY_DAYS);
+              }
+            }}
+            isActive={period === Periods.THIRTY_DAYS}
+          >
+            30 Days
           </FilterBtn>
         </ChartFilter>
 
-        <Chart />
+        <Chart>
+          <Line
+            options={{ responsive: true }}
+            data={{
+              labels: timestamps.map(t => {
+                const date = new Date(t);
+                return `${date.getDate()} ${months[date.getMonth() + 1]}`;
+              }),
+              datasets: [
+                {
+                  data: prices,
+                  borderColor: '#5c95ff'
+                }
+              ]
+            }}
+          />
+        </Chart>
       </ChartContainer>
     </>
   );

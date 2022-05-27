@@ -402,8 +402,7 @@ export default function Homepage() {
     collectionsByAssets,
     loadAllCollections,
     loadTopSellingCollections,
-    loadCollectionsByAssets,
-    loadAuthUser
+    loadCollectionsByAssets
   } = useAPIContext();
   const [list, setList] = useState<CollectionModel[]>([]);
   const [activeBtn, setActiveBtn] = useState<ActiveBtn>(ActiveBtn.ALL);
@@ -412,10 +411,11 @@ export default function Homepage() {
 
   useEffect(() => {
     (() => {
-      loadAuthUser();
-      loadAllCollections(1);
-      loadTopSellingCollections(1);
-      loadCollectionsByAssets(1);
+      if (!!network) {
+        loadAllCollections(1);
+        loadTopSellingCollections(1);
+        loadCollectionsByAssets(1);
+      }
     })();
   }, [network]);
 
@@ -521,7 +521,6 @@ export default function Homepage() {
                           <div key={collection.collectionId}>
                             <Card
                               name={collection?.collectionName}
-                              price="0"
                               owner={collection?.metadata.owner}
                               imageURI={collection?.metadata.imageURI}
                               linkTo={`/collections/${collection?.collectionId}`}

@@ -23,7 +23,7 @@ const NFTCard = ({ model, onClick }: Props) => {
     <>
       <CardContainer>
         <CardHeader>
-          <img src={model?.metadata?.imageURI} width={329} height={378} alt="nft user" />
+          <img src={model?.metadata?.image} width={329} height={378} alt="nft user" />
         </CardHeader>
         <CardFooterContainer>
           <CardFooter>
@@ -37,10 +37,10 @@ const NFTCard = ({ model, onClick }: Props) => {
                 </span>
               </div>
               <div className="nft-price-info">
-                <div className="price">
+                {/* <div className="price">
                   <Image src="/icons/eth_classic.svg" width={20} height={20} />
                   <div>2 eth</div>
-                </div>
+                </div> */}
                 <Button
                   onClick={onClick}
                   borderThickness="1px"

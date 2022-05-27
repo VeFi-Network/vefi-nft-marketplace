@@ -4,6 +4,7 @@ import { NFTModel } from './models/nft';
 import { CollectionModel } from './models/collection';
 import { AccountModel } from './models/account';
 import { SaleModel } from './models/sale';
+import { OrderModel } from './models/order';
 
 const baseAxios = axios.create({
   baseURL: NFT_API
@@ -143,6 +144,79 @@ export function getAllOngoingSales(network: string, page: number): Promise<Array
   return new Promise((resolve, reject) => {
     baseAxios
       .get(`/api/sale/${network}/allOngoing?page=${page}`)
+      .then(res => handleResponse(res, resolve, reject))
+      .catch(reject);
+  });
+}
+
+export function checkIfOnSale(network: string, collectionId: string, tokenId: number): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    baseAxios
+      .get(`/api/nft/${network}/${collectionId}/${tokenId}/isOnSale`)
+      .then(res => handleResponse(res, resolve, reject))
+      .catch(reject);
+  });
+}
+
+export function fetchPriceFromPeriod(
+  network: string,
+  collectionId: string,
+  tokenId: number,
+  fromTime?: number,
+  toTime?: number
+): Promise<Array<{ timestamp: number; price: number }>> {
+  return new Promise((resolve, reject) => {
+    baseAxios
+      .get(`/api/nft/${network}/${collectionId}/${tokenId}/prices?fromTime=${fromTime}&toTime=${toTime}`)
+      .then(res => handleResponse(res, resolve, reject))
+      .catch(reject);
+  });
+}
+
+export function getAllFavorites(network: string, collectionId: string, tokenId: number): Promise<Array<any>> {
+  return new Promise((resolve, reject) => {
+    baseAxios
+      .get(`/api/nft/${network}/${collectionId}/${tokenId}/getAllFavorites`)
+      .then(res => handleResponse(res, resolve, reject))
+      .catch(reject);
+  });
+}
+
+export function addToFavorites(network: string, collectionId: string, tokenId: number, token: string): Promise<any> {
+  return new Promise((resolve, reject) => {
+    baseAxios
+      .post(`/api/nft/${network}/${collectionId}/${tokenId}/addToFavorites`, undefined, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(res => handleResponse(res, resolve, reject))
+      .catch(reject);
+  });
+}
+
+export function removeFromFavorites(
+  network: string,
+  collectionId: string,
+  tokenId: number,
+  token: string
+): Promise<any> {
+  return new Promise((resolve, reject) => {
+    baseAxios
+      .delete(`/api/nft/${network}/${collectionId}/${tokenId}/removeFromFavorites`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(res => handleResponse(res, resolve, reject))
+      .catch(reject);
+  });
+}
+
+export function getAllOrdersByNFT(network: string, collectionId: string, tokenId: number): Promise<Array<OrderModel>> {
+  return new Promise((resolve, reject) => {
+    baseAxios
+      .get(`/api/order/${network}/${collectionId}/${tokenId}/byNFT`)
       .then(res => handleResponse(res, resolve, reject))
       .catch(reject);
   });
