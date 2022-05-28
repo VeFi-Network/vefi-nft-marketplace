@@ -1,6 +1,7 @@
 import { Button, Spin } from 'antd';
+import styled from 'styled-components';
 import Link from 'next/link';
-import { FaBars, FaChevronDown, FaPlus, FaExclamationTriangle } from 'react-icons/fa';
+import { FaBars, FaShoppingBasket, FaMoneyBill, FaDollarSign, FaPlus, FaExclamationTriangle } from 'react-icons/fa';
 import { FiBarChart, FiGrid } from 'react-icons/fi';
 import NFTCard from '../../../components/Card/NFTCard';
 import FilterProperty from '../../../components/Filter';
@@ -10,22 +11,52 @@ import CollectionBanner from '../../../components/Collections/CollectionBanner';
 import { usePageQuery } from '../../../hooks';
 import { NFTCollectionDescription, NFTCollectionWrapper, NFTUserStats } from '../../../styles/collections.styled';
 import { NFTCollection, NFTUserCollectionInfo, UsersWrapper } from '../../../styles/users.styled';
-import { useAPIContext } from '../../../contexts/api/index';
-import { useEffect, useState } from 'react';
+import { useAPIContext } from '../../../contexts/api';
+import { useEffect, useRef, useState } from 'react';
 import _ from 'lodash';
 import { useRouter } from 'next/router';
 import MainFooter from '../../../components/Footer';
+import InfiniteScroll from '../../../components/InfiniteScroll';
+import { NFTModel } from '../../../api/models/nft';
+
+const NoItemContainer = styled.div`
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1200px;
+  background: linear-gradient(254.33deg, rgba(255, 255, 255, 0.1) 1.71%, rgba(255, 255, 255, 0.05) 99.35%);
+  backdrop-filter: blur(16.86px);
+  padding: 50px 0;
+  border-radius: 20px;
+  margin-top: 50px;
+`;
 
 const Collection = () => {
+  enum CollectionFilter {
+    ALL,
+    BY_PRICE,
+    TOP_SELLING,
+    HAS_OFFERS
+  }
+
   const router = useRouter();
   const { id } = usePageQuery();
   const {
     collectionById,
     nftsByCollection,
+    nftsInCollectionByPrice,
+    nftsInCollectionByOffers,
+    topSellingNFTsInCollection,
     itemsInCollection,
     loadCollectionById,
     loadNFTsByCollection,
-    loadNumberOfItemsInCollection
+    loadNumberOfItemsInCollection,
+    loadNFTsInCollectionByPrice,
+    loadTopSellingNFTsInCollection,
+    loadNFTsInCollectionByOffers
   } = useAPIContext();
 
   const kFormatter = (num: number): string | number => {
@@ -35,15 +66,29 @@ const Collection = () => {
   };
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [filter, setFilter] = useState<CollectionFilter>(CollectionFilter.ALL);
+  const [list, setList] = useState<Array<NFTModel>>([]);
+  const [page, setPage] = useState<number>(1);
+  const [searchValue, setSearchValue] = useState<string>('');
+
+  const scrollBase = useRef(null);
+  const infiniteScrollRoot = useRef(null);
 
   useEffect(() => {
     if (!!id) {
       loadCollectionById(id as string);
-      loadNFTsByCollection(id as string, 1);
+      loadNFTsByCollection(id as string);
       loadNumberOfItemsInCollection(id as string);
+      loadNFTsInCollectionByPrice(id as string);
+      loadNFTsInCollectionByOffers(id as string);
+      loadTopSellingNFTsInCollection(id as string);
       setIsLoading(false);
     }
   }, [id]);
+
+  useEffect(() => {
+    if (!!nftsByCollection) setList(nftsByCollection);
+  }, [nftsByCollection]);
 
   return (
     <>
@@ -99,15 +144,44 @@ const Collection = () => {
             )}
           </NFTCollectionDescription>
           <NFTUserCollectionInfo>
-            <FIlterBy>
+            <FIlterBy onSearchEnter={setSearchValue}>
               <div className="properties">
-                <FilterProperty label="All" />
-                <FilterProperty label="Top Selling" count={<FaChevronDown />} />
-                <FilterProperty label="Price" count={<FaChevronDown />} />
-                <FilterProperty label="Buy Now" />
-                <FilterProperty label="New" />
-                <FilterProperty label="Has Offers" />
-                <FilterProperty label="Single Items" />
+                <FilterProperty
+                  onClick={() => {
+                    setFilter(CollectionFilter.ALL);
+                    setList(nftsByCollection);
+                  }}
+                  isActive={filter === CollectionFilter.ALL}
+                  label="All"
+                  count={<FaBars />}
+                />
+                <FilterProperty
+                  onClick={() => {
+                    setFilter(CollectionFilter.TOP_SELLING);
+                    setList(topSellingNFTsInCollection);
+                  }}
+                  isActive={filter === CollectionFilter.TOP_SELLING}
+                  label="Top Selling"
+                  count={<FaShoppingBasket />}
+                />
+                <FilterProperty
+                  onClick={() => {
+                    setFilter(CollectionFilter.BY_PRICE);
+                    setList(nftsInCollectionByPrice);
+                  }}
+                  isActive={filter === CollectionFilter.BY_PRICE}
+                  label="Price"
+                  count={<FaDollarSign />}
+                />
+                <FilterProperty
+                  onClick={() => {
+                    setFilter(CollectionFilter.HAS_OFFERS);
+                    setList(nftsInCollectionByOffers);
+                  }}
+                  isActive={filter === CollectionFilter.HAS_OFFERS}
+                  label="Has Offers"
+                  count={<FaMoneyBill />}
+                />
               </div>
             </FIlterBy>
             <div className="sort__collection">
@@ -124,7 +198,7 @@ const Collection = () => {
                   </span>
                   <span>Events</span>
                 </div>
-                <div className="sort">
+                {/* <div className="sort">
                   <div className="sort__display">
                     <button>
                       <FaBars />
@@ -133,7 +207,7 @@ const Collection = () => {
                       <FiGrid />
                     </button>
                   </div>
-                </div>
+                </div> */}
               </div>
               <div className="create__collection__btn">
                 <Button
@@ -147,19 +221,41 @@ const Collection = () => {
               </div>
             </div>
             <NFTCollection style={{ marginTop: '-50px' }}>
-              <div className="container">
-                {_.map(nftsByCollection, nft => (
-                  <div key={nft.tokenId}>
-                    <NFTCard
-                      model={nft}
-                      onClick={() => {
-                        router.push(`/nfts/${collectionById.collectionId}:${nft.tokenId}`);
-                      }}
-                      key={nft.id}
-                    />
-                  </div>
-                ))}
-              </div>
+              {list.length === 0 ? (
+                <NoItemContainer>
+                  <span style={{ color: '#f5f5f5', fontSize: 30, fontFamily: 'Rubik' }}>No Item To Display</span>
+                </NoItemContainer>
+              ) : (
+                <InfiniteScroll
+                  className="container"
+                  target={scrollBase}
+                  root={infiniteScrollRoot}
+                  handleScroll={() => {
+                    if (list.slice(0, page * 24).length < list.length) {
+                      setPage(p => p + 1);
+                    }
+                  }}
+                >
+                  {_.map(
+                    list.slice(0, page * 24).filter(nft => {
+                      if (searchValue.trim().length > 0) return nft.metadata?.name.includes(searchValue);
+                      else return nft;
+                    }),
+                    nft => (
+                      <div key={nft.tokenId}>
+                        <NFTCard
+                          model={nft}
+                          onClick={() => {
+                            router.push(`/nfts/${collectionById.collectionId}:${nft.tokenId}`);
+                          }}
+                          key={nft.id}
+                        />
+                      </div>
+                    )
+                  )}
+                  <div ref={scrollBase}></div>
+                </InfiniteScroll>
+              )}
             </NFTCollection>
           </NFTUserCollectionInfo>
         </Spin>

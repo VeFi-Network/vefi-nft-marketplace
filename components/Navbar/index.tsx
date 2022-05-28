@@ -1,10 +1,11 @@
 import Image from 'next/image';
 import styled from 'styled-components';
 import * as ethAddress from 'eth-address';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { Button, Drawer, Dropdown, Tooltip, Alert } from 'antd';
 import { FiChevronDown, FiMoreHorizontal, FiPlus, FiUser } from 'react-icons/fi';
+import { FaWallet, FaEnvelope } from 'react-icons/fa';
 import Menu from '../Profile/Menu';
 import { useWeb3Context } from '../../contexts/web3';
 import { useAPIContext } from '../../contexts/api';
@@ -107,7 +108,16 @@ const UserWallet = styled.div`
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
-  const { active, connectMetamask, connectWalletConnect, account, error: web3Error, chainId } = useWeb3Context();
+  const {
+    active,
+    connectMetamask,
+    connectWalletConnect,
+    account,
+    error: web3Error,
+    chainId,
+    balance,
+    networkSymbol
+  } = useWeb3Context();
   const { authenticatedUser } = useAPIContext();
 
   return (
@@ -124,11 +134,11 @@ const Navbar = () => {
           </NavBrand>
           <NavLinks>
             <div className="icon">
-              <Image src="/icons/envelope.svg" width={15} height={15} />
+              <FaEnvelope fontSize={15} />
             </div>
 
             <div className="icon" onClick={() => setVisible(!visible)}>
-              <Image src="/icons/wallet.svg" width={15} height={15} />
+              <FaWallet fontSize={15} />
             </div>
             <Dropdown overlay={<Menu />} trigger={['click']} placement="bottom" arrow>
               <div className="icon">
@@ -170,12 +180,12 @@ const Navbar = () => {
               <div className="wallet__header">
                 <div className="wallet__setting">
                   <div className="wallet__icon">
-                    <Image src="/icons/eth.svg" width={20} height={20} alt="wallet" />
+                    <Image src={chainIcons[chainId as keyof typeof chainIcons]} width={20} height={20} alt="wallet" />
                   </div>
                   <div className="wallet__setting__title">
                     <Dropdown overlay={<Menu />} trigger={['click']}>
                       <a onClick={e => e.preventDefault()}>
-                        <div style={{ color: 'var(--text-light)' }}>My Profile</div>
+                        <div style={{ color: 'var(--text-light)' }}>Menu</div>
                       </a>
                     </Dropdown>
                   </div>
@@ -183,7 +193,7 @@ const Navbar = () => {
                 </div>
                 <div className="wallet__connected__account">
                   <div className="chain__logo">
-                    <Image src="/icons/eth.svg" width={20} height={20} alt="wallet" />
+                    <Image src={chainIcons[chainId as keyof typeof chainIcons]} width={20} height={20} alt="wallet" />
                   </div>
                   <div className="chain__id">
                     <span>
@@ -199,7 +209,9 @@ const Navbar = () => {
               <div className="wallet__content">
                 <div className="wallet__balance">
                   <span className="wallet__balance__heading">Total balance</span>
-                  <div className="wallet__balance__amt">$2,300.34 USD</div>
+                  <div className="wallet__balance__amt">
+                    {parseFloat(balance).toFixed(4)} {networkSymbol}{' '}
+                  </div>
                 </div>
                 <div className="wallet__balance__btn">
                   <span className="icon">
@@ -213,15 +225,20 @@ const Navbar = () => {
                   <div className="wallet__account__balance">
                     <div className="account__balance__info">
                       <div className="wallet__account__logo">
-                        <Image src="/icons/eth.svg" width={20} height={20} alt="wallet" />
+                        <Image
+                          src={chainIcons[chainId as keyof typeof chainIcons]}
+                          width={20}
+                          height={20}
+                          alt="wallet"
+                        />
                       </div>
                       <div className="wallet__account__info">
-                        <div className="chain__name">Eth</div>
+                        <div className="chain__name">{networkSymbol}</div>
                         <div className="source__account">Vefi wallet</div>
                       </div>
                     </div>
                     <div className="account__balance__info__right">
-                      <div className="chain__name__amount">2.54</div>
+                      <div className="chain__name__amount">{parseFloat(balance).toFixed(2)}</div>
                       <div className="source__account__amount">$3000 USD</div>
                     </div>
                   </div>

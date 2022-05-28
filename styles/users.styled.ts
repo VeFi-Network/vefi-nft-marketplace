@@ -300,12 +300,16 @@ export const NFTCollection = styled.div`
   justify-content: flex-start;
   .container {
     width: 100%;
+    height: 800px;
+    overflow-y: auto;
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     flex-direction: row;
     row-gap: 30px;
     margin: 30px 0;
+    justify-content: center;
+    align-items: flex-start;
   }
 `;
 

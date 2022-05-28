@@ -16,7 +16,6 @@ type Props = {
 
 const ListingTable = styled.div`
   margin-top: 3rem;
-  height: 419px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 20px;
   padding: 30px;
@@ -42,7 +41,7 @@ function Listing({ datasource, acceptanceButtonEnabled, rejectionButtonEnabled, 
       <ListingTable>
         <ListingTableHeading>
           <FiList color="#5c95ff" />
-          Listings
+          Offer Listing
         </ListingTableHeading>
         {/* <table style={{ border: '1px solid #ccc', width: '100%' }}>
           <thead>

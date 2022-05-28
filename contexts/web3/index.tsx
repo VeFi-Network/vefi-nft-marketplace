@@ -1,9 +1,11 @@
 import React, { createContext, useEffect, useContext, useCallback, useState } from 'react';
+import { formatEther } from '@ethersproject/units';
 import { useWeb3React } from '@web3-react/core';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import type Web3 from 'web3';
 import chains from '../../chains.json';
+import request from '../../api/rpc';
 
 type Web3ContextType = {
   account?: string | null;
@@ -12,7 +14,9 @@ type Web3ContextType = {
   active: boolean;
   error?: Error;
   network: string;
+  networkSymbol: string;
   explorerUrl: string;
+  balance: string;
   connectMetamask: () => void;
   connectWalletConnect: () => void;
   disconnectWallet: () => void;
@@ -31,10 +35,23 @@ const walletConnectConnector = new WalletConnectConnector({
 });
 
 export const Web3ContextProvider = ({ children }: any) => {
-  const { library, account, activate, deactivate, active, chainId, error } = useWeb3React<Web3>();
+  const { library, account, activate, deactivate, active, chainId, error, setError } = useWeb3React<Web3>();
   const [network, setNetwork] = useState<string>('smartchain');
+  const [networkSymbol, setNetworkSymbol] = useState<string>('BNB');
   const [explorerUrl, setExplorerUrl] = useState<string>(chains['97'].explorerUrl);
   const [tried, setTried] = useState<boolean>(false);
+  const [balance, setBalance] = useState<string>('0');
+
+  const fetchBalance = useCallback(() => {
+    try {
+      request(network, { id: 1, jsonrpc: '2.0', method: 'eth_getBalance', params: [account, 'latest'] })
+        .then(formatEther)
+        .then(setBalance)
+        .catch(setError);
+    } catch (error: any) {
+      setError(error);
+    }
+  }, [account, network]);
 
   const connectMetamask = useCallback(() => {
     if (!active) {
@@ -78,8 +95,15 @@ export const Web3ContextProvider = ({ children }: any) => {
     if (!!chainId) {
       setNetwork(chains[chainId.toString() as keyof typeof chains].appName);
       setExplorerUrl(chains[chainId.toString() as keyof typeof chains].explorerUrl);
+      setNetworkSymbol(chains[chainId.toString() as keyof typeof chains].symbol);
     }
   }, [chainId]);
+
+  useEffect(() => {
+    if (!!account) {
+      fetchBalance();
+    }
+  }, [account, network]);
 
   return (
     <Web3Context.Provider
@@ -92,7 +116,9 @@ export const Web3ContextProvider = ({ children }: any) => {
         disconnectWallet,
         active,
         network,
+        networkSymbol,
         explorerUrl,
+        balance,
         error
       }}
     >

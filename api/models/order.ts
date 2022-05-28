@@ -1,3 +1,4 @@
+import { NFTModel } from './nft';
 export enum OrderStatus {
   STARTED = 'STARTED',
   ACCEPTED = 'ACCEPTED',
@@ -16,4 +17,5 @@ export interface OrderModel {
   status: OrderStatus;
   network: string;
   timeStamp: number;
+  nft?: NFTModel;
 }

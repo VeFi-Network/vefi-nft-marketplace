@@ -17,7 +17,13 @@ import {
   checkIfOnSale,
   fetchPriceFromPeriod,
   getAllFavorites,
-  getAllOrdersByNFT
+  getAllOrdersByNFT,
+  getNFTsInCollectionByPrice,
+  getTopSellingNFTsInCollection,
+  getNFTsWithOffersInCollection,
+  getAllCollectionsByOwner,
+  getFavoriteNFTsOfUser,
+  getUserWatchList
 } from '../../api/nft';
 import { useWeb3Context } from '../web3/index';
 import { CollectionModel } from '../../api/models/collection';
@@ -38,7 +44,10 @@ export enum APIErrorPoint {
   ITEM_ON_SALE,
   ITEM_PRICE_PER_PERIOD,
   FAVORITES,
-  ALL_NFT_ORDERS
+  ALL_NFT_ORDERS,
+  ALL_USER_COLLECTIONS,
+  FAVORITES_OF_USER,
+  USER_WATCHLIST
 }
 
 type APIContextType = {
@@ -47,8 +56,13 @@ type APIContextType = {
   nftsByUser: Array<NFTModel>;
   nftsByCollection: Array<NFTModel>;
   nftsByNetwork: Array<NFTModel>;
+  favoriteNFTsOfUser: Array<NFTModel>;
   allCollections: Array<CollectionModel>;
+  allUserCollections: Array<CollectionModel>;
   topSellingCollections: Array<CollectionModel>;
+  nftsInCollectionByPrice: Array<NFTModel>;
+  topSellingNFTsInCollection: Array<NFTModel>;
+  nftsInCollectionByOffers: Array<NFTModel>;
   collectionsByAssets: Array<CollectionModel>;
   allOngoingSales: Array<SaleModel>;
   collectionById: CollectionModel;
@@ -59,20 +73,27 @@ type APIContextType = {
   itemPricePerPeriod: Array<{ timestamp: number; price: number }>;
   favorites: Array<any>;
   allNFTOrders: Array<OrderModel>;
+  userWatchList: Array<OrderModel>;
   loadAllCollections: (page?: number) => void;
   loadTopSellingCollections: (page?: number) => void;
   loadCollectionsByAssets: (page?: number) => void;
   loadCollectionById: (id: string) => void;
   loadNFTById: (collectionId: string, id: number) => void;
-  loadNFTsByUser: (page?: number) => void;
+  loadNFTsByUser: (accountId: string, page?: number) => void;
   loadNFTsByCollection: (collection: string, page?: number) => void;
   loadNFTsByNetwork: (page?: number) => void;
   loadNumberOfItemsInCollection: (collectionId: string) => void;
   loadAllOngoingSales: (page?: number) => void;
+  loadAllUserCollections: (accountId: string, page?: number) => void;
   checkItemOnSale: (collectionId: string, tokenId: number) => void;
   loadItemPricePerPeriod: (collectionId: string, tokenId: number, fromTime?: number, toTime?: number) => void;
   loadFavorites: (collectionId: string, tokenId: number) => void;
   loadAllNFTOrders: (collectionId: string, tokenId: number) => void;
+  loadNFTsInCollectionByPrice: (collectionId: string, page?: number) => void;
+  loadTopSellingNFTsInCollection: (collectionId: string, page?: number) => void;
+  loadNFTsInCollectionByOffers: (collectionId: string, page?: number) => void;
+  loadFavoriteNFTsOfUser: (accountId: string, page?: number) => void;
+  loadUserWatchList: (page?: number) => void;
   logout: () => void;
   error?: {
     point: APIErrorPoint;
@@ -102,6 +123,12 @@ export const APIContextProvider = ({ children }: any) => {
   const [itemPricePerPeriod, setItemPricePerPeriod] = useState<Array<{ timestamp: number; price: number }>>([]);
   const [favorites, setFavorites] = useState<Array<any>>([]);
   const [allNFTOrders, setAllNFTOrders] = useState<Array<OrderModel>>([]);
+  const [nftsInCollectionByPrice, setNFTsInCollectionByPrice] = useState<Array<NFTModel>>([]);
+  const [topSellingNFTsInCollection, setTopSellingNFTsInCollection] = useState<Array<NFTModel>>([]);
+  const [nftsInCollectionByOffers, setNFTsInCollectionByOffers] = useState<Array<NFTModel>>([]);
+  const [allUserCollections, setAllUserCollections] = useState<Array<CollectionModel>>([]);
+  const [favoriteNFTsOfUser, setFavoriteNFTsOfUser] = useState<Array<NFTModel>>([]);
+  const [userWatchList, setUserWatchList] = useState<Array<OrderModel>>([]);
   const [token, setToken] = useState<string>('');
   const { network, account, active } = useWeb3Context();
 
@@ -131,42 +158,42 @@ export const APIContextProvider = ({ children }: any) => {
       .catch((error: any) => setError({ point: APIErrorPoint.NFT_BY_ID, message: error.message }));
   };
 
-  const loadNFTsByUser = (page: number = 1) => {
+  const loadNFTsByUser = (accountId: string, page?: number) => {
     clearError();
-    getNFTsByOwner(token, network, page)
+    getNFTsByOwner(network, accountId, page)
       .then(setNFTsByUser)
       .catch((error: any) => setError({ point: APIErrorPoint.NFTS_BY_USER, message: error.message }));
   };
 
-  const loadNFTsByCollection = (collection: string, page: number = 1) => {
+  const loadNFTsByCollection = (collection: string, page?: number) => {
     clearError();
     getNFTsByCollection(collection, network, page)
       .then(setNFTsByCollection)
       .catch((error: any) => setError({ point: APIErrorPoint.NFTS_BY_COLLECTION, message: error.message }));
   };
 
-  const loadNFTsByNetwork = (page: number = 1) => {
+  const loadNFTsByNetwork = (page?: number) => {
     clearError();
     getAllNFTsByNetwork(network, page)
       .then(setNFTsByNetwork)
       .catch((error: any) => setError({ point: APIErrorPoint.NFTS_BY_NETWORK, message: error.message }));
   };
 
-  const loadAllCollections = (page: number = 1) => {
+  const loadAllCollections = (page?: number) => {
     clearError();
     getAllCollections(network, page)
       .then(setAllCollections)
       .catch((error: any) => setError({ point: APIErrorPoint.ALL_COLLECTIONS, message: error.message }));
   };
 
-  const loadTopSellingCollections = (page: number = 1) => {
+  const loadTopSellingCollections = (page?: number) => {
     clearError();
     getTopSellingCollections(network, page)
       .then(setTopSellingCollections)
       .catch((error: any) => setError({ point: APIErrorPoint.ALL_COLLECTIONS, message: error.message }));
   };
 
-  const loadCollectionsByAssets = (page: number = 1) => {
+  const loadCollectionsByAssets = (page?: number) => {
     clearError();
     getCollectionsByItems(network, page)
       .then(setCollectionsByAssets)
@@ -187,7 +214,7 @@ export const APIContextProvider = ({ children }: any) => {
       .catch((error: any) => setError({ point: APIErrorPoint.COUNT_COLLECTION_ITEMS, message: error.message }));
   };
 
-  const loadAllOngoingSales = (page: number = 1) => {
+  const loadAllOngoingSales = (page?: number) => {
     clearError();
     getAllOngoingSales(network, page)
       .then(setAllOngoinSales)
@@ -220,6 +247,48 @@ export const APIContextProvider = ({ children }: any) => {
     getAllOrdersByNFT(network, collectionId, tokenId)
       .then(setAllNFTOrders)
       .catch((error: any) => setError({ point: APIErrorPoint.ALL_NFT_ORDERS, message: error.message }));
+  };
+
+  const loadNFTsInCollectionByPrice = (collectionId: string, page?: number) => {
+    clearError();
+    getNFTsInCollectionByPrice(network, collectionId, page)
+      .then(setNFTsInCollectionByPrice)
+      .catch((error: any) => setError({ point: APIErrorPoint.NFTS_BY_COLLECTION, message: error.message }));
+  };
+
+  const loadTopSellingNFTsInCollection = (collectionId: string, page?: number) => {
+    clearError();
+    getTopSellingNFTsInCollection(network, collectionId, page)
+      .then(setTopSellingNFTsInCollection)
+      .catch((error: any) => setError({ point: APIErrorPoint.NFTS_BY_COLLECTION, message: error.message }));
+  };
+
+  const loadNFTsInCollectionByOffers = (collectionId: string, page?: number) => {
+    clearError();
+    getNFTsWithOffersInCollection(network, collectionId, page)
+      .then(setNFTsInCollectionByOffers)
+      .catch((error: any) => setError({ point: APIErrorPoint.NFTS_BY_COLLECTION, message: error.message }));
+  };
+
+  const loadAllUserCollections = (accountId: string, page?: number) => {
+    clearError();
+    getAllCollectionsByOwner(network, accountId, page)
+      .then(setAllUserCollections)
+      .catch((error: any) => setError({ point: APIErrorPoint.ALL_USER_COLLECTIONS, message: error.message }));
+  };
+
+  const loadFavoriteNFTsOfUser = (accountId: string, page?: number) => {
+    clearError();
+    getFavoriteNFTsOfUser(network, accountId, page)
+      .then(setFavoriteNFTsOfUser)
+      .catch((error: any) => setError({ point: APIErrorPoint.FAVORITES_OF_USER, message: error.message }));
+  };
+
+  const loadUserWatchList = (page?: number) => {
+    clearError();
+    getUserWatchList(network, token, page)
+      .then(setUserWatchList)
+      .catch((error: any) => setError({ point: APIErrorPoint.USER_WATCHLIST, message: error.message }));
   };
 
   const logout = () => {
@@ -256,24 +325,36 @@ export const APIContextProvider = ({ children }: any) => {
         nftsByNetwork,
         allCollections,
         collectionsByAssets,
+        allUserCollections,
         topSellingCollections,
+        topSellingNFTsInCollection,
+        nftsInCollectionByOffers,
         collectionById,
         itemsInCollection,
+        nftsInCollectionByPrice,
         allOngoingSales,
         favorites,
+        favoriteNFTsOfUser,
         allNFTOrders,
+        userWatchList,
+        loadUserWatchList,
+        loadAllUserCollections,
         loadAllNFTOrders,
         loadNFTById,
         loadNFTsByUser,
         loadNFTsByCollection,
+        loadTopSellingNFTsInCollection,
+        loadNFTsInCollectionByOffers,
         loadNFTsByNetwork,
         loadAllCollections,
         loadCollectionsByAssets,
         loadTopSellingCollections,
         loadCollectionById,
+        loadNFTsInCollectionByPrice,
         loadNumberOfItemsInCollection,
         loadAllOngoingSales,
         loadFavorites,
+        loadFavoriteNFTsOfUser,
         checkItemOnSale,
         itemOnSale,
         itemPricePerPeriod,
