@@ -19,7 +19,7 @@ import SellPopup from '../../components/Popup/SellPopup';
 import OfferPopup from '../../components/Popup/OfferPopup';
 import { useWeb3Context } from '../../contexts/web3';
 import { Periods } from '../../components/PriceChart/period';
-import { addToFavorites, removeFromFavorites } from '../../api/nft';
+import { addToFavorites, removeFromFavorites, viewItem } from '../../api/nft';
 import marketPlaceAbi from '../../assets/abis/Marketplace.json';
 import deployableCollectionAbi from '../../assets/abis/DeployableCollection.json';
 import erc20Abi from '../../assets/abis/ERC20.json';
@@ -328,6 +328,8 @@ export default function NFT() {
     loadFavorites,
     allNFTOrders,
     loadAllNFTOrders,
+    itemViews,
+    loadItemViews,
     token
   } = useAPIContext();
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -508,6 +510,12 @@ export default function NFT() {
       checkItemOnSale(splitSlug[0], parseInt(splitSlug[1]));
       loadFavorites(splitSlug[0], parseInt(splitSlug[1]));
       loadAllNFTOrders(splitSlug[0], parseInt(splitSlug[1]));
+      loadItemViews(splitSlug[0], parseInt(splitSlug[1]));
+
+      if (token) {
+        viewItem(network, splitSlug[0], parseInt(splitSlug[1]), token).then(() => console.log('Item viewed'));
+      }
+
       setIsLoading(false);
     }
   }, [slug]);
@@ -623,7 +631,7 @@ export default function NFT() {
                     <span>
                       <FiEye />
                     </span>
-                    <span>{kFormatter(3500000)} Views</span>
+                    <span>{kFormatter(itemViews)} Views</span>
                   </div>
                   <div className="stat">
                     <span>

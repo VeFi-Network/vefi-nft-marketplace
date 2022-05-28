@@ -23,7 +23,8 @@ import {
   getNFTsWithOffersInCollection,
   getAllCollectionsByOwner,
   getFavoriteNFTsOfUser,
-  getUserWatchList
+  getUserWatchList,
+  countItemViews
 } from '../../api/nft';
 import { useWeb3Context } from '../web3/index';
 import { CollectionModel } from '../../api/models/collection';
@@ -47,7 +48,8 @@ export enum APIErrorPoint {
   ALL_NFT_ORDERS,
   ALL_USER_COLLECTIONS,
   FAVORITES_OF_USER,
-  USER_WATCHLIST
+  USER_WATCHLIST,
+  ITEM_VIEWS
 }
 
 type APIContextType = {
@@ -70,6 +72,7 @@ type APIContextType = {
   isUserAuthenticated: boolean;
   authenticatedUser?: AccountModel;
   itemOnSale: boolean;
+  itemViews: number;
   itemPricePerPeriod: Array<{ timestamp: number; price: number }>;
   favorites: Array<any>;
   allNFTOrders: Array<OrderModel>;
@@ -94,6 +97,7 @@ type APIContextType = {
   loadNFTsInCollectionByOffers: (collectionId: string, page?: number) => void;
   loadFavoriteNFTsOfUser: (accountId: string, page?: number) => void;
   loadUserWatchList: (page?: number) => void;
+  loadItemViews: (collectionId: string, tokenId: number) => void;
   logout: () => void;
   error?: {
     point: APIErrorPoint;
@@ -129,6 +133,7 @@ export const APIContextProvider = ({ children }: any) => {
   const [allUserCollections, setAllUserCollections] = useState<Array<CollectionModel>>([]);
   const [favoriteNFTsOfUser, setFavoriteNFTsOfUser] = useState<Array<NFTModel>>([]);
   const [userWatchList, setUserWatchList] = useState<Array<OrderModel>>([]);
+  const [itemViews, setItemViews] = useState<number>(0);
   const [token, setToken] = useState<string>('');
   const { network, account, active } = useWeb3Context();
 
@@ -291,6 +296,13 @@ export const APIContextProvider = ({ children }: any) => {
       .catch((error: any) => setError({ point: APIErrorPoint.USER_WATCHLIST, message: error.message }));
   };
 
+  const loadItemViews = (collectionId: string, tokenId: number) => {
+    clearError();
+    countItemViews(network, collectionId, tokenId)
+      .then(setItemViews)
+      .catch((error: any) => setError({ point: APIErrorPoint.ITEM_VIEWS, message: error.message }));
+  };
+
   const logout = () => {
     clearError();
     setAuthenticatedUser(undefined);
@@ -330,6 +342,8 @@ export const APIContextProvider = ({ children }: any) => {
         topSellingNFTsInCollection,
         nftsInCollectionByOffers,
         collectionById,
+        itemViews,
+        loadItemViews,
         itemsInCollection,
         nftsInCollectionByPrice,
         allOngoingSales,

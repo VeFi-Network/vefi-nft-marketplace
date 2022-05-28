@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FaListAlt, FaRegUser, FaUserEdit } from 'react-icons/fa';
-import { FiBarChart, FiGrid, FiHeart, FiList, FiUserPlus } from 'react-icons/fi';
+import { FiBarChart, FiGrid, FiHeart, FiEye, FiUserPlus } from 'react-icons/fi';
 import _ from 'lodash';
 import InfiniteScroll from '../../components/InfiniteScroll';
 import Card from '../../components/Card';
@@ -27,6 +27,11 @@ const Users = () => {
     FAVORITES = '4'
   }
 
+  enum Rendered {
+    EVENTS,
+    ITEMS
+  }
+
   const {
     authenticatedUser,
     allUserCollections,
@@ -40,7 +45,11 @@ const Users = () => {
   } = useAPIContext();
   const { account } = useWeb3Context();
   const [selectedTab, setSelectedTab] = useState<SelectedTab>(SelectedTab.COLLECTIONS);
+  const [renderedItem, setRenderedItem] = useState<Rendered>(Rendered.ITEMS);
   const [nftList, setNFTList] = useState<Array<NFTModel>>([]);
+  const [collectionsPage, setCollectionsPage] = useState<number>(1);
+  const [nftsPage, setNFTsPage] = useState<number>(1);
+  const [searchValue, setSearchValue] = useState<string>('');
   const { id, tab } = usePageQuery();
   const router = useRouter();
 
@@ -123,7 +132,7 @@ const Users = () => {
         </UserBanner>
 
         <NFTUserCollectionInfo>
-          <FIlterBy>
+          <FIlterBy onSearchEnter={setSearchValue} placeholder="Search for item">
             <div className="properties">
               <FilterProperty
                 isActive={selectedTab === SelectedTab.COLLECTIONS}
@@ -145,7 +154,7 @@ const Users = () => {
               {!!account && account === id && (
                 <FilterProperty
                   isActive={selectedTab === SelectedTab.WATCHLIST}
-                  icon={<FiList />}
+                  icon={<FiEye />}
                   label="watchlist"
                   count={userWatchList.length}
                   onClick={() => {
@@ -168,13 +177,23 @@ const Users = () => {
           </FIlterBy>
           <div className="sort__collection">
             <div className="sort__collection__container">
-              <div className="sort active">
+              <div
+                onClick={() => {
+                  setRenderedItem(Rendered.ITEMS);
+                }}
+                className={`sort ${renderedItem === Rendered.ITEMS ? 'active' : ''}`}
+              >
                 <span>
                   <FiGrid />
                 </span>
                 <span>Items</span>
               </div>
-              <div className="sort">
+              <div
+                onClick={() => {
+                  setRenderedItem(Rendered.EVENTS);
+                }}
+                className={`sort ${renderedItem === Rendered.EVENTS ? 'active' : ''}`}
+              >
                 <span>
                   <FiBarChart />
                 </span>
@@ -197,19 +216,29 @@ const Users = () => {
               <InfiniteScroll
                 root={infiniteScrollRoot1}
                 className="container"
-                handleScroll={() => {}}
+                handleScroll={() => {
+                  if (allUserCollections.slice(0, collectionsPage * 24).length < allUserCollections.length) {
+                    setCollectionsPage(p => p + 1);
+                  }
+                }}
                 target={scrollBase}
               >
-                {_.map(allUserCollections, collection => (
-                  <div key={collection.collectionId}>
-                    <Card
-                      name={collection?.collectionName}
-                      owner={collection?.metadata.owner}
-                      imageURI={collection?.metadata.imageURI}
-                      linkTo={`/collections/${collection?.collectionId}`}
-                    />
-                  </div>
-                ))}
+                {_.map(
+                  allUserCollections.slice(0, collectionsPage * 24).filter(cm => {
+                    if (searchValue.trim().length > 0) return cm.collectionName.includes(searchValue);
+                    else return cm;
+                  }),
+                  collection => (
+                    <div key={collection.collectionId}>
+                      <Card
+                        name={collection?.collectionName}
+                        owner={collection?.metadata.owner}
+                        imageURI={collection?.metadata.imageURI}
+                        linkTo={`/collections/${collection?.collectionId}`}
+                      />
+                    </div>
+                  )
+                )}
                 <div ref={scrollBase}></div>
               </InfiniteScroll>
             ) : (
@@ -220,20 +249,30 @@ const Users = () => {
                   <InfiniteScroll
                     root={infiniteScrollRoot2}
                     className="container"
-                    handleScroll={() => {}}
+                    handleScroll={() => {
+                      if (nftList.slice(0, nftsPage * 24).length < nftList.length) {
+                        setNFTsPage(p => p + 1);
+                      }
+                    }}
                     target={scrollBase2}
                   >
-                    {_.map(nftList, nft => (
-                      <div key={`${nft.collectionId}:${nft.tokenId}`}>
-                        <NFTCard
-                          model={nft}
-                          onClick={() => {
-                            router.push(`/nfts/${nft.collectionId}:${nft.tokenId}`);
-                          }}
-                          key={nft.id}
-                        />
-                      </div>
-                    ))}
+                    {_.map(
+                      nftList.slice(0, nftsPage * 24).filter(nft => {
+                        if (searchValue.trim().length > 0) return nft.metadata?.name.includes(searchValue);
+                        else return nft;
+                      }),
+                      nft => (
+                        <div key={`${nft.collectionId}:${nft.tokenId}`}>
+                          <NFTCard
+                            model={nft}
+                            onClick={() => {
+                              router.push(`/nfts/${nft.collectionId}:${nft.tokenId}`);
+                            }}
+                            key={nft.id}
+                          />
+                        </div>
+                      )
+                    )}
                     <div ref={scrollBase2}></div>
                   </InfiniteScroll>
                 )}

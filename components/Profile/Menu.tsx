@@ -1,7 +1,7 @@
-import { Menu } from 'antd';
+import { Menu, Tag } from 'antd';
 import Link from 'next/link';
 import { FaChessBoard, FaUserCircle, FaLink } from 'react-icons/fa';
-import { FiEye, FiHeart, FiLogOut, FiSettings } from 'react-icons/fi';
+import { FiEye, FiHeart, FiLogOut, FiShoppingBag } from 'react-icons/fi';
 import { useWeb3Context } from '../../contexts/web3';
 import { useAPIContext } from '../../contexts/api/index';
 
@@ -32,7 +32,22 @@ const MenuItem = () => {
           : null,
         {
           label: (
-            <Link href="/collections/i">
+            <Link href="/marketplace">
+              <a>
+                <div className="listItem">
+                  <div className="icon">
+                    <FiShoppingBag />
+                  </div>
+                  <div className="text">Marketplace</div>
+                </div>
+              </a>
+            </Link>
+          ),
+          key: '1'
+        },
+        {
+          label: (
+            <Link href={`/users/${account}?tab=1`}>
               <a>
                 <div className="listItem">
                   <div className="icon">
@@ -43,44 +58,52 @@ const MenuItem = () => {
               </a>
             </Link>
           ),
-          key: '1'
-        },
-        {
-          label: (
-            <a href="https://www.antgroup.com">
-              <div className="listItem">
-                <div className="icon">
-                  <FiEye />
-                </div>
-                <div className="text">Watch list</div>
-              </div>
-            </a>
-          ),
           key: '2'
         },
         {
           label: (
-            <a href="https://www.antgroup.com">
-              <div className="listItem">
-                <div className="icon">
-                  <FiHeart />
+            <Link href={`/users/${account}?tab=3`}>
+              <a>
+                <div className="listItem">
+                  <div className="icon">
+                    <FiEye />
+                  </div>
+                  <div className="text">Watchlist</div>
                 </div>
-                <div className="text">Favorites</div>
-              </div>
-            </a>
+              </a>
+            </Link>
+          ),
+          key: '3'
+        },
+        {
+          label: (
+            <Link href={`/users/${account}?tab=4`}>
+              <a>
+                <div className="listItem">
+                  <div className="icon">
+                    <FiHeart />
+                  </div>
+                  <div className="text">Favorites</div>
+                </div>
+              </a>
+            </Link>
           ),
           key: '4'
         },
         {
           label: (
-            <a href="https://www.antgroup.com">
-              <div className="listItem">
-                <div className="icon">
-                  <FaLink />
+            <Link href="#">
+              <a>
+                <div className="listItem">
+                  <div className="icon">
+                    <FaLink />
+                  </div>
+                  <div className="text">
+                    Bridge <Tag color="red">Coming soon!</Tag>
+                  </div>
                 </div>
-                <div className="text">Bridge</div>
-              </div>
-            </a>
+              </a>
+            </Link>
           ),
           key: '5'
         },

@@ -282,3 +282,25 @@ export function getNFTsWithOffersInCollection(
       .catch(reject);
   });
 }
+
+export function countItemViews(network: string, collectionId: string, tokenId: number): Promise<number> {
+  return new Promise((resolve, reject) => {
+    baseAxios
+      .get(`/api/nft/${network}/${collectionId}/${tokenId}/countViews`)
+      .then(res => handleResponse(res, resolve, reject))
+      .catch(reject);
+  });
+}
+
+export function viewItem(network: string, collectionId: string, tokenId: number, token: string): Promise<any> {
+  return new Promise((resolve, reject) => {
+    baseAxios
+      .post(`/api/nft/${network}/${collectionId}/${tokenId}/view`, undefined, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(res => handleResponse(res, resolve, reject))
+      .catch(reject);
+  });
+}

@@ -410,6 +410,12 @@ export default function Homepage() {
   const { network } = useWeb3Context();
 
   useEffect(() => {
+    loadAllCollections(1);
+    loadTopSellingCollections(1);
+    loadCollectionsByAssets(1);
+  }, []);
+
+  useEffect(() => {
     (() => {
       if (!!network) {
         loadAllCollections(1);

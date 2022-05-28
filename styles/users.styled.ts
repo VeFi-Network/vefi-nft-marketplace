@@ -23,6 +23,14 @@ export const UsersWrapper = styled.div`
       width: 100%;
     }
   }
+  .table-listing {
+    thead {
+      background: transparent;
+    }
+    th {
+      font-weight: bold;
+    }
+  }
 `;
 
 export const UserNFTBanner = styled.div`
