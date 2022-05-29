@@ -444,11 +444,8 @@ const Users = () => {
             </>
           )}
         </NFTUserCollectionInfo>
-      
-     
       </UsersWrapper>
-       <MainFooter />
-
+      <MainFooter />
     </>
   );
 };
