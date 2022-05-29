@@ -27,6 +27,9 @@ const MainContainer = styled.div`
   flex-direction: column;
   align-items: center;
   overflow-y: scroll;
+
+  @media screen and (max-width: 760px) {
+  }
 `;
 
 const NavbarContainer = styled.div`
@@ -41,6 +44,9 @@ const ColoredBackground = styled.div`
   top: -5%;
   right: 0%;
   z-index: 0;
+  @media screen and (max-width: 760px) {
+    display: none;
+  }
 `;
 
 const ParentExploreAndData = styled.div`
@@ -50,15 +56,17 @@ const ParentExploreAndData = styled.div`
   z-index: 2;
   min-width: 1000px;
 
-  @media (max-width: 1300px) {
-    min-width: 700px;
+  @media screen and (max-width: 760px) {
+    width: 90%;
+    background: green;
+    min-width: 100%;
   }
 
   .title {
     font-family: 'Rubik';
     font-style: normal;
     font-weight: 500;
-    font-size: 20px;
+    font-size: 2.5rem;
     line-height: 24px;
     color: #ebf8ff;
     margin-top: 80px;
@@ -250,6 +258,10 @@ const StyledExploreNft = styled.img`
   position: absolute;
   left: 7px;
   top: 361px;
+
+  @media screen and (max-width: 760px) {
+    display: none;
+  }
 `;
 
 const NoItemContainer = styled.div`
@@ -257,6 +269,10 @@ const NoItemContainer = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
+
+  @media screen and (max-width: 760px) {
+    height: 100vh;
+  }
 `;
 
 export default function NewCollection({}: Props) {
@@ -367,6 +383,7 @@ export default function NewCollection({}: Props) {
               style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
               href={explorerUrl.concat('tx/' + deploymentResponse.transactionHash)}
               target="_blank"
+              rel="noreferrer"
             >
               View on explorer!
             </a>

@@ -1,9 +1,9 @@
 // @ts-ignore
 import * as emailValidator from 'react-email-validator';
-import { message, Spin } from 'antd';
+import { message, Button } from 'antd';
 import styled from 'styled-components';
 import Navbar from '../../../components/Navbar';
-import Button from '../../../components/Button/CTA/Filled';
+// import Button from '../../../components/Button/CTA/Filled';
 import Image from 'next/image';
 import React, { useCallback, useState } from 'react';
 import { AccountMetadata } from '../../../api/models/account';
@@ -37,16 +37,25 @@ const Container = styled.div`
 
 const BodyContainer = styled.div`
   min-height: 100vh;
+  button:disabled {
+    background-color: #5c95ff;
+    color: #fff;
+  }
+
   @media screen and (max-width: 760px) {
     button {
       margin: 20px 10px;
       width: 95%;
+    }
+    .ant-btn-lg {
+      height: 60px !important;
     }
   }
 `;
 
 const Heading = styled.h2`
   color: #fff;
+  margin-top: 40px;
   @media screen and (max-width: 760px) {
     width: 100%;
     display: flex;
@@ -104,7 +113,11 @@ const InputText = styled.input`
 const ExploreNFT = styled.div`
   position: absolute;
   top: 7rem;
-  margin-left: 1rem;
+  left: 10px;
+  img {
+    width: 50px !important ;
+    height: 500px !important;
+  }
   @media screen and (max-width: 760px) {
     display: none;
   }
@@ -225,9 +238,17 @@ const CreateProfile = () => {
                       </Label>
                       <InputText name="bannerURI" onChange={setProperty} type="text" required />
                     </FormGroup>
-                    <Button disabled={!allConditionsSatisfied()} type="submit">
+                    {/* <Button disabled={!allConditionsSatisfied()} type="submit">
                       {allConditionsSatisfied() ? 'Create' : 'Please fill in all details properly'}{' '}
                       <Spin spinning={isLoading} />
+                    </Button> */}
+                    <Button
+                      type="primary"
+                      size="large"
+                      disabled={!allConditionsSatisfied() || isLoading}
+                      loading={isLoading}
+                    >
+                      {allConditionsSatisfied() ? 'Create' : 'Please fill in details properly'}{' '}
                     </Button>
                   </Form>
                 </FormContainer>
