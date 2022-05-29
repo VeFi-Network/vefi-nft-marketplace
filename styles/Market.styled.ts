@@ -142,7 +142,7 @@ export const CollectionWrapper = styled.div`
     width: max-content;
     gap: 10px;
     padding-bottom: 10px;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
   }
   .collections {

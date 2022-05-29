@@ -178,7 +178,7 @@ const Users = () => {
           </div>
           <ButtonContainer>
             {(!authenticatedUser || !authenticatedUser.email) && authenticatedUser?.accountId === id && (
-              <Link href="/users/profile/create">
+              <Link href="/users/profile/create" passHref>
                 <Button>
                   <FaRegUser />
                   Create Profile
@@ -186,7 +186,7 @@ const Users = () => {
               </Link>
             )}
             {!!authenticatedUser && !!authenticatedUser.email && authenticatedUser.accountId === id && (
-              <Link href="/users/profile/update">
+              <Link href="/users/profile/update" passHref>
                 <FilledButton>
                   <FaUserEdit />
                   Update Profile
@@ -402,6 +402,7 @@ const Users = () => {
                           )}
                           style={{ textDecoration: 'none' }}
                           target="_blank"
+                          rel="noreferrer"
                         >
                           <span style={{ fontSize: 17, fontFamily: 'Rubik', color: '#6495ed' }}>
                             {hexStripZeros(value[1]) === '0x'
@@ -426,7 +427,12 @@ const Users = () => {
                       dataIndex: 'transactionHash',
                       key: 'transactionHash',
                       render: value => (
-                        <a href={explorerUrl.concat('tx/' + value)} style={{ textDecoration: 'none' }} target="_blank">
+                        <a
+                          href={explorerUrl.concat('tx/' + value)}
+                          style={{ textDecoration: 'none' }}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
                           <span style={{ fontSize: 17, fontFamily: 'Rubik', color: '#6495ed' }}>{value}</span>
                         </a>
                       )

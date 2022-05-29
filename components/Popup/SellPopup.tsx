@@ -235,6 +235,7 @@ export default function SellPopup({ modal, setModal, nft, transition }: Props) {
               style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
               href={explorerUrl.concat('tx/' + saleResponse.transactionHash)}
               target="_blank"
+              rel="noreferrer"
             >
               View on explorer!
             </a>

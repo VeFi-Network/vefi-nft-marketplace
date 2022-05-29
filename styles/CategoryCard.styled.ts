@@ -26,7 +26,7 @@ export const Category = styled.section`
   .cartegory__card__listing {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: flex-start;
     gap: 5px;
     @media screen and (max-width: 760px) {
       width: 100%;

@@ -18,19 +18,20 @@ import request from '../../api/rpc';
 import { CONSTANTS } from '../../assets/index';
 
 const MainContainer = styled.div`
-  height: 719px;
+  height: max-content;
+  padding-bottom: 50px;
   width: 1006px;
-  margin-top: -330px;
+  /* margin-top: -330px; */
   margin-left: -503px;
   background: #222222;
   border-radius: 15px;
   position: absolute;
-  top: 50%;
+  top: 100px;
   left: 50%;
   display: flex;
   flex-direction: column;
   padding-left: 67px;
-  top: ${(props: { open: boolean }) => (props.open ? '50%' : '-50%')};
+  top: ${(props: { open: boolean }) => (props.open ? '100px' : '-50%')};
   opacity: ${(props: { open: boolean }) => (props.open ? '1' : '0')};
   transition-timing-function: ease-out;
   transition-duration: 500ms;
@@ -222,6 +223,7 @@ export default function OfferPopup({ modal, setModal, nft, transition }: Props) 
               style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
               href={explorerUrl.concat('tx/' + offerResponse.transactionHash)}
               target="_blank"
+              rel="noreferrer"
             >
               View on explorer!
             </a>

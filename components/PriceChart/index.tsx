@@ -18,7 +18,7 @@ const ChartContainer = styled.div`
   width: 612px;
   height: 419px;
   background: rgba(255, 255, 255, 0.1);
-
+  overflow-x: scroll;
   border-radius: 20px;
   padding: 30px;
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -32,6 +32,14 @@ const ChartFilter = styled.div`
   display: flex;
   column-gap: 15px;
   align-items: center;
+  margin-bottom: 10px;
+  .filterBtn {
+    display: flex;
+    gap: 10px;
+  }
+  @media screen and (max-width: 760px) {
+    flex-direction: column;
+  }
 `;
 
 const ChartHeader = styled.div`
@@ -83,6 +91,10 @@ const Chart = styled.div`
     height: 1px !important;
     color: #4f4d4d !important;
   }
+  @media screen and (max-width: 760px) {
+    height: max-content;
+    margin-top: 40px;
+  }
 `;
 
 const PriceChart = ({ timestamps, prices, onChange }: Props) => {
@@ -112,54 +124,56 @@ const PriceChart = ({ timestamps, prices, onChange }: Props) => {
             </span>
             <span>Price History</span>
           </ChartHeader>
-          <FilterBtn
-            onClick={() => {
-              setPeriod(Periods.ONE_HOUR);
+          <div className="filterBtn">
+            <FilterBtn
+              onClick={() => {
+                setPeriod(Periods.ONE_HOUR);
 
-              if (!!onChange) {
-                onChange(Periods.ONE_HOUR);
-              }
-            }}
-            isActive={period === Periods.ONE_HOUR}
-          >
-            1 Hour
-          </FilterBtn>
-          <FilterBtn
-            onClick={() => {
-              setPeriod(Periods.TWO_DAYS);
+                if (!!onChange) {
+                  onChange(Periods.ONE_HOUR);
+                }
+              }}
+              isActive={period === Periods.ONE_HOUR}
+            >
+              1 Hour
+            </FilterBtn>
+            <FilterBtn
+              onClick={() => {
+                setPeriod(Periods.TWO_DAYS);
 
-              if (!!onChange) {
-                onChange(Periods.TWO_DAYS);
-              }
-            }}
-            isActive={period === Periods.TWO_DAYS}
-          >
-            2 Days
-          </FilterBtn>
-          <FilterBtn
-            onClick={() => {
-              setPeriod(Periods.SEVEN_DAYS);
+                if (!!onChange) {
+                  onChange(Periods.TWO_DAYS);
+                }
+              }}
+              isActive={period === Periods.TWO_DAYS}
+            >
+              2 Days
+            </FilterBtn>
+            <FilterBtn
+              onClick={() => {
+                setPeriod(Periods.SEVEN_DAYS);
 
-              if (!!onChange) {
-                onChange(Periods.SEVEN_DAYS);
-              }
-            }}
-            isActive={period === Periods.SEVEN_DAYS}
-          >
-            7 Days
-          </FilterBtn>
-          <FilterBtn
-            onClick={() => {
-              setPeriod(Periods.THIRTY_DAYS);
+                if (!!onChange) {
+                  onChange(Periods.SEVEN_DAYS);
+                }
+              }}
+              isActive={period === Periods.SEVEN_DAYS}
+            >
+              7 Days
+            </FilterBtn>
+            <FilterBtn
+              onClick={() => {
+                setPeriod(Periods.THIRTY_DAYS);
 
-              if (!!onChange) {
-                onChange(Periods.THIRTY_DAYS);
-              }
-            }}
-            isActive={period === Periods.THIRTY_DAYS}
-          >
-            30 Days
-          </FilterBtn>
+                if (!!onChange) {
+                  onChange(Periods.THIRTY_DAYS);
+                }
+              }}
+              isActive={period === Periods.THIRTY_DAYS}
+            >
+              30 Days
+            </FilterBtn>
+          </div>
         </ChartFilter>
 
         <Chart>

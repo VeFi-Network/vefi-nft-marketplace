@@ -27,16 +27,32 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   div {
-    width: 70%;
+    width: 100%;
+    @media screen and (max-width: 760px) {
+      width: 100%;
+      padding: 0 10px;
+    }
   }
 `;
 
 const BodyContainer = styled.div`
   min-height: 100vh;
+  @media screen and (max-width: 760px) {
+    button {
+      margin: 20px 10px;
+      width: 95%;
+    }
+  }
 `;
 
 const Heading = styled.h2`
   color: #fff;
+  @media screen and (max-width: 760px) {
+    width: 100%;
+    display: flex;
+    margin-top: 40px;
+    padding: 0 20px;
+  }
 `;
 
 const FormContainer = styled.div`
@@ -45,6 +61,9 @@ const FormContainer = styled.div`
 
 const Form = styled.form`
   margin-top: 3rem;
+  @media screen and (max-width: 760px) {
+    width: 100%;
+  }
 `;
 
 const FormGroup = styled.div`
@@ -53,6 +72,9 @@ const FormGroup = styled.div`
   row-gap: 1rem;
   max-width: auto;
   margin: 1.5rem 0;
+  @media screen and (max-width: 760px) {
+    width: 100%;
+  }
 `;
 
 const Label = styled.label`
@@ -72,6 +94,11 @@ const InputText = styled.input`
   width: 100%;
   color: #fff;
   padding: 5px;
+
+  @media screen and (max-width: 760px) {
+    width: 100%;
+    height: 2.5rem;
+  }
 `;
 
 const ExploreNFT = styled.div`

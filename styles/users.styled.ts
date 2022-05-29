@@ -22,6 +22,9 @@ export const UsersWrapper = styled.div`
       position: absolute;
       width: 100%;
     }
+    @media screen and (max-width: 760px) {
+      margin-bottom: 100px;
+    }
   }
   .table-listing {
     thead {
@@ -42,7 +45,21 @@ export const UserNFTBanner = styled.div`
   border-top: 3px solid #5c95ff;
   border-bottom: 3px solid #5c95ff;
 `;
-
+export const ButtonContainer = styled.div`
+  position: absolute;
+  margin: 10px;
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 10px;
+  top: 0;
+  z-index: 9;
+  right: 0;
+  button {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+`;
 export const UserNFTInfo = styled.div`
   width: 100%;
   margin-left: auto;
@@ -51,7 +68,7 @@ export const UserNFTInfo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  position: relative;
   .display__pics {
     width: 180px;
     height: 180px;
@@ -94,6 +111,20 @@ export const UserNFTInfo = styled.div`
       p {
         color: rgba(255, 255, 255, 0.5);
         font-size: 0.9rem;
+      }
+    }
+  }
+  @media screen and (max-width: 760px) {
+    padding-bottom: 80px;
+
+    ${ButtonContainer} {
+      width: 95%;
+      bottom: 0;
+      flex-direction: column;
+      button {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
       }
     }
   }
@@ -308,15 +339,15 @@ export const NFTCollection = styled.div`
   justify-content: flex-start;
   .container {
     width: 100%;
-    height: 800px;
-    overflow-y: auto;
+    height: max-content;
+
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     flex-direction: row;
     row-gap: 30px;
     margin: 30px 0;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
   }
 `;
@@ -556,15 +587,4 @@ export const CardFooterItem = styled.div`
     font-size: 15px;
     cursor: pointer;
   }
-`;
-
-export const ButtonContainer = styled.div`
-  position: absolute;
-  margin: 10px;
-  display: flex;
-  justify-content: flex-end;
-  column-gap: 10px;
-  top: 0;
-  z-index: 9;
-  right: 0;
 `;
