@@ -240,7 +240,7 @@ const Navbar = () => {
                       </div>
                       <div className="wallet__account__info">
                         <div className="chain__name">{networkSymbol}</div>
-                        <div className="source__account">Vefi wallet</div>
+                        <div className="source__account">USD</div>
                       </div>
                     </div>
                     <div className="account__balance__info__right">
@@ -257,7 +257,7 @@ const Navbar = () => {
                       </div>
                       <div className="wallet__account__info">
                         <div className="chain__name">VEF</div>
-                        <div className="source__account">Vefi wallet</div>
+                        <div className="source__account">USD</div>
                       </div>
                     </div>
                     <div className="account__balance__info__right">

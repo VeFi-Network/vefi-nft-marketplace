@@ -100,10 +100,10 @@ export const Web3ContextProvider = ({ children }: any) => {
   }, [chainId, active]);
 
   useEffect(() => {
-    if (!!account && !!network) {
+    if (active && !!network && !!account) {
       fetchBalance();
     }
-  }, [account, network]);
+  }, [active, network, account]);
 
   return (
     <Web3Context.Provider

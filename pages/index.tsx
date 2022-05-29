@@ -406,7 +406,7 @@ export default function Homepage() {
   const [list, setList] = useState<CollectionModel[]>([]);
   const [activeBtn, setActiveBtn] = useState<ActiveBtn>(ActiveBtn.ALL);
   const router = useRouter();
-  const { network, active, chainId } = useWeb3Context();
+  const { network } = useWeb3Context();
 
   useEffect(() => {
     loadAllCollections(1);
@@ -416,13 +416,13 @@ export default function Homepage() {
 
   useEffect(() => {
     (() => {
-      if (!!network && active && !!chainId) {
+      if (!!network) {
         loadAllCollections(1);
         loadTopSellingCollections(1);
         loadCollectionsByAssets(1);
       }
     })();
-  }, [network, active, chainId]);
+  }, [network]);
 
   useEffect(() => {
     if (!!allCollections) {
@@ -557,7 +557,7 @@ export default function Homepage() {
               </div>
             </Category>
           </div>
-          <Footer>
+          {/* <Footer>
             <div className="footer__container">
               <div className="footer__left">
                 <h2>Introducing the Vefi bridging technology </h2>
@@ -571,7 +571,7 @@ export default function Homepage() {
                 <Image src="/objects/bridge.svg" width={300} height={300} alt="image" />
               </div>
             </div>
-          </Footer>
+          </Footer> */}
           <HeroContainer>
             {' '}
             <Hero />
