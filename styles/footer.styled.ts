@@ -6,7 +6,7 @@ export const Container = styled.div`
   justify-content: space-between;
   background: #5c95ff;
   padding: 40px;
-
+  z-index: 999;
   @media screen and (max-width: 768px) {
     flex-direction: column;
     width: 100%;
@@ -19,7 +19,7 @@ export const SubDiv1 = styled.div`
 
   .stay_loop {
     .loop_text {
-      font-family: 'Monument Extended' sans-serif;
+      font-family: 'MonumentExtended' sans-serif;
       font-style: normal;
       font-weight: 800;
       font-size: 20px;
@@ -28,7 +28,7 @@ export const SubDiv1 = styled.div`
     }
 
     .loop_desc {
-      font-family: 'Roboto';
+      font-family: 'Rubik';
       margin: 10px 0;
       font-style: normal;
       font-weight: 400;
@@ -114,7 +114,7 @@ export const SubDiv1 = styled.div`
     margin-top: 30px;
 
     .join {
-      font-family: 'Monument Extended' sans-serif;
+      font-family: 'MonumentExtended' sans-serif;
       font-style: normal;
       font-weight: 800;
       font-size: 18px;
@@ -144,7 +144,7 @@ export const SubDiv2 = styled.div`
     flex: 1;
 
     .nav_section {
-      font-family: 'Monument Extended' sans-serif;
+      font-family: 'MonumentExtended' sans-serif;
       font-style: normal;
       font-weight: 800;
       font-size: 20px;
@@ -169,7 +169,7 @@ export const SubDiv2 = styled.div`
       }
     }
     .nav_section {
-      font-family: 'Monument Extended' sans-serif;
+      font-family: 'MonumentExtended' sans-serif;
       font-style: normal;
       font-weight: 800;
       font-size: 20px;
@@ -185,7 +185,7 @@ export const SubDiv2 = styled.div`
   .company {
     flex: 1;
     .nav_section {
-      font-family: 'Monument Extended' sans-serif;
+      font-family: 'MonumentExtended' sans-serif;
       font-style: normal;
       font-weight: 800;
       font-size: 20px;
@@ -208,7 +208,7 @@ export const FootLink = styled.div`
 
   a {
     text-decoration: none;
-    font-family: 'Roboto';
+    font-family: 'Rubik';
     font-style: normal;
     font-weight: 400;
     font-size: 16px;

@@ -64,6 +64,12 @@ const DiscoverText = styled.div`
     max-width: 100%;
     font-weight: 600 !important;
     padding: 50px 20px;
+    text-align: left;
+    word-break: break-all;
+  }
+  @media screen and (max-width: 375px) {
+    font-size: 1.8rem;
+    line-height: 50px;
   }
   @media screen and (max-width: 320px) {
     font-size: 1.5rem;
@@ -81,14 +87,18 @@ const ButtonContainer = styled.div`
   @media screen and (max-width: 760px) {
     margin: 0;
     width: 95%;
-    margin: 0px auto;
-    justify-content: center;
+    margin: 0px 20px;
+    gap: 10px;
+    justify-content: left;
+  }
+  @media screen and (max-width: 320px) {
+    width: 100%;
+    gap: 3px;
   }
 `;
 
 const FilterContainer = styled.div`
-  width: 100%;
-  max-width: 1200px;
+  width: calc(100% - 150px);
   margin-left: auto;
   margin-right: auto;
   .filter__wrapper {
@@ -228,6 +238,9 @@ const DiscoverAndAnimate = styled.div`
   height: 450px;
   flex-direction: row;
   position: relative;
+  @media screen and (max-width: 760px) {
+    height: 360px;
+  }
 `;
 
 const DiscoverPart = styled.div`
@@ -377,13 +390,17 @@ const NoItemContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  width: 100%;
-  max-width: 1200px;
+  width: calc(100% - 150px);
+
   background: linear-gradient(254.33deg, rgba(255, 255, 255, 0.1) 1.71%, rgba(255, 255, 255, 0.05) 99.35%);
   backdrop-filter: blur(16.86px);
   padding: 50px 0;
   border-radius: 20px;
   margin-top: 50px;
+
+  @media screen and (max-width: 760px) {
+    width: 90%;
+  }
 `;
 
 const HeroContainer = styled.div``;
@@ -407,7 +424,7 @@ export default function Homepage() {
   const [list, setList] = useState<CollectionModel[]>([]);
   const [activeBtn, setActiveBtn] = useState<ActiveBtn>(ActiveBtn.ALL);
   const router = useRouter();
-  const { network } = useWeb3Context();
+  const { network, active, chainId } = useWeb3Context();
 
   useEffect(() => {
     loadAllCollections(1);
@@ -417,13 +434,13 @@ export default function Homepage() {
 
   useEffect(() => {
     (() => {
-      if (!!network) {
+      if (!!network && active && !!chainId) {
         loadAllCollections(1);
         loadTopSellingCollections(1);
         loadCollectionsByAssets(1);
       }
     })();
-  }, [network]);
+  }, [network, active, chainId]);
 
   useEffect(() => {
     if (!!allCollections) {
@@ -447,7 +464,7 @@ export default function Homepage() {
                 <RoundBlueLine>
                   <Image width="149px" height="80px" src="/objects/round.svg" />
                 </RoundBlueLine>
-                <DiscoverText>Discover, collect, and sell extraordinary NFTs</DiscoverText>
+                <DiscoverText>Discover, collect, and sell extraordinary NFTs.</DiscoverText>
                 <ButtonContainer>
                   <Filled_CTA_Button onClick={() => router.replace('/marketplace')}>Get Started</Filled_CTA_Button>
                   <Ghost_CTA_Button onClick={() => router.replace('/collections/item/new')}>
@@ -558,7 +575,7 @@ export default function Homepage() {
               </div>
             </Category>
           </div>
-          <Footer>
+          {/* <Footer>
             <div className="footer__container">
               <div className="footer__left">
                 <h2>Introducing the Vefi bridging technology </h2>
@@ -572,7 +589,7 @@ export default function Homepage() {
                 <Image src="/objects/bridge.svg" width={300} height={300} alt="image" />
               </div>
             </div>
-          </Footer>
+          </Footer> */}
           <HeroContainer>
             {' '}
             <Hero />

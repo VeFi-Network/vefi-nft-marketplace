@@ -27,10 +27,6 @@ const NavContainer = styled.nav`
     align-items: center;
 
     height: 60px;
-
-    @media screen and (max-width: 760px) {
-      margin: 0;
-    }
   }
   .connectBtn {
     background: #0c0c0c !important;
@@ -45,6 +41,11 @@ const NavContainer = styled.nav`
       transform: scale(1.1);
       color: #fff;
     }
+  }
+  @media screen and (max-width: 760px) {
+    margin: 0;
+    width: 100%;
+    padding: 0 10px;
   }
 `;
 
@@ -70,6 +71,11 @@ const NavLinks = styled.div`
 
     &:hover {
       transform: scale(1.1);
+    }
+  }
+  @media screen and (max-width: 320px) {
+    .x-mobile {
+      display: none;
     }
   }
   z-index: 2;
@@ -128,23 +134,27 @@ const Navbar = () => {
           <NavBrand>
             <Link href="/">
               <a>
-                <Image src="/logo/vefi_nft_logo.svg" width={100} height={45} />
+                <Image src="/logo/logo.svg" width={100} height={45} />
               </a>
             </Link>
           </NavBrand>
           <NavLinks>
-            <div className="icon">
-              <FaEnvelope fontSize={15} />
-            </div>
+            {active && (
+              <>
+                <div className="icon x-mobile">
+                  <FaEnvelope fontSize={15} />
+                </div>
 
-            <div className="icon" onClick={() => setVisible(!visible)}>
-              <FaWallet fontSize={15} />
-            </div>
-            <Dropdown overlay={<Menu />} trigger={['click']} placement="bottom" arrow>
-              <div className="icon">
-                <FiMoreHorizontal />
-              </div>
-            </Dropdown>
+                <div className="icon x-mobile" onClick={() => setVisible(!visible)}>
+                  <FaWallet fontSize={15} />
+                </div>
+                <Dropdown overlay={<Menu />} trigger={['click']} placement="bottom" arrow>
+                  <div className="icon">
+                    <FiMoreHorizontal />
+                  </div>
+                </Dropdown>
+              </>
+            )}
 
             {!active ? (
               <>
@@ -173,7 +183,7 @@ const Navbar = () => {
           </NavLinks>
         </div>
       </NavContainer>
-      <Drawer title="" placement="right" onClose={() => setVisible(!visible)} visible={visible}>
+      <Drawer title="" placement="right" onClose={() => setVisible(!visible)} visible={visible} width="300px">
         <div className="wallet__body">
           {active ? (
             <>

@@ -305,15 +305,17 @@ const Collection = () => {
                         else return nft;
                       }),
                       nft => (
-                        <div key={nft.tokenId}>
-                          <NFTCard
-                            model={nft}
-                            onClick={() => {
-                              router.push(`/nfts/${collectionById.collectionId}:${nft.tokenId}`);
-                            }}
-                            key={nft.id}
-                          />
-                        </div>
+                        <>
+                          <div key={nft.tokenId}>
+                            <NFTCard
+                              model={nft}
+                              onClick={() => {
+                                router.push(`/nfts/${collectionById.collectionId}:${nft.tokenId}`);
+                              }}
+                              key={nft.id}
+                            />
+                          </div>
+                        </>
                       )
                     )}
                     <div ref={scrollBase}></div>
@@ -367,6 +369,7 @@ const Collection = () => {
                             )}
                             style={{ textDecoration: 'none' }}
                             target="_blank"
+                            rel="noreferrer"
                           >
                             <span style={{ fontSize: 17, fontFamily: 'Rubik', color: '#6495ed' }}>
                               {hexStripZeros(value[1]) === '0x'
@@ -387,6 +390,7 @@ const Collection = () => {
                             )}
                             style={{ textDecoration: 'none' }}
                             target="_blank"
+                            rel="noreferrer"
                           >
                             <span style={{ fontSize: 17, fontFamily: 'Rubik', color: '#6495ed' }}>
                               {hexStripZeros(value[2]) === '0x'
@@ -415,6 +419,7 @@ const Collection = () => {
                             href={explorerUrl.concat('tx/' + value)}
                             style={{ textDecoration: 'none' }}
                             target="_blank"
+                            rel="noreferrer"
                           >
                             <span style={{ fontSize: 17, fontFamily: 'Rubik', color: '#6495ed' }}>{value}</span>
                           </a>

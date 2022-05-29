@@ -22,6 +22,9 @@ export const NFTCollectionWrapper = styled.div`
       color: #fff;
       font-size: 0.7rem;
     }
+    @media screen and (max-width: 760px) {
+      text-align: center;
+    }
   }
 `;
 
@@ -85,6 +88,11 @@ export const NFTCollectionDescription = styled.div`
       color: rgba(255, 255, 255, 0.6);
       font-weight: 400;
       font-size: 1rem;
+    }
+    @media screen and (max-width: 760px) {
+      padding: 1rem 2rem;
+      text-align: left;
+      word-break: break-all;
     }
   }
 `;

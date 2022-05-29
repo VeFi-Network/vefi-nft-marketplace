@@ -27,6 +27,9 @@ const MainContainer = styled.div`
   flex-direction: column;
   align-items: center;
   overflow-y: scroll;
+
+  @media screen and (max-width: 760px) {
+  }
 `;
 
 const NavbarContainer = styled.div`
@@ -41,27 +44,42 @@ const ColoredBackground = styled.div`
   top: -5%;
   right: 0%;
   z-index: 0;
+  @media screen and (max-width: 760px) {
+    display: none;
+  }
 `;
 
 const ParentExploreAndData = styled.div`
   display: flex;
   flex-direction: column;
-  padding-bottom: 20px;
+  padding-bottom: 50px;
   z-index: 2;
+  width: 100%;
   min-width: 1000px;
 
-  @media (max-width: 1300px) {
-    min-width: 700px;
+  @media screen and (max-width: 760px) {
+    width: 95%;
+    margin: 0 auto;
+    min-width: 90%;
+    padding-bottom: 50px;
   }
 
   .title {
     font-family: 'Rubik';
     font-style: normal;
     font-weight: 500;
-    font-size: 20px;
+    font-size: 2.5rem;
     line-height: 24px;
     color: #ebf8ff;
     margin-top: 80px;
+
+    @media screen and (max-width: 760px) {
+      text-align: flex-start;
+      font-size: 2rem;
+      line-height: 3rem;
+      margin-top: 40px;
+      margin-bottom: -30px;
+    }
   }
 
   .white-text {
@@ -90,7 +108,7 @@ const ParentExploreAndData = styled.div`
   .heading {
     font-family: 'Rubik';
     font-style: normal;
-    font-weight: 500;
+    font-weight: 800;
     font-size: 16px;
     line-height: 19px;
     color: #ebf8ff;
@@ -114,6 +132,12 @@ const ParentExploreAndData = styled.div`
       color: rgba(255, 255, 255, 0.58);
       font-size: 12px;
     }
+    @media screen and (max-width: 760px) {
+      width: 100%;
+      .inp {
+        width: 100%;
+      }
+    }
   }
 
   .text-area {
@@ -122,7 +146,9 @@ const ParentExploreAndData = styled.div`
     width: 468px;
     height: 184px;
     margin-top: 26px;
-
+    @media screen and (max-width: 760px) {
+      width: 100%;
+    }
     .real-text-area {
       width: 100%;
       height: 100%;
@@ -150,12 +176,20 @@ const ParentExploreAndData = styled.div`
     width: 400px;
     justify-content: space-between;
     align-items: center;
-
+    @media screen and (max-width: 760px) {
+      flex-direction: column;
+      width: 100%;
+      align-items: flex-start;
+      row-gap: 10px;
+    }
     .switch {
       position: relative;
       display: inline-block;
       width: 32.2px;
       height: 21px;
+      @media screen and (max-width: 760px) {
+        width: 10%;
+      }
     }
 
     .switch input {
@@ -250,6 +284,10 @@ const StyledExploreNft = styled.img`
   position: absolute;
   left: 7px;
   top: 361px;
+
+  @media screen and (max-width: 760px) {
+    display: none;
+  }
 `;
 
 const NoItemContainer = styled.div`
@@ -257,6 +295,10 @@ const NoItemContainer = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
+
+  @media screen and (max-width: 760px) {
+    height: 100vh;
+  }
 `;
 
 export default function NewCollection({}: Props) {
@@ -367,6 +409,7 @@ export default function NewCollection({}: Props) {
               style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
               href={explorerUrl.concat('tx/' + deploymentResponse.transactionHash)}
               target="_blank"
+              rel="noreferrer"
             >
               View on explorer!
             </a>
@@ -399,150 +442,136 @@ export default function NewCollection({}: Props) {
               </NoItemContainer>
             ) : (
               <>
-                <div className="title">Create New Collection</div>
-
-                <Heading className="heading">
-                  Collection Banner <span className="blue">*</span>
-                </Heading>
-
-                <div className="text">
-                  Supported File Types: JPG, JPEG, PNG, GIF, WEBP
-                  <span className="blue"> Max size 40mb</span>
-                </div>
-
-                <FileContainer file={bannerImage} setFile={setBannerImage} type={1} />
-
-                <Heading className="heading">
-                  Collection Avatar <span className="blue">*</span>
-                </Heading>
-
-                <div className="text">
-                  Supported File Types: JPG, JPEG, PNG, GIF, WEBP
-                  <span className="blue"> Max size 40mb</span>
-                </div>
-
-                <FileContainer file={avatarImage} setFile={setAvatarImage} type={1} />
-
-                <Heading className="heading">
-                  Name<span className="blue">*</span>
-                </Heading>
-
-                <div className="input-div">
-                  <input
-                    value={collectionMetadata.name}
-                    name="name"
-                    onChange={setProperty}
-                    type="text"
-                    className="inp"
-                    placeholder="Name of your collection"
-                  />
-                </div>
-
-                <Heading className="heading">
-                  Owner<span className="blue">*</span>
-                </Heading>
-
-                <div className="input-div">
-                  <input
-                    type="text"
-                    value={collectionMetadata.owner}
-                    onChange={setProperty}
-                    name="owner"
-                    className="inp"
-                    placeholder="Owner of this collection (Could be an Ethereum address or an ENS name)."
-                  />
-                </div>
-
-                <Heading className="heading">
-                  Symbol<span className="blue">*</span>
-                </Heading>
-
-                <div className="input-div">
-                  <input
-                    type="text"
-                    value={collectionMetadata.symbol}
-                    onChange={setProperty}
-                    name="symbol"
-                    className="inp"
-                    placeholder="Collection symbol."
-                  />
-                </div>
-
-                <Heading className="heading">
-                  Payment Receiver<span className="blue">*</span>
-                </Heading>
-
-                <div className="input-div">
-                  <input
-                    type="text"
-                    value={paymentReceiver}
-                    onChange={e => setPaymentReceiver(e.target.value)}
-                    name="symbol"
-                    className="inp"
-                    placeholder="Address that receives minting fees."
-                  />
-                </div>
-
-                <Heading top={'48px'}>
-                  Description<span className="blue">*</span>
-                </Heading>
-
-                <div className="text">Describe your collection.</div>
-
-                <div className="text-area">
-                  <textarea
-                    className="real-text-area"
-                    id=""
-                    placeholder="Provide a detailed description of your collection."
-                    rows={7}
-                    value={collectionMetadata.description}
-                    onChange={setProperty}
-                    name="description"
-                  ></textarea>
-                </div>
-
-                <Heading top={'38px'}>Collection Category</Heading>
-
-                <div className="text">This is the category your collection belongs to.</div>
-
-                <DropdownComponent
-                  dropdown={dropdownShown}
-                  setDropdown={setDropdownShown}
-                  value={collectionMetadata.category}
-                  onChange={value => setCollectionMetadata({ ...collectionMetadata, category: value })}
-                  dropDownList={Object.values(CollectionCategory).sort()}
-                  defaultValue={collectionMetadata.category}
-                  width={'155.78px'}
-                  top={'36px'}
-                />
-
-                <Heading top={'36px'}>Explicit and sensitive content.</Heading>
-
-                <div className="switch-cont">
-                  <div className="text">Set this collection as having explicit and sensitive content.</div>
-
-                  <label className="switch">
+                <div className="container__wrapper">
+                  <div className="title">Create New Collection</div>
+                  <Heading className="heading">
+                    Collection Banner <span className="blue">*</span>
+                  </Heading>
+                  <div className="text">
+                    Supported File Types: JPG, JPEG, PNG, GIF, WEBP
+                    <span className="blue"> Max size 40mb</span>
+                  </div>
+                  <FileContainer file={bannerImage} setFile={setBannerImage} type={1} />
+                  <Heading className="heading">
+                    Collection Avatar <span className="blue">*</span>
+                  </Heading>
+                  <div className="text">
+                    Supported File Types: JPG, JPEG, PNG, GIF, WEBP
+                    <span className="blue"> Max size 40mb</span>
+                  </div>
+                  <FileContainer file={avatarImage} setFile={setAvatarImage} type={1} />
+                  <Heading className="heading">
+                    Name<span className="blue">*</span>
+                  </Heading>
+                  <div className="input-div">
                     <input
-                      type="checkbox"
-                      checked={collectionMetadata.hasExplicitContent}
-                      onChange={() =>
-                        setCollectionMetadata({
-                          ...collectionMetadata,
-                          hasExplicitContent: !collectionMetadata.hasExplicitContent
-                        })
-                      }
+                      value={collectionMetadata.name}
+                      name="name"
+                      onChange={setProperty}
+                      type="text"
+                      className="inp"
+                      placeholder="Name of your collection"
                     />
-                    <span className="slider round"></span>
-                  </label>
-                </div>
+                  </div>
+                  <Heading className="heading">
+                    Owner<span className="blue">*</span>
+                  </Heading>
+                  <div className="input-div">
+                    <input
+                      type="text"
+                      value={collectionMetadata.owner}
+                      onChange={setProperty}
+                      name="owner"
+                      className="inp"
+                      placeholder="Owner of this collection (Could be an Ethereum address or an ENS name)."
+                    />
+                  </div>
+                  <Heading className="heading">
+                    Symbol<span className="blue">*</span>
+                  </Heading>
 
-                <Filled_CTA_Button
-                  disabled={!allConditionsSatisfied()}
-                  onClick={createCollection}
-                  style={{ marginTop: 33, width: '100%' }}
-                >
-                  {allConditionsSatisfied() ? 'Create' : 'Please fill in the required fields'}
-                </Filled_CTA_Button>
+                  <div className="input-div">
+                    <input
+                      type="text"
+                      value={collectionMetadata.symbol}
+                      onChange={setProperty}
+                      name="symbol"
+                      className="inp"
+                      placeholder="Collection symbol."
+                    />
+                  </div>
+                  <Heading className="heading">
+                    Payment Receiver<span className="blue">*</span>
+                  </Heading>
+
+                  <div className="input-div">
+                    <input
+                      type="text"
+                      value={paymentReceiver}
+                      onChange={e => setPaymentReceiver(e.target.value)}
+                      name="symbol"
+                      className="inp"
+                      placeholder="Address that receives minting fees."
+                    />
+                  </div>
+                  <Heading top={'48px'} className="heading">
+                    Description<span className="blue">*</span>
+                  </Heading>
+
+                  <div className="text">Describe your collection.</div>
+                  <div className="text-area">
+                    <textarea
+                      className="real-text-area"
+                      id=""
+                      placeholder="Provide a detailed description of your collection."
+                      rows={7}
+                      value={collectionMetadata.description}
+                      onChange={setProperty}
+                      name="description"
+                    ></textarea>
+                  </div>
+                  <Heading top={'38px'} className="heading">
+                    Collection Category
+                  </Heading>
+
+                  <div className="text">This is the category your collection belongs to.</div>
+                  <DropdownComponent
+                    dropdown={dropdownShown}
+                    setDropdown={setDropdownShown}
+                    value={collectionMetadata.category}
+                    onChange={value => setCollectionMetadata({ ...collectionMetadata, category: value })}
+                    dropDownList={Object.values(CollectionCategory).sort()}
+                    defaultValue={collectionMetadata.category}
+                    width={'155.78px'}
+                    top={'36px'}
+                  />
+                  <Heading top={'36px'} className="heading">
+                    Explicit and sensitive content.
+                  </Heading>
+                  <div className="switch-cont">
+                    <div className="text">Set this collection as having explicit and sensitive content.</div>
+                    <label className="switch">
+                      <input
+                        type="checkbox"
+                        checked={collectionMetadata.hasExplicitContent}
+                        onChange={() =>
+                          setCollectionMetadata({
+                            ...collectionMetadata,
+                            hasExplicitContent: !collectionMetadata.hasExplicitContent
+                          })
+                        }
+                      />
+                      <span className="slider round"></span>
+                    </label>
+                  </div>
+                  <Filled_CTA_Button
+                    disabled={!allConditionsSatisfied()}
+                    onClick={createCollection}
+                    style={{ marginTop: 33 }}
+                  >
+                    {allConditionsSatisfied() ? 'Create' : 'Please fill in the required fields'}
+                  </Filled_CTA_Button>
+                </div>
               </>
             )}
           </ParentExploreAndData>

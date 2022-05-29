@@ -22,6 +22,9 @@ export const UsersWrapper = styled.div`
       position: absolute;
       width: 100%;
     }
+    @media screen and (max-width: 760px) {
+      margin-bottom: 100px;
+    }
   }
   .table-listing {
     thead {
@@ -43,7 +46,21 @@ export const UserNFTBanner = styled.div`
   border-bottom: 5px solid #5c95ff;
   height: 250px;
 `;
-
+export const ButtonContainer = styled.div`
+  position: absolute;
+  margin: 10px;
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 10px;
+  top: 0;
+  z-index: 9;
+  right: 0;
+  button {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+`;
 export const UserNFTInfo = styled.div`
   width: 100%;
   margin-left: auto;
@@ -52,7 +69,7 @@ export const UserNFTInfo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  position: relative;
   .display__pics {
     width: 236px;
     height: 236px;
@@ -98,13 +115,28 @@ export const UserNFTInfo = styled.div`
       }
     }
   }
+  @media screen and (max-width: 760px) {
+    padding-bottom: 80px;
+
+    ${ButtonContainer} {
+      width: 95%;
+      bottom: 0;
+      flex-direction: column;
+      button {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+      }
+    }
+  }
 `;
 
 export const NFTUserInfo = styled.div`
   width: 100%;
   height: 200px;
   position: relative;
-  z-index: 1;
+  z-index: 999;
+
   div:nth-child(1) {
     width: 200px;
     height: 300px;
@@ -139,8 +171,7 @@ export const NFTUserInfo = styled.div`
 `;
 
 export const NFTUserCollectionInfo = styled.div`
-  width: 100%;
-  max-width: 1200px;
+  width: calc(100% - 100px);
   margin-left: auto;
   margin-right: auto;
   height: auto;
@@ -309,8 +340,7 @@ export const NFTCollection = styled.div`
   justify-content: flex-start;
   .container {
     width: 100%;
-    height: 800px;
-    overflow-y: auto;
+    height: max-content;
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -557,15 +587,4 @@ export const CardFooterItem = styled.div`
     font-size: 15px;
     cursor: pointer;
   }
-`;
-
-export const ButtonContainer = styled.div`
-  position: absolute;
-  margin: 10px;
-  display: flex;
-  justify-content: flex-end;
-  column-gap: 10px;
-  top: 0;
-  z-index: 9;
-  right: 0;
 `;
