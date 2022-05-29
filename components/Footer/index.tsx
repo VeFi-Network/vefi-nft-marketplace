@@ -27,16 +27,24 @@ function MainFooter() {
             </div>
           </form>
         </div>
-        <div className="logo_container">
+        {/* <div className="logo_container">
           <Image src="/logo/vefi_nft_logo.svg" height={40} width={100} />
-        </div>
+        </div> */}
         <div className="community">
           <h5 className="join">Join Our Community</h5>
           <div className="socials">
-            <FaGithub className="icon" />
-            <FaTelegram className="icon" />
-            <AiFillTwitterCircle className="icon" />
-            <FaFacebook className="icon" />
+            <a href="https://github.com/Vefi-Ecosystem/vefi-nft-marketplace" rel="noreferrer" target="_blank">
+              <FaGithub className="icon" />
+            </a>
+            <a href="https://t.me/vefi_official" target="_blank" rel="noreferrer">
+              <FaTelegram className="icon" />
+            </a>
+            <a href="https://twitter.com/vefi_official" target="_blank" rel="noreferrer">
+              <AiFillTwitterCircle className="icon" />
+            </a>
+            <a href="https://facebook.com/vefi.official" target="_blank" rel="noreferrer">
+              <FaFacebook className="icon" />
+            </a>
           </div>
         </div>
       </SubDiv1>
@@ -72,7 +80,7 @@ function MainFooter() {
               </FootLink>
             ))}
           </div>
-          <div>
+          {/* <div>
             <h2 className="nav_section">Stats</h2>
             {marketplaceArray.slice(14, 16).map(({ label, path }: any) => (
               <FootLink key={label}>
@@ -81,7 +89,7 @@ function MainFooter() {
                 </Link>
               </FootLink>
             ))}
-          </div>
+          </div> */}
         </div>
         <div className="company">
           <h2 className="nav_section">Company</h2>

@@ -40,6 +40,8 @@ const Container = styled.div`
 
 const BodyContainer = styled.div`
   min-height: 100vh;
+  position: relative;
+  padding-bottom: 50px;
   button:disabled {
     background-color: #5c95ff;
     color: #fff;
@@ -111,8 +113,9 @@ const InputText = styled.input`
 
 const ExploreNFT = styled.div`
   position: absolute;
-  top: 7rem;
+  top: 0;
   left: 10px;
+
   img {
     width: 50px !important ;
     height: 500px !important;
