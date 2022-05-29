@@ -129,6 +129,10 @@ const CollectionInfoCont = styled.div`
 
     .blue {
       color: #5c95ff;
+      word-break: break-all;
+    }
+    @media screen and (max-width: 760px) {
+      flex-direction: column;
     }
   }
   @media screen and (max-width: 760px) {
@@ -246,6 +250,12 @@ const DescriptionContainer = styled.div`
   @media screen and (max-width: 760px) {
     width: 100%;
     height: max-content;
+  }
+  .ant-tag {
+    margin-bottom: 5px;
+    background: #383838;
+    color: #ccc !important;
+    padding: 2px 7px;
   }
 `;
 
@@ -407,6 +417,7 @@ export default function NFT() {
                 style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
                 href={explorerUrl.concat('tx/' + purchaseResponse.transactionHash)}
                 target="_blank"
+                rel="noreferrer"
               >
                 View on explorer!
               </a>
@@ -451,6 +462,7 @@ export default function NFT() {
               style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
               href={explorerUrl.concat('tx/' + acceptanceResponse.transactionHash)}
               target="_blank"
+              rel="noreferrer"
             >
               View on explorer!
             </a>
@@ -488,6 +500,7 @@ export default function NFT() {
               style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
               href={explorerUrl.concat('tx/' + rejectionResponse.transactionHash)}
               target="_blank"
+              rel="noreferrer"
             >
               View on explorer!
             </a>
@@ -603,6 +616,7 @@ export default function NFT() {
                           style={{ textDecoration: 'none', fontSize: 14, color: '#f5f5f5' }}
                           href={nftById.metadata.externalLink}
                           target="_blank"
+                          rel="noreferrer"
                         >
                           {nftById.metadata.externalLink}
                         </a>

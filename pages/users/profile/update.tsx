@@ -2,9 +2,9 @@
 import * as emailValidator from 'react-email-validator';
 import styled from 'styled-components';
 import Navbar from '../../../components/Navbar';
-import Button from '../../../components/Button/CTA/Filled';
+// import Button from '../../../components/Button/CTA/Filled';
 import Image from 'next/image';
-import { message, Spin } from 'antd';
+import { Button, message } from 'antd';
 import { useRouter } from 'next/router';
 import { useState, useCallback } from 'react';
 import { pinJson } from '../../../api/ipfs';
@@ -31,17 +31,40 @@ const Container = styled.div`
   justify-content: center;
   div {
     width: 70%;
+    @media screen and (max-width: 760px) {
+      width: 100%;
+      padding: 0 10px;
+    }
   }
 `;
 
 const BodyContainer = styled.div`
-  min-height: 80vh;
-  display: flex;
-  flex-direction: row;
+  min-height: 100vh;
+  button:disabled {
+    background-color: #5c95ff;
+    color: #fff;
+  }
+
+  @media screen and (max-width: 760px) {
+    button {
+      margin: 20px 10px;
+      width: 95%;
+    }
+    .ant-btn-lg {
+      height: 60px !important;
+    }
+  }
 `;
 
 const Heading = styled.h2`
   color: #fff;
+  margin-top: 40px;
+  @media screen and (max-width: 760px) {
+    width: 100%;
+    display: flex;
+    margin-top: 40px;
+    padding: 0 20px;
+  }
 `;
 
 const FormContainer = styled.div`
@@ -58,6 +81,9 @@ const FormGroup = styled.div`
   row-gap: 1rem;
   max-width: auto;
   margin: 1.5rem 0;
+  @media screen and (max-width: 760px) {
+    width: 100%;
+  }
 `;
 
 const Label = styled.label`
@@ -77,12 +103,20 @@ const InputText = styled.input`
   width: 100%;
   color: #fff;
   padding: 5px;
+  @media screen and (max-width: 760px) {
+    width: 100%;
+    height: 2.5rem;
+  }
 `;
 
 const ExploreNFT = styled.div`
-  margin-left: 1rem;
-  margin-top: 7rem;
-  height: 585px;
+  position: absolute;
+  top: 7rem;
+  left: 10px;
+  img {
+    width: 50px !important ;
+    height: 500px !important;
+  }
   @media screen and (max-width: 760px) {
     display: none;
   }
@@ -201,7 +235,7 @@ const UpdateProfile = () => {
               <div>
                 <Heading>Update Profile</Heading>
                 <FormContainer>
-                  <Form onSubmit={update}>
+                  <Form onSubmit={update} autoComplete="off">
                     <FormGroup>
                       <Label htmlFor="name">Name</Label>
                       <InputText name="name" onChange={setProperty} type="text" required />
@@ -212,6 +246,7 @@ const UpdateProfile = () => {
                         name="email"
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                         type="email"
+                        autoComplete="off"
                       />
                     </FormGroup>
                     <FormGroup>
@@ -222,9 +257,17 @@ const UpdateProfile = () => {
                       <Label htmlFor="banner_image">Banner Image URL</Label>
                       <InputText name="bannerURI" onChange={setProperty} type="text" />
                     </FormGroup>
-                    <Button disabled={!allConditionsSatisfied()} type="submit">
+                    {/* <Button disabled={!allConditionsSatisfied()} type="submit" loading={isLoading}>
                       {allConditionsSatisfied() ? 'Update' : 'Please fill in details properly'}{' '}
                       <Spin spinning={isLoading} />
+                    </Button> */}
+                    <Button
+                      type="primary"
+                      size="large"
+                      disabled={!allConditionsSatisfied() || isLoading}
+                      loading={isLoading}
+                    >
+                      {allConditionsSatisfied() ? 'Update Profile' : 'Please fill in details properly'}{' '}
                     </Button>
                   </Form>
                 </FormContainer>

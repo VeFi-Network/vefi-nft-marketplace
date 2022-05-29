@@ -1,9 +1,9 @@
 // @ts-ignore
 import * as emailValidator from 'react-email-validator';
-import { message, Spin } from 'antd';
+import { message, Button } from 'antd';
 import styled from 'styled-components';
 import Navbar from '../../../components/Navbar';
-import Button from '../../../components/Button/CTA/Filled';
+// import Button from '../../../components/Button/CTA/Filled';
 import Image from 'next/image';
 import React, { useCallback, useState } from 'react';
 import { AccountMetadata } from '../../../api/models/account';
@@ -30,18 +30,41 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   div {
-    width: 70%;
+    width: 100%;
+    @media screen and (max-width: 760px) {
+      width: 100%;
+      padding: 0 10px;
+    }
   }
 `;
 
 const BodyContainer = styled.div`
-  min-height: 80vh;
-  display: flex;
-  flex-direction: row;
+  min-height: 100vh;
+  button:disabled {
+    background-color: #5c95ff;
+    color: #fff;
+  }
+
+  @media screen and (max-width: 760px) {
+    button {
+      margin: 20px 10px;
+      width: 95%;
+    }
+    .ant-btn-lg {
+      height: 60px !important;
+    }
+  }
 `;
 
 const Heading = styled.h2`
   color: #fff;
+  margin-top: 40px;
+  @media screen and (max-width: 760px) {
+    width: 100%;
+    display: flex;
+    margin-top: 40px;
+    padding: 0 20px;
+  }
 `;
 
 const FormContainer = styled.div`
@@ -50,6 +73,9 @@ const FormContainer = styled.div`
 
 const Form = styled.form`
   margin-top: 3rem;
+  @media screen and (max-width: 760px) {
+    width: 100%;
+  }
 `;
 
 const FormGroup = styled.div`
@@ -58,6 +84,9 @@ const FormGroup = styled.div`
   row-gap: 1rem;
   max-width: auto;
   margin: 1.5rem 0;
+  @media screen and (max-width: 760px) {
+    width: 100%;
+  }
 `;
 
 const Label = styled.label`
@@ -77,12 +106,21 @@ const InputText = styled.input`
   width: 100%;
   color: #fff;
   padding: 5px;
+
+  @media screen and (max-width: 760px) {
+    width: 100%;
+    height: 2.5rem;
+  }
 `;
 
 const ExploreNFT = styled.div`
-  margin-left: 1rem;
-  margin-top: 7rem;
-  height: 585px;
+  position: absolute;
+  top: 7rem;
+  left: 10px;
+  img {
+    width: 50px !important ;
+    height: 500px !important;
+  }
   @media screen and (max-width: 760px) {
     display: none;
   }
@@ -203,9 +241,17 @@ const CreateProfile = () => {
                       </Label>
                       <InputText name="bannerURI" onChange={setProperty} type="text" required />
                     </FormGroup>
-                    <Button disabled={!allConditionsSatisfied()} type="submit">
+                    {/* <Button disabled={!allConditionsSatisfied()} type="submit">
                       {allConditionsSatisfied() ? 'Create' : 'Please fill in all details properly'}{' '}
                       <Spin spinning={isLoading} />
+                    </Button> */}
+                    <Button
+                      type="primary"
+                      size="large"
+                      disabled={!allConditionsSatisfied() || isLoading}
+                      loading={isLoading}
+                    >
+                      {allConditionsSatisfied() ? 'Create' : 'Please fill in details properly'}{' '}
                     </Button>
                   </Form>
                 </FormContainer>

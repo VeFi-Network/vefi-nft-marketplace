@@ -87,8 +87,7 @@ const ButtonContainer = styled.div`
 `;
 
 const FilterContainer = styled.div`
-  width: 100%;
-  max-width: 1200px;
+  width: calc(100% - 150px);
   margin-left: auto;
   margin-right: auto;
   .filter__wrapper {

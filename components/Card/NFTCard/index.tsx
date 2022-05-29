@@ -30,7 +30,7 @@ const NFTCard = ({ model, onClick }: Props) => {
             <CardFooterItem>
               <div className="nft-meta-data">
                 <span className="nft_collection_name">{model?.metadata?.name}</span>
-                <Link href={`/users/${model.owner}?tab=1`}>
+                <Link href={`/users/${model.owner}?tab=1`} passHref>
                   <span className="nft_name">
                     {ethAddress.isAddress(model.owner) ? formatEthAddress(model.owner as string) : model.owner}
                   </span>
