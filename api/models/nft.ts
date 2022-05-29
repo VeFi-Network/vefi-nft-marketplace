@@ -1,17 +1,21 @@
-enum NFTLevels {
+import { AccountModel } from './account';
+
+export enum NFTLevels {
   LEGENDARY = 'LEGENDARY',
   RARE = 'RARE',
   ICONIC = 'ICONIC',
-  SUPERRARE = 'SUPERRARE'
+  SUPERRARE = 'SUPER RARE'
 }
 
 export type NFTMetadata = {
   name: string;
   description: string;
   owner: string;
-  imageURI: string;
+  image: string;
   traits: Array<string>;
   levels: Array<NFTLevels>;
+  externalLink?: string;
+  isExplicit: boolean;
 };
 
 export interface NFTModel {
@@ -23,4 +27,5 @@ export interface NFTModel {
   network: string;
   owner: string;
   metadata?: NFTMetadata;
+  topBuyers?: Array<AccountModel>;
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Image from 'next/image';
+import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 
 type Props = {
   setDropdown: any;
@@ -51,7 +51,7 @@ const DropdownContainer = styled.div`
   gap: 5px;
   margin-top: 30px;
   margin-left: -10px;
-  z-index: 3;
+  overflow-y: scroll;
 
   .drop-el {
     height: 38px;
@@ -84,7 +84,7 @@ export default function DropdownComponent({
       top={top}
     >
       {value}
-      <Image width="12px" style={{ zIndex: 1 }} height="11px" src="/icons/downIcon.svg" />
+      {!dropdown ? <FiChevronDown /> : <FiChevronUp />}
       {dropdown && (
         <DropdownContainer width={width}>
           {dropDownList &&

@@ -1,4 +1,4 @@
-type AccountMetadata = {
+export type AccountMetadata = {
   imageURI: string;
   bannerURI: string;
   name: string;
@@ -10,4 +10,5 @@ export interface AccountModel {
   email: string;
   metadataURI: string;
   metadata: AccountMetadata;
+  createdAt?: string;
 }

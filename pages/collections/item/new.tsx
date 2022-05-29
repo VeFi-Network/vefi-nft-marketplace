@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+// @ts-ignore
+import ethAddress from 'ethereum-address';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Navbar from '../../../components/Navbar';
 import Filled_CTA_Button from '../../../components/Button/CTA/Filled';
@@ -6,7 +8,13 @@ import { pinFile, pinJson } from '../../../api/ipfs';
 import FileContainer from '../../../components/Collections/FileContainer';
 import DropdownComponent from '../../../components/Collections/Dropdown';
 import { CollectionMetadata, CollectionCategory } from '../../../api/models/collection';
-import { Spin } from 'antd';
+import { Spin, message } from 'antd';
+import type Web3 from 'web3';
+import MainFooter from '../../../components/Footer';
+import { useWeb3Context } from '../../../contexts/web3';
+import marketPlaceAbi from '../../../assets/abis/Marketplace.json';
+import { addresses, CONSTANTS } from '../../../assets';
+import { useAPIContext } from '../../../contexts/api';
 
 type Props = {};
 
@@ -244,17 +252,28 @@ const StyledExploreNft = styled.img`
   top: 361px;
 `;
 
+const NoItemContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+`;
+
 export default function NewCollection({}: Props) {
+  const { active, library, chainId, explorerUrl, account } = useWeb3Context();
+  const { authenticatedUser } = useAPIContext();
+
   const [bannerImage, setBannerImage] = useState<any>(null);
   const [avatarImage, setAvatarImage] = useState<any>(null);
   const [dropdownShown, setDropdownShown] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [tip, setTip] = useState<string>('');
+  const [paymentReceiver, setPaymentReceiver] = useState<string>('');
 
   const [collectionMetadata, setCollectionMetadata] = useState<Omit<Omit<CollectionMetadata, 'imageURI'>, 'bannerURI'>>(
     {
       name: '',
-      owner: '',
+      owner: !!authenticatedUser ? authenticatedUser.name : (account as string),
       category: CollectionCategory.ART,
       description: '',
       symbol: '',
@@ -276,7 +295,8 @@ export default function NewCollection({}: Props) {
       !!collectionMetadata.symbol &&
       collectionMetadata.name.length >= 4 &&
       collectionMetadata.owner.length >= 4 &&
-      collectionMetadata.symbol.length >= 3
+      collectionMetadata.symbol.length >= 3 &&
+      ethAddress.isAddress(paymentReceiver)
     );
   };
 
@@ -321,154 +341,216 @@ export default function NewCollection({}: Props) {
           imageURI: avatarPinningResponse.response.fileURI,
           bannerURI: bannerPinningResponse.response.fileURI
         });
+
+        const contract = new (library as Web3).eth.Contract(marketPlaceAbi as any, addresses[chainId as number]);
+
+        setTip('Deploying collection contract.');
+
+        const deploymentResponse = await contract.methods
+          .deployCollection(
+            collectionMetadata.name,
+            collectionMetadata.symbol,
+            collectionMetadata.category,
+            paymentReceiver,
+            jsonPinningResponse.response.itemURI
+          )
+          .send({
+            value: CONSTANTS.feesPerNetwork[chainId as number].collectionDeployFee.toHexString(),
+            from: account
+          });
+
         resetAllFields();
-        console.log(jsonPinningResponse);
+        message.success(
+          <>
+            <span style={{ fontSize: 15 }}>Collection successfully deployed!</span>{' '}
+            <a
+              style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
+              href={explorerUrl.concat('tx/' + deploymentResponse.transactionHash)}
+              target="_blank"
+            >
+              View on explorer!
+            </a>
+          </>,
+          15
+        );
       }
 
       setIsLoading(false);
       setTip('');
     } catch (error: any) {
       setIsLoading(false);
-      console.log(error);
+      message.error(error.message);
     }
   };
 
   return (
-    <MainContainer>
-      <NavbarContainer>
-        <Navbar />
-      </NavbarContainer>
-      <Spin spinning={isLoading} size="large" tip={tip}>
-        <ParentExploreAndData>
-          <div className="title">Create New Collection</div>
+    <>
+      <MainContainer>
+        <NavbarContainer>
+          <Navbar />
+        </NavbarContainer>
+        <Spin spinning={isLoading} size="large" tip={tip}>
+          <ParentExploreAndData>
+            {!active ? (
+              <NoItemContainer>
+                <div style={{ marginTop: '10em' }}>
+                  <span style={{ color: '#dc143c', fontSize: 30 }}>Please connect your wallet!</span>
+                </div>
+              </NoItemContainer>
+            ) : (
+              <>
+                <div className="title">Create New Collection</div>
 
-          <Heading className="heading">
-            Collection Banner <span className="blue">*</span>
-          </Heading>
+                <Heading className="heading">
+                  Collection Banner <span className="blue">*</span>
+                </Heading>
 
-          <div className="text">
-            Supported File Types: JPG, JPEG, PNG, GIF, WEBP
-            <span className="blue"> Max size 40mb</span>
-          </div>
+                <div className="text">
+                  Supported File Types: JPG, JPEG, PNG, GIF, WEBP
+                  <span className="blue"> Max size 40mb</span>
+                </div>
 
-          <FileContainer file={bannerImage} setFile={setBannerImage} type={1} />
+                <FileContainer file={bannerImage} setFile={setBannerImage} type={1} />
 
-          <Heading className="heading">
-            Collection Avatar <span className="blue">*</span>
-          </Heading>
+                <Heading className="heading">
+                  Collection Avatar <span className="blue">*</span>
+                </Heading>
 
-          <div className="text">
-            Supported File Types: JPG, JPEG, PNG, GIF, WEBP
-            <span className="blue"> Max size 40mb</span>
-          </div>
+                <div className="text">
+                  Supported File Types: JPG, JPEG, PNG, GIF, WEBP
+                  <span className="blue"> Max size 40mb</span>
+                </div>
 
-          <FileContainer file={avatarImage} setFile={setAvatarImage} type={1} />
+                <FileContainer file={avatarImage} setFile={setAvatarImage} type={1} />
 
-          <Heading className="heading">
-            Name<span className="blue">*</span>
-          </Heading>
+                <Heading className="heading">
+                  Name<span className="blue">*</span>
+                </Heading>
 
-          <div className="input-div">
-            <input
-              value={collectionMetadata.name}
-              name="name"
-              onChange={setProperty}
-              type="text"
-              className="inp"
-              placeholder="Name of your collection"
-            />
-          </div>
+                <div className="input-div">
+                  <input
+                    value={collectionMetadata.name}
+                    name="name"
+                    onChange={setProperty}
+                    type="text"
+                    className="inp"
+                    placeholder="Name of your collection"
+                  />
+                </div>
 
-          <Heading className="heading">
-            Owner<span className="blue">*</span>
-          </Heading>
+                <Heading className="heading">
+                  Owner<span className="blue">*</span>
+                </Heading>
 
-          <div className="input-div">
-            <input
-              type="text"
-              value={collectionMetadata.owner}
-              onChange={setProperty}
-              name="owner"
-              className="inp"
-              placeholder="Owner of this collection (Could be an Ethereum address or an ENS name)."
-            />
-          </div>
+                <div className="input-div">
+                  <input
+                    type="text"
+                    value={collectionMetadata.owner}
+                    onChange={setProperty}
+                    name="owner"
+                    className="inp"
+                    placeholder="Owner of this collection (Could be an Ethereum address or an ENS name)."
+                  />
+                </div>
 
-          <Heading className="heading">
-            Symbol<span className="blue">*</span>
-          </Heading>
+                <Heading className="heading">
+                  Symbol<span className="blue">*</span>
+                </Heading>
 
-          <div className="input-div">
-            <input
-              type="text"
-              value={collectionMetadata.symbol}
-              onChange={setProperty}
-              name="symbol"
-              className="inp"
-              placeholder="Collection symbol."
-            />
-          </div>
+                <div className="input-div">
+                  <input
+                    type="text"
+                    value={collectionMetadata.symbol}
+                    onChange={setProperty}
+                    name="symbol"
+                    className="inp"
+                    placeholder="Collection symbol."
+                  />
+                </div>
 
-          <Heading top={'48px'}>
-            Description<span className="blue">*</span>
-          </Heading>
+                <Heading className="heading">
+                  Payment Receiver<span className="blue">*</span>
+                </Heading>
 
-          <div className="text">Describe your collection.</div>
+                <div className="input-div">
+                  <input
+                    type="text"
+                    value={paymentReceiver}
+                    onChange={e => setPaymentReceiver(e.target.value)}
+                    name="symbol"
+                    className="inp"
+                    placeholder="Address that receives minting fees."
+                  />
+                </div>
 
-          <div className="text-area">
-            <textarea
-              className="real-text-area"
-              id=""
-              placeholder="Provide a detailed description of your collection."
-              rows={7}
-              value={collectionMetadata.description}
-              onChange={setProperty}
-              name="description"
-            ></textarea>
-          </div>
+                <Heading top={'48px'}>
+                  Description<span className="blue">*</span>
+                </Heading>
 
-          <Heading top={'38px'}>Collection Category</Heading>
+                <div className="text">Describe your collection.</div>
 
-          <div className="text">This is the category your collection belongs to.</div>
+                <div className="text-area">
+                  <textarea
+                    className="real-text-area"
+                    id=""
+                    placeholder="Provide a detailed description of your collection."
+                    rows={7}
+                    value={collectionMetadata.description}
+                    onChange={setProperty}
+                    name="description"
+                  ></textarea>
+                </div>
 
-          <DropdownComponent
-            dropdown={dropdownShown}
-            setDropdown={setDropdownShown}
-            value={collectionMetadata.category}
-            onChange={value => setCollectionMetadata({ ...collectionMetadata, category: value })}
-            dropDownList={Object.values(CollectionCategory).sort()}
-            defaultValue={collectionMetadata.category}
-            width={'155.78px'}
-            top={'36px'}
-          />
+                <Heading top={'38px'}>Collection Category</Heading>
 
-          <Heading top={'36px'}>Explicit and sensitive content.</Heading>
+                <div className="text">This is the category your collection belongs to.</div>
 
-          <div className="switch-cont">
-            <div className="text">Set this collection as having explicit and sensitive content.</div>
+                <DropdownComponent
+                  dropdown={dropdownShown}
+                  setDropdown={setDropdownShown}
+                  value={collectionMetadata.category}
+                  onChange={value => setCollectionMetadata({ ...collectionMetadata, category: value })}
+                  dropDownList={Object.values(CollectionCategory).sort()}
+                  defaultValue={collectionMetadata.category}
+                  width={'155.78px'}
+                  top={'36px'}
+                />
 
-            <label className="switch">
-              <input
-                type="checkbox"
-                checked={collectionMetadata.hasExplicitContent}
-                onChange={() =>
-                  setCollectionMetadata({
-                    ...collectionMetadata,
-                    hasExplicitContent: !collectionMetadata.hasExplicitContent
-                  })
-                }
-              />
-              <span className="slider round"></span>
-            </label>
-          </div>
+                <Heading top={'36px'}>Explicit and sensitive content.</Heading>
 
-          <Filled_CTA_Button disabled={!allConditionsSatisfied()} onClick={createCollection} style={{ marginTop: 33 }}>
-            {allConditionsSatisfied() ? 'Create' : 'Please fill in the required fields'}
-          </Filled_CTA_Button>
-        </ParentExploreAndData>
-      </Spin>
-      <StyledExploreNft src="/icons/exploreNFT.png" />
-      <ColoredBackground></ColoredBackground>
-    </MainContainer>
+                <div className="switch-cont">
+                  <div className="text">Set this collection as having explicit and sensitive content.</div>
+
+                  <label className="switch">
+                    <input
+                      type="checkbox"
+                      checked={collectionMetadata.hasExplicitContent}
+                      onChange={() =>
+                        setCollectionMetadata({
+                          ...collectionMetadata,
+                          hasExplicitContent: !collectionMetadata.hasExplicitContent
+                        })
+                      }
+                    />
+                    <span className="slider round"></span>
+                  </label>
+                </div>
+
+                <Filled_CTA_Button
+                  disabled={!allConditionsSatisfied()}
+                  onClick={createCollection}
+                  style={{ marginTop: 33, width: '100%' }}
+                >
+                  {allConditionsSatisfied() ? 'Create' : 'Please fill in the required fields'}
+                </Filled_CTA_Button>
+              </>
+            )}
+          </ParentExploreAndData>
+        </Spin>
+        <StyledExploreNft src="/icons/exploreNFT.png" />
+        <ColoredBackground></ColoredBackground>
+      </MainContainer>
+      <MainFooter />
+    </>
   );
 }

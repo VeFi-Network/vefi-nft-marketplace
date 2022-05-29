@@ -3,7 +3,21 @@
     "appName": "smartchain",
     "chainRpc": "https://data-seed-prebsc-1-s1.binance.org:8545/",
     "symbol": "BNB",
-    "explorerUrl": "https://testnet.bscscan.com",
+    "explorerUrl": "https://testnet.bscscan.com/",
     "name": "Binance Smartchain Testnet"
+  },
+  "80001": {
+    "appName": "polygon",
+    "chainRpc": "https://matic-mumbai.chainstacklabs.com",
+    "symbol": "MATIC",
+    "explorerUrl": "https://mumbai.polygonscan.com/",
+    "name": "Polygon Mumbai Testnet"
+  },
+  "4": {
+    "appName": "ethereum",
+    "chainRpc": "https://rinkeby.infura.io/v3/f9e72d0223644a4fa9a8807426b6dbef",
+    "symbol": "ETH",
+    "explorerUrl": "https://rinkeby.etherscan.io/",
+    "name": "Rinkeby Testnet"
   }
 }

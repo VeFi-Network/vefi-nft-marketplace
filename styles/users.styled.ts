@@ -3,7 +3,7 @@ import styled from 'styled-components';
 type Props = {
   cardWidth?: string;
   cardHeight?: string;
-}
+};
 
 export const UsersWrapper = styled.div`
   background: #0c0c0c;
@@ -23,6 +23,14 @@ export const UsersWrapper = styled.div`
       width: 100%;
     }
   }
+  .table-listing {
+    thead {
+      background: transparent;
+    }
+    th {
+      font-weight: bold;
+    }
+  }
 `;
 
 export const UserNFTBanner = styled.div`
@@ -31,31 +39,32 @@ export const UserNFTBanner = styled.div`
   background: url(${(props: { bg: string }) => (props.bg ? props.bg : '')}) no-repeat;
   background-size: cover;
   background-position: top center;
-  border-top: 3px solid #5c95ff;
-  border-bottom: 3px solid #5c95ff;
+  border-top: 5px solid #5c95ff;
+  border-bottom: 5px solid #5c95ff;
+  height: 250px;
 `;
 
 export const UserNFTInfo = styled.div`
-  width: 200px;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: -90px;
+  margin-top: -118px;
   display: flex;
   flex-direction: column;
   align-items: center;
 
   .display__pics {
-    width: 180px;
-    height: 180px;
+    width: 236px;
+    height: 236px;
     background: #5c95ff;
     display: flex;
     justify-content: center;
-    border: 3px solid #5c95ff;
+    border: 5px solid #5c95ff;
     border-radius: 50%;
     overflow: hidden;
     img {
-      width: 180px !important;
-      height: 180px !important;
+      width: 236px !important;
+      height: 236px !important;
       object-fit: cover;
     }
   }
@@ -223,7 +232,7 @@ export const NFTUserCollectionInfo = styled.div`
         align-items: center;
         gap: 10px;
         padding-bottom: 8px;
-        color:#fff !important;
+        color: #fff !important;
         transition: all 0.3s ease-in;
         &:hover {
           color: rgba(255, 255, 255, 0.7);
@@ -240,8 +249,8 @@ export const NFTUserCollectionInfo = styled.div`
             font-size: 0.9rem;
           }
         }
-        button.grid_btn{
-          background-color:#373943;
+        button.grid_btn {
+          background-color: #373943;
         }
 
         .sort__display {
@@ -296,16 +305,20 @@ export const NFTUserCollectionInfo = styled.div`
 
 export const NFTCollection = styled.div`
   width: 100%;
-  display:flex;
+  display: flex;
   justify-content: flex-start;
   .container {
     width: 100%;
+    height: 800px;
+    overflow-y: auto;
     display: flex;
     flex-wrap: wrap;
-    flex-direction:row;
+    gap: 20px;
+    flex-direction: row;
     row-gap: 30px;
     margin: 30px 0;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: flex-start;
   }
 `;
 
@@ -422,8 +435,8 @@ export const CardContainer = styled.div`
   position: relative;
   top: 0;
   left: 0rem;
-  max-width: ${(props:Props) => props.cardWidth || "300px"};
-  height: ${(props:Props) => props.cardHeight || "380px"};
+  max-width: ${(props: Props) => props.cardWidth || '300px'};
+  height: ${(props: Props) => props.cardHeight || '380px'};
   align-self: center;
   z-index: 3;
   transition-duration: 250ms;
@@ -442,18 +455,16 @@ export const CardHeader = styled.div`
   z-index: 1;
   img {
     border-radius: 21px 21px 0 0;
-    width: 100% !important;
+    width: 300px !important;
     height: 380px !important;
     object-fit: cover !important;
   }
 `;
 
 export const CardFooterContainer = styled.div`
-  background-color: transparent;
-  background: linear-gradient(137.43deg, rgba(255, 255, 255, 0.5) 3.89%, rgba(255, 255, 255, 0.2) 100%);
-  border-top: 0.841717px solid #ffffff;
+  background: rgba(255, 255, 255, 0.3);
   z-index: 5;
-  backdrop-filter: blur(16.83px);
+  backdrop-filter: blur(10px);
   cursor: pointer;
   height: 112.26px;
   position: absolute;
@@ -497,10 +508,11 @@ export const CardFooterItem = styled.div`
   flex-direction: row;
   width: 100%;
   justify-content: space-between;
-  height: 121px;
+  height: 112.26px;
   margin-top: 15px;
-  padding: 10px 0;
+
   cursor: pointer;
+  background: rgba(0, 0, 0, 0.4);
   .nft-meta-data {
     display: flex;
     flex-direction: column;
@@ -513,10 +525,11 @@ export const CardFooterItem = styled.div`
     display: flex;
     flex-direction: column;
     padding: 15px;
-    margin-top:0.3rem;
+    margin-top: 0.3rem;
     row-gap: 0.3rem;
     align-items: center;
-    height:50px;
+    height: 50px;
+
     .price {
       display: flex;
       align-items: center;
@@ -546,14 +559,13 @@ export const CardFooterItem = styled.div`
   }
 `;
 
-
 export const ButtonContainer = styled.div`
-  position:absolute;
-  margin:10px;
-  display:flex;
-  justify-content:flex-end;
-  column-gap:10px;
-  top:0;
-  z-index:9;
-  right:0;
-`
+  position: absolute;
+  margin: 10px;
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 10px;
+  top: 0;
+  z-index: 9;
+  right: 0;
+`;

@@ -63,7 +63,7 @@ const Bridge = () => {
             </div>
           </BridgeContainer>
         </BridgeBackground>
-        <MainFooter/>
+        <MainFooter />
       </SectionWrapper>
       <Modal
         visible={isModalVisible}

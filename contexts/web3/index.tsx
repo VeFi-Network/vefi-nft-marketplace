@@ -1,73 +1,127 @@
-import React, { createContext, useEffect, useContext, useCallback } from 'react';
-import { useRouter } from 'next/router';
-import { hexlify } from '@ethersproject/bytes';
+import React, { createContext, useEffect, useContext, useCallback, useState } from 'react';
+import { formatEther } from '@ethersproject/units';
 import { useWeb3React } from '@web3-react/core';
 import { InjectedConnector } from '@web3-react/injected-connector';
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import type Web3 from 'web3';
 import chains from '../../chains.json';
+import request from '../../api/rpc';
 
 type Web3ContextType = {
   account?: string | null;
   library?: Web3;
   chainId?: number;
-  connectOrDisconnectWeb3: () => void;
-  switchChain: (chain: number) => void;
+  active: boolean;
+  error?: Error;
+  network: string;
+  networkSymbol: string;
+  explorerUrl: string;
+  balance: string;
+  connectMetamask: () => void;
+  connectWalletConnect: () => void;
+  disconnectWallet: () => void;
 };
 
 const Web3Context = createContext<Web3ContextType>({} as Web3ContextType);
 
 const injectedConnector = new InjectedConnector({
-  supportedChainIds: [97, 56, 32520, 64668]
+  supportedChainIds: [97, 56, 32520, 64668, 80001, 4]
+});
+
+const walletConnectConnector = new WalletConnectConnector({
+  qrcode: true,
+  bridge: 'https://bridge.walletconnect.org',
+  supportedChainIds: [97, 56, 32520, 64668, 80001, 4]
 });
 
 export const Web3ContextProvider = ({ children }: any) => {
-  const { library, account, activate, deactivate, active, chainId } = useWeb3React<Web3>();
-  const { reload } = useRouter();
+  const { library, account, activate, deactivate, active, chainId, error, setError } = useWeb3React<Web3>();
+  const [network, setNetwork] = useState<string>('smartchain');
+  const [networkSymbol, setNetworkSymbol] = useState<string>('BNB');
+  const [explorerUrl, setExplorerUrl] = useState<string>(chains['97'].explorerUrl);
+  const [tried, setTried] = useState<boolean>(false);
+  const [balance, setBalance] = useState<string>('0');
 
-  const connectOrDisconnectWeb3 = useCallback(() => {
+  const fetchBalance = useCallback(() => {
+    try {
+      request(network, { id: 1, jsonrpc: '2.0', method: 'eth_getBalance', params: [account, 'latest'] })
+        .then(formatEther)
+        .then(setBalance)
+        .catch(setError);
+    } catch (error: any) {
+      setError(error);
+    }
+  }, [account, network]);
+
+  const connectMetamask = useCallback(() => {
     if (!active) {
       activate(injectedConnector, undefined, true).then(() => {
-        console.log('Web3 connected!');
+        console.log('Metamask connected!');
       });
-    } else {
-      deactivate();
-      console.log('Web3 disconnected!');
     }
   }, [active]);
 
-  const switchChain = useCallback(
-    (chain: number) => {
-      const { ethereum } = window as unknown as Window & { ethereum: any };
+  const connectWalletConnect = useCallback(() => {
+    if (!active) {
+      activate(walletConnectConnector, undefined, true).then(() => {
+        console.log('Walletconnect connected');
+      });
+    }
+  }, [active]);
 
-      if (!!ethereum) {
-        ethereum
-          .request({
-            method: 'wallet_switchEthereumChain',
-            params: [{ chainId: hexlify(chain) }]
-          })
-          .then(() => reload())
-          .catch((error: any) => {
-            if (error.code === 4902) {
-              // Do something
-            }
-          });
-      }
-    },
-    [chainId]
-  );
+  const disconnectWallet = useCallback(() => {
+    if (active) deactivate();
+  }, [active]);
 
   useEffect(() => {
     injectedConnector.isAuthorized().then(isAuth => {
       if (isAuth) {
         activate(injectedConnector, undefined, true).then(() => {
-          console.log('Web3 connected');
+          setTried(true);
         });
+      } else {
+        setTried(true);
       }
     });
   }, []);
 
+  useEffect(() => {
+    if (!tried && active) {
+      setTried(true);
+    }
+  }, [tried, active]);
+
+  useEffect(() => {
+    if (!!chainId && !!active) {
+      setNetwork(chains[chainId.toString() as keyof typeof chains].appName);
+      setExplorerUrl(chains[chainId.toString() as keyof typeof chains].explorerUrl);
+      setNetworkSymbol(chains[chainId.toString() as keyof typeof chains].symbol);
+    }
+  }, [chainId, active]);
+
+  useEffect(() => {
+    if (!!account && !!network) {
+      fetchBalance();
+    }
+  }, [account, network]);
+
   return (
-    <Web3Context.Provider value={{ account, library, chainId, connectOrDisconnectWeb3, switchChain }}>
+    <Web3Context.Provider
+      value={{
+        account,
+        library,
+        chainId,
+        connectMetamask,
+        connectWalletConnect,
+        disconnectWallet,
+        active,
+        network,
+        networkSymbol,
+        explorerUrl,
+        balance,
+        error
+      }}
+    >
       {children}
     </Web3Context.Provider>
   );

@@ -6,18 +6,23 @@ import Navbar from '../components/Navbar';
 import Image from 'next/image';
 import Card from '../components/Card';
 import Background from '../components/AnimatedBackground';
-import { FaQuestion } from 'react-icons/fa';
+import { FaQuestion, FaTag, FaShoppingBasket, FaList } from 'react-icons/fa';
 import { Button } from 'antd';
 import _ from 'lodash';
-import { useAPIContext } from '../contexts/api/index';
+import { useAPIContext } from '../contexts/api';
 import MainFooter from '../components/Footer';
 import Hero from '../components/Hero';
+import { Category } from '../styles/CategoryCard.styled';
+import CategoryCard from '../components/Card/CategoryCard';
+import { useRouter } from 'next/router';
+import { CollectionCategory, CollectionCategoryImages, CollectionModel } from '../api/models/collection';
+import { useWeb3Context } from '../contexts/web3';
 
 const MainContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   /* background: #0c0c0c; */
 
   width: 100%;
@@ -86,12 +91,10 @@ const FilterContainer = styled.div`
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: -270px;
-
   .filter__wrapper {
     display: flex;
     flex-direction: column;
-    padding: 0 20px;
+
     .filter__top {
       display: flex;
       align-items: center;
@@ -116,40 +119,38 @@ const FilterContainer = styled.div`
   }
 `;
 
+// const FilterBtn = styled.button`
+//   background: ${(props: any) => (props.isActive ? '#5C95FF' : '#373943 ')};
+//   border-radius: 11px;
+//   cursor: pointer;
+//   font-family: 'Rubik';
+//   font-style: normal;
+//   font-weight: 400;
+//   font-size: 12px;
+//   line-height: 17px;
+//   border: none;
+
+//   color: #ccc;
+//   padding: 10px;
+//   display: flex;
+//   flex-direction: row;
+//   gap: 10px;
+// `;
+
 const FilterBtn = styled.button`
-  background: #373943;
+  background: ${(props: any) => (props.isActive ? '#5C95FF' : '#373943 ')};
   border-radius: 11px;
-  cursor: pointer;
-  font-family: 'Rubik';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 17px;
-  border: none;
-
-  color: #ccc;
-  padding: 10px;
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-`;
-
-const FilterAllBtn = styled.button`
-  background: #373943;
-  border-radius: 11px;
-
   font-family: 'Rubik';
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  line-height: 17px;
   border: none;
 
   color: #ccc;
   padding: 10px 50px 10px 10px;
 
   cursor: pointer;
-
+  align-items: center;
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -175,12 +176,14 @@ const SearchBar = styled.div`
     width: 150px;
   }
 `;
+
 const NFTSubCont = styled.div`
   width: 90%;
   margin: 0px auto;
   overflow-x: scroll;
   margin-top: -50px;
   transition: all 0.3s ease-in;
+
   .nft__sub__container {
     display: flex;
     width: max-content;
@@ -222,13 +225,14 @@ const ParentNFTCont = styled.div``;
 const DiscoverAndAnimate = styled.div`
   display: flex;
   width: 100%;
+  height: 450px;
   flex-direction: row;
   position: relative;
 `;
 
 const DiscoverPart = styled.div`
   flex: 0.5;
-  margin-left: 50px;
+  margin-left: 20px;
   @media screen and (max-width: 760px) {
     width: 100%;
     margin: 0px auto;
@@ -382,19 +386,50 @@ const NoItemContainer = styled.div`
   margin-top: 50px;
 `;
 
-const HeroContainer = styled.div`
-
-`
+const HeroContainer = styled.div``;
 
 export default function Homepage() {
+  enum ActiveBtn {
+    ALL,
+    ITEMS,
+    TOP_SELLING
+  }
+
   const [searchValue, setSearchValue] = useState('');
-  const { allCollections, loadAllCollections } = useAPIContext();
+  const {
+    allCollections,
+    topSellingCollections,
+    collectionsByAssets,
+    loadAllCollections,
+    loadTopSellingCollections,
+    loadCollectionsByAssets
+  } = useAPIContext();
+  const [list, setList] = useState<CollectionModel[]>([]);
+  const [activeBtn, setActiveBtn] = useState<ActiveBtn>(ActiveBtn.ALL);
+  const router = useRouter();
+  const { network } = useWeb3Context();
+
+  useEffect(() => {
+    loadAllCollections(1);
+    loadTopSellingCollections(1);
+    loadCollectionsByAssets(1);
+  }, []);
 
   useEffect(() => {
     (() => {
-      loadAllCollections(1);
+      if (!!network) {
+        loadAllCollections(1);
+        loadTopSellingCollections(1);
+        loadCollectionsByAssets(1);
+      }
     })();
-  }, []);
+  }, [network]);
+
+  useEffect(() => {
+    if (!!allCollections) {
+      setList(allCollections);
+    }
+  }, [allCollections]);
 
   return (
     <>
@@ -414,8 +449,10 @@ export default function Homepage() {
                 </RoundBlueLine>
                 <DiscoverText>Discover, collect, and sell extraordinary NFTs</DiscoverText>
                 <ButtonContainer>
-                  <Filled_CTA_Button>Get Started</Filled_CTA_Button>
-                  <Ghost_CTA_Button>Become a Creator</Ghost_CTA_Button>
+                  <Filled_CTA_Button onClick={() => router.replace('/marketplace')}>Get Started</Filled_CTA_Button>
+                  <Ghost_CTA_Button onClick={() => router.replace('/collections/item/new')}>
+                    Become a Creator
+                  </Ghost_CTA_Button>
                 </ButtonContainer>
               </DiscoverPart>
               <AnimatePart>
@@ -430,18 +467,32 @@ export default function Homepage() {
                   <div> Filter by</div>
                 </div>
                 <div className="filter__bottom">
-                  <FilterAllBtn>All</FilterAllBtn>
-                  <FilterBtn>
-                    Top Selling{' '}
-                    <div style={{ marginTop: -1 }}>
-                      <Image width="12px" height="9px" src="/icons/downIcon.svg" />
-                    </div>
+                  <FilterBtn
+                    onClick={() => {
+                      setActiveBtn(ActiveBtn.ALL);
+                      setList(allCollections);
+                    }}
+                    isActive={activeBtn === ActiveBtn.ALL}
+                  >
+                    <FaList width={10} height={9} /> All
                   </FilterBtn>
-                  <FilterBtn>
-                    Price{' '}
-                    <div style={{ marginTop: -1 }}>
-                      <Image width="12px" height="9px" src="/icons/downIcon.svg" />
-                    </div>
+                  <FilterBtn
+                    onClick={() => {
+                      setActiveBtn(ActiveBtn.TOP_SELLING);
+                      setList(topSellingCollections);
+                    }}
+                    isActive={activeBtn === ActiveBtn.TOP_SELLING}
+                  >
+                    <FaShoppingBasket width={10} height={9} /> Top Selling
+                  </FilterBtn>
+                  <FilterBtn
+                    onClick={() => {
+                      setActiveBtn(ActiveBtn.ITEMS);
+                      setList(collectionsByAssets);
+                    }}
+                    isActive={activeBtn === ActiveBtn.ITEMS}
+                  >
+                    <FaTag width={10} height={9} /> Number Of Items
                   </FilterBtn>
                   <SearchBar>
                     <Image height="18px" width="18px" src={'/icons/search.svg'} />{' '}
@@ -459,7 +510,7 @@ export default function Homepage() {
               </div>
             </FilterContainer>
             <ParentNFTCont>
-              {allCollections.length === 0 ? (
+              {list.length === 0 ? (
                 <NoItemContainer>
                   <span style={{ color: '#f5f5f5', fontSize: 30, fontFamily: 'Rubik' }}>No Item To Display</span>
                 </NoItemContainer>
@@ -467,23 +518,45 @@ export default function Homepage() {
                 <NFTContainer className="nft-container">
                   <NFTSubCont>
                     <div className="nft__sub__container">
-                      {_.map(allCollections, collection => (
-                        <>
-                          <Card
-                            name={collection?.collectionName}
-                            price="0"
-                            owner={collection?.metadata.owner}
-                            imageURI={collection?.metadata.imageURI}
-                            key={collection?.collectionId}
-                            linkTo={`/collections/${collection?.collectionId}`}
-                          />
-                        </>
-                      ))}
+                      {_.map(
+                        list.filter(model => {
+                          if (searchValue.trim().length > 0) return model.collectionName.includes(searchValue);
+                          else return model;
+                        }),
+                        collection => (
+                          <div key={collection.collectionId}>
+                            <Card
+                              name={collection?.collectionName}
+                              owner={collection?.metadata.owner}
+                              imageURI={collection?.metadata.imageURI}
+                              linkTo={`/collections/${collection?.collectionId}`}
+                            />
+                          </div>
+                        )
+                      )}
                     </div>
                   </NFTSubCont>
                 </NFTContainer>
               )}
             </ParentNFTCont>
+            <Category>
+              <div className="category__container">
+                <div className="category__heading">
+                  <h2>Browse by Category</h2>
+                </div>
+                <div className="cartegory__card__listing">
+                  {_.map(Object.values(CollectionCategory).sort(), category => (
+                    <div key={category}>
+                      <CategoryCard
+                        linkTo={`/collections?category=${category}`}
+                        name={category}
+                        image={CollectionCategoryImages[category]}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Category>
           </div>
           <Footer>
             <div className="footer__container">
@@ -500,19 +573,18 @@ export default function Homepage() {
               </div>
             </div>
           </Footer>
-          <HeroContainer>          <Hero/>
-</HeroContainer>
+          <HeroContainer>
+            {' '}
+            <Hero />
+          </HeroContainer>
         </MarketplaceContainer>
-
-        <FooterHelpIcon>
-          <div className="help">
-            <FaQuestion />
-          </div>
-        </FooterHelpIcon>
-        
-
       </MainContainer>
-      <MainFooter/>
+      <MainFooter />
+      <FooterHelpIcon>
+        <div className="help">
+          <FaQuestion />
+        </div>
+      </FooterHelpIcon>
     </>
   );
 }

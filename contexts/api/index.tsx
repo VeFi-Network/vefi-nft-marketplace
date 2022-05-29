@@ -7,12 +7,31 @@ import {
   getAllNFTsByNetwork,
   signToken,
   getAuthenticatedUser,
-  getCollectionById
+  getCollectionById,
+  getCollectionsByItems,
+  getAllCollections,
+  getNFTByIdAndNetwork,
+  countAllItemsByCollection,
+  getTopSellingCollections,
+  getAllOngoingSales,
+  checkIfOnSale,
+  fetchPriceFromPeriod,
+  getAllFavorites,
+  getAllOrdersByNFT,
+  getNFTsInCollectionByPrice,
+  getTopSellingNFTsInCollection,
+  getNFTsWithOffersInCollection,
+  getAllCollectionsByOwner,
+  getFavoriteNFTsOfUser,
+  getUserWatchList,
+  countItemViews,
+  countSuccessfulTrades,
+  getAccountById
 } from '../../api/nft';
-import chains from '../../chains.json';
 import { useWeb3Context } from '../web3/index';
 import { CollectionModel } from '../../api/models/collection';
-import { getAllCollections, getNFTByIdAndNetwork } from '../../api/nft';
+import { SaleModel } from '../../api/models/sale';
+import { OrderModel } from '../../api/models/order';
 
 export enum APIErrorPoint {
   NFT_BY_ID,
@@ -22,26 +41,73 @@ export enum APIErrorPoint {
   TOKEN_LOAD,
   AUTH_USER,
   ALL_COLLECTIONS,
-  COLLECTION_BY_ID
+  COLLECTION_BY_ID,
+  COUNT_COLLECTION_ITEMS,
+  ALL_SALES,
+  ITEM_ON_SALE,
+  ITEM_PRICE_PER_PERIOD,
+  FAVORITES,
+  ALL_NFT_ORDERS,
+  ALL_USER_COLLECTIONS,
+  FAVORITES_OF_USER,
+  USER_WATCHLIST,
+  ITEM_VIEWS,
+  SUCCESSFUL_TRADES_COUNT,
+  ACCOUNT_BY_ID
 }
 
 type APIContextType = {
+  accountById?: AccountModel;
+  token: string;
   nftById: NFTModel;
   nftsByUser: Array<NFTModel>;
   nftsByCollection: Array<NFTModel>;
   nftsByNetwork: Array<NFTModel>;
+  favoriteNFTsOfUser: Array<NFTModel>;
   allCollections: Array<CollectionModel>;
+  allUserCollections: Array<CollectionModel>;
+  topSellingCollections: Array<CollectionModel>;
+  nftsInCollectionByPrice: Array<NFTModel>;
+  topSellingNFTsInCollection: Array<NFTModel>;
+  nftsInCollectionByOffers: Array<NFTModel>;
+  collectionsByAssets: Array<CollectionModel>;
+  allOngoingSales: Array<SaleModel>;
   collectionById: CollectionModel;
+  itemsInCollection: number;
   isUserAuthenticated: boolean;
   authenticatedUser?: AccountModel;
+  itemOnSale: boolean;
+  itemViews: number;
+  successfulTradesForCollection: number;
+  itemPricePerPeriod: Array<{ timestamp: number; price: number }>;
+  favorites: Array<any>;
+  allNFTOrders: Array<OrderModel>;
+  userWatchList: Array<OrderModel>;
   loadAllCollections: (page?: number) => void;
+  loadTopSellingCollections: (page?: number) => void;
+  loadCollectionsByAssets: (page?: number) => void;
   loadCollectionById: (id: string) => void;
-  loadAuthUser: () => void;
-  loadToken: (accountId: any) => void;
   loadNFTById: (collectionId: string, id: number) => void;
-  loadNFTsByUser: (page?: number) => void;
+  loadNFTsByUser: (accountId: string, page?: number) => void;
   loadNFTsByCollection: (collection: string, page?: number) => void;
   loadNFTsByNetwork: (page?: number) => void;
+  loadNumberOfItemsInCollection: (collectionId: string) => void;
+  loadAllOngoingSales: (page?: number) => void;
+  loadAllUserCollections: (accountId: string, page?: number) => void;
+  checkItemOnSale: (collectionId: string, tokenId: number) => void;
+  loadItemPricePerPeriod: (collectionId: string, tokenId: number, fromTime?: number, toTime?: number) => void;
+  loadFavorites: (collectionId: string, tokenId: number) => void;
+  loadAllNFTOrders: (collectionId: string, tokenId: number) => void;
+  loadNFTsInCollectionByPrice: (collectionId: string, page?: number) => void;
+  loadTopSellingNFTsInCollection: (collectionId: string, page?: number) => void;
+  loadNFTsInCollectionByOffers: (collectionId: string, page?: number) => void;
+  loadFavoriteNFTsOfUser: (accountId: string, page?: number) => void;
+  loadUserWatchList: (page?: number) => void;
+  loadItemViews: (collectionId: string, tokenId: number) => void;
+  loadSuccessfulTradesForCollection: (collectionId: string) => void;
+  loadToken: (accountId: string) => void;
+  loadAccountById: (accountId: string) => void;
+  logout: () => void;
   error?: {
     point: APIErrorPoint;
     message: string;
@@ -60,12 +126,27 @@ export const APIContextProvider = ({ children }: any) => {
   const [collectionById, setCollectionById] = useState<CollectionModel>({
     metadata: { imageURI: '', bannerURI: '' }
   } as CollectionModel);
+  const [itemsInCollection, setItemsInCollection] = useState<number>(0);
+  const [topSellingCollections, setTopSellingCollections] = useState<Array<CollectionModel>>([]);
+  const [collectionsByAssets, setCollectionsByAssets] = useState<Array<CollectionModel>>([]);
+  const [allOngoingSales, setAllOngoinSales] = useState<Array<SaleModel>>([]);
   const [authenticatedUser, setAuthenticatedUser] = useState<AccountModel>();
   const [isUserAuthenticated, setIsUserAuthenticated] = useState<boolean>(false);
+  const [itemOnSale, setItemOnSale] = useState<boolean>(false);
+  const [itemPricePerPeriod, setItemPricePerPeriod] = useState<Array<{ timestamp: number; price: number }>>([]);
+  const [favorites, setFavorites] = useState<Array<any>>([]);
+  const [allNFTOrders, setAllNFTOrders] = useState<Array<OrderModel>>([]);
+  const [nftsInCollectionByPrice, setNFTsInCollectionByPrice] = useState<Array<NFTModel>>([]);
+  const [topSellingNFTsInCollection, setTopSellingNFTsInCollection] = useState<Array<NFTModel>>([]);
+  const [nftsInCollectionByOffers, setNFTsInCollectionByOffers] = useState<Array<NFTModel>>([]);
+  const [allUserCollections, setAllUserCollections] = useState<Array<CollectionModel>>([]);
+  const [favoriteNFTsOfUser, setFavoriteNFTsOfUser] = useState<Array<NFTModel>>([]);
+  const [userWatchList, setUserWatchList] = useState<Array<OrderModel>>([]);
+  const [itemViews, setItemViews] = useState<number>(0);
+  const [successfulTradesForCollection, setSuccessfulTradesForCollection] = useState<number>(0);
   const [token, setToken] = useState<string>('');
-
-  const { chainId } = useWeb3Context();
-  const network = chains['97'].appName;
+  const [accountById, setAccountById] = useState<AccountModel>();
+  const { network, account, active } = useWeb3Context();
 
   const clearError = () => {
     setError(undefined);
@@ -80,9 +161,10 @@ export const APIContextProvider = ({ children }: any) => {
 
   const loadAuthUser = () => {
     clearError();
-    getAuthenticatedUser(token)
-      .then(setAuthenticatedUser)
-      .catch((error: any) => setError({ point: APIErrorPoint.AUTH_USER, message: error.message }));
+    if (!!token || !!localStorage.getItem('VEFI_NFT_TOKEN'))
+      getAuthenticatedUser(token.trim().length > 0 ? token : (localStorage.getItem('VEFI_NFT_TOKEN') as string))
+        .then(setAuthenticatedUser)
+        .catch((error: any) => setError({ point: APIErrorPoint.AUTH_USER, message: error.message }));
   };
 
   const loadNFTById = (collectionId: string, id: number) => {
@@ -92,31 +174,45 @@ export const APIContextProvider = ({ children }: any) => {
       .catch((error: any) => setError({ point: APIErrorPoint.NFT_BY_ID, message: error.message }));
   };
 
-  const loadNFTsByUser = (page: number = 1) => {
+  const loadNFTsByUser = (accountId: string, page?: number) => {
     clearError();
-    getNFTsByOwner(token, network, page)
+    getNFTsByOwner(network, accountId, page)
       .then(setNFTsByUser)
       .catch((error: any) => setError({ point: APIErrorPoint.NFTS_BY_USER, message: error.message }));
   };
 
-  const loadNFTsByCollection = (collection: string, page: number = 1) => {
+  const loadNFTsByCollection = (collection: string, page?: number) => {
     clearError();
     getNFTsByCollection(collection, network, page)
       .then(setNFTsByCollection)
       .catch((error: any) => setError({ point: APIErrorPoint.NFTS_BY_COLLECTION, message: error.message }));
   };
 
-  const loadNFTsByNetwork = (page: number = 1) => {
+  const loadNFTsByNetwork = (page?: number) => {
     clearError();
     getAllNFTsByNetwork(network, page)
       .then(setNFTsByNetwork)
       .catch((error: any) => setError({ point: APIErrorPoint.NFTS_BY_NETWORK, message: error.message }));
   };
 
-  const loadAllCollections = (page: number = 1) => {
+  const loadAllCollections = (page?: number) => {
     clearError();
     getAllCollections(network, page)
       .then(setAllCollections)
+      .catch((error: any) => setError({ point: APIErrorPoint.ALL_COLLECTIONS, message: error.message }));
+  };
+
+  const loadTopSellingCollections = (page?: number) => {
+    clearError();
+    getTopSellingCollections(network, page)
+      .then(setTopSellingCollections)
+      .catch((error: any) => setError({ point: APIErrorPoint.ALL_COLLECTIONS, message: error.message }));
+  };
+
+  const loadCollectionsByAssets = (page?: number) => {
+    clearError();
+    getCollectionsByItems(network, page)
+      .then(setCollectionsByAssets)
       .catch((error: any) => setError({ point: APIErrorPoint.ALL_COLLECTIONS, message: error.message }));
   };
 
@@ -127,36 +223,187 @@ export const APIContextProvider = ({ children }: any) => {
       .catch((error: any) => setError({ point: APIErrorPoint.COLLECTION_BY_ID, message: error.message }));
   };
 
+  const loadNumberOfItemsInCollection = (collectionId: string) => {
+    clearError();
+    countAllItemsByCollection(network, collectionId)
+      .then(setItemsInCollection)
+      .catch((error: any) => setError({ point: APIErrorPoint.COUNT_COLLECTION_ITEMS, message: error.message }));
+  };
+
+  const loadAllOngoingSales = (page?: number) => {
+    clearError();
+    getAllOngoingSales(network, page)
+      .then(setAllOngoinSales)
+      .catch((error: any) => setError({ point: APIErrorPoint.ALL_SALES, message: error.message }));
+  };
+
+  const checkItemOnSale = (collectionId: string, tokenId: number) => {
+    clearError();
+    checkIfOnSale(network, collectionId, tokenId)
+      .then(setItemOnSale)
+      .catch((error: any) => setError({ point: APIErrorPoint.ITEM_ON_SALE, message: error.message }));
+  };
+
+  const loadItemPricePerPeriod = (collectionId: string, tokenId: number, fromTime?: number, toTime?: number) => {
+    clearError();
+    fetchPriceFromPeriod(network, collectionId, tokenId, fromTime, toTime)
+      .then(setItemPricePerPeriod)
+      .catch((error: any) => setError({ point: APIErrorPoint.ITEM_PRICE_PER_PERIOD, message: error.message }));
+  };
+
+  const loadFavorites = (collectionId: string, tokenId: number) => {
+    clearError();
+    getAllFavorites(network, collectionId, tokenId)
+      .then(setFavorites)
+      .catch((error: any) => setError({ point: APIErrorPoint.FAVORITES, message: error.message }));
+  };
+
+  const loadAllNFTOrders = (collectionId: string, tokenId: number) => {
+    clearError();
+    getAllOrdersByNFT(network, collectionId, tokenId)
+      .then(setAllNFTOrders)
+      .catch((error: any) => setError({ point: APIErrorPoint.ALL_NFT_ORDERS, message: error.message }));
+  };
+
+  const loadNFTsInCollectionByPrice = (collectionId: string, page?: number) => {
+    clearError();
+    getNFTsInCollectionByPrice(network, collectionId, page)
+      .then(setNFTsInCollectionByPrice)
+      .catch((error: any) => setError({ point: APIErrorPoint.NFTS_BY_COLLECTION, message: error.message }));
+  };
+
+  const loadTopSellingNFTsInCollection = (collectionId: string, page?: number) => {
+    clearError();
+    getTopSellingNFTsInCollection(network, collectionId, page)
+      .then(setTopSellingNFTsInCollection)
+      .catch((error: any) => setError({ point: APIErrorPoint.NFTS_BY_COLLECTION, message: error.message }));
+  };
+
+  const loadNFTsInCollectionByOffers = (collectionId: string, page?: number) => {
+    clearError();
+    getNFTsWithOffersInCollection(network, collectionId, page)
+      .then(setNFTsInCollectionByOffers)
+      .catch((error: any) => setError({ point: APIErrorPoint.NFTS_BY_COLLECTION, message: error.message }));
+  };
+
+  const loadAllUserCollections = (accountId: string, page?: number) => {
+    clearError();
+    getAllCollectionsByOwner(network, accountId, page)
+      .then(setAllUserCollections)
+      .catch((error: any) => setError({ point: APIErrorPoint.ALL_USER_COLLECTIONS, message: error.message }));
+  };
+
+  const loadFavoriteNFTsOfUser = (accountId: string, page?: number) => {
+    clearError();
+    getFavoriteNFTsOfUser(network, accountId, page)
+      .then(setFavoriteNFTsOfUser)
+      .catch((error: any) => setError({ point: APIErrorPoint.FAVORITES_OF_USER, message: error.message }));
+  };
+
+  const loadUserWatchList = (page?: number) => {
+    clearError();
+    getUserWatchList(network, token, page)
+      .then(setUserWatchList)
+      .catch((error: any) => setError({ point: APIErrorPoint.USER_WATCHLIST, message: error.message }));
+  };
+
+  const loadItemViews = (collectionId: string, tokenId: number) => {
+    clearError();
+    countItemViews(network, collectionId, tokenId)
+      .then(setItemViews)
+      .catch((error: any) => setError({ point: APIErrorPoint.ITEM_VIEWS, message: error.message }));
+  };
+
+  const loadSuccessfulTradesForCollection = (collectionId: string) => {
+    clearError();
+    countSuccessfulTrades(network, collectionId)
+      .then(setSuccessfulTradesForCollection)
+      .catch((error: any) => setError({ point: APIErrorPoint.SUCCESSFUL_TRADES_COUNT, message: error.message }));
+  };
+
+  const loadAccountById = (accountId: string) => {
+    clearError();
+    getAccountById(accountId)
+      .then(setAccountById)
+      .catch((error: any) => setError({ point: APIErrorPoint.ACCOUNT_BY_ID, message: error.message }));
+  };
+
+  const logout = () => {
+    clearError();
+    setAuthenticatedUser(undefined);
+    localStorage.clear();
+    setToken('');
+  };
+
   useEffect(() => {
     if (!!localStorage.getItem('VEFI_NFT_TOKEN')) {
       setToken(localStorage.getItem('VEFI_NFT_TOKEN') as string);
-      setIsUserAuthenticated(true);
     }
   }, []);
 
   useEffect(() => {
-    if (!!token && token.length > 0) {
+    if (!!token && token.trim().length > 0) {
       loadAuthUser();
+      localStorage.setItem('VEFI_NFT_TOKEN', token);
     }
   }, [token]);
+
+  useEffect(() => {
+    if (!!account && !!active) loadToken(account);
+  }, [account, active]);
 
   return (
     <APIContext.Provider
       value={{
+        token,
+        accountById,
         nftById,
         nftsByUser,
         nftsByCollection,
         nftsByNetwork,
         allCollections,
+        collectionsByAssets,
+        allUserCollections,
+        topSellingCollections,
+        topSellingNFTsInCollection,
+        nftsInCollectionByOffers,
         collectionById,
+        itemViews,
+        loadItemViews,
+        itemsInCollection,
+        nftsInCollectionByPrice,
+        allOngoingSales,
+        favorites,
+        favoriteNFTsOfUser,
+        allNFTOrders,
+        successfulTradesForCollection,
+        userWatchList,
+        loadUserWatchList,
+        loadAllUserCollections,
+        loadAllNFTOrders,
         loadNFTById,
         loadNFTsByUser,
         loadNFTsByCollection,
+        loadTopSellingNFTsInCollection,
+        loadNFTsInCollectionByOffers,
         loadNFTsByNetwork,
-        loadToken,
-        loadAuthUser,
         loadAllCollections,
+        loadCollectionsByAssets,
+        loadTopSellingCollections,
         loadCollectionById,
+        loadNFTsInCollectionByPrice,
+        loadNumberOfItemsInCollection,
+        loadAllOngoingSales,
+        loadFavorites,
+        loadFavoriteNFTsOfUser,
+        loadSuccessfulTradesForCollection,
+        loadToken,
+        loadAccountById,
+        checkItemOnSale,
+        itemOnSale,
+        itemPricePerPeriod,
+        loadItemPricePerPeriod,
+        logout,
         isUserAuthenticated,
         authenticatedUser,
         error

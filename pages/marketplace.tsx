@@ -1,95 +1,177 @@
-import React from 'react';
+import { Button } from 'antd';
+import InfiniteScroll from '../components/InfiniteScroll';
+import { FiFilter, FiPlus, FiSearch, FiArrowDown, FiArrowUp, FiList } from 'react-icons/fi';
 import styled from 'styled-components';
 import Navbar from '../components/Navbar';
-import GreyMarketContainer from '../components/marketplace/GreyMarketContainer';
-import FilterComponent from '../components/marketplace/FilterComponent';
+import { CollectionWrapper, FilterWrapper, MarktePlaceWrapper } from '../styles/Market.styled';
+import Card from '../components/Card';
 import MainFooter from '../components/Footer';
+import { useAPIContext } from '../contexts/api/index';
+import { useEffect, useRef, useState } from 'react';
+import _ from 'lodash';
+import { useWeb3Context } from '../contexts/web3';
+import { useRouter } from 'next/router';
 
-type Props = {};
-
-const MainContainer = styled.div`
+const NoItemContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex: 1;
   justify-content: center;
-  background: #0c0c0c;
-  width: 100%;
-  position: relative;
-`;
-
-const MarketplaceContainer = styled.div`
-  min-height: 100vh;
-  width: 100vw;
-  background: #0c0c0c;
-  padding-top: 20px;
-  padding-bottom: 30px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  position: relative;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1200px;
+  background: linear-gradient(254.33deg, rgba(255, 255, 255, 0.1) 1.71%, rgba(255, 255, 255, 0.05) 99.35%);
+  backdrop-filter: blur(16.86px);
+  padding: 50px 0;
+  border-radius: 20px;
+  margin-top: 50px;
 `;
 
-const NavbarContainer = styled.div`
-  width: 1400px;
-  min-width: 1000px;
-  padding-left: 100px;
-  z-index: 3;
-
-  @media (max-width: 1280px) {
-    width: 1100px;
-    min-width: 700px;
-    padding-left: 0px;
+const Market = () => {
+  enum ListFilter {
+    ALL,
+    TOP_SELLING,
+    LOWEST_PRICE
   }
-`;
 
-const StyledViewNft = styled.img`
-  height: 585px;
-  width: 97px;
-  margin-top: 52px;
-`;
+  const { allOngoingSales, loadAllOngoingSales } = useAPIContext();
+  const { network } = useWeb3Context();
+  const [salesPage, setSalesPage] = useState<number>(1);
+  const [listFilter, setFilter] = useState<ListFilter>(ListFilter.ALL);
+  const [searchValue, setSearchValue] = useState<string>('');
 
-const ColoredBackground = styled.div`
-  width: 964px;
-  height: 1048px;
-  background: url('/objects/marketplaceObjects.svg') no-repeat;
-  position: absolute;
-  top: -5%;
-  right: 0%;
-  z-index: 0;
-`;
+  const scrollBase = useRef(null);
+  const scrollRoot = useRef(null);
 
-const ParentGreyAndExploreNFT = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-`;
+  const router = useRouter();
 
-const FilterAndGrey = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+  useEffect(() => {
+    (() => {
+      if (!!network) {
+        loadAllOngoingSales();
+      }
+    })();
+  }, [network]);
 
-export default function Marketplace({}: Props) {
   return (
     <>
-      <MainContainer>
-        <MarketplaceContainer>
-          <NavbarContainer>
-            <Navbar />
-          </NavbarContainer>
-
-          <ParentGreyAndExploreNFT>
-            <StyledViewNft src="/icons/exploreNFT.png" />
-            <FilterAndGrey>
-              <FilterComponent />
-              <GreyMarketContainer />
-            </FilterAndGrey>
-            <ColoredBackground></ColoredBackground>
-          </ParentGreyAndExploreNFT>
-          <MainFooter/>
-        </MarketplaceContainer>
-      </MainContainer>
+      <MarktePlaceWrapper>
+        <div className="marketplace__container">
+          <Navbar />
+        </div>
+        <div className="container">
+          {/* <div className="exploreNft">
+            <Image src="/icons/exploreNFT.png" width={50} height={500} alt="exploreNFT" />
+          </div> */}
+          <FilterWrapper>
+            <div className="filter__heading">
+              <FiFilter />
+              Filter By
+            </div>
+            <div className="filter__body">
+              <div className="filter__left">
+                <div className="box">
+                  <Button
+                    onClick={() => {
+                      setFilter(ListFilter.ALL);
+                    }}
+                    className={`btn ${listFilter === ListFilter.ALL ? 'active' : ''}`}
+                  >
+                    <FiList /> All
+                  </Button>
+                </div>
+                <div className="box">
+                  <Button
+                    onClick={() => {
+                      setFilter(ListFilter.TOP_SELLING);
+                    }}
+                    className={`btn ${listFilter === ListFilter.TOP_SELLING ? 'active' : ''}`}
+                  >
+                    <FiArrowUp /> Top Selling
+                  </Button>
+                </div>
+                <div className="box">
+                  <Button
+                    onClick={() => {
+                      setFilter(ListFilter.LOWEST_PRICE);
+                    }}
+                    className={`btn ${listFilter === ListFilter.LOWEST_PRICE ? 'active' : ''}`}
+                  >
+                    <FiArrowDown /> Lowest Price
+                  </Button>
+                </div>
+                <div className="box input__box">
+                  <div className="input__wrapper">
+                    <FiSearch />
+                    <input
+                      value={searchValue}
+                      onChange={e => setSearchValue(e.target.value)}
+                      type="text"
+                      placeholder="Search artwork"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="filter__right">
+                <Button onClick={() => router.replace(`/collections/item/new`)} icon={<FiPlus />}>
+                  Create New Collection
+                </Button>
+              </div>
+            </div>
+          </FilterWrapper>
+          <div className="wrapper">
+            <CollectionWrapper>
+              {allOngoingSales.length === 0 ? (
+                <NoItemContainer>
+                  <span style={{ color: '#f5f5f5', fontSize: 30, fontFamily: 'Rubik' }}>No Item To Display</span>
+                </NoItemContainer>
+              ) : (
+                <InfiniteScroll
+                  root={scrollRoot}
+                  className="collection__container collections"
+                  target={scrollBase}
+                  handleScroll={() => {
+                    if (allOngoingSales.slice(0, salesPage * 24).length < allOngoingSales.length) {
+                      setSalesPage(p => p + 1);
+                    }
+                  }}
+                >
+                  {_.map(
+                    allOngoingSales
+                      .slice(0, salesPage * 24)
+                      .sort((saleA, saleB) => {
+                        if (listFilter === ListFilter.LOWEST_PRICE) return saleA.price - saleB.price;
+                        else if (listFilter === ListFilter.TOP_SELLING) return saleB.price - saleA.price;
+                        else return 0;
+                      })
+                      .filter(sale => {
+                        if (searchValue.trim().length > 0) return sale.nft?.metadata?.name.includes(searchValue);
+                        else return sale;
+                      }),
+                    sale => (
+                      <div key={sale.marketId}>
+                        <Card
+                          name={sale.nft?.metadata?.name as string}
+                          imageURI={sale.nft?.metadata?.image as string}
+                          owner={sale.nft?.metadata?.owner as string}
+                          linkTo={`/nfts/${sale.nft?.collectionId}:${sale.nft?.tokenId}?isSale=${true}&marketId=${
+                            sale.marketId
+                          }&price=${sale.price}&tradeCurrency=${sale.currency}`}
+                          price={sale.price.toString()}
+                        />
+                      </div>
+                    )
+                  )}
+                  <div ref={scrollBase}></div>
+                </InfiniteScroll>
+              )}
+            </CollectionWrapper>
+          </div>
+        </div>
+      </MarktePlaceWrapper>
+      <MainFooter />
     </>
   );
-}
+};
+
+export default Market;

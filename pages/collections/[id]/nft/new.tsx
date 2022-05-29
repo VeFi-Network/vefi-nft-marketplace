@@ -1,12 +1,22 @@
+// @ts-ignore
+import ethAddress from 'ethereum-address';
 import React, { useEffect, useState } from 'react';
+import { FaPlus, FaMinus } from 'react-icons/fa';
+import { Spin, message } from 'antd';
+import { v4 as uuid } from 'uuid';
 import styled from 'styled-components';
+import _ from 'lodash';
+import type Web3 from 'web3';
 import Navbar from '../../../../components/Navbar';
-import Image from 'next/image';
 import Filled_CTA_Button from '../../../../components/Button/CTA/Filled';
 import FileContainer from '../../../../components/Collections/FileContainer';
-import DropdownComponent from '../../../../components/Collections/Dropdown';
-import DynamicDropdown from '../../../../components/Collections/DynamicDropdown';
 import { pinFile, pinJson } from '../../../../api/ipfs';
+import { NFTLevels, NFTMetadata } from '../../../../api/models/nft';
+import marketPlaceAbi from '../../../../assets/abis/Marketplace.json';
+import { addresses, CONSTANTS } from '../../../../assets';
+import { useWeb3Context } from '../../../../contexts/web3';
+import { usePageQuery } from '../../../../hooks/query';
+import MainFooter from '../../../../components/Footer';
 
 type Props = {};
 
@@ -119,8 +129,9 @@ const ParentExploreAndData = styled.div`
       width: 468px;
       outline: none;
       background: transparent;
-      padding-left: 16px;
+      padding: 16px;
       color: rgba(255, 255, 255, 0.58);
+      font-size: 12px;
     }
   }
 
@@ -170,6 +181,8 @@ const ParentExploreAndData = styled.div`
       display: inline-block;
       width: 32.2px;
       height: 21px;
+      color: #fff;
+      padding: 3px;
     }
 
     .switch input {
@@ -203,7 +216,7 @@ const ParentExploreAndData = styled.div`
     }
 
     input:checked + .slider {
-      background-color: grey;
+      background-color: #59981a;
     }
 
     input:focus + .slider {
@@ -244,356 +257,345 @@ const StyledExploreNft = styled.img`
   left: 7px;
   top: 361px;
 `;
+
+const NoItemContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+`;
+
 export default function NewNFT({}: Props) {
-  const [checkbox, setCheckbox] = useState(false);
-  const [paymentTokenList, setPaymentTokenList] = useState<string[]>([]);
-  const [paymentDropdownList, setPaymentDropdown] = useState<boolean[]>([false]);
+  const { account, library, chainId, explorerUrl, active } = useWeb3Context();
+  const [avatarImage, setAvatarImage] = useState<any>(null);
+  const [traitsIDs, setTraitsIDs] = useState<string[]>([uuid()]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [tip, setTip] = useState<string>('');
+  const [collection, setCollection] = useState<string>('');
+  const [mintFor, setMintFor] = useState<string>('');
 
-  const [categoryDropdown, setCatDropdown] = useState(false);
-  const [categoryValue, setCatVal] = useState('Add Category');
+  const { id } = usePageQuery();
 
-  const [blockchainDropdown, setBlockchainDropdown] = useState(false);
-  const [blockValue, setBlockValue] = useState('Select Blockchain');
-
-  const [logoFile, setLogoFile] = useState<any | null>(null);
-  const [featuredFile, setFeatured] = useState<any | null>(null);
-  const [bannerFile, setBannerFile] = useState<any | null>(null);
-
-  const [collectionItem, setCollectionItem] = useState({
+  const [nftMetadata, setNftMetadata] = useState<Omit<NFTMetadata, 'image'>>({
     name: '',
-    symbol: '',
-    feeReciever: '',
-    url: '',
+    owner: account as string,
     description: '',
-    feePercentage: ''
+    traits: [],
+    levels: [],
+    externalLink: '',
+    isExplicit: false
   });
 
   const setProperty = (e: any) => {
-    setCollectionItem({ ...collectionItem, [e.target.name]: e.target.value });
+    setNftMetadata(metadata => ({ ...metadata, [e.target.name]: e.target.value }));
   };
 
-  const [btnEnabled, setBtnEnabled] = useState(false);
-
-  const allConditionsSatisfied = () => {
-    if (
-      logoFile &&
-      bannerFile &&
-      collectionItem.name != '' &&
-      collectionItem.description != '' &&
-      collectionItem.symbol != '' &&
-      collectionItem.feeReciever != '' &&
-      collectionItem.feePercentage != '' &&
-      collectionItem.url
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+  const allConditionsSatisfied = (): boolean => {
+    return (
+      !!avatarImage &&
+      nftMetadata.name.length >= 7 &&
+      nftMetadata.owner.length >= 4 &&
+      nftMetadata.traits.length > 0 &&
+      nftMetadata.levels.length > 0 &&
+      ethAddress.isAddress(mintFor)
+    );
   };
 
   const resetAllFields = () => {
-    setCollectionItem({
+    setNftMetadata({
       name: '',
-      symbol: '',
-      feeReciever: '',
-      url: '',
+      owner: '',
       description: '',
-      feePercentage: ''
+      traits: [],
+      levels: [],
+      externalLink: '',
+      isExplicit: false
     });
-    setLogoFile(null);
-    setBannerFile(null);
-    setPaymentTokenList([]);
+    setAvatarImage(null);
+  };
+
+  const mintNFT = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('file', avatarImage.file);
+
+      if (allConditionsSatisfied()) {
+        setIsLoading(true);
+        setTip('Pinning avatar to IPFS');
+
+        const avatarPinningResponse = await pinFile(formData);
+
+        setTip('Pinning metadata to IPFS');
+        const jsonPinningResponse = await pinJson({
+          ...nftMetadata,
+          image: avatarPinningResponse.response.fileURI
+        });
+
+        const contract = new (library as Web3).eth.Contract(marketPlaceAbi as any, addresses[chainId as number]);
+
+        setTip('Now minting asset');
+        const nftMintingResponse = await contract.methods
+          .mintNFT(collection, jsonPinningResponse.response.itemURI, mintFor)
+          .send({
+            from: account,
+            value: CONSTANTS.feesPerNetwork[chainId as number].nftMintFee.toHexString()
+          });
+
+        resetAllFields();
+        message.success(
+          <>
+            <span style={{ fontSize: 15 }}>NFT successfully minted!</span>{' '}
+            <a
+              style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
+              href={explorerUrl.concat('tx/' + nftMintingResponse.transactionHash)}
+              target="_blank"
+            >
+              View on explorer!
+            </a>
+          </>,
+          15
+        );
+      }
+
+      setIsLoading(false);
+      setTip('');
+    } catch (e: any) {
+      setIsLoading(false);
+      message.error(e.message);
+    }
   };
 
   useEffect(() => {
-    if (allConditionsSatisfied() == btnEnabled) {
-      // Do nothing --- preventing unncecessary state change
-    } else {
-      if (allConditionsSatisfied()) {
-        setBtnEnabled(true);
-      } else {
-        setBtnEnabled(false);
-      }
-    }
-  }, [collectionItem, logoFile, bannerFile]);
-
-  const createNftButton = async () => {
-    try {
-      if (allConditionsSatisfied()) {
-        console.log('Pinning File');
-        const formData = new FormData();
-        formData.append('file', logoFile?.file);
-        // Pin Image File
-        pinFile(formData)
-          .then((res: any) => {
-            if (res?.response?.CID && res?.response?.fileURI) {
-              console.log('Logo file pinned');
-              window.open(res.response.fileURI);
-              const formData2 = new FormData();
-              formData2.append('file', bannerFile?.file);
-              pinFile(formData2).then((response2: any) => {
-                console.log(response2);
-                if (response2?.response?.CID && response2?.response?.fileURI) {
-                  console.log('Banner file pinned');
-                  window.open(response2.response.fileURI);
-                  //pin JSOn
-
-                  pinJson({
-                    name: collectionItem.name,
-                    description: collectionItem.description,
-                    logoImage: `ipfs://${res.response.CID}`,
-                    logoCID: res.response.CID,
-                    logofileURI: res.response.fileURI,
-                    bannerImage: `ipfs://${response2.response.CID}`,
-                    bannerCID: response2.response.fileURI,
-                    symbol: collectionItem.symbol,
-                    feeReciever: collectionItem.feeReciever,
-                    url: collectionItem.url,
-                    feePercentage: collectionItem.feePercentage
-                  })
-                    .then((pinResponse: any) => {
-                      console.log(pinResponse);
-                      if (pinResponse?.response?.CID && pinResponse?.response?.itemURI) {
-                        window.open(pinResponse.response.itemURI);
-                        resetAllFields();
-                      } else {
-                        console.log('Item API did not return accepted format');
-                      }
-                    })
-                    .catch(err => {
-                      console.log('Inner Catch Block Error ==' + err);
-                    });
-                } else {
-                  console.log('Banner File API did not return accepted format');
-                }
-              });
-            } else {
-              console.log('Logo File API did not return accepted format');
-            }
-          })
-          .catch(e => {
-            console.log('Catch block error' + e);
-          });
-      } else {
-        console.log('Enter all details');
-      }
-    } catch (e) {
-      console.log('Error Occured ===' + e);
-    }
-  };
+    if (!!id) setCollection(id as string);
+  }, [id]);
 
   return (
-    <MainContainer>
-      <NavbarContainer>
-        <Navbar />
-      </NavbarContainer>
-      <ParentExploreAndData>
-        <div className="title">Create your Collection</div>
+    <>
+      <MainContainer>
+        <NavbarContainer>
+          <Navbar />
+        </NavbarContainer>
+        <Spin spinning={isLoading} tip={tip} size="large">
+          <ParentExploreAndData>
+            {!active ? (
+              <NoItemContainer>
+                <div style={{ marginTop: '10em' }}>
+                  <span style={{ color: '#dc143c', fontSize: 30 }}>Please connect your wallet!</span>
+                </div>
+              </NoItemContainer>
+            ) : (
+              <>
+                <div className="title">Mint your NFT.</div>
 
-        <Heading top={'31px'}>
-          Logo Image <span className="blue">*</span>
-        </Heading>
+                <Heading top={'31px'}>
+                  Avatar <span className="blue">*</span>
+                </Heading>
 
-        <div className="text">
-          This image will also be used for navigation 350x350 <br /> recomended.
-        </div>
+                <div className="text">
+                  Supported File Types: JPG, JPEG, PNG, GIF, WEBP
+                  <span className="blue"> Max size 40mb</span>
+                </div>
 
-        <FileContainer file={logoFile} setFile={setLogoFile} type={2} />
+                <FileContainer file={avatarImage} setFile={setAvatarImage} type={2} />
 
-        <Heading top={'56px'}>Featured Image</Heading>
+                <Heading className="heading">
+                  Name<span className="blue">*</span>
+                </Heading>
 
-        <div className="text">
-          This image will be used to feature your artwork on the <br /> home page category pages or other promotional{' '}
-          <br /> areas in VefiNft. <span className="blue">(Optional)</span>
-        </div>
+                <div className="input-div">
+                  <input
+                    type="text"
+                    value={nftMetadata.name}
+                    onChange={setProperty}
+                    name="name"
+                    className="inp"
+                    placeholder="Name of this asset."
+                  />
+                </div>
 
-        <FileContainer file={featuredFile} setFile={setFeatured} type={1} />
+                <Heading className="heading">
+                  Owner<span className="blue">*</span>
+                </Heading>
 
-        <Heading top={'56px'}>
-          Banner Image <span className="blue">*</span>
-        </Heading>
+                <div className="input-div">
+                  <input
+                    type="text"
+                    value={nftMetadata.owner}
+                    onChange={setProperty}
+                    name="owner"
+                    className="inp"
+                    placeholder="Owner of this asset (can be an Ethereum address or an ENS name)."
+                  />
+                </div>
 
-        <div className="text">
-          This image will appear at the top of your collection <br /> page avoid to add too much text, as the dimension{' '}
-          <br /> change on different device 1440x250 recomended <br /> <span className="blue">(Optional)</span>
-        </div>
+                <Heading className="heading">
+                  For<span className="blue">*</span>
+                </Heading>
 
-        <FileContainer file={bannerFile} setFile={setBannerFile} type={3} />
+                <div className="input-div">
+                  <input
+                    type="text"
+                    value={mintFor}
+                    onChange={e => setMintFor(e.target.value)}
+                    name="owner"
+                    className="inp"
+                    placeholder="Address this asset is being minted for."
+                  />
+                </div>
 
-        <Heading className="heading">
-          Name<span className="blue">*</span>
-        </Heading>
+                <Heading top="27px">External URL</Heading>
 
-        <div className="input-div">
-          <input
-            type="text"
-            value={collectionItem.name}
-            onChange={setProperty}
-            name="name"
-            className="inp"
-            placeholder="Item Name"
-          />
-        </div>
+                <div className="input-div">
+                  <input
+                    value={nftMetadata.externalLink}
+                    onChange={setProperty}
+                    name="externalLink"
+                    type="text"
+                    className="inp"
+                    placeholder="An external URL containing more information about this asset."
+                  />
+                </div>
 
-        <Heading top="30px">
-          Symbol<span className="blue">*</span>
-        </Heading>
+                <Heading top="27px">Description</Heading>
 
-        <div className="input-div">
-          <input
-            value={collectionItem.symbol}
-            onChange={setProperty}
-            name="symbol"
-            type="text"
-            className="inp"
-            placeholder="Symbol of collection"
-          />
-        </div>
+                <div className="text-area">
+                  <textarea
+                    className="real-text-area"
+                    id=""
+                    placeholder="Provide a detailed description of your item."
+                    rows={7}
+                    value={nftMetadata.description}
+                    onChange={setProperty}
+                    name="description"
+                  ></textarea>
+                </div>
 
-        <Heading top="30px">
-          Fee Reciever<span className="blue">*</span>
-        </Heading>
+                <Heading top="27px">Levels</Heading>
 
-        <div className="input-div">
-          <input
-            value={collectionItem.feeReciever}
-            name="feeReciever"
-            onChange={setProperty}
-            type="text"
-            className="inp"
-            placeholder="Address that receives the fees paid for minting NFTs in this collection "
-          />
-        </div>
+                <div className="switch-cont">
+                  <div className="text">Set this item's levels</div>
 
-        <Heading top="27px">
-          URL<span className="blue">*</span>
-        </Heading>
+                  {_.map(Object.values(NFTLevels).sort(), val => (
+                    <div
+                      key={val}
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                        margin: 2
+                      }}
+                    >
+                      <label className="switch">
+                        <input
+                          type="checkbox"
+                          checked={nftMetadata.levels.includes(val)}
+                          onChange={() => {
+                            if (!nftMetadata.levels.includes(val))
+                              setNftMetadata({ ...nftMetadata, levels: [...nftMetadata.levels, val] });
+                            else
+                              setNftMetadata({
+                                ...nftMetadata,
+                                levels: nftMetadata.levels.filter(level => level !== val)
+                              });
+                          }}
+                        />
+                        <span className="slider round"></span>
+                      </label>
+                      <span className="blue" style={{ fontSize: 12 }}>
+                        {val}
+                      </span>
+                    </div>
+                  ))}
+                </div>
 
-        <div className="text">
-          Customize your URL on VefiNft, Must only contain <br /> lover case Letters, numbers and Hyphens.
-        </div>
+                <Heading top="27px">
+                  Traits<span className="blue">*</span>
+                </Heading>
+                <div className="text">Set this item's traits.</div>
 
-        <div className="input-div">
-          <input
-            value={collectionItem.url}
-            onChange={setProperty}
-            name="url"
-            type="text"
-            className="inp"
-            placeholder="https//vefinft.io/assets/lost-in-space"
-          />
-        </div>
+                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: 10 }}>
+                  <div style={{ flexBasis: '90%', flexGrow: 1 }}>
+                    {_.map(traitsIDs, (id, index) => (
+                      <div className="input-div" key={id} style={{ width: 200 }}>
+                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                          <div style={{ flexBasis: '90%', flexGrow: 1 }}>
+                            <input
+                              value={nftMetadata.traits[index]}
+                              onChange={event => {
+                                const traits = nftMetadata.traits;
+                                traits[index] = event.target.value;
+                                setNftMetadata({ ...nftMetadata, traits });
+                              }}
+                              name={`trait-${id}`}
+                              type="text"
+                              className="inp"
+                              style={{ width: 'inherit' }}
+                              placeholder="Enter trait."
+                            />
+                          </div>
+                          <div style={{ flexBasis: '5%', flexGrow: 1 }}></div>
+                          <div style={{ flexBasis: '5%', flexGrow: 1, marginLeft: 10 }}>
+                            <Filled_CTA_Button
+                              disabled={traitsIDs.length === 1}
+                              style={{
+                                textAlign: 'center',
+                                width: 25,
+                                height: 25,
+                                fontSize: 17,
+                                padding: 4,
+                                background: traitsIDs.length === 1 ? 'grey' : undefined
+                              }}
+                              onClick={() => {
+                                setTraitsIDs(traitsIDs.filter(val => val !== id));
+                                const traits = nftMetadata.traits;
+                                traits.splice(index, 1);
+                                setNftMetadata({ ...nftMetadata, traits });
+                              }}
+                            >
+                              <FaMinus />
+                            </Filled_CTA_Button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ flexBasis: '5%', flexGrow: 1 }}></div>
+                  <div style={{ flexBasis: '5%', flexGrow: 1, marginTop: 10 }}>
+                    <Filled_CTA_Button
+                      onClick={() => setTraitsIDs([...traitsIDs, uuid()])}
+                      style={{ textAlign: 'center', width: 25, height: 25, fontSize: 17, padding: 4 }}
+                    >
+                      <FaPlus />
+                    </Filled_CTA_Button>
+                  </div>
+                </div>
 
-        <Heading top="27px">
-          Description<span className="blue">*</span>
-        </Heading>
+                <Heading top={'52px'}>Explicit and sensitive content</Heading>
 
-        <div className="text">
-          <span className="blue">Note</span> Syntax is supported. 1 to 2000 words only.
-        </div>
+                <div className="switch-cont">
+                  <div className="text">Set this collection as explicit and sensitive content</div>
 
-        <div className="text-area">
-          <textarea
-            className="real-text-area"
-            id=""
-            placeholder="provide a detailed description of your item"
-            rows={7}
-            value={collectionItem.description}
-            onChange={setProperty}
-            name="description"
-          ></textarea>
-        </div>
-
-        <DropdownComponent
-          dropdown={categoryDropdown}
-          setDropdown={setCatDropdown}
-          value={categoryValue}
-          setValue={setCatVal}
-          defaultValue={'Add Category'}
-          dropDownList={['Category 1', 'Category 2', 'Category 3', 'Category 4']}
-          width="135px"
-          top={'36px'}
-        />
-
-        <Heading top="64px">
-          Royalties<span className="blue">*</span>
-        </Heading>
-
-        <div className="text">
-          Collect a fee when a user Re-sells an item you originally created. <br /> this is deducted from the final sale
-          price and paid monthly to a <br /> payout adress of your choosen.
-        </div>
-
-        <Heading top="25px">Percentage fee</Heading>
-
-        <div className="input-div-small">
-          <input
-            value={collectionItem.feePercentage}
-            onChange={setProperty}
-            name="feePercentage"
-            type="text"
-            className="inp"
-            placeholder="0.000"
-          />
-        </div>
-
-        <Heading top="39px">Blockchain</Heading>
-
-        <div className="text">
-          Sellect the blockchain where you’d like new items from this <br /> collection to be added by defult.
-        </div>
-
-        <DropdownComponent
-          dropdown={blockchainDropdown}
-          setDropdown={setBlockchainDropdown}
-          value={blockValue}
-          setValue={setBlockValue}
-          dropDownList={['Ethereum', 'Binance', 'Polygon', 'Arbitrum']}
-          defaultValue={'Select Blockchain'}
-          width={'170px'}
-          top={'36px'}
-        />
-
-        <Heading top="39px">payment tokens</Heading>
-
-        <div className="text">These tokens may be used to buy and sell your items</div>
-
-        <DynamicDropdown
-          dropDownList={paymentDropdownList}
-          setDropdownList={setPaymentDropdown}
-          valueList={paymentTokenList}
-          setValueList={setPaymentTokenList}
-          name={'Token'}
-          dropDownValueList={['Ethereum', 'Matic', 'Cardano']}
-          defaultValue={'Select Token'}
-          width={'150px'}
-          top={'27px'}
-          hideFirst={false}
-        />
-
-        <Heading top={'52px'}>Explicit and sensitive content</Heading>
-
-        <div className="switch-cont">
-          <div className="text">Set this collection as explicit and sensitive content</div>
-
-          <label className="switch">
-            <input type="checkbox" checked={checkbox} onChange={() => setCheckbox(!checkbox)} />
-            <span className="slider round"></span>
-          </label>
-        </div>
-
-        {btnEnabled ? (
-          <Filled_CTA_Button onClick={createNftButton} style={{ width: 90, height: 42, marginTop: 33 }}>
-            Create
-          </Filled_CTA_Button>
-        ) : (
-          <Filled_CTA_Button onClick={createNftButton} style={{ background: 'grey', width: 250, marginTop: 33 }}>
-            Please fill all required details
-          </Filled_CTA_Button>
-        )}
-      </ParentExploreAndData>
-      <StyledExploreNft src="/icons/exploreNFT.png" />
-      <ColoredBackground></ColoredBackground>
-    </MainContainer>
+                  <label className="switch">
+                    <input
+                      type="checkbox"
+                      checked={nftMetadata.isExplicit}
+                      onChange={() => setNftMetadata({ ...nftMetadata, isExplicit: !nftMetadata.isExplicit })}
+                    />
+                    <span className="slider round"></span>
+                  </label>
+                </div>
+                <Filled_CTA_Button disabled={!allConditionsSatisfied()} onClick={mintNFT} style={{ marginTop: 33 }}>
+                  {allConditionsSatisfied() ? 'Create' : 'Please fill in all required fields correctly'}
+                </Filled_CTA_Button>
+              </>
+            )}{' '}
+          </ParentExploreAndData>
+        </Spin>
+        <StyledExploreNft src="/icons/exploreNFT.png" />
+        <ColoredBackground></ColoredBackground>
+      </MainContainer>
+      <MainFooter />
+    </>
   );
 }
