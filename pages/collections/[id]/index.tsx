@@ -76,13 +76,15 @@ const Collection = () => {
     nftsInCollectionByPrice,
     nftsInCollectionByOffers,
     topSellingNFTsInCollection,
+    successfulTradesForCollection,
     itemsInCollection,
     loadCollectionById,
     loadNFTsByCollection,
     loadNumberOfItemsInCollection,
     loadNFTsInCollectionByPrice,
     loadTopSellingNFTsInCollection,
-    loadNFTsInCollectionByOffers
+    loadNFTsInCollectionByOffers,
+    loadSuccessfulTradesForCollection
   } = useAPIContext();
   const { network, explorerUrl } = useWeb3Context();
 
@@ -118,21 +120,6 @@ const Collection = () => {
           }
         ]
       });
-
-      // const approvalLogs = await request(network, {
-      //   jsonrpc: '2.0',
-      //   id: 1,
-      //   method: 'eth_getLogs',
-      //   params: [
-      //     {
-      //       topics: [eventHashMap.ApprovalForAll],
-      //       fromBlock: '0x0',
-      //       toBlock: 'latest',
-      //       address: id
-      //     }
-      //   ]
-      // });
-
       setEventLogs(logs);
     } catch (error: any) {
       message.error(error.message);
@@ -148,6 +135,7 @@ const Collection = () => {
         loadNFTsInCollectionByPrice(id as string);
         loadNFTsInCollectionByOffers(id as string);
         loadTopSellingNFTsInCollection(id as string);
+        loadSuccessfulTradesForCollection(id as string);
         await allCollectionRelevantEvents();
         setIsLoading(false);
       }
@@ -194,7 +182,7 @@ const Collection = () => {
               </div>
               <div className="stat">
                 <div className="count">
-                  <h1>20.5</h1>
+                  <h1>{kFormatter(successfulTradesForCollection)}</h1>
                 </div>
                 <div className="label">Successful Sales</div>
               </div>

@@ -28,6 +28,15 @@ export function createAccount(body: any): Promise<any> {
   });
 }
 
+export function updateAccount(body: any, token: string): Promise<any> {
+  return new Promise((resolve, reject) => {
+    baseAxios
+      .patch(`/api/account`, body, { headers: { Authorization: `Bearer ${token}` } })
+      .then(res => handleResponse(res, resolve, reject))
+      .catch(reject);
+  });
+}
+
 export function signToken(body: any): Promise<any> {
   return new Promise((resolve, reject) => {
     baseAxios
@@ -41,6 +50,15 @@ export function getAuthenticatedUser(token: string): Promise<AccountModel> {
   return new Promise((resolve, reject) => {
     baseAxios
       .get('/api/account', { headers: { Authorization: `Bearer ${token}` } })
+      .then(res => handleResponse(res, resolve, reject))
+      .catch(reject);
+  });
+}
+
+export function getAccountById(accountId: string): Promise<AccountModel> {
+  return new Promise((resolve, reject) => {
+    baseAxios
+      .get(`/api/account/${accountId}`)
       .then(res => handleResponse(res, resolve, reject))
       .catch(reject);
   });
@@ -300,6 +318,15 @@ export function viewItem(network: string, collectionId: string, tokenId: number,
           Authorization: `Bearer ${token}`
         }
       })
+      .then(res => handleResponse(res, resolve, reject))
+      .catch(reject);
+  });
+}
+
+export function countSuccessfulTrades(network: string, collectionId: string): Promise<number> {
+  return new Promise((resolve, reject) => {
+    baseAxios
+      .get(`/api/sale/${network}/${collectionId}/traded/count`)
       .then(res => handleResponse(res, resolve, reject))
       .catch(reject);
   });

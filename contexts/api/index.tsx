@@ -24,7 +24,9 @@ import {
   getAllCollectionsByOwner,
   getFavoriteNFTsOfUser,
   getUserWatchList,
-  countItemViews
+  countItemViews,
+  countSuccessfulTrades,
+  getAccountById
 } from '../../api/nft';
 import { useWeb3Context } from '../web3/index';
 import { CollectionModel } from '../../api/models/collection';
@@ -49,10 +51,13 @@ export enum APIErrorPoint {
   ALL_USER_COLLECTIONS,
   FAVORITES_OF_USER,
   USER_WATCHLIST,
-  ITEM_VIEWS
+  ITEM_VIEWS,
+  SUCCESSFUL_TRADES_COUNT,
+  ACCOUNT_BY_ID
 }
 
 type APIContextType = {
+  accountById?: AccountModel;
   token: string;
   nftById: NFTModel;
   nftsByUser: Array<NFTModel>;
@@ -73,6 +78,7 @@ type APIContextType = {
   authenticatedUser?: AccountModel;
   itemOnSale: boolean;
   itemViews: number;
+  successfulTradesForCollection: number;
   itemPricePerPeriod: Array<{ timestamp: number; price: number }>;
   favorites: Array<any>;
   allNFTOrders: Array<OrderModel>;
@@ -98,6 +104,9 @@ type APIContextType = {
   loadFavoriteNFTsOfUser: (accountId: string, page?: number) => void;
   loadUserWatchList: (page?: number) => void;
   loadItemViews: (collectionId: string, tokenId: number) => void;
+  loadSuccessfulTradesForCollection: (collectionId: string) => void;
+  loadToken: (accountId: string) => void;
+  loadAccountById: (accountId: string) => void;
   logout: () => void;
   error?: {
     point: APIErrorPoint;
@@ -134,7 +143,9 @@ export const APIContextProvider = ({ children }: any) => {
   const [favoriteNFTsOfUser, setFavoriteNFTsOfUser] = useState<Array<NFTModel>>([]);
   const [userWatchList, setUserWatchList] = useState<Array<OrderModel>>([]);
   const [itemViews, setItemViews] = useState<number>(0);
+  const [successfulTradesForCollection, setSuccessfulTradesForCollection] = useState<number>(0);
   const [token, setToken] = useState<string>('');
+  const [accountById, setAccountById] = useState<AccountModel>();
   const { network, account, active } = useWeb3Context();
 
   const clearError = () => {
@@ -303,6 +314,20 @@ export const APIContextProvider = ({ children }: any) => {
       .catch((error: any) => setError({ point: APIErrorPoint.ITEM_VIEWS, message: error.message }));
   };
 
+  const loadSuccessfulTradesForCollection = (collectionId: string) => {
+    clearError();
+    countSuccessfulTrades(network, collectionId)
+      .then(setSuccessfulTradesForCollection)
+      .catch((error: any) => setError({ point: APIErrorPoint.SUCCESSFUL_TRADES_COUNT, message: error.message }));
+  };
+
+  const loadAccountById = (accountId: string) => {
+    clearError();
+    getAccountById(accountId)
+      .then(setAccountById)
+      .catch((error: any) => setError({ point: APIErrorPoint.ACCOUNT_BY_ID, message: error.message }));
+  };
+
   const logout = () => {
     clearError();
     setAuthenticatedUser(undefined);
@@ -331,6 +356,7 @@ export const APIContextProvider = ({ children }: any) => {
     <APIContext.Provider
       value={{
         token,
+        accountById,
         nftById,
         nftsByUser,
         nftsByCollection,
@@ -350,6 +376,7 @@ export const APIContextProvider = ({ children }: any) => {
         favorites,
         favoriteNFTsOfUser,
         allNFTOrders,
+        successfulTradesForCollection,
         userWatchList,
         loadUserWatchList,
         loadAllUserCollections,
@@ -369,6 +396,9 @@ export const APIContextProvider = ({ children }: any) => {
         loadAllOngoingSales,
         loadFavorites,
         loadFavoriteNFTsOfUser,
+        loadSuccessfulTradesForCollection,
+        loadToken,
+        loadAccountById,
         checkItemOnSale,
         itemOnSale,
         itemPricePerPeriod,

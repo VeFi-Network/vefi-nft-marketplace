@@ -32,9 +32,7 @@ const NFTCard = ({ model, onClick }: Props) => {
                 <span className="nft_collection_name">{model?.metadata?.name}</span>
                 <Link href={`/users/${model.owner}?tab=1`}>
                   <span className="nft_name">
-                    {ethAddress.isAddress(model.metadata?.owner)
-                      ? formatEthAddress(model.metadata?.owner as string)
-                      : model.metadata?.owner}
+                    {ethAddress.isAddress(model.owner) ? formatEthAddress(model.owner as string) : model.owner}
                   </span>
                 </Link>
               </div>

@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FaListAlt, FaRegUser, FaUserEdit } from 'react-icons/fa';
-import { FiBarChart, FiGrid, FiHeart, FiEye, FiUserPlus } from 'react-icons/fi';
+import { id as hashId } from '@ethersproject/hash';
+import { hexStripZeros, hexZeroPad } from '@ethersproject/bytes';
+import styled from 'styled-components';
+import { Table, message } from 'antd';
+import { FaExchangeAlt, FaListAlt, FaQuestion, FaRegUser, FaUserEdit } from 'react-icons/fa';
+import { FiBarChart, FiGrid, FiHeart, FiEye, FiUserPlus, FiThumbsUp } from 'react-icons/fi';
 import _ from 'lodash';
 import InfiniteScroll from '../../components/InfiniteScroll';
 import Card from '../../components/Card';
@@ -18,7 +22,31 @@ import { usePageQuery } from '../../hooks';
 import { useWeb3Context } from '../../contexts/web3';
 import { useRouter } from 'next/router';
 import { NFTModel } from '../../api/models/nft';
+import { addresses } from '../../assets';
 import request from '../../api/rpc';
+import { AddressZero } from '@ethersproject/constants';
+import { formatEthAddress } from 'eth-address';
+
+// We'll leverage this in the population of events table
+const eventHashMap = {
+  Transfer: hashId('Transfer(address,address,uint256)'),
+  ApprovalForAll: hashId('ApprovalForAll(address,address,bool)')
+};
+
+const NoItemContainer = styled.div`
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1200px;
+  background: linear-gradient(254.33deg, rgba(255, 255, 255, 0.1) 1.71%, rgba(255, 255, 255, 0.05) 99.35%);
+  backdrop-filter: blur(16.86px);
+  padding: 50px 0;
+  border-radius: 20px;
+  margin-top: 50px;
+`;
 
 const Users = () => {
   enum SelectedTab {
@@ -42,14 +70,17 @@ const Users = () => {
     loadAllUserCollections,
     loadNFTsByUser,
     loadFavoriteNFTsOfUser,
-    loadUserWatchList
+    loadUserWatchList,
+    accountById,
+    loadAccountById
   } = useAPIContext();
-  const { account, network } = useWeb3Context();
+  const { account, network, chainId, explorerUrl } = useWeb3Context();
   const [selectedTab, setSelectedTab] = useState<SelectedTab>(SelectedTab.COLLECTIONS);
   const [renderedItem, setRenderedItem] = useState<Rendered>(Rendered.ITEMS);
   const [nftList, setNFTList] = useState<Array<NFTModel>>([]);
   const [collectionsPage, setCollectionsPage] = useState<number>(1);
   const [nftsPage, setNFTsPage] = useState<number>(1);
+  const [eventLogs, setEventLogs] = useState<Array<any>>([]);
   const [searchValue, setSearchValue] = useState<string>('');
   const { id, tab } = usePageQuery();
   const router = useRouter();
@@ -59,22 +90,53 @@ const Users = () => {
   const infiniteScrollRoot1 = useRef(null);
   const infiniteScrollRoot2 = useRef(null);
 
+  const kFormatter = (num: number): string | number => {
+    return Math.abs(num) > 999
+      ? Math.sign(num) * parseFloat((Math.abs(num) / 1000).toFixed(1)) + 'k'
+      : Math.sign(num) * Math.abs(num);
+  };
+
   const switchTabs = (s: SelectedTab) => {
     if (!!id) {
       router.push(`/users/${id}?tab=${s}`, undefined, { shallow: true });
     }
   };
 
-  useEffect(() => {
-    if (!!id && !!network) {
-      loadAllUserCollections(id as string);
-      loadNFTsByUser(id as string);
-      loadFavoriteNFTsOfUser(id as string);
-
-      if (id === account) {
-        loadUserWatchList();
-      }
+  const allAccountRelevantEvents = async () => {
+    try {
+      const logs = await request(network, {
+        jsonrpc: '2.0',
+        id: 1,
+        method: 'eth_getLogs',
+        params: [
+          {
+            topics: [null, hexZeroPad(id as string, 32)],
+            fromBlock: '0x0',
+            toBlock: 'latest',
+            address: addresses[chainId as number]
+          }
+        ]
+      });
+      setEventLogs(logs);
+    } catch (error: any) {
+      message.error(error.message);
     }
+  };
+
+  useEffect(() => {
+    (async () => {
+      if (!!id && !!network) {
+        loadAllUserCollections(id as string);
+        loadNFTsByUser(id as string);
+        loadFavoriteNFTsOfUser(id as string);
+        loadAccountById(id as string);
+        await allAccountRelevantEvents();
+
+        if (id === account) {
+          loadUserWatchList();
+        }
+      }
+    })();
   }, [id, network]);
 
   useEffect(() => {
@@ -101,21 +163,21 @@ const Users = () => {
       <UsersWrapper>
         <Navbar />
         <UserBanner
-          bannerUrl={authenticatedUser?.metadata?.bannerURI || ''}
-          avatarUrl={authenticatedUser?.metadata?.imageURI || ''}
+          bannerUrl={accountById?.metadata?.bannerURI || ''}
+          avatarUrl={accountById?.metadata?.imageURI || ''}
         >
           <div className="user__info">
             <div className="username">
               <h2>
-                {authenticatedUser?.name || 'Unnamed'} <span></span>
+                {accountById?.name || 'Unnamed'} <span></span>
               </h2>
             </div>
             <div className="join__date">
-              <p>Joined {authenticatedUser?.createdAt as string}</p>
+              <p>Joined {accountById?.createdAt as string}</p>
             </div>
           </div>
           <ButtonContainer>
-            {(!authenticatedUser || !authenticatedUser.email) && (
+            {(!authenticatedUser || !authenticatedUser.email) && authenticatedUser?.accountId === id && (
               <Link href="/users/profile/create">
                 <Button>
                   <FaRegUser />
@@ -123,7 +185,7 @@ const Users = () => {
                 </Button>
               </Link>
             )}
-            {!!authenticatedUser && !!authenticatedUser.email && (
+            {!!authenticatedUser && !!authenticatedUser.email && authenticatedUser.accountId === id && (
               <Link href="/users/profile/update">
                 <FilledButton>
                   <FaUserEdit />
@@ -140,14 +202,14 @@ const Users = () => {
               <FilterProperty
                 isActive={selectedTab === SelectedTab.COLLECTIONS}
                 icon={<FaListAlt />}
-                count={allUserCollections.length}
+                count={kFormatter(allUserCollections.length)}
                 label="collections"
                 onClick={() => switchTabs(SelectedTab.COLLECTIONS)}
               />
               <FilterProperty
                 isActive={selectedTab === SelectedTab.CREATED}
                 icon={<FiUserPlus />}
-                count={nftsByUser.length}
+                count={kFormatter(nftsByUser.length)}
                 label="created"
                 onClick={() => {
                   switchTabs(SelectedTab.CREATED);
@@ -159,7 +221,7 @@ const Users = () => {
                   isActive={selectedTab === SelectedTab.WATCHLIST}
                   icon={<FiEye />}
                   label="watchlist"
-                  count={userWatchList.length}
+                  count={kFormatter(userWatchList.length)}
                   onClick={() => {
                     switchTabs(SelectedTab.WATCHLIST);
                     setNFTList(_.map(userWatchList, list => list.nft as unknown as NFTModel));
@@ -170,7 +232,7 @@ const Users = () => {
                 isActive={selectedTab === SelectedTab.FAVORITES}
                 icon={<FiHeart />}
                 label="favorites"
-                count={favoriteNFTsOfUser.length}
+                count={kFormatter(favoriteNFTsOfUser.length)}
                 onClick={() => {
                   switchTabs(SelectedTab.FAVORITES);
                   setNFTList(favoriteNFTsOfUser);
@@ -217,38 +279,48 @@ const Users = () => {
           {renderedItem === Rendered.ITEMS ? (
             <NFTCollection>
               {selectedTab === SelectedTab.COLLECTIONS ? (
-                <InfiniteScroll
-                  root={infiniteScrollRoot1}
-                  className="container"
-                  handleScroll={() => {
-                    if (allUserCollections.slice(0, collectionsPage * 24).length < allUserCollections.length) {
-                      setCollectionsPage(p => p + 1);
-                    }
-                  }}
-                  target={scrollBase}
-                >
-                  {_.map(
-                    allUserCollections.slice(0, collectionsPage * 24).filter(cm => {
-                      if (searchValue.trim().length > 0) return cm.collectionName.includes(searchValue);
-                      else return cm;
-                    }),
-                    collection => (
-                      <div key={collection.collectionId}>
-                        <Card
-                          name={collection?.collectionName}
-                          owner={collection?.metadata.owner}
-                          imageURI={collection?.metadata.imageURI}
-                          linkTo={`/collections/${collection?.collectionId}`}
-                        />
-                      </div>
-                    )
+                <>
+                  {allUserCollections.length === 0 ? (
+                    <NoItemContainer>
+                      <span style={{ color: '#f5f5f5', fontSize: 30, fontFamily: 'Rubik' }}>No Item To Display</span>
+                    </NoItemContainer>
+                  ) : (
+                    <InfiniteScroll
+                      root={infiniteScrollRoot1}
+                      className="container"
+                      handleScroll={() => {
+                        if (allUserCollections.slice(0, collectionsPage * 24).length < allUserCollections.length) {
+                          setCollectionsPage(p => p + 1);
+                        }
+                      }}
+                      target={scrollBase}
+                    >
+                      {_.map(
+                        allUserCollections.slice(0, collectionsPage * 24).filter(cm => {
+                          if (searchValue.trim().length > 0) return cm.collectionName.includes(searchValue);
+                          else return cm;
+                        }),
+                        collection => (
+                          <div key={collection.collectionId}>
+                            <Card
+                              name={collection?.collectionName}
+                              owner={collection?.metadata.owner}
+                              imageURI={collection?.metadata.imageURI}
+                              linkTo={`/collections/${collection?.collectionId}`}
+                            />
+                          </div>
+                        )
+                      )}
+                      <div ref={scrollBase}></div>
+                    </InfiniteScroll>
                   )}
-                  <div ref={scrollBase}></div>
-                </InfiniteScroll>
+                </>
               ) : (
                 <>
                   {nftList.length === 0 ? (
-                    <></>
+                    <NoItemContainer>
+                      <span style={{ color: '#f5f5f5', fontSize: 30, fontFamily: 'Rubik' }}>No Item To Display</span>
+                    </NoItemContainer>
                   ) : (
                     <InfiniteScroll
                       root={infiniteScrollRoot2}
@@ -284,9 +356,91 @@ const Users = () => {
               )}
             </NFTCollection>
           ) : (
-            <div>
-              <span>Events go here</span>
-            </div>
+            <>
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+                <Table
+                  className="table-listing"
+                  dataSource={eventLogs.map((val, index) => ({
+                    ...val,
+                    key: index
+                  }))}
+                  columns={[
+                    {
+                      title: 'Event',
+                      dataIndex: 'topics',
+                      key: 'topics',
+                      render: value => {
+                        const text =
+                          value[0] === eventHashMap.ApprovalForAll
+                            ? 'ApprovalForAll'
+                            : value[0] === eventHashMap.Transfer
+                            ? 'Transfer'
+                            : 'Unknown Event';
+                        const icon =
+                          value[0] === eventHashMap.ApprovalForAll ? (
+                            <FiThumbsUp />
+                          ) : value[0] === eventHashMap.Transfer ? (
+                            <FaExchangeAlt />
+                          ) : (
+                            <FaQuestion />
+                          );
+                        return (
+                          <span style={{ fontSize: 17, fontFamily: 'Rubik', color: '#f5f5f5' }}>
+                            {icon} {text}
+                          </span>
+                        );
+                      }
+                    },
+                    {
+                      title: 'From',
+                      dataIndex: 'topics',
+                      key: 'topics',
+                      render: value => (
+                        <a
+                          href={explorerUrl.concat(
+                            'address/' + `${hexStripZeros(value[1]) === '0x' ? AddressZero : hexStripZeros(value[1])}`
+                          )}
+                          style={{ textDecoration: 'none' }}
+                          target="_blank"
+                        >
+                          <span style={{ fontSize: 17, fontFamily: 'Rubik', color: '#6495ed' }}>
+                            {hexStripZeros(value[1]) === '0x'
+                              ? 'NullAddress'
+                              : formatEthAddress(hexStripZeros(value[1]), 5)}
+                          </span>
+                        </a>
+                      )
+                    },
+                    {
+                      title: 'For',
+                      dataIndex: 'topics',
+                      key: 'topics',
+                      render: value => (
+                        <span style={{ fontSize: 17, fontFamily: 'Rubik', color: '#f5f5f5' }}>
+                          {value[0] === eventHashMap.Transfer ? parseInt(hexStripZeros(value[3])) : ''}
+                        </span>
+                      )
+                    },
+                    {
+                      title: 'Tx',
+                      dataIndex: 'transactionHash',
+                      key: 'transactionHash',
+                      render: value => (
+                        <a href={explorerUrl.concat('tx/' + value)} style={{ textDecoration: 'none' }} target="_blank">
+                          <span style={{ fontSize: 17, fontFamily: 'Rubik', color: '#6495ed' }}>{value}</span>
+                        </a>
+                      )
+                    }
+                  ]}
+                  scroll={{ y: 240 }}
+                  size="middle"
+                  pagination={false}
+                  title={() => (
+                    <h4 style={{ fontWeight: 'bold', color: '#fff' }}>Events for {accountById?.accountId}</h4>
+                  )}
+                />
+              </div>
+            </>
           )}
         </NFTUserCollectionInfo>
       </UsersWrapper>

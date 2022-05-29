@@ -92,7 +92,7 @@ const NoItemContainer = styled.div`
 
 const CreateProfile = () => {
   const { active, account } = useWeb3Context();
-  const { loadAuthUser } = useAPIContext();
+  const { loadToken } = useAPIContext();
   const [email, setEmail] = useState<string>('');
   const router = useRouter();
 
@@ -130,14 +130,13 @@ const CreateProfile = () => {
       setIsLoading(true);
       if (allConditionsSatisfied()) {
         const jsonResponse = await pinJson(accountMetadata);
-        const accountCreateResponse = await createAccount({
+        await createAccount({
           name: accountMetadata.name,
           email,
           metadataURI: jsonResponse.response.itemURI,
           accountId: account
         });
-        localStorage.setItem('VEFI_NFT_TOKEN', accountCreateResponse.token);
-        loadAuthUser();
+        loadToken(account as string);
         resetAllFields();
         router.replace('/');
       }

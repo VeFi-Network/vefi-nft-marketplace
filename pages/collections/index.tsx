@@ -69,7 +69,7 @@ const ListCollections = () => {
                     All
                   </Button>
                 </div>
-                {_.map(Object.values(CollectionCategory), category => (
+                {_.map(Object.values(CollectionCategory).sort(), category => (
                   <div className="box" key={category}>
                     <Button
                       onClick={() => router.push(`/collections?category=${category}`)}

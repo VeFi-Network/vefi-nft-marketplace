@@ -4,6 +4,7 @@ import { FaFacebook, FaGithub, FaTelegram } from 'react-icons/fa';
 import { AiFillTwitterCircle } from 'react-icons/ai';
 import { Container, FootLink, SubDiv1, SubDiv2 } from '../../styles/footer.styled';
 import Link from 'next/link';
+import { CollectionCategory } from '../../api/models/collection';
 
 function MainFooter() {
   return (
@@ -42,13 +43,23 @@ function MainFooter() {
       <SubDiv2>
         <div className="marketplace">
           <h2 className="nav_section">Marketplace</h2>
-          {marketplaceArray.slice(0, 10).map(({ label, path }: any) => (
-            <FootLink key={label}>
-              <Link href={path}>
-                <a>{label}</a>
-              </Link>
-            </FootLink>
-          ))}
+          {Object.values(CollectionCategory)
+            .sort()
+            .map(category => (
+              <FootLink key={category}>
+                <Link href={`/collections?category=${category}`}>
+                  <a>
+                    {category
+                      .split('')
+                      .map((character, index) => (index === 0 ? character : character.toLowerCase()))
+                      .join('')
+                      .split(' ')
+                      .map(character => character.replace(character.charAt(0), character.charAt(0).toUpperCase()))
+                      .join(' ')}
+                  </a>
+                </Link>
+              </FootLink>
+            ))}
         </div>
         <div className="my_account">
           <div>

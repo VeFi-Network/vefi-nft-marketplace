@@ -545,7 +545,7 @@ export default function Homepage() {
                   <h2>Browse by Category</h2>
                 </div>
                 <div className="cartegory__card__listing">
-                  {_.map(Object.values(CollectionCategory), category => (
+                  {_.map(Object.values(CollectionCategory).sort(), category => (
                     <div key={category}>
                       <CategoryCard
                         linkTo={`/collections?category=${category}`}
