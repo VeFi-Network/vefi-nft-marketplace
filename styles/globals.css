@@ -53,6 +53,13 @@ a {
 .ant-drawer-content {
   background-color: #373943 !important;
 }
+@media screen and (max-width: 760px) {
+  /* .ant-drawer-content {
+    width: 90% !important;
+    background: red;
+    margin-left: 50px !important;
+  } */
+}
 .ant-drawer-header {
   display: none !important;
 }
