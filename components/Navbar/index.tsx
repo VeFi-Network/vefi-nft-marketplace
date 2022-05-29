@@ -139,18 +139,22 @@ const Navbar = () => {
             </Link>
           </NavBrand>
           <NavLinks>
-            <div className="icon x-mobile">
-              <FaEnvelope fontSize={15} />
-            </div>
+            {active && (
+              <>
+                <div className="icon x-mobile">
+                  <FaEnvelope fontSize={15} />
+                </div>
 
-            <div className="icon x-mobile" onClick={() => setVisible(!visible)}>
-              <FaWallet fontSize={15} />
-            </div>
-            <Dropdown overlay={<Menu />} trigger={['click']} placement="bottom" arrow>
-              <div className="icon">
-                <FiMoreHorizontal />
-              </div>
-            </Dropdown>
+                <div className="icon x-mobile" onClick={() => setVisible(!visible)}>
+                  <FaWallet fontSize={15} />
+                </div>
+                <Dropdown overlay={<Menu />} trigger={['click']} placement="bottom" arrow>
+                  <div className="icon">
+                    <FiMoreHorizontal />
+                  </div>
+                </Dropdown>
+              </>
+            )}
 
             {!active ? (
               <>
@@ -179,7 +183,7 @@ const Navbar = () => {
           </NavLinks>
         </div>
       </NavContainer>
-      <Drawer title="" placement="right" onClose={() => setVisible(!visible)} visible={visible}>
+      <Drawer title="" placement="right" onClose={() => setVisible(!visible)} visible={visible} width="300px">
         <div className="wallet__body">
           {active ? (
             <>
