@@ -73,6 +73,11 @@ const NavLinks = styled.div`
       transform: scale(1.1);
     }
   }
+  @media screen and (max-width: 320px) {
+    .x-mobile {
+      display: none;
+    }
+  }
   z-index: 2;
 `;
 
@@ -134,11 +139,11 @@ const Navbar = () => {
             </Link>
           </NavBrand>
           <NavLinks>
-            <div className="icon">
+            <div className="icon x-mobile">
               <FaEnvelope fontSize={15} />
             </div>
 
-            <div className="icon" onClick={() => setVisible(!visible)}>
+            <div className="icon x-mobile" onClick={() => setVisible(!visible)}>
               <FaWallet fontSize={15} />
             </div>
             <Dropdown overlay={<Menu />} trigger={['click']} placement="bottom" arrow>

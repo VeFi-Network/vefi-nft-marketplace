@@ -135,7 +135,8 @@ export const NFTUserInfo = styled.div`
   width: 100%;
   height: 200px;
   position: relative;
-  z-index: 1;
+  z-index: 999;
+
   div:nth-child(1) {
     width: 200px;
     height: 300px;
