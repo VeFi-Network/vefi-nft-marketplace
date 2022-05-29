@@ -27,10 +27,6 @@ const NavContainer = styled.nav`
     align-items: center;
 
     height: 60px;
-
-    @media screen and (max-width: 760px) {
-      margin: 0;
-    }
   }
   .connectBtn {
     background: #0c0c0c !important;
@@ -45,6 +41,11 @@ const NavContainer = styled.nav`
       transform: scale(1.1);
       color: #fff;
     }
+  }
+  @media screen and (max-width: 760px) {
+    margin: 0;
+    width: 100%;
+    padding: 0 10px;
   }
 `;
 
@@ -128,7 +129,7 @@ const Navbar = () => {
           <NavBrand>
             <Link href="/">
               <a>
-                <Image src="/logo/vefi_nft_logo.svg" width={100} height={45} />
+                <Image src="/logo/logo.svg" width={100} height={45} />
               </a>
             </Link>
           </NavBrand>
