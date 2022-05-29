@@ -12,6 +12,7 @@ import { AccountMetadata } from '../../../api/models/account';
 import { updateAccount } from '../../../api/nft';
 import { useAPIContext } from '../../../contexts/api';
 import { useWeb3Context } from '../../../contexts/web3';
+import MainFooter from '../../../components/Footer';
 
 const RootContainer = styled.div`
   min-width: 100%;
@@ -23,7 +24,9 @@ const NavContainer = styled.div`
 `;
 
 const Container = styled.div`
-  max-width: 100%;
+  margin-top: 50px;
+  max-width: 90vw;
+  width: 90vw;
   display: flex;
   justify-content: center;
   div {
@@ -32,7 +35,9 @@ const Container = styled.div`
 `;
 
 const BodyContainer = styled.div`
-  min-height: 120vh;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: row;
 `;
 
 const Heading = styled.h2`
@@ -75,9 +80,9 @@ const InputText = styled.input`
 `;
 
 const ExploreNFT = styled.div`
-  position: absolute;
-  top: 7rem;
   margin-left: 1rem;
+  margin-top: 7rem;
+  height: 585px;
   @media screen and (max-width: 760px) {
     display: none;
   }
@@ -227,6 +232,7 @@ const UpdateProfile = () => {
             )}
           </Container>
         </BodyContainer>
+        <MainFooter />
       </RootContainer>
     </>
   );
