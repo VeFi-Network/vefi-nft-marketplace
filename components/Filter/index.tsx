@@ -1,11 +1,15 @@
 import styled from 'styled-components';
+
 type IFilterProps = {
   icon?: any;
   label: string;
   count?: number | string | any;
+  isActive?: boolean;
+  onClick?: () => void;
 };
+
 export const FilterPropertyWrapper = styled.div`
-  background: #373943;
+  background: ${(props: { isActive: boolean }) => (props.isActive ? '#5C95FF' : '#373943')};
   width: max-content;
 
   border-radius: 10px;
@@ -37,10 +41,10 @@ export const FilterPropertyWrapper = styled.div`
   }
 `;
 
-const FilterProperty = ({ icon, label, count }: IFilterProps) => {
+const FilterProperty = ({ icon, label, count, isActive, onClick }: IFilterProps) => {
   return (
     <>
-      <FilterPropertyWrapper>
+      <FilterPropertyWrapper onClick={onClick} isActive={isActive}>
         <span className="icon">{icon}</span>
         <span>{label}</span>
         <span className="count">{count}</span>

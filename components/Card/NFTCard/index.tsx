@@ -11,7 +11,7 @@ import {
   CardFooterItem
 } from '../../../styles/users.styled';
 import Button from '../../Button/Ghost';
-import Image from 'next/image';
+import Link from 'next/link';
 
 type Props = {
   model: NFTModel;
@@ -23,24 +23,24 @@ const NFTCard = ({ model, onClick }: Props) => {
     <>
       <CardContainer>
         <CardHeader>
-          <img src={model?.metadata?.imageURI} width={329} height={378} alt="nft user" />
+          <img src={model?.metadata?.image} width={329} height={378} alt="nft user" />
         </CardHeader>
         <CardFooterContainer>
           <CardFooter>
             <CardFooterItem>
               <div className="nft-meta-data">
                 <span className="nft_collection_name">{model?.metadata?.name}</span>
-                <span className="nft_name">
-                  {ethAddress.isAddress(model.metadata?.owner)
-                    ? formatEthAddress(model.metadata?.owner as string)
-                    : model.metadata?.owner}
-                </span>
+                <Link href={`/users/${model.owner}?tab=1`}>
+                  <span className="nft_name">
+                    {ethAddress.isAddress(model.owner) ? formatEthAddress(model.owner as string) : model.owner}
+                  </span>
+                </Link>
               </div>
               <div className="nft-price-info">
-                <div className="price">
+                {/* <div className="price">
                   <Image src="/icons/eth_classic.svg" width={20} height={20} />
                   <div>2 eth</div>
-                </div>
+                </div> */}
                 <Button
                   onClick={onClick}
                   borderThickness="1px"

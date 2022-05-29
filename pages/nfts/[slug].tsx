@@ -1,18 +1,31 @@
-import { Spin, Tag } from 'antd';
+import { Spin, Tag, message } from 'antd';
 import Navbar from '../../components/Navbar';
 import styled from 'styled-components';
+import { Interface } from '@ethersproject/abi';
+import { parseEther, parseUnits } from '@ethersproject/units';
+import { AddressZero } from '@ethersproject/constants';
+import type Web3 from 'web3';
 import Image from 'next/image';
 import _ from 'lodash';
 import Filled_CTA_Button from '../../components/Button/CTA/Filled';
-import Listing from '../../components/ListingTable/index';
-import PriceChart from '../../components/PriceChart/index';
+import Listing from '../../components/ListingTable';
+import PriceChart from '../../components/PriceChart';
 import { usePageQuery } from '../../hooks/query';
 import { useAPIContext } from '../../contexts/api';
 import { useEffect, useState } from 'react';
 import { FiEye, FiHeart, FiInfo, FiLink, FiTag } from 'react-icons/fi';
+import { FaHeart } from 'react-icons/fa';
 import SellPopup from '../../components/Popup/SellPopup';
 import OfferPopup from '../../components/Popup/OfferPopup';
-import { useWeb3Context } from '../../contexts/web3/index';
+import { useWeb3Context } from '../../contexts/web3';
+import { Periods } from '../../components/PriceChart/period';
+import { addToFavorites, removeFromFavorites, viewItem } from '../../api/nft';
+import marketPlaceAbi from '../../assets/abis/Marketplace.json';
+import deployableCollectionAbi from '../../assets/abis/DeployableCollection.json';
+import erc20Abi from '../../assets/abis/ERC20.json';
+import { CONSTANTS, addresses } from '../../assets';
+import { useRouter } from 'next/router';
+import request from '../../api/rpc';
 
 const RootContainer = styled.div`
   width: 100%;
@@ -22,6 +35,7 @@ const RootContainer = styled.div`
 const NavContainer = styled.div`
   max-width: 100%;
 `;
+
 const ProfileContainer = styled.div`
   min-height: 100vh;
   width: 100%;
@@ -200,30 +214,19 @@ const ProfileAvatarCard = styled.div``;
 const LikeButtonContainer = styled.div`
   width: 45px;
   height: 45px;
+  font-size: 30px;
+  text-align: center;
   position: relative;
   display: flex;
   justify-content: center;
+  align-items: center;
   top: 60px;
   z-index: 5;
   left: 5%;
-  background: linear-gradient(180deg, #ffffff 0%, #b4b0b0 100%);
   border-radius: 12px;
   :hover {
     cursor: pointer;
   }
-  @media screen and (max-width: 760px) {
-    img {
-      object-fit: contain;
-      width: 40px !important;
-      height: 40px !important ;
-    }
-  }
-`;
-
-const LikeButton = styled.img`
-  margin-left: -5px;
-  margin-top: 5px;
-  filter: drop-shadow(-3px 2px 6px rgba(0, 0, 0, 0.23));
 `;
 
 const DescriptionContainer = styled.div`
@@ -310,22 +313,230 @@ const CTA = styled.div`
 const ParentContainer = styled.div``;
 
 export default function NFT() {
-  const { slug } = usePageQuery();
-  const { account } = useWeb3Context();
-  const { nftById, collectionById, loadCollectionById, loadNFTById } = useAPIContext();
+  const { slug, liked, isSale, marketId, price, tradeCurrency } = usePageQuery();
+  const { account, network, library, chainId, explorerUrl } = useWeb3Context();
+  const {
+    nftById,
+    collectionById,
+    loadCollectionById,
+    loadNFTById,
+    itemOnSale,
+    checkItemOnSale,
+    itemPricePerPeriod,
+    loadItemPricePerPeriod,
+    favorites,
+    loadFavorites,
+    allNFTOrders,
+    loadAllNFTOrders,
+    itemViews,
+    loadItemViews,
+    token
+  } = useAPIContext();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [sellModal, setSellModal] = useState(false);
   const [offerModal, setOfferModal] = useState(false);
   const [transition, setTransition] = useState(false);
+  const [period, setPeriod] = useState<Periods>(Periods.ONE_HOUR);
+  const [tip, setTip] = useState<string>('');
+
+  const router = useRouter();
+
+  const kFormatter = (num: number): string | number => {
+    return Math.abs(num) > 999
+      ? Math.sign(num) * parseFloat((Math.abs(num) / 1000).toFixed(1)) + 'k'
+      : Math.sign(num) * Math.abs(num);
+  };
+
+  const addToFavesOrRemoveFromFaves = async () => {
+    try {
+      const splitSlug = (slug as string).split(':');
+
+      if (!favorites.map(f => f.accountId).includes(account as string) && !Boolean(liked)) {
+        await addToFavorites(network, splitSlug[0], parseInt(splitSlug[1]), token);
+        router.push(`/nfts/${slug}?liked=${true}`, undefined, { shallow: true });
+      } else {
+        await removeFromFavorites(network, splitSlug[0], parseInt(splitSlug[1]), token);
+        router.push(`/nfts/${slug}?liked=${false}`, undefined, { shallow: true });
+      }
+    } catch (error: any) {
+      message.error(error.response?.data?.error || error.message);
+    }
+  };
+
+  const buy = async () => {
+    try {
+      if (!!tradeCurrency && !!price && !!marketId) {
+        setIsLoading(true);
+        let amount: ReturnType<typeof parseEther | typeof parseUnits>;
+
+        setTip('Parsing amount');
+        if (tradeCurrency !== AddressZero) {
+          const erc20AbiInterface = new Interface(erc20Abi);
+          const functionHash = erc20AbiInterface.getSighash('decimals()');
+          const decimalResponse = await request(network, {
+            method: 'eth_call',
+            id: 1,
+            params: [{ to: tradeCurrency as string, data: functionHash }, 'latest'],
+            jsonrpc: '2.0'
+          });
+          amount = parseUnits(price as string, decimalResponse);
+        } else {
+          amount = parseEther(price as string);
+        }
+
+        const marketPlaceContract = new (library as Web3).eth.Contract(
+          marketPlaceAbi as any,
+          addresses[chainId as number]
+        );
+
+        setTip('Now purchasing item');
+
+        const purchaseResponse = await marketPlaceContract.methods
+          .buyItem(marketId, tradeCurrency !== AddressZero ? amount : 0)
+          .send({
+            from: account,
+            value: tradeCurrency === AddressZero ? amount : undefined
+          });
+
+        message
+          .success(
+            <>
+              <span style={{ fontSize: 15 }}>Item successfully purchased!</span>{' '}
+              <a
+                style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
+                href={explorerUrl.concat('tx/' + purchaseResponse.transactionHash)}
+                target="_blank"
+              >
+                View on explorer!
+              </a>
+            </>,
+            2
+          )
+          .then(() => {
+            router.push(`/collections/${(slug as string).split(':')[0]}`);
+          });
+      }
+    } catch (error: any) {
+      setIsLoading(false);
+      message.error(error.message);
+    }
+  };
+
+  const acceptOffer = async (orderId: string) => {
+    try {
+      setIsLoading(true);
+      setTip('Proceeding to accept offer for item: ' + nftById.tokenId);
+      setTip('Requesting approval');
+      const erc721 = new (library as Web3).eth.Contract(deployableCollectionAbi as any, nftById.collectionId);
+
+      await erc721.methods.setApprovalForAll(addresses[chainId as number], true).send({ from: account });
+
+      setTip('Approved!');
+      const marketPlaceContract = new (library as Web3).eth.Contract(
+        marketPlaceAbi as any,
+        addresses[chainId as number]
+      );
+
+      setTip('Now accepting offer');
+      const acceptanceResponse = await marketPlaceContract.methods.acceptOffer(orderId).send({ from: account });
+
+      setIsLoading(false);
+      setTip('');
+      message
+        .success(
+          <>
+            <span style={{ fontSize: 15 }}>Offer accepted!</span>{' '}
+            <a
+              style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
+              href={explorerUrl.concat('tx/' + acceptanceResponse.transactionHash)}
+              target="_blank"
+            >
+              View on explorer!
+            </a>
+          </>,
+          2
+        )
+        .then(() => {
+          router.push(`/collections/${(slug as string).split(':')[0]}`);
+        });
+    } catch (error: any) {
+      setIsLoading(false);
+      message.error(error.message);
+    }
+  };
+
+  const rejectOffer = async (orderId: string) => {
+    try {
+      setIsLoading(true);
+      setTip('Proceeding to reject offer for item: ' + nftById.tokenId);
+      const marketPlaceContract = new (library as Web3).eth.Contract(
+        marketPlaceAbi as any,
+        addresses[chainId as number]
+      );
+
+      setTip('Now rejecting offer');
+      const rejectionResponse = await marketPlaceContract.methods.rejectOffer(orderId).send({ from: account });
+
+      setIsLoading(false);
+      setTip('');
+      message
+        .success(
+          <>
+            <span style={{ fontSize: 15 }}>Offer rejected!</span>{' '}
+            <a
+              style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
+              href={explorerUrl.concat('tx/' + rejectionResponse.transactionHash)}
+              target="_blank"
+            >
+              View on explorer!
+            </a>
+          </>,
+          2
+        )
+        .then(() => {
+          router.push(`/collections/${(slug as string).split(':')[0]}`);
+        });
+    } catch (error: any) {
+      setIsLoading(false);
+      message.error(error.message);
+    }
+  };
 
   useEffect(() => {
     if (!!slug) {
       const splitSlug = (slug as string).split(':');
       loadNFTById(splitSlug[0], parseInt(splitSlug[1]));
       loadCollectionById(splitSlug[0]);
+      checkItemOnSale(splitSlug[0], parseInt(splitSlug[1]));
+      loadFavorites(splitSlug[0], parseInt(splitSlug[1]));
+      loadAllNFTOrders(splitSlug[0], parseInt(splitSlug[1]));
+      loadItemViews(splitSlug[0], parseInt(splitSlug[1]));
+
+      if (token) {
+        viewItem(network, splitSlug[0], parseInt(splitSlug[1]), token).then(() => console.log('Item viewed'));
+      }
+
       setIsLoading(false);
     }
   }, [slug]);
+
+  useEffect(() => {
+    if (collectionById && nftById) {
+      let timestamp: number;
+
+      if (period === Periods.ONE_HOUR) {
+        timestamp = Date.now() - 60 * 60 * 1000;
+      } else if (period === Periods.TWO_DAYS) {
+        timestamp = Date.now() - 60 * 60 * 24 * 2 * 1000;
+      } else if (period === Periods.SEVEN_DAYS) {
+        timestamp = Date.now() - 60 * 60 * 24 * 7 * 1000;
+      } else {
+        timestamp = Date.now() - 60 * 60 * 24 * 30 * 1000;
+      }
+
+      loadItemPricePerPeriod(collectionById.collectionId, nftById.tokenId, timestamp, Date.now());
+    }
+  }, [collectionById, nftById, period]);
 
   const handleBackgroundClick = () => {
     if (offerModal) {
@@ -346,7 +557,7 @@ export default function NFT() {
             <Navbar />
           </NavContainer>
 
-          <Spin spinning={isLoading}>
+          <Spin spinning={isLoading} tip={tip}>
             {/* <Banner background={collectionById.metadata.bannerURI}>
               <BannerCaption>{collectionById.collectionName || 'Collection Name'}</BannerCaption>
               <ProfileAvatar background={collectionById.metadata.imageURI} />
@@ -354,7 +565,7 @@ export default function NFT() {
 
             <CollectionInfoCont>
               <div className="creator">
-                Owner: <div className="blue"> {nftById?.metadata?.owner || 'NFT owner'}</div>{' '}
+                Owner: <div className="blue"> {nftById?.owner || 'NFT owner'}</div>{' '}
                 <Image src="/icons/verification.svg" alt="" width="20px" height="20px" className="tick" />
               </div>
             </CollectionInfoCont>
@@ -362,10 +573,16 @@ export default function NFT() {
             <BodyContainer>
               <LeftColumn>
                 <ProfileAvatarCard>
-                  <LikeButtonContainer>
-                    <LikeButton src="/icons/dark-heart.png" />
+                  <LikeButtonContainer onClick={addToFavesOrRemoveFromFaves}>
+                    <FaHeart
+                      color={
+                        favorites.map(f => f.accountId).includes(account as string) || !!Boolean(liked as string)
+                          ? '#db7093'
+                          : undefined
+                      }
+                    />
                   </LikeButtonContainer>
-                  <img src={nftById.metadata?.imageURI} alt="NFT Image" width={398} height={598} />
+                  <img src={nftById.metadata?.image} alt="NFT Image" width={398} height={598} />
                 </ProfileAvatarCard>
 
                 <DescriptionContainer>
@@ -414,13 +631,13 @@ export default function NFT() {
                     <span>
                       <FiEye />
                     </span>
-                    <span>3.5k Views</span>
+                    <span>{kFormatter(itemViews)} Views</span>
                   </div>
                   <div className="stat">
                     <span>
                       <FiHeart />
                     </span>
-                    <span>1.5k Likes</span>
+                    <span>{kFormatter(favorites.length)} Likes</span>
                   </div>
                 </ProfileStats>
                 <ItemName>{nftById.metadata?.name || 'NFT Name'}</ItemName>
@@ -429,8 +646,9 @@ export default function NFT() {
                     {/* <Filled_CTA_Button backgroundColor="#5C95FF" color="#fff">
                       Buy Now
                     </Filled_CTA_Button> */}
-                    {!!account && account !== nftById.owner && (
+                    {!!account && account !== nftById.owner && !itemOnSale && (
                       <Filled_CTA_Button
+                        disabled={itemOnSale}
                         onClick={(e: any) => {
                           e.stopPropagation();
                           setOfferModal(!offerModal);
@@ -444,6 +662,10 @@ export default function NFT() {
                     )}
                     {!!account && account === nftById.owner && (
                       <Filled_CTA_Button
+                        disabled={!!isSale || itemOnSale}
+                        style={{
+                          background: !!isSale || itemOnSale ? 'grey' : undefined
+                        }}
                         onClick={(e: any) => {
                           e.stopPropagation();
                           setSellModal(!sellModal);
@@ -453,10 +675,25 @@ export default function NFT() {
                         Sell
                       </Filled_CTA_Button>
                     )}
+                    {!!account && account !== nftById.owner && !!marketId && (
+                      <Filled_CTA_Button disabled={!isSale || !itemOnSale} onClick={buy}>
+                        Buy
+                      </Filled_CTA_Button>
+                    )}
                   </CTA>
                 </div>
-                <PriceChart />
-                <Listing />
+                <PriceChart
+                  onChange={setPeriod}
+                  timestamps={itemPricePerPeriod.map(i => i.timestamp * 1000)}
+                  prices={itemPricePerPeriod.map(i => i.price)}
+                />
+                <Listing
+                  datasource={allNFTOrders}
+                  acceptanceButtonEnabled={!!account && account === nftById.owner}
+                  rejectionButtonEnabled={!!account && account === nftById.owner}
+                  onAcceptClick={acceptOffer}
+                  onRejectClick={rejectOffer}
+                />
               </RightColumn>
             </BodyContainer>
 
@@ -466,7 +703,7 @@ export default function NFT() {
       </RootContainer>
 
       <SellPopup transition={transition} nft={nftById} modal={sellModal} setModal={setSellModal} />
-      <OfferPopup transition={transition} nftById={nftById} modal={offerModal} setModal={setOfferModal} />
+      <OfferPopup transition={transition} nft={nftById} modal={offerModal} setModal={setOfferModal} />
     </ParentContainer>
   );
 }

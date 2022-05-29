@@ -5,11 +5,12 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import Button from '../Button/Ghost';
 import Link from 'next/link';
+import { useWeb3Context } from '../../contexts/web3';
 
 type Props = {
   name: string;
   owner: string;
-  price: string;
+  price?: string;
   imageURI: string;
   linkTo: string;
 };
@@ -145,6 +146,7 @@ const CardFooterItem = styled.div`
 `;
 
 const Card = (props: Props) => {
+  const { networkSymbol } = useWeb3Context();
   return (
     <CardContainer>
       <Link href={props.linkTo}>
@@ -163,11 +165,15 @@ const Card = (props: Props) => {
                     </span>
                   </div>
                   <div className="nft-price-info">
-                    <div className="price">
-                      <Image src="/icons/eth_classic.svg" width={20} height={20} />
+                    {props.price && (
+                      <div className="price">
+                        <Image src="/icons/eth_classic.svg" width={20} height={20} />
 
-                      <div>{props.price}eth</div>
-                    </div>
+                        <div>
+                          {props.price} {networkSymbol}
+                        </div>
+                      </div>
+                    )}
 
                     <Button borderThickness="1px" borderRadius="4px">
                       View

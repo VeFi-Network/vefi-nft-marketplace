@@ -1,9 +1,11 @@
 import React, { createContext, useEffect, useContext, useCallback, useState } from 'react';
+import { formatEther } from '@ethersproject/units';
 import { useWeb3React } from '@web3-react/core';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import type Web3 from 'web3';
 import chains from '../../chains.json';
+import request from '../../api/rpc';
 
 type Web3ContextType = {
   account?: string | null;
@@ -12,7 +14,9 @@ type Web3ContextType = {
   active: boolean;
   error?: Error;
   network: string;
+  networkSymbol: string;
   explorerUrl: string;
+  balance: string;
   connectMetamask: () => void;
   connectWalletConnect: () => void;
   disconnectWallet: () => void;
@@ -21,22 +25,33 @@ type Web3ContextType = {
 const Web3Context = createContext<Web3ContextType>({} as Web3ContextType);
 
 const injectedConnector = new InjectedConnector({
-  supportedChainIds: [97, 56, 32520, 64668, 80001]
+  supportedChainIds: [97, 56, 32520, 64668, 80001, 4]
 });
 
 const walletConnectConnector = new WalletConnectConnector({
-  rpc: {
-    97: process.env.NEXT_PUBLIC_BSC_TESTNET_RPC as string
-  },
   qrcode: true,
   bridge: 'https://bridge.walletconnect.org',
-  supportedChainIds: [97, 56, 32520, 64668, 80001]
+  supportedChainIds: [97, 56, 32520, 64668, 80001, 4]
 });
 
 export const Web3ContextProvider = ({ children }: any) => {
-  const { library, account, activate, deactivate, active, chainId, error } = useWeb3React<Web3>();
+  const { library, account, activate, deactivate, active, chainId, error, setError } = useWeb3React<Web3>();
   const [network, setNetwork] = useState<string>('smartchain');
+  const [networkSymbol, setNetworkSymbol] = useState<string>('BNB');
   const [explorerUrl, setExplorerUrl] = useState<string>(chains['97'].explorerUrl);
+  const [tried, setTried] = useState<boolean>(false);
+  const [balance, setBalance] = useState<string>('0');
+
+  const fetchBalance = useCallback(() => {
+    try {
+      request(network, { id: 1, jsonrpc: '2.0', method: 'eth_getBalance', params: [account, 'latest'] })
+        .then(formatEther)
+        .then(setBalance)
+        .catch(setError);
+    } catch (error: any) {
+      setError(error);
+    }
+  }, [account, network]);
 
   const connectMetamask = useCallback(() => {
     if (!active) {
@@ -62,18 +77,33 @@ export const Web3ContextProvider = ({ children }: any) => {
     injectedConnector.isAuthorized().then(isAuth => {
       if (isAuth) {
         activate(injectedConnector, undefined, true).then(() => {
-          console.log('Web3 connected');
+          setTried(true);
         });
+      } else {
+        setTried(true);
       }
     });
   }, []);
 
   useEffect(() => {
+    if (!tried && active) {
+      setTried(true);
+    }
+  }, [tried, active]);
+
+  useEffect(() => {
     if (!!chainId) {
       setNetwork(chains[chainId.toString() as keyof typeof chains].appName);
       setExplorerUrl(chains[chainId.toString() as keyof typeof chains].explorerUrl);
+      setNetworkSymbol(chains[chainId.toString() as keyof typeof chains].symbol);
     }
   }, [chainId]);
+
+  useEffect(() => {
+    if (!!account && !!network) {
+      fetchBalance();
+    }
+  }, [account, network]);
 
   return (
     <Web3Context.Provider
@@ -86,7 +116,9 @@ export const Web3ContextProvider = ({ children }: any) => {
         disconnectWallet,
         active,
         network,
+        networkSymbol,
         explorerUrl,
+        balance,
         error
       }}
     >

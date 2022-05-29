@@ -29,7 +29,7 @@ const DropdownMain = styled.div`
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  line-height: 17px;
+  line-height: 14px;
 
   margin-top: ${(props: { top: string }) => (props.top ? props.top : '36px')};
 

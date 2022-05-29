@@ -196,9 +196,9 @@ export default function SellPopup({ modal, setModal, nft, transition }: Props) {
         let price: ReturnType<typeof parseEther | typeof parseUnits>;
 
         setTip('Requesting approval');
-        const erc721 = new (library as Web3).eth.Contract(deployableCollectionAbi as any, data.currency);
+        const erc721 = new (library as Web3).eth.Contract(deployableCollectionAbi as any, nft.collectionId);
 
-        await erc721.methods.approve(addresses[chainId as number], nft.tokenId).send({
+        await erc721.methods.setApprovalForAll(addresses[chainId as number], true).send({
           from: account
         });
 
@@ -244,6 +244,7 @@ export default function SellPopup({ modal, setModal, nft, transition }: Props) {
       }
       resetAllFields();
       setTip('');
+      setIsLoading(false);
     } catch (error: any) {
       setIsLoading(false);
       setTip('');
@@ -271,7 +272,7 @@ export default function SellPopup({ modal, setModal, nft, transition }: Props) {
                 <img
                   width="244px"
                   height="238.53px"
-                  src={nft ? nft.metadata?.imageURI : '/nft/nft02.png'}
+                  src={nft ? nft.metadata?.image : '/nft/nft02.png'}
                   alt=""
                   className="nft-img"
                 />
@@ -287,7 +288,14 @@ export default function SellPopup({ modal, setModal, nft, transition }: Props) {
               <div className="eth-container">
                 <Image width="12px" height="12px" src={token?.image as string} />
               </div>
-              <input name="price" onChange={setProperty} placeholder="0.00" type="number" className="input" />
+              <input
+                value={data.price}
+                name="price"
+                onChange={setProperty}
+                placeholder="0.00"
+                type="number"
+                className="input"
+              />
             </div>
 
             <Heading top="27px">Select Payment Token</Heading>

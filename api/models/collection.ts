@@ -11,7 +11,8 @@ export enum CollectionCategory {
   UTILITY = 'UTILITY',
   REAL_ESTATE = 'REAL ESTATE',
   CARTOONS = 'CARTOONS',
-  MOVIES = 'MOVIES'
+  MOVIES = 'MOVIES',
+  GIFT_CARDS = 'GIFT CARDS'
 }
 
 export type CollectionMetadata = {
@@ -36,4 +37,5 @@ export interface CollectionModel {
   collectionURI: string;
   network: string;
   id: number;
+  floorPrice?: number;
 }

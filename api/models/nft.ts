@@ -11,7 +11,7 @@ export type NFTMetadata = {
   name: string;
   description: string;
   owner: string;
-  imageURI: string;
+  image: string;
   traits: Array<string>;
   levels: Array<NFTLevels>;
   externalLink?: string;

@@ -362,7 +362,7 @@ export default function NewCollection({}: Props) {
         resetAllFields();
         message.success(
           <>
-            <span style={{ fontSize: 15 }}>Collection successfully deployed!</span>
+            <span style={{ fontSize: 15 }}>Collection successfully deployed!</span>{' '}
             <a
               style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
               href={explorerUrl.concat('tx/' + deploymentResponse.transactionHash)}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaFilter, FaSearch } from 'react-icons/fa';
 
-const FIlterBy = ({ children }: any) => {
+const FIlterBy = ({ children, onSearchEnter, placeholder }: any) => {
   return (
     <>
       <div className="filter__collection">
@@ -16,7 +16,11 @@ const FIlterBy = ({ children }: any) => {
           <div className="search">
             <div className="search__box">
               <FaSearch />
-              <input type="text" placeholder="Search for artwork" />
+              <input
+                type="text"
+                onChange={e => onSearchEnter(e.target.value)}
+                placeholder={placeholder || 'Search for artwork'}
+              />
             </div>
           </div>
         </div>

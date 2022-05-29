@@ -9,14 +9,14 @@ import Background from '../components/AnimatedBackground';
 import { FaQuestion, FaTag, FaShoppingBasket, FaList } from 'react-icons/fa';
 import { Button } from 'antd';
 import _ from 'lodash';
-import { useAPIContext } from '../contexts/api/index';
+import { useAPIContext } from '../contexts/api';
 import MainFooter from '../components/Footer';
 import Hero from '../components/Hero';
-import { Category } from '../styles/CartegoryCard.styled';
-import CartegoryCard from '../components/Card/CartegoryCard';
+import { Category } from '../styles/CategoryCard.styled';
+import CategoryCard from '../components/Card/CategoryCard';
 import { useRouter } from 'next/router';
-import { CollectionModel } from '../api/models/collection';
-import { useWeb3Context } from '../contexts/web3/index';
+import { CollectionCategory, CollectionModel } from '../api/models/collection';
+import { useWeb3Context } from '../contexts/web3';
 
 const MainContainer = styled.div`
   display: flex;
@@ -402,8 +402,7 @@ export default function Homepage() {
     collectionsByAssets,
     loadAllCollections,
     loadTopSellingCollections,
-    loadCollectionsByAssets,
-    loadAuthUser
+    loadCollectionsByAssets
   } = useAPIContext();
   const [list, setList] = useState<CollectionModel[]>([]);
   const [activeBtn, setActiveBtn] = useState<ActiveBtn>(ActiveBtn.ALL);
@@ -411,11 +410,18 @@ export default function Homepage() {
   const { network } = useWeb3Context();
 
   useEffect(() => {
+    loadAllCollections(1);
+    loadTopSellingCollections(1);
+    loadCollectionsByAssets(1);
+  }, []);
+
+  useEffect(() => {
     (() => {
-      loadAuthUser();
-      loadAllCollections(1);
-      loadTopSellingCollections(1);
-      loadCollectionsByAssets(1);
+      if (!!network) {
+        loadAllCollections(1);
+        loadTopSellingCollections(1);
+        loadCollectionsByAssets(1);
+      }
     })();
   }, [network]);
 
@@ -521,7 +527,6 @@ export default function Homepage() {
                           <div key={collection.collectionId}>
                             <Card
                               name={collection?.collectionName}
-                              price="0"
                               owner={collection?.metadata.owner}
                               imageURI={collection?.metadata.imageURI}
                               linkTo={`/collections/${collection?.collectionId}`}
@@ -540,11 +545,15 @@ export default function Homepage() {
                   <h2>Browse by Category</h2>
                 </div>
                 <div className="cartegory__card__listing">
-                  <CartegoryCard name="Art" image="/nft/nft01.png" />
-                  <CartegoryCard name="Sports Memorbilla" image="/nft/nft02.png" />
-                  <CartegoryCard name="Sports Memorbilla" image="/nft/nft02.png" />
-                  <CartegoryCard name="Sports Memorbilla" image="/nft/nft02.png" />
-                  <CartegoryCard name="Sports Memorbilla" image="/nft/nft02.png" />
+                  {_.map(Object.values(CollectionCategory).sort(), category => (
+                    <div key={category}>
+                      <CategoryCard
+                        linkTo={`/collections?category=${category}`}
+                        name={category}
+                        image="/nft/nft01.png"
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
             </Category>

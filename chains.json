@@ -12,5 +12,12 @@
     "symbol": "MATIC",
     "explorerUrl": "https://mumbai.polygonscan.com/",
     "name": "Polygon Mumbai Testnet"
+  },
+  "4": {
+    "appName": "ethereum",
+    "chainRpc": "https://rinkeby.infura.io/v3/f9e72d0223644a4fa9a8807426b6dbef",
+    "symbol": "ETH",
+    "explorerUrl": "https://rinkeby.etherscan.io/",
+    "name": "Rinkeby Testnet"
   }
 }
