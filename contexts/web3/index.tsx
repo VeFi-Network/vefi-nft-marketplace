@@ -92,12 +92,12 @@ export const Web3ContextProvider = ({ children }: any) => {
   }, [tried, active]);
 
   useEffect(() => {
-    if (!!chainId) {
+    if (!!chainId && !!active) {
       setNetwork(chains[chainId.toString() as keyof typeof chains].appName);
       setExplorerUrl(chains[chainId.toString() as keyof typeof chains].explorerUrl);
       setNetworkSymbol(chains[chainId.toString() as keyof typeof chains].symbol);
     }
-  }, [chainId]);
+  }, [chainId, active]);
 
   useEffect(() => {
     if (!!account && !!network) {

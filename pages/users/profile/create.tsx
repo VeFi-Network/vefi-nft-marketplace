@@ -159,11 +159,10 @@ const CreateProfile = () => {
           <Navbar />
         </NavContainer>
         <BodyContainer>
-         <ExploreNFT>
+          <ExploreNFT>
             <Image width="97px" height="585px" src="/icons/exploreNFT.png" />
           </ExploreNFT>
           <Container>
-          
             {!active ? (
               <NoItemContainer>
                 <div style={{ marginTop: '10em' }}>
@@ -216,7 +215,6 @@ const CreateProfile = () => {
         </BodyContainer>
         |<MainFooter />
       </RootContainer>
-    
     </>
   );
 };
