@@ -12,6 +12,7 @@ import { pinJson } from '../../../api/ipfs';
 import { createAccount } from '../../../api/nft';
 import { useAPIContext } from '../../../contexts/api';
 import { useRouter } from 'next/router';
+import MainFooter from '../../../components/Footer';
 
 const RootContainer = styled.div`
   min-width: 100%;
@@ -23,7 +24,9 @@ const NavContainer = styled.div`
 `;
 
 const Container = styled.div`
-  max-width: 100%;
+  max-width: 90vw;
+  width: 90vw;
+  margin-top: 50px;
   display: flex;
   justify-content: center;
   div {
@@ -32,7 +35,9 @@ const Container = styled.div`
 `;
 
 const BodyContainer = styled.div`
-  min-height: 100vh;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: row;
 `;
 
 const Heading = styled.h2`
@@ -75,9 +80,9 @@ const InputText = styled.input`
 `;
 
 const ExploreNFT = styled.div`
-  position: absolute;
-  top: 7rem;
   margin-left: 1rem;
+  margin-top: 7rem;
+  height: 585px;
   @media screen and (max-width: 760px) {
     display: none;
   }
@@ -154,10 +159,11 @@ const CreateProfile = () => {
           <Navbar />
         </NavContainer>
         <BodyContainer>
-          <ExploreNFT>
+         <ExploreNFT>
             <Image width="97px" height="585px" src="/icons/exploreNFT.png" />
           </ExploreNFT>
           <Container>
+          
             {!active ? (
               <NoItemContainer>
                 <div style={{ marginTop: '10em' }}>
@@ -208,7 +214,9 @@ const CreateProfile = () => {
             )}
           </Container>
         </BodyContainer>
+        |<MainFooter />
       </RootContainer>
+    
     </>
   );
 };

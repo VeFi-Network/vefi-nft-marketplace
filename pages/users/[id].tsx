@@ -26,6 +26,7 @@ import { addresses } from '../../assets';
 import request from '../../api/rpc';
 import { AddressZero } from '@ethersproject/constants';
 import { formatEthAddress } from 'eth-address';
+import MainFooter from '../../components/Footer';
 
 // We'll leverage this in the population of events table
 const eventHashMap = {
@@ -443,7 +444,11 @@ const Users = () => {
             </>
           )}
         </NFTUserCollectionInfo>
+      
+     
       </UsersWrapper>
+       <MainFooter />
+
     </>
   );
 };

@@ -16,6 +16,7 @@ import marketPlaceAbi from '../../../../assets/abis/Marketplace.json';
 import { addresses, CONSTANTS } from '../../../../assets';
 import { useWeb3Context } from '../../../../contexts/web3';
 import { usePageQuery } from '../../../../hooks/query';
+import MainFooter from '../../../../components/Footer';
 
 type Props = {};
 
@@ -369,6 +370,7 @@ export default function NewNFT({}: Props) {
   }, [id]);
 
   return (
+    <>
     <MainContainer>
       <NavbarContainer>
         <Navbar />
@@ -592,6 +594,9 @@ export default function NewNFT({}: Props) {
       </Spin>
       <StyledExploreNft src="/icons/exploreNFT.png" />
       <ColoredBackground></ColoredBackground>
+
     </MainContainer>
+    <MainFooter />
+    </>
   );
 }

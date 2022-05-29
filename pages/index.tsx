@@ -15,7 +15,7 @@ import Hero from '../components/Hero';
 import { Category } from '../styles/CategoryCard.styled';
 import CategoryCard from '../components/Card/CategoryCard';
 import { useRouter } from 'next/router';
-import { CollectionCategory, CollectionModel } from '../api/models/collection';
+import { CollectionCategory, CollectionCategoryImages, CollectionModel } from '../api/models/collection';
 import { useWeb3Context } from '../contexts/web3';
 
 const MainContainer = styled.div`
@@ -550,7 +550,7 @@ export default function Homepage() {
                       <CategoryCard
                         linkTo={`/collections?category=${category}`}
                         name={category}
-                        image="/nft/nft01.png"
+                        image={CollectionCategoryImages[category]}
                       />
                     </div>
                   ))}

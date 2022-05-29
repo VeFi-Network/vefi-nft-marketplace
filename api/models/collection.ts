@@ -15,6 +15,23 @@ export enum CollectionCategory {
   GIFT_CARDS = 'GIFT CARDS'
 }
 
+export const CollectionCategoryImages = {
+  "WEARABLES" : '/categoriesImages/sports.svg',
+  "SPORTS" :'/categoriesImages/sports.svg',
+  "ART" :'/categoriesImages/art.png',
+  "COLLECTIBLES" :'/categoriesImages/collectibles.svg',
+  "DOMAIN NAMES" :'/categoriesImages/domain_names.svg',
+  "MUSIC" : '/categoriesImages/music.svg',
+  "PHOTOGRAPHY" : '/categoriesImages/sports.svg',
+  "FASHION" : '/categoriesImages/sports.svg',
+  "GAMING" : '/categoriesImages/video-game-assets.svg',
+  "UTILITY" : '/categoriesImages/ticketing.svg',
+  "REAL ESTATE" : '/categoriesImages/virtual-land.svg',
+  "CARTOONS" : '/categoriesImages/sports.svg',
+  "MOVIES" : '/categoriesImages/sports.svg',
+  "GIFT CARDS" : '/categoriesImages/sports.svg',
+}
+
 export type CollectionMetadata = {
   name: string;
   category: CollectionCategory;
