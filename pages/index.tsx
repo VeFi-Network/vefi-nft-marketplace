@@ -557,7 +557,7 @@ export default function Homepage() {
               </div>
             </Category>
           </div>
-          <Footer>
+          {/* <Footer>
             <div className="footer__container">
               <div className="footer__left">
                 <h2>Introducing the Vefi bridging technology </h2>
@@ -571,7 +571,7 @@ export default function Homepage() {
                 <Image src="/objects/bridge.svg" width={300} height={300} alt="image" />
               </div>
             </div>
-          </Footer>
+          </Footer> */}
           <HeroContainer>
             {' '}
             <Hero />
