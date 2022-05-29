@@ -406,7 +406,7 @@ export default function Homepage() {
   const [list, setList] = useState<CollectionModel[]>([]);
   const [activeBtn, setActiveBtn] = useState<ActiveBtn>(ActiveBtn.ALL);
   const router = useRouter();
-  const { network } = useWeb3Context();
+  const { network, active, chainId } = useWeb3Context();
 
   useEffect(() => {
     loadAllCollections(1);
@@ -416,13 +416,13 @@ export default function Homepage() {
 
   useEffect(() => {
     (() => {
-      if (!!network) {
+      if (!!network && active && !!chainId) {
         loadAllCollections(1);
         loadTopSellingCollections(1);
         loadCollectionsByAssets(1);
       }
     })();
-  }, [network]);
+  }, [network, active, chainId]);
 
   useEffect(() => {
     if (!!allCollections) {

@@ -347,7 +347,7 @@ export const NFTCollection = styled.div`
     flex-direction: row;
     row-gap: 30px;
     margin: 30px 0;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: flex-start;
   }
 `;
