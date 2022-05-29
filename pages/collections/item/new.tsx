@@ -449,7 +449,7 @@ export default function NewCollection({}: Props) {
                   </Heading>
                   <div className="text">
                     Supported File Types: JPG, JPEG, PNG, GIF, WEBP
-                    <span className="blue"> Max size 40mb</span>
+                    <span className="blue"> Max size 15MB</span>
                   </div>
                   <FileContainer file={bannerImage} setFile={setBannerImage} type={1} />
                   <Heading className="heading">
@@ -457,7 +457,7 @@ export default function NewCollection({}: Props) {
                   </Heading>
                   <div className="text">
                     Supported File Types: JPG, JPEG, PNG, GIF, WEBP
-                    <span className="blue"> Max size 40mb</span>
+                    <span className="blue"> Max size 15MB</span>
                   </div>
                   <FileContainer file={avatarImage} setFile={setAvatarImage} type={1} />
                   <Heading className="heading">

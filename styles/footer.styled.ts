@@ -13,6 +13,7 @@ export const Container = styled.div`
     padding: 40px 15px;
   }
 `;
+
 export const SubDiv1 = styled.div`
   flex: 1;
   width: 100%;
@@ -135,6 +136,7 @@ export const SubDiv1 = styled.div`
     }
   }
 `;
+
 export const SubDiv2 = styled.div`
   flex: 1;
   display: flex;
