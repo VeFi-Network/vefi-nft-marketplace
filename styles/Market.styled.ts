@@ -81,6 +81,9 @@ export const FilterWrapper = styled.div`
       }
       .ant-btn {
         padding-left: 10px !important;
+        &.active {
+          background: #5c95ff !important;
+        }
       }
       .input__box {
         @media screen and (max-width: 760px) {
@@ -139,6 +142,8 @@ export const CollectionWrapper = styled.div`
     width: max-content;
     gap: 10px;
     padding-bottom: 10px;
+    justify-content: center;
+    align-items: flex-start;
   }
   .collections {
     width: 100%;

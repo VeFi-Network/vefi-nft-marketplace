@@ -38,7 +38,7 @@ export const Category = styled.section`
   }
 `;
 
-export const CartegoryCardWrapper = styled.div`
+export const CategoryCardWrapper = styled.div`
   width: 225px;
   height: 260px;
   overflow: hidden;

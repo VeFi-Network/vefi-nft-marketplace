@@ -18,6 +18,7 @@ import { usePageQuery } from '../../hooks';
 import { useWeb3Context } from '../../contexts/web3';
 import { useRouter } from 'next/router';
 import { NFTModel } from '../../api/models/nft';
+import request from '../../api/rpc';
 
 const Users = () => {
   enum SelectedTab {
@@ -43,7 +44,7 @@ const Users = () => {
     loadFavoriteNFTsOfUser,
     loadUserWatchList
   } = useAPIContext();
-  const { account } = useWeb3Context();
+  const { account, network } = useWeb3Context();
   const [selectedTab, setSelectedTab] = useState<SelectedTab>(SelectedTab.COLLECTIONS);
   const [renderedItem, setRenderedItem] = useState<Rendered>(Rendered.ITEMS);
   const [nftList, setNFTList] = useState<Array<NFTModel>>([]);
@@ -65,14 +66,16 @@ const Users = () => {
   };
 
   useEffect(() => {
-    loadAllUserCollections(id as string);
-    loadNFTsByUser(id as string);
-    loadFavoriteNFTsOfUser(id as string);
+    if (!!id && !!network) {
+      loadAllUserCollections(id as string);
+      loadNFTsByUser(id as string);
+      loadFavoriteNFTsOfUser(id as string);
 
-    if (id === account) {
-      loadUserWatchList();
+      if (id === account) {
+        loadUserWatchList();
+      }
     }
-  }, [id]);
+  }, [id, network]);
 
   useEffect(() => {
     if (!!tab && (tab === '1' || tab === '2' || tab === '3' || tab === '4')) {
@@ -211,74 +214,80 @@ const Users = () => {
               </div> */}
             </div>
           </div>
-          <NFTCollection>
-            {selectedTab === SelectedTab.COLLECTIONS ? (
-              <InfiniteScroll
-                root={infiniteScrollRoot1}
-                className="container"
-                handleScroll={() => {
-                  if (allUserCollections.slice(0, collectionsPage * 24).length < allUserCollections.length) {
-                    setCollectionsPage(p => p + 1);
-                  }
-                }}
-                target={scrollBase}
-              >
-                {_.map(
-                  allUserCollections.slice(0, collectionsPage * 24).filter(cm => {
-                    if (searchValue.trim().length > 0) return cm.collectionName.includes(searchValue);
-                    else return cm;
-                  }),
-                  collection => (
-                    <div key={collection.collectionId}>
-                      <Card
-                        name={collection?.collectionName}
-                        owner={collection?.metadata.owner}
-                        imageURI={collection?.metadata.imageURI}
-                        linkTo={`/collections/${collection?.collectionId}`}
-                      />
-                    </div>
-                  )
-                )}
-                <div ref={scrollBase}></div>
-              </InfiniteScroll>
-            ) : (
-              <>
-                {nftList.length === 0 ? (
-                  <></>
-                ) : (
-                  <InfiniteScroll
-                    root={infiniteScrollRoot2}
-                    className="container"
-                    handleScroll={() => {
-                      if (nftList.slice(0, nftsPage * 24).length < nftList.length) {
-                        setNFTsPage(p => p + 1);
-                      }
-                    }}
-                    target={scrollBase2}
-                  >
-                    {_.map(
-                      nftList.slice(0, nftsPage * 24).filter(nft => {
-                        if (searchValue.trim().length > 0) return nft.metadata?.name.includes(searchValue);
-                        else return nft;
-                      }),
-                      nft => (
-                        <div key={`${nft.collectionId}:${nft.tokenId}`}>
-                          <NFTCard
-                            model={nft}
-                            onClick={() => {
-                              router.push(`/nfts/${nft.collectionId}:${nft.tokenId}`);
-                            }}
-                            key={nft.id}
-                          />
-                        </div>
-                      )
-                    )}
-                    <div ref={scrollBase2}></div>
-                  </InfiniteScroll>
-                )}
-              </>
-            )}
-          </NFTCollection>
+          {renderedItem === Rendered.ITEMS ? (
+            <NFTCollection>
+              {selectedTab === SelectedTab.COLLECTIONS ? (
+                <InfiniteScroll
+                  root={infiniteScrollRoot1}
+                  className="container"
+                  handleScroll={() => {
+                    if (allUserCollections.slice(0, collectionsPage * 24).length < allUserCollections.length) {
+                      setCollectionsPage(p => p + 1);
+                    }
+                  }}
+                  target={scrollBase}
+                >
+                  {_.map(
+                    allUserCollections.slice(0, collectionsPage * 24).filter(cm => {
+                      if (searchValue.trim().length > 0) return cm.collectionName.includes(searchValue);
+                      else return cm;
+                    }),
+                    collection => (
+                      <div key={collection.collectionId}>
+                        <Card
+                          name={collection?.collectionName}
+                          owner={collection?.metadata.owner}
+                          imageURI={collection?.metadata.imageURI}
+                          linkTo={`/collections/${collection?.collectionId}`}
+                        />
+                      </div>
+                    )
+                  )}
+                  <div ref={scrollBase}></div>
+                </InfiniteScroll>
+              ) : (
+                <>
+                  {nftList.length === 0 ? (
+                    <></>
+                  ) : (
+                    <InfiniteScroll
+                      root={infiniteScrollRoot2}
+                      className="container"
+                      handleScroll={() => {
+                        if (nftList.slice(0, nftsPage * 24).length < nftList.length) {
+                          setNFTsPage(p => p + 1);
+                        }
+                      }}
+                      target={scrollBase2}
+                    >
+                      {_.map(
+                        nftList.slice(0, nftsPage * 24).filter(nft => {
+                          if (searchValue.trim().length > 0) return nft.metadata?.name.includes(searchValue);
+                          else return nft;
+                        }),
+                        nft => (
+                          <div key={`${nft.collectionId}:${nft.tokenId}`}>
+                            <NFTCard
+                              model={nft}
+                              onClick={() => {
+                                router.push(`/nfts/${nft.collectionId}:${nft.tokenId}`);
+                              }}
+                              key={nft.id}
+                            />
+                          </div>
+                        )
+                      )}
+                      <div ref={scrollBase2}></div>
+                    </InfiniteScroll>
+                  )}
+                </>
+              )}
+            </NFTCollection>
+          ) : (
+            <div>
+              <span>Events go here</span>
+            </div>
+          )}
         </NFTUserCollectionInfo>
       </UsersWrapper>
     </>

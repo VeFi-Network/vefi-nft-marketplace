@@ -1,18 +1,19 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import { CartegoryCardWrapper } from '../../../styles/CartegoryCard.styled';
+import { CategoryCardWrapper } from '../../../styles/CategoryCard.styled';
 
-interface ICartegoryCard {
+interface ICategoryCardProps {
   image: string;
   name: string;
+  linkTo?: string;
 }
-const CartegoryCard = ({ image, name }: ICartegoryCard) => {
+const CategoryCard = ({ image, name, linkTo }: ICategoryCardProps) => {
   return (
     <>
-      <Link href="/">
+      <Link href={linkTo || '/'}>
         <a>
-          <CartegoryCardWrapper>
+          <CategoryCardWrapper>
             <div className="category__card__image">
               <Image src={image} height={200} width={200} alt="image" className="image" />
             </div>
@@ -21,11 +22,11 @@ const CartegoryCard = ({ image, name }: ICartegoryCard) => {
                 <h2>{name}</h2>
               </div>
             </div>
-          </CartegoryCardWrapper>
+          </CategoryCardWrapper>
         </a>
       </Link>
     </>
   );
 };
 
-export default CartegoryCard;
+export default CategoryCard;

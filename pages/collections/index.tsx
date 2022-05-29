@@ -1,16 +1,49 @@
 import { Button } from 'antd';
-import { FiFilter, FiPlus, FiSearch } from 'react-icons/fi';
+import InfiniteScroll from '../../components/InfiniteScroll';
+import { FiFilter, FiSearch } from 'react-icons/fi';
 import Navbar from '../../components/Navbar';
-import { CollectionWrapper, FilterWrapper, MarktePlaceWrapper, SellersWrapper } from '../../styles/Market.styled';
-import { Select } from 'antd';
+import { CollectionWrapper, FilterWrapper, MarktePlaceWrapper } from '../../styles/Market.styled';
 import Card from '../../components/Card';
-
 import MainFooter from '../../components/Footer';
-import SellerInfo from '../../components/SellerInfo';
 import Image from 'next/image';
-const { Option } = Select;
+import _ from 'lodash';
+import { CollectionCategory } from '../../api/models/collection';
+import { useAPIContext } from '../../contexts/api';
+import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
+import { usePageQuery } from '../../hooks';
+import { useWeb3Context } from '../../contexts/web3';
 
 const ListCollections = () => {
+  const { allCollections, loadAllCollections } = useAPIContext();
+  const [categoryFilter, setCategoryFilter] = useState<CollectionCategory | 'ALL'>('ALL');
+  const [page, setPage] = useState<number>(1);
+  const [searchValue, setSearchValue] = useState<string>('');
+
+  const router = useRouter();
+  const { category } = usePageQuery();
+  const { network } = useWeb3Context();
+
+  const scrollBase = useRef(null);
+  const scrollRoot = useRef(null);
+
+  useEffect(() => {
+    if (
+      !!category &&
+      ['ALL'].concat(Object.values(CollectionCategory)).includes(category as 'ALL' | CollectionCategory)
+    ) {
+      setCategoryFilter(category as 'ALL' | CollectionCategory);
+    } else {
+      setCategoryFilter('ALL');
+    }
+  }, [category]);
+
+  useEffect(() => {
+    if (!!network) {
+      loadAllCollections();
+    }
+  }, [network]);
+
   return (
     <>
       <MarktePlaceWrapper>
@@ -29,13 +62,29 @@ const ListCollections = () => {
             <div className="filter__body">
               <div className="filter__left">
                 <div className="box">
-                  <Button className="btn">All</Button>
+                  <Button
+                    onClick={() => router.push('/collections?category=ALL', undefined, { shallow: true })}
+                    className={`btn ${categoryFilter === 'ALL' ? 'active' : ''}`}
+                  >
+                    All
+                  </Button>
                 </div>
-                <div className="box">
-                  <Select labelInValue defaultValue={{ value: 'Category' }}>
-                    <Option value="">Select</Option>
-                  </Select>
-                </div>
+                {_.map(Object.values(CollectionCategory), category => (
+                  <div className="box" key={category}>
+                    <Button
+                      onClick={() => router.push(`/collections?category=${category}`)}
+                      className={`btn ${categoryFilter === category ? 'active' : ''}`}
+                    >
+                      {category
+                        .split('')
+                        .map((character, index) => (index === 0 ? character : character.toLowerCase()))
+                        .join('')
+                        .split(' ')
+                        .map(character => character.replace(character.charAt(0), character.charAt(0).toUpperCase()))
+                        .join(' ')}
+                    </Button>
+                  </div>
+                ))}
                 {/* <div className="box">
                   <Select labelInValue defaultValue={{ value: 'Price' }}>
                     <Option value="">Price</Option>
@@ -44,7 +93,12 @@ const ListCollections = () => {
                 <div className="box input__box">
                   <div className="input__wrapper">
                     <FiSearch />
-                    <input type="text" placeholder="Search artwork" />
+                    <input
+                      type="text"
+                      value={searchValue}
+                      onChange={e => setSearchValue(e.target.value)}
+                      placeholder="Search collection"
+                    />
                   </div>
                 </div>
               </div>
@@ -52,102 +106,40 @@ const ListCollections = () => {
           </FilterWrapper>
           <div className="wrapper">
             <CollectionWrapper>
-              <div className="collection__container">
-                <Card
-                  name="Collection Name"
-                  price="0"
-                  owner="owner name"
-                  imageURI="/nft/nft01.png"
-                  key="1"
-                  linkTo="/"
-                />
-                <Card
-                  name="Collection Name"
-                  price="0"
-                  owner="owner name"
-                  imageURI="/nft/nft02.png"
-                  key="1"
-                  linkTo="/"
-                />
-                <Card
-                  name="Collection Name"
-                  price="0"
-                  owner="owner name"
-                  imageURI="/nft/nft01.png"
-                  key="1"
-                  linkTo="/"
-                />
-                <Card
-                  name="Collection Name"
-                  price="0"
-                  owner="owner name"
-                  imageURI="/nft/nft03.png"
-                  key="1"
-                  linkTo="/"
-                />
-                <Card
-                  name="Collection Name"
-                  price="0"
-                  owner="owner name"
-                  imageURI="/nft/nft03.png"
-                  key="1"
-                  linkTo="/"
-                />
-              </div>
-            </CollectionWrapper>
-            <SellersWrapper>
-              <div className="sellers__container">
-                <SellerInfo imageURI="/marketplace/topSellers/1.png" name="John Doe" linkTo="/" />
-                <SellerInfo imageURI="/marketplace/topSellers/2.png" name="John Doe" linkTo="/" />
-                <SellerInfo imageURI="/marketplace/topSellers/3.png" name="John Doe" linkTo="/" />
-                <SellerInfo imageURI="/marketplace/topSellers/4.png" name="John Doe" linkTo="/" />
-                <SellerInfo imageURI="/marketplace/topSellers/5.png" name="John Doe" linkTo="/" />
-                <SellerInfo imageURI="/marketplace/topSellers/6.png" name="John Doe" linkTo="/" />
-              </div>
-            </SellersWrapper>
-            <CollectionWrapper>
-              <div className="collection__container collections">
-                <Card
-                  name="Collection Name"
-                  price="0"
-                  owner="owner name"
-                  imageURI="/nft/nft01.png"
-                  key="1"
-                  linkTo="/"
-                />
-                <Card
-                  name="Collection Name"
-                  price="0"
-                  owner="owner name"
-                  imageURI="/nft/nft02.png"
-                  key="1"
-                  linkTo="/"
-                />
-                <Card
-                  name="Collection Name"
-                  price="0"
-                  owner="owner name"
-                  imageURI="/nft/nft01.png"
-                  key="1"
-                  linkTo="/"
-                />
-                <Card
-                  name="Collection Name"
-                  price="0"
-                  owner="owner name"
-                  imageURI="/nft/nft03.png"
-                  key="1"
-                  linkTo="/"
-                />
-                <Card
-                  name="Collection Name"
-                  price="0"
-                  owner="owner name"
-                  imageURI="/nft/nft03.png"
-                  key="1"
-                  linkTo="/"
-                />
-              </div>
+              <InfiniteScroll
+                target={scrollBase}
+                root={scrollRoot}
+                handleScroll={() => {
+                  if (allCollections.slice(0, page * 24).length < allCollections.length) {
+                    setPage(p => p + 1);
+                  }
+                }}
+                className="collection__container collections"
+              >
+                {_.map(
+                  allCollections
+                    .filter(collection => {
+                      if (categoryFilter !== 'ALL') return collection.collectionCategory === categoryFilter;
+                      else return collection;
+                    })
+                    .slice(0, page * 24)
+                    .filter(collection => {
+                      if (searchValue.trim().length > 0) return collection.collectionName.includes(searchValue);
+                      else return collection;
+                    }),
+                  collection => (
+                    <div key={collection.collectionId}>
+                      <Card
+                        name={collection.collectionName}
+                        owner={collection.collectionOwner}
+                        imageURI={collection.metadata.imageURI}
+                        linkTo={`/collections/${collection.collectionId}`}
+                      />
+                    </div>
+                  )
+                )}
+                <div ref={scrollBase}></div>
+              </InfiniteScroll>
             </CollectionWrapper>
           </div>
         </div>
