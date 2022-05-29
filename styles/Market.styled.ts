@@ -1,4 +1,3 @@
-import { Button } from 'antd';
 import styled from 'styled-components';
 import { CardContainer } from '../components/Card';
 
@@ -7,7 +6,6 @@ export const MarktePlaceWrapper = styled.section`
   background: url('/objects/colorBackground.svg') no-repeat #0c0c0c;
   background-position: top right;
   background-position-y: -300px;
-  height: max-content;
   padding-bottom: 80px;
 
   .marketplace__container {
