@@ -4,10 +4,10 @@ import HeroImg from '../../public/icons/hero_image.png';
 import Wallet from '../../public/icons/hero_wallet.png';
 import Bridge from '../../public/icons/bridge.png';
 import Mint from '../../public/icons/mint.png';
-import {Navigation,  Pagination, Scrollbar, A11y } from 'swiper';
+import { Pagination, A11y } from 'swiper';
 import  { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import 'swiper/css/navigation';
+
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
@@ -23,7 +23,7 @@ function Hero() {
       <h3>Create and sell your NFTs</h3>
       <div className="slider_con">
         <Swiper
-         modules={[Navigation, Pagination, Scrollbar, A11y]}
+         modules={[ Pagination, A11y]}
          spaceBetween={50}
          breakpoints={{
            1024:{
