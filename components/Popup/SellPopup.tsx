@@ -273,7 +273,7 @@ export default function SellPopup({ modal, setModal, nft, transition }: Props) {
                 <img
                   width="244px"
                   height="238.53px"
-                  src={nft ? nft.metadata?.image : '/nft/nft02.png'}
+                  src={nft ? nft?.metadata?.image : '/nft/nft02.png'}
                   alt=""
                   className="nft-img"
                 />

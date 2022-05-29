@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Navbar from '../../../components/Navbar';
 // import Button from '../../../components/Button/CTA/Filled';
 import Image from 'next/image';
-import { Button, message, Spin } from 'antd';
+import { Button, message } from 'antd';
 import { useRouter } from 'next/router';
 import { useState, useCallback } from 'react';
 import { pinJson } from '../../../api/ipfs';
@@ -12,6 +12,7 @@ import { AccountMetadata } from '../../../api/models/account';
 import { updateAccount } from '../../../api/nft';
 import { useAPIContext } from '../../../contexts/api';
 import { useWeb3Context } from '../../../contexts/web3';
+import MainFooter from '../../../components/Footer';
 
 const RootContainer = styled.div`
   min-width: 100%;
@@ -23,7 +24,9 @@ const NavContainer = styled.div`
 `;
 
 const Container = styled.div`
-  max-width: 100%;
+  margin-top: 50px;
+  max-width: 90vw;
+  width: 90vw;
   display: flex;
   justify-content: center;
   div {
@@ -272,6 +275,7 @@ const UpdateProfile = () => {
             )}
           </Container>
         </BodyContainer>
+        <MainFooter />
       </RootContainer>
     </>
   );

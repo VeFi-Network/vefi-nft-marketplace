@@ -42,8 +42,9 @@ export const UserNFTBanner = styled.div`
   background: url(${(props: { bg: string }) => (props.bg ? props.bg : '')}) no-repeat;
   background-size: cover;
   background-position: top center;
-  border-top: 3px solid #5c95ff;
-  border-bottom: 3px solid #5c95ff;
+  border-top: 5px solid #5c95ff;
+  border-bottom: 5px solid #5c95ff;
+  height: 250px;
 `;
 export const ButtonContainer = styled.div`
   position: absolute;
@@ -64,23 +65,23 @@ export const UserNFTInfo = styled.div`
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: -90px;
+  margin-top: -118px;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
   .display__pics {
-    width: 180px;
-    height: 180px;
+    width: 236px;
+    height: 236px;
     background: #5c95ff;
     display: flex;
     justify-content: center;
-    border: 3px solid #5c95ff;
+    border: 5px solid #5c95ff;
     border-radius: 50%;
     overflow: hidden;
     img {
-      width: 180px !important;
-      height: 180px !important;
+      width: 236px !important;
+      height: 236px !important;
       object-fit: cover;
     }
   }
@@ -169,8 +170,7 @@ export const NFTUserInfo = styled.div`
 `;
 
 export const NFTUserCollectionInfo = styled.div`
-  width: 100%;
-  max-width: 1200px;
+  width: calc(100% - 100px);
   margin-left: auto;
   margin-right: auto;
   height: auto;
@@ -340,7 +340,6 @@ export const NFTCollection = styled.div`
   .container {
     width: 100%;
     height: max-content;
-
     display: flex;
     flex-wrap: wrap;
     gap: 20px;

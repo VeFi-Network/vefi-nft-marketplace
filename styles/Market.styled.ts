@@ -24,11 +24,11 @@ export const MarktePlaceWrapper = styled.section`
       position: absolute;
       left: 0;
       z-index: 1;
-      height: max-content;
-
+      height: 400px;
+      display: none;
       img {
         width: 100% !important;
-        height: 100% !important;
+        height: 400px !important;
       }
     }
   }
@@ -44,6 +44,7 @@ export const FilterWrapper = styled.div`
   height: max-content;
   padding-bottom: 40px;
   margin-top: 50px;
+
   .filter__heading {
     display: flex;
     align-items: center;
@@ -63,6 +64,7 @@ export const FilterWrapper = styled.div`
       display: flex;
       align-items: center;
       gap: 10px;
+      flex-wrap: wrap;
       @media screen and (max-width: 760px) {
         flex-wrap: wrap;
         width: 100%;

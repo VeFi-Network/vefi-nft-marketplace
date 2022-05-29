@@ -26,6 +26,7 @@ import erc20Abi from '../../assets/abis/ERC20.json';
 import { CONSTANTS, addresses } from '../../assets';
 import { useRouter } from 'next/router';
 import request from '../../api/rpc';
+import MainFooter from '../../components/Footer';
 
 const RootContainer = styled.div`
   width: 100%;
@@ -714,6 +715,7 @@ export default function NFT() {
             {/* <ColoredBackground></ColoredBackground> */}
           </Spin>
         </ProfileContainer>
+        <MainFooter />
       </RootContainer>
 
       <SellPopup transition={transition} nft={nftById} modal={sellModal} setModal={setSellModal} />

@@ -12,6 +12,7 @@ import { pinJson } from '../../../api/ipfs';
 import { createAccount } from '../../../api/nft';
 import { useAPIContext } from '../../../contexts/api';
 import { useRouter } from 'next/router';
+import MainFooter from '../../../components/Footer';
 
 const RootContainer = styled.div`
   min-width: 100%;
@@ -23,7 +24,9 @@ const NavContainer = styled.div`
 `;
 
 const Container = styled.div`
-  max-width: 100%;
+  max-width: 90vw;
+  width: 90vw;
+  margin-top: 50px;
   display: flex;
   justify-content: center;
   div {
@@ -256,6 +259,7 @@ const CreateProfile = () => {
             )}
           </Container>
         </BodyContainer>
+        |<MainFooter />
       </RootContainer>
     </>
   );
