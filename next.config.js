@@ -1,8 +1,10 @@
 /** @type {import('next').NextConfig} */
+const withTM = require('next-transpile-modules')(['react-email-validator']);
 const withPWA = require('next-pwa');
+const withPlugins = require('next-compose-plugins');
 const runtimeCaching = require('next-pwa/cache');
 
-module.exports = withPWA({
+const pwaConfig = withPWA({
   pwa: {
     dest: 'public',
     register: true,
@@ -11,3 +13,5 @@ module.exports = withPWA({
     runtimeCaching
   }
 });
+
+module.exports = withPlugins([withTM], pwaConfig);
