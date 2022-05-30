@@ -25,13 +25,16 @@ const NavContainer = styled.div`
 `;
 
 const Container = styled.div`
-  margin-top: 50px;
-  max-width: 90vw;
   width: 90vw;
+  max-width: 90vw;
+  margin-top: 50px;
   display: flex;
   justify-content: center;
+  @media screen and (max-width: 760px) {
+    flex-direction: column;
+  }
   div {
-    width: 70%;
+    width: 100%;
     @media screen and (max-width: 760px) {
       width: 100%;
       padding: 0 10px;
@@ -102,10 +105,11 @@ const InputText = styled.input`
   border: 1.5px solid #5c95ff;
   border-radius: 4px;
   background-color: transparent;
-  height: 2.2rem;
+  height: 40px;
   width: 100%;
   color: #fff;
   padding: 5px;
+
   @media screen and (max-width: 760px) {
     width: 100%;
     height: 2.5rem;
@@ -232,6 +236,7 @@ const UpdateProfile = () => {
             <Image width="97px" height="585px" src="/icons/exploreNFT.png" />
           </ExploreNFT>
           <Container>
+            <div></div>
             {!active ? (
               <NoItemContainer>
                 <div style={{ marginTop: '10em' }}>
@@ -273,6 +278,7 @@ const UpdateProfile = () => {
                       size="large"
                       disabled={!allConditionsSatisfied() || isLoading}
                       loading={isLoading}
+                      htmlType="submit"
                     >
                       {allConditionsSatisfied() ? 'Update Profile' : 'Please fill in details properly'}{' '}
                     </Button>
@@ -280,6 +286,7 @@ const UpdateProfile = () => {
                 </FormContainer>
               </div>
             )}
+            <div></div>
           </Container>
         </BodyContainer>
         <MainFooter />
