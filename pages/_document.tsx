@@ -38,7 +38,11 @@ export default class CustomDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;600;700;800&display=swap"
             rel="stylesheet"
           ></link>
-          <meta name="description" content="VefiNFT" />
+          <meta
+            name="description"
+            content="The Vefi NFT marketplace is a product of the Vefi Ecosystem that allows the creation and the trading of non-fungible assets on various chains."
+          />
+          <title>Vefi NFT marketplace | Create and trade various non-fungible assets</title>
         </Head>
         <body>
           <Main />

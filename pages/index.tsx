@@ -424,23 +424,19 @@ export default function Homepage() {
   const [list, setList] = useState<CollectionModel[]>([]);
   const [activeBtn, setActiveBtn] = useState<ActiveBtn>(ActiveBtn.ALL);
   const router = useRouter();
-  const { network } = useWeb3Context();
-
-  useEffect(() => {
-    loadAllCollections(1);
-    loadTopSellingCollections(1);
-    loadCollectionsByAssets(1);
-  }, []);
+  const { network, chainId } = useWeb3Context();
 
   useEffect(() => {
     (() => {
-      if (!!network) {
-        loadAllCollections(1);
-        loadTopSellingCollections(1);
-        loadCollectionsByAssets(1);
+      if (!!network || !!chainId) {
+        setTimeout(() => {
+          loadAllCollections(1);
+          loadTopSellingCollections(1);
+          loadCollectionsByAssets(1);
+        }, 500);
       }
     })();
-  }, [network]);
+  }, [network, chainId]);
 
   useEffect(() => {
     if (!!allCollections) {

@@ -167,7 +167,11 @@ const Navbar = () => {
                 <UserWallet onClick={() => setVisible(!visible)}>
                   <div className="wallet_container">
                     <div className="wallet_icon">
-                      <Image src={chainIcons[(chainId as keyof typeof chainIcons) || 97]} width={15} height={15} />
+                      <Image
+                        src={chainIcons[chainId as keyof typeof chainIcons] || '/icons/eth.svg'}
+                        width={15}
+                        height={15}
+                      />
                     </div>
                     <div>
                       {!!authenticatedUser
@@ -191,7 +195,7 @@ const Navbar = () => {
                 <div className="wallet__setting">
                   <div className="wallet__icon">
                     <Image
-                      src={chainIcons[(chainId as keyof typeof chainIcons) || 97]}
+                      src={chainIcons[chainId as keyof typeof chainIcons] || '/icons/eth.svg'}
                       width={20}
                       height={20}
                       alt="wallet"
@@ -209,7 +213,7 @@ const Navbar = () => {
                 <div className="wallet__connected__account">
                   <div className="chain__logo">
                     <Image
-                      src={chainIcons[(chainId as keyof typeof chainIcons) || 97]}
+                      src={chainIcons[chainId as keyof typeof chainIcons] || '/icons/eth.svg'}
                       width={20}
                       height={20}
                       alt="wallet"
@@ -246,7 +250,7 @@ const Navbar = () => {
                     <div className="account__balance__info">
                       <div className="wallet__account__logo">
                         <Image
-                          src={chainIcons[(chainId as keyof typeof chainIcons) || 97]}
+                          src={chainIcons[chainId as keyof typeof chainIcons] || '/icons/eth.svg'}
                           width={20}
                           height={20}
                           alt="wallet"

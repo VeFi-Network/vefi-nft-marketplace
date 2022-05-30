@@ -13,6 +13,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { usePageQuery } from '../../hooks';
 import { useWeb3Context } from '../../contexts/web3';
+import Head from 'next/head';
 
 const ListCollections = () => {
   const { allCollections, loadAllCollections } = useAPIContext();
@@ -46,6 +47,9 @@ const ListCollections = () => {
 
   return (
     <>
+      <Head>
+        <title>View {categoryFilter} collections</title>
+      </Head>
       <MarktePlaceWrapper>
         <div className="marketplace__container">
           <Navbar />

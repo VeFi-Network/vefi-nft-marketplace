@@ -42,7 +42,7 @@ export const Web3ContextProvider = ({ children }: any) => {
   const [tried, setTried] = useState<boolean>(false);
   const [balance, setBalance] = useState<string>('0');
 
-  const fetchBalance = useCallback(() => {
+  const fetchBalance = () => {
     try {
       request(network, { id: 1, jsonrpc: '2.0', method: 'eth_getBalance', params: [account, 'latest'] })
         .then(formatEther)
@@ -51,7 +51,7 @@ export const Web3ContextProvider = ({ children }: any) => {
     } catch (error: any) {
       setError(error);
     }
-  }, [account, network]);
+  };
 
   const connectMetamask = useCallback(() => {
     if (!active) {
@@ -92,7 +92,7 @@ export const Web3ContextProvider = ({ children }: any) => {
   }, [tried, active]);
 
   useEffect(() => {
-    if (!!chainId && !!active) {
+    if (!!chainId && active) {
       setNetwork(chains[chainId.toString() as keyof typeof chains].appName);
       setExplorerUrl(chains[chainId.toString() as keyof typeof chains].explorerUrl);
       setNetworkSymbol(chains[chainId.toString() as keyof typeof chains].symbol);
@@ -102,6 +102,8 @@ export const Web3ContextProvider = ({ children }: any) => {
   useEffect(() => {
     if (active && !!network && !!account) {
       fetchBalance();
+    } else {
+      setBalance('0');
     }
   }, [active, network, account]);
 

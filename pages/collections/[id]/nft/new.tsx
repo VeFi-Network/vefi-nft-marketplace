@@ -17,6 +17,7 @@ import { addresses, CONSTANTS } from '../../../../assets';
 import { useWeb3Context } from '../../../../contexts/web3';
 import { usePageQuery } from '../../../../hooks/query';
 import MainFooter from '../../../../components/Footer';
+import Head from 'next/head';
 
 type Props = {};
 
@@ -371,6 +372,9 @@ export default function NewNFT({}: Props) {
 
   return (
     <>
+      <Head>
+        <title>Mint an NFT</title>
+      </Head>
       <MainContainer>
         <NavbarContainer>
           <Navbar />

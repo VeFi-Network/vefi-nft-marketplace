@@ -144,6 +144,10 @@ export const CollectionWrapper = styled.div`
     padding-bottom: 10px;
     justify-content: flex-start;
     align-items: flex-start;
+    @media screen and (max-width: 760px) {
+      width: 100%;
+      flex-direction: column;
+    }
   }
   .collections {
     width: 100%;

@@ -16,20 +16,20 @@ export enum CollectionCategory {
 }
 
 export const CollectionCategoryImages = {
-  WEARABLES: '/images/sports.svg',
+  WEARABLES: '/images/wearables.jpg',
   SPORTS: '/images/sports.svg',
   ART: '/images/art.png',
   COLLECTIBLES: '/images/collectibles.svg',
   'DOMAIN NAMES': '/images/domain_names.svg',
   MUSIC: '/images/music.svg',
-  PHOTOGRAPHY: '/images/sports.svg',
-  FASHION: '/images/sports.svg',
+  PHOTOGRAPHY: '/images/photography.jpg',
+  FASHION: '/images/fashion.jpg',
   GAMING: '/images/video-game-assets.svg',
   UTILITY: '/images/ticketing.svg',
   'REAL ESTATE': '/images/virtual-land.svg',
-  CARTOONS: '/images/sports.svg',
-  MOVIES: '/images/sports.svg',
-  'GIFT CARDS': '/images/sports.svg'
+  CARTOONS: '/images/cartoons.jpg',
+  MOVIES: '/images/movies.jpg',
+  'GIFT CARDS': '/images/gift_cards.jpg'
 };
 
 export type CollectionMetadata = {

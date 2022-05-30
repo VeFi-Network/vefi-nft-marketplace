@@ -8,7 +8,9 @@ export const addresses: { [key: number]: string } = {
 };
 
 export const WETH: { [key: number]: string } = {
-  4: '0xc778417E063141139Fce010982780140Aa0cD5Ab'
+  4: '0xc778417E063141139Fce010982780140Aa0cD5Ab',
+  97: '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd',
+  80001: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889'
 };
 
 export const CONSTANTS: {
