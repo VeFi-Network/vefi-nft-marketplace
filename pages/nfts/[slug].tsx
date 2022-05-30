@@ -719,7 +719,13 @@ export default function NFT() {
       </RootContainer>
 
       <SellPopup transition={transition} nft={nftById} modal={sellModal} setModal={setSellModal} />
-      <OfferPopup transition={transition} nft={nftById} modal={offerModal} setModal={setOfferModal} />
+      <OfferPopup
+        fp={collectionById.floorPrice || 0}
+        transition={transition}
+        nft={nftById}
+        modal={offerModal}
+        setModal={setOfferModal}
+      />
     </ParentContainer>
   );
 }

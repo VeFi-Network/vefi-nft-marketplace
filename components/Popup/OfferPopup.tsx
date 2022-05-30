@@ -200,14 +200,15 @@ type Props = {
   setModal: any;
   nft: any;
   transition: boolean;
+  fp: number;
 };
 
-export default function OfferPopup({ modal, setModal, nft, transition }: Props) {
+export default function OfferPopup({ modal, setModal, nft, transition, fp }: Props) {
   const { chainId, account, network, library, explorerUrl } = useWeb3Context();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<{ recipient: string; price: number }>({
     recipient: account as string,
-    price: 0
+    price: fp
   });
 
   const setProperty = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -239,6 +240,8 @@ export default function OfferPopup({ modal, setModal, nft, transition }: Props) 
         });
 
         price = parseUnits(data.price.toString(), decimals);
+
+        if (price.lt(parseUnits(fp.toString(), decimals))) throw new Error('Offer cannot be less than floor price');
 
         const erc20 = new (library as Web3).eth.Contract(erc20Abi as any, WETH[chainId as number]);
         const tokenName = await erc20.methods.name();
@@ -314,7 +317,7 @@ export default function OfferPopup({ modal, setModal, nft, transition }: Props) 
 
             <div className="text">
               How much would you like to offer for this NFT? <span style={{ color: 'blue' }}>Note:</span> You'll be
-              offering a wrapped token for this NFT.
+              offering a wrapped token for this NFT and the lowest you can offer is {fp}.
             </div>
 
             <div className="input-div">
