@@ -27,6 +27,7 @@ import request from '../../api/rpc';
 import { AddressZero } from '@ethersproject/constants';
 import { formatEthAddress } from 'eth-address';
 import MainFooter from '../../components/Footer';
+import Head from 'next/head';
 
 // We'll leverage this in the population of events table
 const eventHashMap = {
@@ -161,6 +162,9 @@ const Users = () => {
 
   return (
     <>
+      <Head>
+        <title>{id === account ? 'Your' : accountById?.name ? accountById.name + "'s" : id + "'s"} profile</title>
+      </Head>
       <UsersWrapper>
         <Navbar />
         <UserBanner
