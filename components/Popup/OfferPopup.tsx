@@ -240,7 +240,6 @@ export default function OfferPopup({ modal, setModal, nft, transition }: Props) 
 
         price = parseUnits(data.price.toString(), decimals);
 
-        message.info('Requesting approval');
         const erc20 = new (library as Web3).eth.Contract(erc20Abi as any, WETH[chainId as number]);
         const tokenName = await erc20.methods.name();
         const balanceOfHash = erc20AbiInterface.encodeFunctionData('balanceOf(address)', [account]);
@@ -249,12 +248,13 @@ export default function OfferPopup({ modal, setModal, nft, transition }: Props) 
           method: 'eth_call',
           jsonrpc: '2.0',
           id: 1,
-          params: [{ to: wrappedToken, data: balanceOfHash }]
+          params: [{ to: wrappedToken, data: balanceOfHash }, 'latest']
         });
 
         if (!price.lte(balance))
           throw new Error('You do not have enough '.concat(tokenName).concat(' to make this offer.'));
 
+        message.info('Requesting approval');
         await erc20.methods.approve(addresses[chainId as number], price.toHexString()).send({
           from: account
         });
@@ -349,15 +349,17 @@ export default function OfferPopup({ modal, setModal, nft, transition }: Props) 
               />
             </div>
 
-            <Button
-              type="primary"
-              size="large"
-              disabled={!allConditionsSatisfied() || isLoading}
-              loading={isLoading}
-              onClick={placeOffer}
-            >
-              {allConditionsSatisfied() ? 'Place Offer' : 'Please fill in all necessary details'}{' '}
-            </Button>
+            <div style={{ marginTop: 6 }}>
+              <Button
+                type="primary"
+                size="large"
+                disabled={!allConditionsSatisfied() || isLoading}
+                loading={isLoading}
+                onClick={placeOffer}
+              >
+                {allConditionsSatisfied() ? 'Place Offer' : 'Please fill in all necessary details'}{' '}
+              </Button>
+            </div>
           </div>
         </MainContainer>
       ) : null}

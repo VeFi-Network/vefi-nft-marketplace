@@ -316,6 +316,7 @@ const FooterHelpIcon = styled.div`
     text-align: center;
     font-size: 1.5rem;
     color: #fff;
+    z-index: 1;
   }
 `;
 
