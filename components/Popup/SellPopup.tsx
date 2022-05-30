@@ -1,7 +1,7 @@
 // @ts-ignore
 import ethAddress from 'ethereum-address';
 import React, { useEffect, useState } from 'react';
-import { Spin, message } from 'antd';
+import { message, Button } from 'antd';
 import { AddressZero } from '@ethersproject/constants';
 import { Interface } from '@ethersproject/abi';
 import { parseUnits, parseEther } from '@ethersproject/units';
@@ -10,7 +10,6 @@ import styled from 'styled-components';
 import _ from 'lodash';
 import type Web3 from 'web3';
 import DropdownComponentWithIcon from './DropdownWithIcon';
-import Filled_CTA_Button from '../Button/CTA/Filled';
 import { CONSTANTS, addresses } from '../../assets';
 import { useWeb3Context } from '../../contexts/web3';
 import marketPlaceAbi from '../../assets/abis/Marketplace.json';
@@ -166,7 +165,6 @@ export default function SellPopup({ modal, setModal, nft, transition }: Props) {
   const [token, setToken] = useState<{ name: string; image: string; address: string }>();
   const { chainId, account, network, library, explorerUrl } = useWeb3Context();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [tip, setTip] = useState<string>('');
   const [data, setData] = useState<{ paymentReceiver: string; currency: string; price: number }>({
     paymentReceiver: account as string,
     currency: AddressZero,
@@ -195,7 +193,7 @@ export default function SellPopup({ modal, setModal, nft, transition }: Props) {
         setIsLoading(true);
         let price: ReturnType<typeof parseEther | typeof parseUnits>;
 
-        setTip('Requesting approval');
+        message.info('Requesting approval');
         const erc721 = new (library as Web3).eth.Contract(deployableCollectionAbi as any, nft.collectionId);
 
         await erc721.methods.setApprovalForAll(addresses[chainId as number], true).send({
@@ -204,7 +202,7 @@ export default function SellPopup({ modal, setModal, nft, transition }: Props) {
 
         message.success('Approved!');
 
-        setTip('Parsing price');
+        message.info('Parsing price');
         if (data.currency === AddressZero) {
           price = parseEther(data.price.toString());
         } else {
@@ -221,13 +219,13 @@ export default function SellPopup({ modal, setModal, nft, transition }: Props) {
 
         const contract = new (library as Web3).eth.Contract(marketPlaceAbi as any, addresses[chainId as number]);
 
-        setTip('Now putting up for sale');
+        message.info('Now putting up for sale');
         const saleResponse = await contract.methods
           .placeForSale(nft.tokenId, nft.collectionId, data.paymentReceiver, data.currency, price.toHexString())
           .send({
             from: account
           });
-
+        setModal(false);
         message.success(
           <>
             <span style={{ fontSize: 15 }}>NFT successfully sold!</span>{' '}
@@ -244,11 +242,9 @@ export default function SellPopup({ modal, setModal, nft, transition }: Props) {
         );
       }
       resetAllFields();
-      setTip('');
       setIsLoading(false);
     } catch (error: any) {
       setIsLoading(false);
-      setTip('');
       message.error(error.message);
     }
   };
@@ -267,77 +263,81 @@ export default function SellPopup({ modal, setModal, nft, transition }: Props) {
     <>
       {modal ? (
         <MainSellContainer open={transition}>
-          <Spin spinning={isLoading} tip={tip}>
-            <div className="img-title">
-              <div className="image-container">
-                <img
-                  width="244px"
-                  height="238.53px"
-                  src={nft ? nft?.metadata?.image : '/nft/nft02.png'}
-                  alt=""
-                  className="nft-img"
-                />
-              </div>
-              <div className="title">Cool! Let's sell your NFT</div>
-            </div>
-
-            <Heading top="68px">Set A Price</Heading>
-
-            <div className="text">How much would you like to sell your NFT?</div>
-
-            <div className="input-div">
-              <div className="eth-container">
-                <Image width="12px" height="12px" src={token?.image as string} />
-              </div>
-              <input
-                value={data.price}
-                name="price"
-                onChange={setProperty}
-                placeholder="0.00"
-                type="number"
-                className="input"
+          <div className="img-title">
+            <div className="image-container">
+              <img
+                width="244px"
+                height="238.53px"
+                src={nft ? nft?.metadata?.image : '/nft/nft02.png'}
+                alt=""
+                className="nft-img"
               />
             </div>
+            <div className="title">Cool! Let's sell your NFT</div>
+          </div>
 
-            <Heading top="27px">Select Payment Token</Heading>
+          <Heading top="68px">Set A Price</Heading>
 
-            <div className="text">Which currency would you accept for this asset?</div>
+          <div className="text">How much would you like to sell your NFT?</div>
 
-            <DropdownComponentWithIcon
-              setDropdown={setTokenDropdownShown}
-              dropdown={tokenDropdownShown}
-              value={token}
-              onChange={(value: any) => {
-                setToken(value);
-                setData(d => ({ ...d, currency: value.address }));
-              }}
-              dropDownList={_.map(CONSTANTS.paymentTokensPerNetwork[chainId as number], item => ({
-                name: item.name,
-                image: item.logo,
-                address: item.token
-              }))}
-              width={''}
-              top={'10px'}
+          <div className="input-div">
+            <div className="eth-container">
+              <Image width="12px" height="12px" src={token?.image as string} />
+            </div>
+            <input
+              value={data.price}
+              name="price"
+              onChange={setProperty}
+              placeholder="0.00"
+              type="number"
+              className="input"
             />
+          </div>
 
-            <Heading top="15px">Payment Recipient</Heading>
+          <Heading top="27px">Select Payment Token</Heading>
 
-            <div className="text">Which address would receive the payment from the proceedings?</div>
+          <div className="text">Which currency would you accept for this asset?</div>
 
-            <div className="input-div-large">
-              <input
-                type="text"
-                value={data.paymentReceiver}
-                name="paymentReceiver"
-                onChange={setProperty}
-                className="input-large"
-              />
-            </div>
+          <DropdownComponentWithIcon
+            setDropdown={setTokenDropdownShown}
+            dropdown={tokenDropdownShown}
+            value={token}
+            onChange={(value: any) => {
+              setToken(value);
+              setData(d => ({ ...d, currency: value.address }));
+            }}
+            dropDownList={_.map(CONSTANTS.paymentTokensPerNetwork[chainId as number], item => ({
+              name: item.name,
+              image: item.logo,
+              address: item.token
+            }))}
+            width={''}
+            top={'10px'}
+          />
 
-            <Filled_CTA_Button onClick={sellItem} disabled={!allConditionsSatisfied()} className="sell-btn">
-              {allConditionsSatisfied() ? 'Proceed' : 'Invalid data'}
-            </Filled_CTA_Button>
-          </Spin>
+          <Heading top="15px">Payment Recipient</Heading>
+
+          <div className="text">Which address would receive the payment from the proceedings?</div>
+
+          <div className="input-div-large">
+            <input
+              type="text"
+              value={data.paymentReceiver}
+              name="paymentReceiver"
+              onChange={setProperty}
+              className="input-large"
+            />
+          </div>
+
+          <Button
+            type="primary"
+            size="large"
+            disabled={!allConditionsSatisfied() || isLoading}
+            loading={isLoading}
+            onClick={sellItem}
+          >
+            {allConditionsSatisfied() ? 'Place Item For Sale' : 'Please fill in all necessary details'}{' '}
+          </Button>
         </MainSellContainer>
       ) : null}
     </>

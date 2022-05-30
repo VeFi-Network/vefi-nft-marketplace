@@ -316,7 +316,6 @@ const Collection = () => {
                               onClick={() => {
                                 router.push(`/nfts/${collectionById.collectionId}:${nft.tokenId}`);
                               }}
-                              key={nft.id}
                             />
                           </div>
                         </>
