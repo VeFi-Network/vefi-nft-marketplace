@@ -25,13 +25,13 @@ type Web3ContextType = {
 const Web3Context = createContext<Web3ContextType>({} as Web3ContextType);
 
 const injectedConnector = new InjectedConnector({
-  supportedChainIds: [97, 56, 32520, 64668, 80001, 4]
+  supportedChainIds: [97, 80001, 4]
 });
 
 const walletConnectConnector = new WalletConnectConnector({
   qrcode: true,
   bridge: 'https://bridge.walletconnect.org',
-  supportedChainIds: [97, 56, 32520, 64668, 80001, 4]
+  supportedChainIds: [97, 80001, 4]
 });
 
 export const Web3ContextProvider = ({ children }: any) => {
