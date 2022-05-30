@@ -78,6 +78,11 @@ export const Web3ContextProvider = ({ children }: any) => {
       if (isAuth) {
         activate(injectedConnector, undefined, true).then(() => {
           setTried(true);
+          setTimeout(() => {
+            setNetwork(chains[chainId?.toString() as keyof typeof chains].appName);
+            setExplorerUrl(chains[chainId?.toString() as keyof typeof chains].explorerUrl);
+            setNetworkSymbol(chains[chainId?.toString() as keyof typeof chains].symbol);
+          }, 500);
         });
       } else {
         setTried(true);

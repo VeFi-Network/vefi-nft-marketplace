@@ -138,6 +138,7 @@ const ListCollections = () => {
                         owner={collection.collectionOwner}
                         imageURI={collection.metadata.imageURI}
                         linkTo={`/collections/${collection.collectionId}`}
+                        price={collection.floorPrice?.toString()}
                       />
                     </div>
                   )
