@@ -17,6 +17,7 @@ import CategoryCard from '../components/Card/CategoryCard';
 import { useRouter } from 'next/router';
 import { CollectionCategory, CollectionCategoryImages, CollectionModel } from '../api/models/collection';
 import { useWeb3Context } from '../contexts/web3';
+import Head from 'next/head';
 
 const MainContainer = styled.div`
   display: flex;
@@ -447,6 +448,9 @@ export default function Homepage() {
 
   return (
     <>
+      <Head>
+        <title>Vefi NFT marketplace | Create and trade various non-fungible assets</title>
+      </Head>
       <MainContainer>
         <MarketplaceContainer>
           <div className="main__container__wrapper">
