@@ -33,6 +33,7 @@ import InfiniteScroll from '../../../components/InfiniteScroll';
 import { NFTModel } from '../../../api/models/nft';
 import request from '../../../api/rpc';
 import { useWeb3Context } from '../../../contexts/web3';
+import Head from 'next/head';
 
 // We'll leverage this in the population of events table
 const eventHashMap = {
@@ -148,6 +149,9 @@ const Collection = () => {
 
   return (
     <>
+      <Head>
+        <title>View {collectionById.collectionName} on Vefi NFT marketplace</title>
+      </Head>
       <UsersWrapper>
         <Navbar />
         <Spin spinning={isLoading}>

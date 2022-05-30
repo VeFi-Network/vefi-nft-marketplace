@@ -13,6 +13,7 @@ import { updateAccount } from '../../../api/nft';
 import { useAPIContext } from '../../../contexts/api';
 import { useWeb3Context } from '../../../contexts/web3';
 import MainFooter from '../../../components/Footer';
+import Head from 'next/head';
 
 const RootContainer = styled.div`
   min-width: 100%;
@@ -219,6 +220,9 @@ const UpdateProfile = () => {
 
   return (
     <>
+      <Head>
+        <title>Update profile</title>
+      </Head>
       <RootContainer>
         <NavContainer>
           <Navbar />

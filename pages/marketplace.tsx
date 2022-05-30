@@ -11,6 +11,7 @@ import { useEffect, useRef, useState } from 'react';
 import _ from 'lodash';
 import { useWeb3Context } from '../contexts/web3';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 const NoItemContainer = styled.div`
   display: flex;
@@ -55,6 +56,9 @@ const Market = () => {
 
   return (
     <>
+      <Head>
+        <title>Marketplace</title>
+      </Head>
       <MarktePlaceWrapper>
         <div className="marketplace__container">
           <Navbar />

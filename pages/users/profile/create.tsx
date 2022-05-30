@@ -13,6 +13,7 @@ import { createAccount } from '../../../api/nft';
 import { useAPIContext } from '../../../contexts/api';
 import { useRouter } from 'next/router';
 import MainFooter from '../../../components/Footer';
+import Head from 'next/head';
 
 const RootContainer = styled.div`
   min-width: 100%;
@@ -195,6 +196,9 @@ const CreateProfile = () => {
 
   return (
     <>
+      <Head>
+        <title>Create new profile</title>
+      </Head>
       <RootContainer>
         <NavContainer>
           <Navbar />

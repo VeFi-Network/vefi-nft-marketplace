@@ -15,6 +15,7 @@ import { useWeb3Context } from '../../../contexts/web3';
 import marketPlaceAbi from '../../../assets/abis/Marketplace.json';
 import { addresses, CONSTANTS } from '../../../assets';
 import { useAPIContext } from '../../../contexts/api';
+import Head from 'next/head';
 
 type Props = {};
 
@@ -428,6 +429,9 @@ export default function NewCollection({}: Props) {
 
   return (
     <>
+      <Head>
+        <title>Create new collection</title>
+      </Head>
       <MainContainer>
         <NavbarContainer>
           <Navbar />
