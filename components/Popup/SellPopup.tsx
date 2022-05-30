@@ -329,15 +329,17 @@ export default function SellPopup({ modal, setModal, nft, transition }: Props) {
             />
           </div>
 
-          <Button
-            type="primary"
-            size="large"
-            disabled={!allConditionsSatisfied() || isLoading}
-            loading={isLoading}
-            onClick={sellItem}
-          >
-            {allConditionsSatisfied() ? 'Place Item For Sale' : 'Please fill in all necessary details'}{' '}
-          </Button>
+          <div style={{ marginTop: 6 }}>
+            <Button
+              type="primary"
+              size="large"
+              disabled={!allConditionsSatisfied() || isLoading}
+              loading={isLoading}
+              onClick={sellItem}
+            >
+              {allConditionsSatisfied() ? 'Place Item For Sale' : 'Please fill in all necessary details'}{' '}
+            </Button>
+          </div>
         </MainSellContainer>
       ) : null}
     </>
