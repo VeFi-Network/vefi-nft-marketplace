@@ -42,7 +42,7 @@ export default class CustomDocument extends Document {
             name="description"
             content="The Vefi NFT marketplace is a product of the Vefi Ecosystem that allows the creation and the trading of non-fungible assets on various chains."
           />
-          <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"></meta>
+          <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
           <title>Vefi NFT marketplace | Create and trade various non-fungible assets</title>
         </Head>
         <body>
