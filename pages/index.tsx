@@ -548,7 +548,7 @@ export default function Homepage() {
                               owner={collection?.metadata.owner}
                               imageURI={collection?.metadata.imageURI}
                               linkTo={`/collections/${collection?.collectionId}`}
-                              price={collection.floorPrice?.toString()}
+                              price={collection.floorPrice?.toPrecision(4)}
                             />
                           </div>
                         )

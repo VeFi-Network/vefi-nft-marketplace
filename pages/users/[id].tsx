@@ -312,6 +312,7 @@ const Users = () => {
                               owner={collection?.metadata.owner}
                               imageURI={collection?.metadata.imageURI}
                               linkTo={`/collections/${collection?.collectionId}`}
+                              price={collection.floorPrice?.toPrecision(4)}
                             />
                           </div>
                         )
