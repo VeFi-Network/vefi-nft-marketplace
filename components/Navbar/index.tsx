@@ -73,7 +73,7 @@ const NavLinks = styled.div`
       transform: scale(1.1);
     }
   }
-  @media screen and (max-width: 320px) {
+  @media screen and (max-width: 760px) {
     .x-mobile {
       display: none;
     }
