@@ -20,7 +20,9 @@ const DottedLineDivItem = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
-
+  @media screen and (max-width: 760px) {
+    width: 100%;
+  }
   .file-area {
     border: 1px solid red;
     position: absolute;

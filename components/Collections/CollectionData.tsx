@@ -26,6 +26,9 @@ const CollectionInfoCont = styled.div`
   color: white;
   gap: 17px;
 
+  @media screen and (max-width: 760px) {
+    width: 100%;
+  }
   .name {
     font-family: 'Rubik';
     font-style: normal;

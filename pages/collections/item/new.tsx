@@ -16,6 +16,7 @@ import marketPlaceAbi from '../../../assets/abis/Marketplace.json';
 import { addresses, CONSTANTS } from '../../../assets';
 import { useAPIContext } from '../../../contexts/api';
 import Head from 'next/head';
+import ConnectWallet from '../../../components/ConnectWallet';
 
 type Props = {};
 
@@ -38,15 +39,17 @@ const NavbarContainer = styled.div`
 `;
 
 const ColoredBackground = styled.div`
-  width: 964px;
-  height: 1300px;
+  width: 600px;
+  height: 100vh;
   background: url('/objects/marketplaceObjects.svg') no-repeat;
   position: absolute;
+  background-size: contain;
   top: -5%;
   right: 0%;
   z-index: 0;
   @media screen and (max-width: 760px) {
-    display: none;
+    width: 300px;
+    height: 100vh;
   }
 `;
 
@@ -59,7 +62,7 @@ const ParentExploreAndData = styled.div`
   min-width: 1000px;
 
   @media screen and (max-width: 760px) {
-    width: 95%;
+    width: 90%;
     margin: 0 auto;
     min-width: 90%;
     padding-bottom: 50px;
@@ -80,6 +83,9 @@ const ParentExploreAndData = styled.div`
       line-height: 3rem;
       margin-top: 40px;
       margin-bottom: -30px;
+    }
+    @media screen and (max-width: 320px) {
+      font-size: 1.5rem;
     }
   }
 
@@ -280,12 +286,12 @@ const Heading = styled.div`
 `;
 
 const StyledExploreNft = styled.img`
-  height: 585px;
+  height: 500px;
   width: 97px;
   position: absolute;
-  left: 7px;
-  top: 361px;
-
+  left: 0;
+  top: 100px;
+  object-fit: contain;
   @media screen and (max-width: 760px) {
     display: none;
   }
@@ -439,11 +445,12 @@ export default function NewCollection({}: Props) {
         <Spin spinning={isLoading} size="large" tip={tip}>
           <ParentExploreAndData>
             {!active ? (
-              <NoItemContainer>
-                <div style={{ marginTop: '10em' }}>
-                  <span style={{ color: '#dc143c', fontSize: 30 }}>Please connect your wallet!</span>
-                </div>
-              </NoItemContainer>
+              // <NoItemContainer>
+              //   <div style={{ marginTop: '10em' }}>
+              //     <span style={{ color: '#dc143c', fontSize: 30 }}>Please connect your wallet!</span>
+              //   </div>
+              // </NoItemContainer>
+              <ConnectWallet />
             ) : (
               <>
                 <div className="container__wrapper">

@@ -18,6 +18,7 @@ import { useWeb3Context } from '../../../../contexts/web3';
 import { usePageQuery } from '../../../../hooks/query';
 import MainFooter from '../../../../components/Footer';
 import Head from 'next/head';
+import ConnectWallet from '../../../../components/ConnectWallet';
 
 type Props = {};
 
@@ -36,24 +37,34 @@ const NavbarContainer = styled.div`
 `;
 
 const ColoredBackground = styled.div`
-  width: 964px;
-  height: 1300px;
+  width: 600px;
+  height: 100vh;
   background: url('/objects/marketplaceObjects.svg') no-repeat;
   position: absolute;
+  background-size: contain;
   top: -5%;
   right: 0%;
   z-index: 0;
+  @media screen and (max-width: 760px) {
+    width: 300px;
+    height: 100vh;
+  }
 `;
 
 const ParentExploreAndData = styled.div`
   display: flex;
   flex-direction: column;
+  padding-bottom: 50px;
+  z-index: 2;
+  width: 100%;
   min-width: 1000px;
 
-  @media (max-width: 1300px) {
-    min-width: 700px;
+  @media screen and (max-width: 760px) {
+    width: 90%;
+    margin: 0 auto;
+    min-width: 90%;
+    padding-bottom: 50px;
   }
-  z-index: 2;
 
   .title {
     font-family: 'Rubik';
@@ -63,6 +74,17 @@ const ParentExploreAndData = styled.div`
     line-height: 24px;
     color: #ebf8ff;
     margin-top: 80px;
+
+    @media screen and (max-width: 760px) {
+      text-align: flex-start;
+      font-size: 2rem;
+      line-height: 3rem;
+      margin-top: 40px;
+      margin-bottom: -30px;
+    }
+    @media screen and (max-width: 320px) {
+      font-size: 1.5rem;
+    }
   }
 
   .white-text {
@@ -115,6 +137,12 @@ const ParentExploreAndData = styled.div`
       padding-left: 16px;
       color: rgba(255, 255, 255, 0.58);
     }
+    @media screen and (max-width: 760px) {
+      width: 100%;
+      .inp {
+        width: 100%;
+      }
+    }
   }
 
   .input-div-small {
@@ -134,6 +162,12 @@ const ParentExploreAndData = styled.div`
       color: rgba(255, 255, 255, 0.58);
       font-size: 12px;
     }
+    @media screen and (max-width: 760px) {
+      width: 100%;
+      .inp {
+        width: 100%;
+      }
+    }
   }
 
   .text-area {
@@ -142,7 +176,9 @@ const ParentExploreAndData = styled.div`
     width: 468px;
     height: 184px;
     margin-top: 26px;
-
+    @media screen and (max-width: 760px) {
+      width: 100%;
+    }
     .real-text-area {
       width: 100%;
       height: 100%;
@@ -176,6 +212,18 @@ const ParentExploreAndData = styled.div`
     width: 400px;
     justify-content: space-between;
     align-items: center;
+
+    @media screen and (max-width: 760px) {
+      width: 100%;
+      flex-direction: column;
+      align-items: flex-start;
+
+      .switch-count-one {
+        display: flex;
+        flex-direction: row !important;
+        gap: 10px;
+      }
+    }
 
     .switch {
       position: relative;
@@ -252,11 +300,15 @@ const Heading = styled.div`
 `;
 
 const StyledExploreNft = styled.img`
-  height: 585px;
+  height: 500px;
   width: 97px;
   position: absolute;
-  left: 7px;
-  top: 361px;
+  left: 0;
+  top: 100px;
+  object-fit: contain;
+  @media screen and (max-width: 760px) {
+    display: none;
+  }
 `;
 
 const NoItemContainer = styled.div`
@@ -383,11 +435,12 @@ export default function NewNFT({}: Props) {
         <Spin spinning={isLoading} tip={tip} size="large">
           <ParentExploreAndData>
             {!active ? (
-              <NoItemContainer>
-                <div style={{ marginTop: '10em' }}>
-                  <span style={{ color: '#dc143c', fontSize: 30 }}>Please connect your wallet!</span>
-                </div>
-              </NoItemContainer>
+              // <NoItemContainer>
+              //   <div style={{ marginTop: '10em' }}>
+              //     <span style={{ color: '#dc143c', fontSize: 30 }}>Please connect your wallet!</span>
+              //   </div>
+              // </NoItemContainer>
+              <ConnectWallet />
             ) : (
               <>
                 <div className="container__wrapper">
@@ -491,6 +544,7 @@ export default function NewNFT({}: Props) {
                           flexDirection: 'column',
                           margin: 2
                         }}
+                        className="switch-count-one"
                       >
                         <label className="switch">
                           <input
