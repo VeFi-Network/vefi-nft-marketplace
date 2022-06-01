@@ -18,23 +18,23 @@ import deployableCollectionAbi from '../../assets/abis/DeployableCollection.json
 import request from '../../api/rpc';
 
 const MainSellContainer = styled.div`
-  height: 719px;
+  height: max-content;
+  padding-bottom: 50px;
   width: 1006px;
-  /* margin-top: -330px; */
   margin-left: -503px;
   background: #222222;
   border-radius: 15px;
   position: absolute;
-  top: 50%;
+  top: 100px;
   left: 50%;
   display: flex;
   flex-direction: column;
   padding-left: 67px;
-  top: ${(props: { open: boolean }) => (props.open ? '50%' : '-50%')};
+  top: ${(props: { open: boolean }) => (props.open ? '100px' : '-50%')};
   opacity: ${(props: { open: boolean }) => (props.open ? '1' : '0')};
   transition-timing-function: ease-out;
   transition-duration: 500ms;
-  z-index: 5;
+  z-index: 999;
 
   .img-title {
     display: flex;
@@ -171,6 +171,10 @@ const MainSellContainer = styled.div`
     left: 10px;
 
     padding: 0 2rem;
+    .btn {
+      margin-bottom: 30px;
+      width: 100%;
+    }
     .container__inner {
       padding-bottom: 50px;
     }
@@ -378,6 +382,7 @@ export default function SellPopup({ modal, setModal, nft, transition }: Props) {
               disabled={!allConditionsSatisfied() || isLoading}
               loading={isLoading}
               onClick={sellItem}
+              className="btn"
             >
               {allConditionsSatisfied() ? 'Place Item For Sale' : 'Please fill in all necessary details'}{' '}
             </Button>

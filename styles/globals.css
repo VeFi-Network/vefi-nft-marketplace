@@ -10,6 +10,7 @@ body {
   margin: 0;
   font-family: 'MonumentExtended', 'Rubik', sans-serif;
   overflow-x: hidden;
+  background: #0c0c0c;
 }
 ::-webkit-scrollbar {
   width: 5px;
