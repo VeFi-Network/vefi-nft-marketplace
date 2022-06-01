@@ -53,7 +53,7 @@ const NoItemContainer = styled.div`
 const Users = () => {
   enum SelectedTab {
     COLLECTIONS = '1',
-    CREATED = '2',
+    OWNED = '2',
     WATCHLIST = '3',
     FAVORITES = '4'
   }
@@ -148,7 +148,7 @@ const Users = () => {
   }, [tab]);
 
   useEffect(() => {
-    if (tab === SelectedTab.CREATED) setNFTList(nftsByUser);
+    if (tab === SelectedTab.OWNED) setNFTList(nftsByUser);
     else if (tab === SelectedTab.FAVORITES) setNFTList(favoriteNFTsOfUser);
     else if (tab === SelectedTab.WATCHLIST) setNFTList(_.map(userWatchList, list => list.nft as unknown as NFTModel));
   }, [nftsByUser, favoriteNFTsOfUser, userWatchList]);
@@ -212,12 +212,12 @@ const Users = () => {
                 onClick={() => switchTabs(SelectedTab.COLLECTIONS)}
               />
               <FilterProperty
-                isActive={selectedTab === SelectedTab.CREATED}
+                isActive={selectedTab === SelectedTab.OWNED}
                 icon={<FiUserPlus />}
                 count={kFormatter(nftsByUser.length)}
-                label="created"
+                label="owned"
                 onClick={() => {
-                  switchTabs(SelectedTab.CREATED);
+                  switchTabs(SelectedTab.OWNED);
                   setNFTList(nftsByUser);
                 }}
               />
