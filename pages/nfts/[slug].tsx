@@ -391,6 +391,14 @@ export default function NFT() {
             jsonrpc: '2.0'
           });
           amount = parseUnits(price as string, decimalResponse);
+
+          const erc20Contract = new (library as Web3).eth.Contract(erc20Abi as any, tradeCurrency as string);
+
+          setTip('Requesting approval');
+
+          await erc20Contract.methods.approve(addresses[chainId as number], amount.toHexString()).send({
+            from: account
+          });
         } else {
           amount = parseEther(price as string);
         }
