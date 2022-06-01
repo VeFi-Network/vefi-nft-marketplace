@@ -20,7 +20,7 @@ import request from '../../api/rpc';
 const MainSellContainer = styled.div`
   height: 719px;
   width: 1006px;
-  margin-top: -330px;
+  /* margin-top: -330px; */
   margin-left: -503px;
   background: #222222;
   border-radius: 15px;

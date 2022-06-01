@@ -401,7 +401,16 @@ const NoItemContainer = styled.div`
   margin-top: 50px;
 
   @media screen and (max-width: 760px) {
-    width: 90%;
+    width: 100%;
+
+    span {
+      font-size: 1.4rem !important;
+    }
+  }
+  @media screen and (max-width: 320px) {
+    span {
+      font-size: 1rem !important;
+    }
   }
 `;
 
