@@ -31,7 +31,12 @@ const injectedConnector = new InjectedConnector({
 const walletConnectConnector = new WalletConnectConnector({
   qrcode: true,
   bridge: 'https://bridge.walletconnect.org',
-  supportedChainIds: [97, 80001, 4]
+  supportedChainIds: [97, 80001, 4],
+  rpc: {
+    97: chains[97].chainRpc,
+    80001: chains[80001].chainRpc,
+    4: chains[4].chainRpc
+  }
 });
 
 export const Web3ContextProvider = ({ children }: any) => {
