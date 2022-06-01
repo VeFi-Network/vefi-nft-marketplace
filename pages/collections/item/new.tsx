@@ -498,7 +498,8 @@ export default function NewCollection({}: Props) {
                     />
                   </div>
                   <Heading className="heading">
-                    Symbol<span className="blue">*</span>
+                    Symbol (<span style={{ fontSize: '0.6rem' }}>Min of 3 Characters</span>)
+                    <span className="blue">*</span>
                   </Heading>
 
                   <div className="input-div">

@@ -54,6 +54,12 @@ const MainSellContainer = styled.div`
       .nft-img {
         border-radius: 14px;
       }
+      @media screen and (max-width: 760px) {
+        width: 100%;
+        img {
+          object-fit: cover;
+        }
+      }
     }
 
     .title {
@@ -65,6 +71,11 @@ const MainSellContainer = styled.div`
       line-height: 47px;
       margin-left: 55px;
       margin-top: 51px;
+
+      @media screen and (max-width: 760px) {
+        margin: 20px 0;
+        text-align: center;
+      }
     }
   }
 
@@ -76,6 +87,10 @@ const MainSellContainer = styled.div`
     line-height: 20px;
     color: #ebf8ff;
     margin-top: 11px;
+
+    @media screen and (max-width: 760px) {
+      font-size: 0.7rem;
+    }
   }
 
   .input-div {
@@ -88,7 +103,9 @@ const MainSellContainer = styled.div`
     align-items: center;
     padding-left: 13px;
     margin-top: 10px;
-
+    @media screen and (max-width: 760px) {
+      width: 100%;
+    }
     .eth-container {
       border-radius: 50%;
       width: 18px;
@@ -109,6 +126,10 @@ const MainSellContainer = styled.div`
 
       -moz-appearance: textfield;
       color: rgba(255, 255, 255, 0.58);
+
+      @media screen and (max-width: 760px) {
+        width: 100%;
+      }
     }
     input::-webkit-inner-spin-button {
       -webkit-appearance: none;
@@ -126,7 +147,9 @@ const MainSellContainer = styled.div`
     align-items: center;
     padding-left: 13px;
     margin-top: 10px;
-
+    @media screen and (max-width: 760px) {
+      width: 100%;
+    }
     .input-large {
       width: 380px;
       border: none;
@@ -166,6 +189,10 @@ const Heading = styled.div`
   font-size: 16px;
   line-height: 19px;
   color: #ebf8ff;
+  @media screen and (max-width: 760px) {
+    font-size: 1.4rem;
+    margin: 20px 0;
+  }
 `;
 
 type Props = {
