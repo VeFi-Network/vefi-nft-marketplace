@@ -14,6 +14,7 @@ import { useAPIContext } from '../../../contexts/api';
 import { useRouter } from 'next/router';
 import MainFooter from '../../../components/Footer';
 import Head from 'next/head';
+import ConnectWallet from '../../../components/ConnectWallet';
 
 const RootContainer = styled.div`
   min-width: 100%;
@@ -213,11 +214,12 @@ const CreateProfile = () => {
           <Container>
             <div></div>
             {!active ? (
-              <NoItemContainer>
-                <div style={{ marginTop: '10em' }}>
-                  <span style={{ color: '#dc143c', fontSize: 30 }}>Please connect your wallet!</span>
-                </div>
-              </NoItemContainer>
+              // <NoItemContainer>
+              //   <div style={{ marginTop: '10em' }}>
+              //     <span style={{ color: '#dc143c', fontSize: 30 }}>Please connect your wallet!</span>
+              //   </div>
+              // </NoItemContainer>
+              <ConnectWallet />
             ) : (
               <div>
                 <Heading>Create Profile</Heading>

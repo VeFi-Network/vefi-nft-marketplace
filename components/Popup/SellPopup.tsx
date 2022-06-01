@@ -261,8 +261,8 @@ export default function SellPopup({ modal, setModal, nft, transition }: Props) {
 
   return (
     <>
-      {modal ? (
-        <MainSellContainer open={transition}>
+      {false ? (
+        <MainSellContainer open={true}>
           <div className="img-title">
             <div className="image-container">
               <img
