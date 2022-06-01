@@ -41,13 +41,26 @@ const NoItemContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  width: 100%;
-  max-width: 1200px;
+  width: calc(100% - 150px);
+
   background: linear-gradient(254.33deg, rgba(255, 255, 255, 0.1) 1.71%, rgba(255, 255, 255, 0.05) 99.35%);
   backdrop-filter: blur(16.86px);
   padding: 50px 0;
   border-radius: 20px;
   margin-top: 50px;
+
+  @media screen and (max-width: 760px) {
+    width: 100%;
+
+    span {
+      font-size: 1.4rem !important;
+    }
+  }
+  @media screen and (max-width: 320px) {
+    span {
+      font-size: 1rem !important;
+    }
+  }
 `;
 
 const Users = () => {

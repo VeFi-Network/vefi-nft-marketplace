@@ -90,7 +90,7 @@ export const UserNFTInfo = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
+    z-index: 999;
     .username {
       display: flex;
       h2 {
@@ -135,7 +135,6 @@ export const NFTUserInfo = styled.div`
   width: 100%;
   height: 200px;
   position: relative;
-  z-index: 999;
 
   div:nth-child(1) {
     width: 200px;
@@ -147,6 +146,10 @@ export const NFTUserInfo = styled.div`
     background: #5c95ff;
 
     filter: blur(100px);
+
+    @media screen and (max-width: 760px) {
+      top: -300px;
+    }
   }
   div:nth-child(2) {
     position: absolute;
@@ -158,6 +161,9 @@ export const NFTUserInfo = styled.div`
     background: #e21950;
 
     filter: blur(80px);
+    @media screen and (max-width: 760px) {
+      top: -200px;
+    }
   }
   div:nth-child(3) {
     position: absolute;
