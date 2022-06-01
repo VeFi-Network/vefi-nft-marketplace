@@ -33,7 +33,7 @@ const MainContainer = styled.div`
   opacity: ${(props: { open: boolean }) => (props.open ? '1' : '0')};
   transition-timing-function: ease-out;
   transition-duration: 500ms;
-  z-index: 5;
+  z-index: 999;
 
   .img-title {
     display: flex;
@@ -171,6 +171,10 @@ const MainContainer = styled.div`
     left: 10px;
 
     padding: 0 2rem;
+    .btn {
+      margin-bottom: 30px;
+      width: 100%;
+    }
     .container__inner {
       padding-bottom: 50px;
     }
@@ -359,6 +363,7 @@ export default function OfferPopup({ modal, setModal, nft, transition, fp }: Pro
                 disabled={!allConditionsSatisfied() || isLoading}
                 loading={isLoading}
                 onClick={placeOffer}
+                className="btn"
               >
                 {allConditionsSatisfied() ? 'Place Offer' : 'Please fill in all necessary details'}{' '}
               </Button>
