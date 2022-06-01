@@ -180,7 +180,7 @@ const Collection = () => {
               </div>
               <div className="stat">
                 <div className="count">
-                  <h1>{kFormatter(collectionById.floorPrice || 0)}</h1>
+                  <h1>{kFormatter(parseFloat(collectionById.floorPrice?.toPrecision(4) || '0'))}</h1>
                 </div>
                 <div className="label">Floor Price</div>
               </div>

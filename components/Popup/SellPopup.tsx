@@ -141,6 +141,21 @@ const MainSellContainer = styled.div`
     height: 42px;
     margin-top: 32px;
   }
+
+  @media screen and (max-width: 760px) {
+    width: 95%;
+    margin: 0px auto;
+    left: 10px;
+
+    padding: 0 2rem;
+    .container__inner {
+      padding-bottom: 50px;
+    }
+    .img-title {
+      flex-direction: column;
+      margin: 0;
+    }
+  }
 `;
 
 const Heading = styled.div`

@@ -244,7 +244,7 @@ export default function OfferPopup({ modal, setModal, nft, transition, fp }: Pro
         if (price.lt(parseUnits(fp.toString(), decimals))) throw new Error('Offer cannot be less than floor price');
 
         const erc20 = new (library as Web3).eth.Contract(erc20Abi as any, WETH[chainId as number]);
-        const tokenName = await erc20.methods.name();
+        const tokenName = await erc20.methods.name().call();
         const balanceOfHash = erc20AbiInterface.encodeFunctionData('balanceOf(address)', [account]);
 
         const balance = await request(network, {
