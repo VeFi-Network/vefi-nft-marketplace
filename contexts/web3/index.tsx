@@ -59,20 +59,16 @@ export const Web3ContextProvider = ({ children }: any) => {
   };
 
   const connectMetamask = useCallback(() => {
-    if (!active) {
-      activate(injectedConnector, undefined, true).then(() => {
-        console.log('Metamask connected!');
-      });
-    }
-  }, [active]);
+    activate(injectedConnector, undefined, true).then(() => {
+      console.log('Metamask connected!');
+    });
+  }, []);
 
   const connectWalletConnect = useCallback(() => {
-    if (!active) {
-      activate(walletConnectConnector, undefined, true).then(() => {
-        console.log('Walletconnect connected');
-      });
-    }
-  }, [active]);
+    activate(walletConnectConnector, undefined, true).then(() => {
+      console.log('Walletconnect connected');
+    });
+  }, []);
 
   const disconnectWallet = useCallback(() => {
     if (active) deactivate();
@@ -112,12 +108,12 @@ export const Web3ContextProvider = ({ children }: any) => {
   }, [chainId, active]);
 
   useEffect(() => {
-    if (active && !!network && !!account && !!chainId) {
+    if (active && !!account && !!chainId) {
       fetchBalance();
     } else {
       setBalance('0');
     }
-  }, [active, chainId, network, account]);
+  }, [active, chainId, account]);
 
   return (
     <Web3Context.Provider

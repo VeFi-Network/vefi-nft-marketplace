@@ -176,7 +176,7 @@ const Collection = () => {
               <div className="user__info">
                 <p>
                   Created By:{' '}
-                  <Link href="/">
+                  <Link href={`/users/${collectionById.collectionOwner}`}>
                     <a>{collectionById.metadata.owner}</a>
                   </Link>
                 </p>
