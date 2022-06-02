@@ -100,7 +100,7 @@ const Collection = () => {
     loadNFTsInCollectionByOffers,
     loadSuccessfulTradesForCollection
   } = useAPIContext();
-  const { network, explorerUrl } = useWeb3Context();
+  const { network, explorerUrl, networkSymbol } = useWeb3Context();
 
   const kFormatter = (num: number): string | number => {
     return Math.abs(num) > 999
@@ -193,7 +193,9 @@ const Collection = () => {
               </div>
               <div className="stat">
                 <div className="count">
-                  <h1>{kFormatter(parseFloat(collectionById.floorPrice?.toPrecision(4) || '0'))}</h1>
+                  <h1>
+                    {kFormatter(parseFloat(collectionById.floorPrice?.toPrecision(4) || '0'))} {networkSymbol}
+                  </h1>
                 </div>
                 <div className="label">Floor Price</div>
               </div>
