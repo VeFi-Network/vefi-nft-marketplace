@@ -96,7 +96,7 @@ function Listing({ datasource, acceptanceButtonEnabled, rejectionButtonEnabled, 
               title: 'Creator',
               dataIndex: 'creator',
               key: 'creator',
-              render: (c: string) => <Link href={`/users/${c}?tab=created`}>{formatEthAddress(c, 4)}</Link>
+              render: (c: string) => <Link href={`/users/${c}?tab=2`}>{formatEthAddress(c, 4)}</Link>
             },
             {
               title: 'Date',
