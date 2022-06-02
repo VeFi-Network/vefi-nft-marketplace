@@ -1,7 +1,7 @@
 {
   "97": {
     "appName": "smartchain",
-    "chainRpc": "https://rpc-bsc.bnb48.club/",
+    "chainRpc": "https://speedy-nodes-nyc.moralis.io/794e3cc32b8e273c0fe79c14/bsc/testnet",
     "symbol": "BNB",
     "explorerUrl": "https://testnet.bscscan.com/",
     "name": "Binance Smartchain Testnet"
