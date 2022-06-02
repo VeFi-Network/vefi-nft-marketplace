@@ -253,7 +253,7 @@ export default function SellPopup({ modal, setModal, nft, transition }: Props) {
           price = parseEther(data.price.toString());
         } else {
           const erc20AbiInterface = new Interface(erc20Abi);
-          const functionSigHash = erc20AbiInterface.getSighash('decimals()');
+          const functionSigHash = erc20AbiInterface.getSighash('decimals');
           const decimals = await request(network, {
             method: 'eth_call',
             jsonrpc: '2.0',
