@@ -324,7 +324,7 @@ const CTA = styled.div`
 const ParentContainer = styled.div``;
 
 export default function NFT() {
-  const { slug, liked, isSale, marketId, price, tradeCurrency } = usePageQuery();
+  const { slug, liked, marketId, price, tradeCurrency } = usePageQuery();
   const { account, network, library, chainId, explorerUrl } = useWeb3Context();
   const {
     nftById,
@@ -685,9 +685,9 @@ export default function NFT() {
                     )}
                     {!!account && account === nftById.owner && (
                       <Filled_CTA_Button
-                        disabled={!!isSale || itemOnSale}
+                        disabled={itemOnSale}
                         style={{
-                          background: !!isSale || itemOnSale ? 'grey' : undefined
+                          background: itemOnSale ? 'grey' : undefined
                         }}
                         onClick={(e: any) => {
                           e.stopPropagation();
@@ -698,8 +698,12 @@ export default function NFT() {
                         Sell
                       </Filled_CTA_Button>
                     )}
-                    {!!account && account !== nftById.owner && !!marketId && (
-                      <Filled_CTA_Button disabled={!isSale || !itemOnSale} onClick={buy}>
+                    {!!account && account !== nftById.owner && !!marketId && itemOnSale && (
+                      <Filled_CTA_Button
+                        style={{ background: !itemOnSale ? 'grey' : undefined }}
+                        disabled={!itemOnSale}
+                        onClick={buy}
+                      >
                         Buy
                       </Filled_CTA_Button>
                     )}
