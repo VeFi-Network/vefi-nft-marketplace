@@ -235,7 +235,7 @@ export default function OfferPopup({ modal, setModal, nft, transition, fp }: Pro
 
         message.info('Parsing price');
         const erc20AbiInterface = new Interface(erc20Abi);
-        const functionSigHash = erc20AbiInterface.getSighash('decimals()');
+        const functionSigHash = erc20AbiInterface.getSighash('decimals');
         const decimals = await request(network, {
           method: 'eth_call',
           jsonrpc: '2.0',
@@ -249,7 +249,7 @@ export default function OfferPopup({ modal, setModal, nft, transition, fp }: Pro
 
         const erc20 = new (library as Web3).eth.Contract(erc20Abi as any, WETH[chainId as number]);
         const tokenName = await erc20.methods.name().call();
-        const balanceOfHash = erc20AbiInterface.encodeFunctionData('balanceOf(address)', [account]);
+        const balanceOfHash = erc20AbiInterface.encodeFunctionData('balanceOf', [account]);
 
         const balance = await request(network, {
           method: 'eth_call',
