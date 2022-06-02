@@ -157,7 +157,7 @@ const Market = () => {
                         <Card
                           name={sale.nft?.metadata?.name as string}
                           imageURI={sale.nft?.metadata?.image as string}
-                          owner={sale.nft?.metadata?.owner as string}
+                          owner={sale.nft?.owner as string}
                           linkTo={`/nfts/${sale.nft?.collectionId}:${sale.nft?.tokenId}?isSale=${true}&marketId=${
                             sale.marketId
                           }&price=${sale.price}&tradeCurrency=${sale.currency}`}
