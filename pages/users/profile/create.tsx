@@ -1,6 +1,9 @@
 // @ts-ignore
 import * as emailValidator from 'react-email-validator';
 import { message, Button } from 'antd';
+import { keccak256 } from '@ethersproject/solidity';
+import { id as mHash, hashMessage } from '@ethersproject/hash';
+import type Web3 from 'web3';
 import styled from 'styled-components';
 import Navbar from '../../../components/Navbar';
 // import Button from '../../../components/Button/CTA/Filled';
@@ -142,7 +145,7 @@ const NoItemContainer = styled.div`
 `;
 
 const CreateProfile = () => {
-  const { active, account } = useWeb3Context();
+  const { active, account, library } = useWeb3Context();
   const { loadToken } = useAPIContext();
   const [email, setEmail] = useState<string>('');
   const router = useRouter();
@@ -181,13 +184,17 @@ const CreateProfile = () => {
       setIsLoading(true);
       if (allConditionsSatisfied()) {
         const jsonResponse = await pinJson(accountMetadata);
+        const messageHash = keccak256(['bytes32'], [hashMessage(mHash('sign_up '.concat(account as string)))]);
+        const signature = await (library as Web3).eth.sign(messageHash, account as string);
+
         await createAccount({
           name: accountMetadata.name,
           email,
           metadataURI: jsonResponse.response.itemURI,
-          accountId: account
+          messageHash,
+          signature
         });
-        loadToken(account as string);
+        loadToken(signature, messageHash);
         resetAllFields();
         router.replace('/');
       }

@@ -1,4 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import type Web3 from 'web3';
+import { keccak256 } from '@ethersproject/solidity';
+import { id as mHash, hashMessage } from '@ethersproject/hash';
 import { AccountModel } from '../../api/models/account';
 import { NFTModel } from '../../api/models/nft';
 import {
@@ -105,7 +108,7 @@ type APIContextType = {
   loadUserWatchList: (page?: number) => void;
   loadItemViews: (collectionId: string, tokenId: number) => void;
   loadSuccessfulTradesForCollection: (collectionId: string) => void;
-  loadToken: (accountId: string) => void;
+  loadToken: (signature: string, messageHash: string) => void;
   loadAccountById: (accountId: string) => void;
   logout: () => void;
   error?: {
@@ -146,15 +149,15 @@ export const APIContextProvider = ({ children }: any) => {
   const [successfulTradesForCollection, setSuccessfulTradesForCollection] = useState<number>(0);
   const [token, setToken] = useState<string>('');
   const [accountById, setAccountById] = useState<AccountModel>();
-  const { network, account, active } = useWeb3Context();
+  const { network, account, active, library } = useWeb3Context();
 
   const clearError = () => {
     setError(undefined);
   };
 
-  const loadToken = (accountId: string) => {
+  const loadToken = (signature: string, messageHash: string) => {
     clearError();
-    signToken({ accountId })
+    signToken({ signature, messageHash })
       .then(res => setToken(res.token))
       .catch((error: any) => setError({ point: APIErrorPoint.TOKEN_LOAD, message: error.message }));
   };
@@ -349,7 +352,13 @@ export const APIContextProvider = ({ children }: any) => {
   }, [token]);
 
   useEffect(() => {
-    if (!!account && !!active) loadToken(account);
+    if (!!account && !!active) {
+      (async () => {
+        const messageHash = keccak256(['bytes32'], [hashMessage(mHash('load_token '.concat(account as string)))]);
+        const signature = await (library as Web3).eth.sign(messageHash, account as string);
+        loadToken(signature, messageHash);
+      })();
+    }
   }, [account, active]);
 
   return (
