@@ -2,7 +2,7 @@
 import * as emailValidator from 'react-email-validator';
 import styled from 'styled-components';
 import { keccak256 } from '@ethersproject/solidity';
-import { id as mHash, hashMessage } from '@ethersproject/hash';
+import { id as mHash } from '@ethersproject/hash';
 import type Web3 from 'web3';
 import Navbar from '../../../components/Navbar';
 // import Button from '../../../components/Button/CTA/Filled';
@@ -204,7 +204,7 @@ const UpdateProfile = () => {
           composedMetadata = { ...composedMetadata, name: authenticatedUser?.metadata.name };
         }
 
-        const messageHash = keccak256(['bytes32'], [hashMessage(mHash('update_profile '.concat(account as string)))]);
+        const messageHash = keccak256(['bytes32', 'string', 'address'], [mHash('update_profile '.concat(account as string)), 'update_profile', account]);
         const signature = await (library as Web3).eth.sign(messageHash, account as string);
         const jsonResponse = await pinJson({ ...composedMetadata, email: undefined });
 

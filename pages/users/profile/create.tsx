@@ -2,7 +2,7 @@
 import * as emailValidator from 'react-email-validator';
 import { message, Button } from 'antd';
 import { keccak256 } from '@ethersproject/solidity';
-import { id as mHash, hashMessage } from '@ethersproject/hash';
+import { id as mHash } from '@ethersproject/hash';
 import type Web3 from 'web3';
 import styled from 'styled-components';
 import Navbar from '../../../components/Navbar';
@@ -184,7 +184,7 @@ const CreateProfile = () => {
       setIsLoading(true);
       if (allConditionsSatisfied()) {
         const jsonResponse = await pinJson(accountMetadata);
-        const messageHash = keccak256(['bytes32'], [hashMessage(mHash('sign_up '.concat(account as string)))]);
+        const messageHash = keccak256(['bytes32', 'string', 'address'], [mHash('sign_up '.concat(account as string)), 'sign_up', account]);
         const signature = await (library as Web3).eth.sign(messageHash, account as string);
 
         await createAccount({
