@@ -1,5 +1,5 @@
-// @ts-ignore
 import { formatEthAddress } from 'eth-address';
+// @ts-ignore
 import ethAddress from 'ethereum-address';
 import Image from 'next/image';
 import Link from 'next/link';
