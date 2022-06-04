@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import type Web3 from 'web3';
 import { keccak256 } from '@ethersproject/solidity';
-import { id as mHash, hashMessage } from '@ethersproject/hash';
+import { id as mHash } from '@ethersproject/hash';
 import { AccountModel } from '../../api/models/account';
 import { NFTModel } from '../../api/models/nft';
 import {
@@ -354,7 +354,7 @@ export const APIContextProvider = ({ children }: any) => {
   useEffect(() => {
     if (!!account && !!active) {
       (async () => {
-        const messageHash = keccak256(['bytes32'], [hashMessage(mHash('load_token '.concat(account as string)))]);
+        const messageHash = keccak256(['bytes32', 'string', 'address'], [mHash('load_token '.concat(account as string)), 'load_token', account]);
         const signature = await (library as Web3).eth.sign(messageHash, account as string);
         loadToken(signature, messageHash);
       })();
