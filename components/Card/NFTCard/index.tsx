@@ -1,5 +1,5 @@
-// @ts-ignore
 import { formatEthAddress } from 'eth-address';
+// @ts-ignore
 import ethAddress from 'ethereum-address';
 import Link from 'next/link';
 import React from 'react';
