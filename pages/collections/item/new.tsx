@@ -1,22 +1,23 @@
 // @ts-ignore
+import { message, Spin } from 'antd';
 import ethAddress from 'ethereum-address';
+import Head from 'next/head';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Navbar from '../../../components/Navbar';
-import Filled_CTA_Button from '../../../components/Button/CTA/Filled';
-import { pinFile, pinJson } from '../../../api/ipfs';
-import FileContainer from '../../../components/Collections/FileContainer';
-import DropdownComponent from '../../../components/Collections/Dropdown';
-import { CollectionMetadata, CollectionCategory } from '../../../api/models/collection';
-import { Spin, message } from 'antd';
 import type Web3 from 'web3';
-import MainFooter from '../../../components/Footer';
-import { useWeb3Context } from '../../../contexts/web3';
-import marketPlaceAbi from '../../../assets/abis/Marketplace.json';
+
+import { pinFile, pinJson } from '../../../api/ipfs';
+import { CollectionCategory, CollectionMetadata } from '../../../api/models/collection';
 import { addresses, CONSTANTS } from '../../../assets';
-import { useAPIContext } from '../../../contexts/api';
-import Head from 'next/head';
+import marketPlaceAbi from '../../../assets/abis/Marketplace.json';
+import Filled_CTA_Button from '../../../components/Button/CTA/Filled';
+import DropdownComponent from '../../../components/Collections/Dropdown';
+import FileContainer from '../../../components/Collections/FileContainer';
 import ConnectWallet from '../../../components/ConnectWallet';
+import MainFooter from '../../../components/Footer';
+import Navbar from '../../../components/Navbar';
+import { useAPIContext } from '../../../contexts/api';
+import { useWeb3Context } from '../../../contexts/web3';
 
 type Props = {};
 

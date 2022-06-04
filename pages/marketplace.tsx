@@ -1,17 +1,18 @@
 import { Button } from 'antd';
-import InfiniteScroll from '../components/InfiniteScroll';
-import { FiFilter, FiPlus, FiSearch, FiArrowDown, FiArrowUp, FiList } from 'react-icons/fi';
+import _ from 'lodash';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect, useRef, useState } from 'react';
+import { FiArrowDown, FiArrowUp, FiFilter, FiList, FiPlus, FiSearch } from 'react-icons/fi';
 import styled from 'styled-components';
-import Navbar from '../components/Navbar';
-import { CollectionWrapper, FilterWrapper, MarktePlaceWrapper } from '../styles/Market.styled';
+
 import Card from '../components/Card';
 import MainFooter from '../components/Footer';
+import InfiniteScroll from '../components/InfiniteScroll';
+import Navbar from '../components/Navbar';
 import { useAPIContext } from '../contexts/api/index';
-import { useEffect, useRef, useState } from 'react';
-import _ from 'lodash';
 import { useWeb3Context } from '../contexts/web3';
-import { useRouter } from 'next/router';
-import Head from 'next/head';
+import { CollectionWrapper, FilterWrapper, MarktePlaceWrapper } from '../styles/Market.styled';
 
 const NoItemContainer = styled.div`
   display: flex;

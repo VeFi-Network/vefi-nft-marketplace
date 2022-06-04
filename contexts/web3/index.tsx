@@ -1,11 +1,12 @@
-import React, { createContext, useEffect, useContext, useCallback, useState } from 'react';
 import { formatEther } from '@ethersproject/units';
 import { useWeb3React } from '@web3-react/core';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import type Web3 from 'web3';
-import chains from '../../chains.json';
+
 import request from '../../api/rpc';
+import chains from '../../chains.json';
 
 type Web3ContextType = {
   account?: string | null;

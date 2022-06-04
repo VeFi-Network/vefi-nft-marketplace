@@ -1,18 +1,19 @@
-import React from 'react';
-import PriceTag from '../../public/icons/price-tag.svg';
-import HeroImg from '../../public/icons/hero_image.png';
-import Wallet from '../../public/icons/hero_wallet.png';
-import Bridge from '../../public/icons/bridge.png';
-import Mint from '../../public/icons/mint.png';
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
-import { Container } from '../../styles/hero.styled';
 import Image from 'next/image';
+import React from 'react';
+import { A11y, Navigation, Pagination, Scrollbar } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+import Bridge from '../../public/icons/bridge.png';
+import HeroImg from '../../public/icons/hero_image.png';
+import Wallet from '../../public/icons/hero_wallet.png';
+import Mint from '../../public/icons/mint.png';
+import PriceTag from '../../public/icons/price-tag.svg';
+import { Container } from '../../styles/hero.styled';
 
 function Hero() {
   return (

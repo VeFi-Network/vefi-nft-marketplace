@@ -1,24 +1,25 @@
 // @ts-ignore
+import { message, Spin } from 'antd';
 import ethAddress from 'ethereum-address';
-import React, { useEffect, useState } from 'react';
-import { FaPlus, FaMinus } from 'react-icons/fa';
-import { Spin, message } from 'antd';
-import { v4 as uuid } from 'uuid';
-import styled from 'styled-components';
 import _ from 'lodash';
+import Head from 'next/head';
+import React, { useEffect, useState } from 'react';
+import { FaMinus, FaPlus } from 'react-icons/fa';
+import styled from 'styled-components';
+import { v4 as uuid } from 'uuid';
 import type Web3 from 'web3';
-import Navbar from '../../../../components/Navbar';
-import Filled_CTA_Button from '../../../../components/Button/CTA/Filled';
-import FileContainer from '../../../../components/Collections/FileContainer';
+
 import { pinFile, pinJson } from '../../../../api/ipfs';
 import { NFTLevels, NFTMetadata } from '../../../../api/models/nft';
-import marketPlaceAbi from '../../../../assets/abis/Marketplace.json';
 import { addresses, CONSTANTS } from '../../../../assets';
+import marketPlaceAbi from '../../../../assets/abis/Marketplace.json';
+import Filled_CTA_Button from '../../../../components/Button/CTA/Filled';
+import FileContainer from '../../../../components/Collections/FileContainer';
+import ConnectWallet from '../../../../components/ConnectWallet';
+import MainFooter from '../../../../components/Footer';
+import Navbar from '../../../../components/Navbar';
 import { useWeb3Context } from '../../../../contexts/web3';
 import { usePageQuery } from '../../../../hooks/query';
-import MainFooter from '../../../../components/Footer';
-import Head from 'next/head';
-import ConnectWallet from '../../../../components/ConnectWallet';
 
 type Props = {};
 

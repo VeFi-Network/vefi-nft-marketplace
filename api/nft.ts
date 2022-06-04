@@ -1,10 +1,11 @@
 import axios, { AxiosResponse } from 'axios';
+
 import { NFT_API } from './constants';
-import { NFTModel } from './models/nft';
-import { CollectionModel } from './models/collection';
 import { AccountModel } from './models/account';
-import { SaleModel } from './models/sale';
+import { CollectionModel } from './models/collection';
+import { NFTModel } from './models/nft';
 import { OrderModel } from './models/order';
+import { SaleModel } from './models/sale';
 
 const baseAxios = axios.create({
   baseURL: NFT_API

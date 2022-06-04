@@ -1,11 +1,12 @@
 // @ts-ignore
-import ethAddress from 'ethereum-address';
 import { formatEthAddress } from 'eth-address';
-import styled from 'styled-components';
+import ethAddress from 'ethereum-address';
 import Image from 'next/image';
-import Button from '../Button/Ghost';
 import Link from 'next/link';
+import styled from 'styled-components';
+
 import { useWeb3Context } from '../../contexts/web3';
+import Button from '../Button/Ghost';
 
 type Props = {
   name: string;
