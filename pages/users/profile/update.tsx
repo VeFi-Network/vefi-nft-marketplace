@@ -1,6 +1,9 @@
 // @ts-ignore
 import * as emailValidator from 'react-email-validator';
 import styled from 'styled-components';
+import { keccak256 } from '@ethersproject/solidity';
+import { id as mHash, hashMessage } from '@ethersproject/hash';
+import type Web3 from 'web3';
 import Navbar from '../../../components/Navbar';
 // import Button from '../../../components/Button/CTA/Filled';
 import Image from 'next/image';
@@ -139,7 +142,7 @@ const NoItemContainer = styled.div`
 `;
 
 const UpdateProfile = () => {
-  const { active, account } = useWeb3Context();
+  const { active, account, library } = useWeb3Context();
   const { loadToken, token, authenticatedUser } = useAPIContext();
   const [email, setEmail] = useState<string>('');
   const router = useRouter();
@@ -201,6 +204,8 @@ const UpdateProfile = () => {
           composedMetadata = { ...composedMetadata, name: authenticatedUser?.metadata.name };
         }
 
+        const messageHash = keccak256(['bytes32'], [hashMessage(mHash('update_profile '.concat(account as string)))]);
+        const signature = await (library as Web3).eth.sign(messageHash, account as string);
         const jsonResponse = await pinJson({ ...composedMetadata, email: undefined });
 
         await updateAccount(
@@ -212,7 +217,7 @@ const UpdateProfile = () => {
           },
           token
         );
-        loadToken(account as string);
+        loadToken(signature, messageHash);
         router.replace('/');
       }
       setIsLoading(false);
