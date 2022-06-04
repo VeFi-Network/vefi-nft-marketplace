@@ -1,5 +1,5 @@
-// @ts-ignore
 import { message, Spin } from 'antd';
+// @ts-ignore
 import ethAddress from 'ethereum-address';
 import _ from 'lodash';
 import Head from 'next/head';
