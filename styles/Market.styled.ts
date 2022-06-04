@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 import { CardContainer } from '../components/Card';
 
 export const MarktePlaceWrapper = styled.section`

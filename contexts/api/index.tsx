@@ -1,40 +1,43 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
-import type Web3 from 'web3';
-import { keccak256 } from '@ethersproject/solidity';
+import { arrayify } from '@ethersproject/bytes';
 import { id as mHash } from '@ethersproject/hash';
+import { Web3Provider } from '@ethersproject/providers';
+import { keccak256 } from '@ethersproject/solidity';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import type Web3 from 'web3';
+
 import { AccountModel } from '../../api/models/account';
+import { CollectionModel } from '../../api/models/collection';
 import { NFTModel } from '../../api/models/nft';
+import { OrderModel } from '../../api/models/order';
+import { SaleModel } from '../../api/models/sale';
 import {
-  getNFTsByOwner,
-  getNFTsByCollection,
+  checkIfOnSale,
+  countAllItemsByCollection,
+  countItemViews,
+  countSuccessfulTrades,
+  fetchPriceFromPeriod,
+  getAccountById,
+  getAllCollections,
+  getAllCollectionsByOwner,
+  getAllFavorites,
   getAllNFTsByNetwork,
-  signToken,
+  getAllOngoingSales,
+  getAllOrdersByNFT,
   getAuthenticatedUser,
   getCollectionById,
   getCollectionsByItems,
-  getAllCollections,
-  getNFTByIdAndNetwork,
-  countAllItemsByCollection,
-  getTopSellingCollections,
-  getAllOngoingSales,
-  checkIfOnSale,
-  fetchPriceFromPeriod,
-  getAllFavorites,
-  getAllOrdersByNFT,
-  getNFTsInCollectionByPrice,
-  getTopSellingNFTsInCollection,
-  getNFTsWithOffersInCollection,
-  getAllCollectionsByOwner,
   getFavoriteNFTsOfUser,
+  getNFTByIdAndNetwork,
+  getNFTsByCollection,
+  getNFTsByOwner,
+  getNFTsInCollectionByPrice,
+  getNFTsWithOffersInCollection,
+  getTopSellingCollections,
+  getTopSellingNFTsInCollection,
   getUserWatchList,
-  countItemViews,
-  countSuccessfulTrades,
-  getAccountById
+  signToken
 } from '../../api/nft';
 import { useWeb3Context } from '../web3/index';
-import { CollectionModel } from '../../api/models/collection';
-import { SaleModel } from '../../api/models/sale';
-import { OrderModel } from '../../api/models/order';
 
 export enum APIErrorPoint {
   NFT_BY_ID,
@@ -354,8 +357,13 @@ export const APIContextProvider = ({ children }: any) => {
   useEffect(() => {
     if (!!account && !!active) {
       (async () => {
-        const messageHash = keccak256(['bytes32', 'string', 'address'], [mHash('load_token '.concat(account as string)), 'load_token', account]);
-        const signature = await (library as Web3).eth.sign(messageHash, account as string);
+        const messageHash = keccak256(
+          ['bytes32', 'string', 'address'],
+          [mHash('load_token '.concat(account as string)), 'load_token', account]
+        );
+        const ethersProvider = new Web3Provider((library as Web3).givenProvider);
+        const signer = ethersProvider.getSigner();
+        const signature = await signer.signMessage(arrayify(messageHash));
         loadToken(signature, messageHash);
       })();
     }

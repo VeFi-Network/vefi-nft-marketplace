@@ -1,8 +1,9 @@
-import styled from 'styled-components';
-import { Chart as ChartJs, CategoryScale, LinearScale, LineElement, PointElement } from 'chart.js';
+import { CategoryScale, Chart as ChartJs, LinearScale, LineElement, PointElement } from 'chart.js';
+import { useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { FiTag } from 'react-icons/fi';
-import { useState } from 'react';
+import styled from 'styled-components';
+
 import { Periods } from './period';
 
 ChartJs.register(CategoryScale, LinearScale, LineElement, PointElement);

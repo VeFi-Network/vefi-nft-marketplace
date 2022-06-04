@@ -1,4 +1,4 @@
-import { UserNFTBanner, UserNFTInfo, NFTUserInfo } from '../../../styles/users.styled';
+import { NFTUserInfo, UserNFTBanner, UserNFTInfo } from '../../../styles/users.styled';
 import Avatar from '../Avatar';
 
 type Props = {

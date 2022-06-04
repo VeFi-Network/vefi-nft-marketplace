@@ -1,11 +1,12 @@
 import Image from 'next/image';
-import React from 'react';
-import { FaFacebook, FaGithub, FaTelegram } from 'react-icons/fa';
-import { AiFillTwitterCircle } from 'react-icons/ai';
-import { Container, FootLink, SubDiv1, SubDiv2 } from '../../styles/footer.styled';
 import Link from 'next/link';
+import React from 'react';
+import { AiFillTwitterCircle } from 'react-icons/ai';
+import { FaFacebook, FaGithub, FaTelegram } from 'react-icons/fa';
+
 import { CollectionCategory } from '../../api/models/collection';
 import { useWeb3Context } from '../../contexts/web3';
+import { Container, FootLink, SubDiv1, SubDiv2 } from '../../styles/footer.styled';
 
 function MainFooter() {
   const { active, account } = useWeb3Context();

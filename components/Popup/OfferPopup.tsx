@@ -1,19 +1,20 @@
+import { Interface } from '@ethersproject/abi';
+import { parseEther, parseUnits } from '@ethersproject/units';
+import { Button, message } from 'antd';
 // @ts-ignore
 import ethAddress from 'ethereum-address';
-import React, { useState } from 'react';
-import { message, Button } from 'antd';
-import { Interface } from '@ethersproject/abi';
-import { parseUnits, parseEther } from '@ethersproject/units';
-import Image from 'next/image';
-import styled from 'styled-components';
 import _ from 'lodash';
+import Image from 'next/image';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import type Web3 from 'web3';
-import { addresses, WETH } from '../../assets';
-import { useWeb3Context } from '../../contexts/web3';
-import marketPlaceAbi from '../../assets/abis/Marketplace.json';
-import erc20Abi from '../../assets/abis/ERC20.json';
+
 import request from '../../api/rpc';
+import { addresses, WETH } from '../../assets';
+import erc20Abi from '../../assets/abis/ERC20.json';
+import marketPlaceAbi from '../../assets/abis/Marketplace.json';
 import { CONSTANTS } from '../../assets/index';
+import { useWeb3Context } from '../../contexts/web3';
 
 const MainContainer = styled.div`
   height: max-content;

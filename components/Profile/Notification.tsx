@@ -1,6 +1,6 @@
 import { Menu } from 'antd';
 import { FaChessBoard, FaUserCircle } from 'react-icons/fa';
-import { FiEye, FiBell, FiLogOut, FiSettings, FiUser } from 'react-icons/fi';
+import { FiBell, FiEye, FiLogOut, FiSettings, FiUser } from 'react-icons/fi';
 
 const notification = (
   <Menu

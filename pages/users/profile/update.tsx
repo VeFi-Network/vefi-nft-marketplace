@@ -1,23 +1,26 @@
+import { arrayify } from '@ethersproject/bytes';
+import { id as mHash } from '@ethersproject/hash';
+import { Web3Provider } from '@ethersproject/providers';
+import { keccak256 } from '@ethersproject/solidity';
+import { Button, message } from 'antd';
+import Head from 'next/head';
+// import Button from '../../../components/Button/CTA/Filled';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useCallback, useState } from 'react';
 // @ts-ignore
 import * as emailValidator from 'react-email-validator';
 import styled from 'styled-components';
-import { keccak256 } from '@ethersproject/solidity';
-import { id as mHash } from '@ethersproject/hash';
 import type Web3 from 'web3';
-import Navbar from '../../../components/Navbar';
-// import Button from '../../../components/Button/CTA/Filled';
-import Image from 'next/image';
-import { Button, message } from 'antd';
-import { useRouter } from 'next/router';
-import { useState, useCallback } from 'react';
+
 import { pinJson } from '../../../api/ipfs';
 import { AccountMetadata } from '../../../api/models/account';
 import { updateAccount } from '../../../api/nft';
+import ConnectWallet from '../../../components/ConnectWallet';
+import MainFooter from '../../../components/Footer';
+import Navbar from '../../../components/Navbar';
 import { useAPIContext } from '../../../contexts/api';
 import { useWeb3Context } from '../../../contexts/web3';
-import MainFooter from '../../../components/Footer';
-import Head from 'next/head';
-import ConnectWallet from '../../../components/ConnectWallet';
 
 const RootContainer = styled.div`
   min-width: 100%;
@@ -204,8 +207,13 @@ const UpdateProfile = () => {
           composedMetadata = { ...composedMetadata, name: authenticatedUser?.metadata.name };
         }
 
-        const messageHash = keccak256(['bytes32', 'string', 'address'], [mHash('update_profile '.concat(account as string)), 'update_profile', account]);
-        const signature = await (library as Web3).eth.sign(messageHash, account as string);
+        const messageHash = keccak256(
+          ['bytes32', 'string', 'address'],
+          [mHash('update_account '.concat(account as string)), 'update_account', account]
+        );
+        const ethersProvider = new Web3Provider((library as Web3).givenProvider);
+        const signer = ethersProvider.getSigner();
+        const signature = await signer.signMessage(arrayify(messageHash));
         const jsonResponse = await pinJson({ ...composedMetadata, email: undefined });
 
         await updateAccount(

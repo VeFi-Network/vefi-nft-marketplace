@@ -3,8 +3,9 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { FaArrowRight, FaChevronDown } from 'react-icons/fa';
 import { FiSearch } from 'react-icons/fi';
-import Navbar from '../components/Navbar';
+
 import MainFooter from '../components/Footer';
+import Navbar from '../components/Navbar';
 import {
   BridgeBackground,
   BridgeChainWrapper,

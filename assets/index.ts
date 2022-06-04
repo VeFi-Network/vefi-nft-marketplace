@@ -1,5 +1,5 @@
-import { parseEther } from '@ethersproject/units';
 import { AddressZero } from '@ethersproject/constants';
+import { parseEther } from '@ethersproject/units';
 
 export const addresses: { [key: number]: string } = {
   97: process.env.NEXT_PUBLIC_BSC_MARKETPLACE_ADDRESS as string,

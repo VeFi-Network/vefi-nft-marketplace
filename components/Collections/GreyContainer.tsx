@@ -1,7 +1,8 @@
+import Image from 'next/image';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+
 import Card from '../Card';
-import Image from 'next/image';
 
 const GreyContainerMain = styled.div`
   width: 1248px;

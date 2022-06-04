@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import chains from '../chains.json';
 
 type JsonRpcRequest = {
