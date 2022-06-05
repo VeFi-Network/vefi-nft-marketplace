@@ -325,16 +325,14 @@ const Collection = () => {
                         else return nft;
                       }),
                       nft => (
-                        <>
-                          <div key={nft.tokenId}>
-                            <NFTCard
-                              model={nft}
-                              onClick={() => {
-                                router.push(`/nfts/${collectionById.collectionId}:${nft.tokenId}`);
-                              }}
-                            />
-                          </div>
-                        </>
+                        <div key={nft.tokenId}>
+                          <NFTCard
+                            model={nft}
+                            onClick={() => {
+                              router.push(`/nfts/${collectionById.collectionId}:${nft.tokenId}`);
+                            }}
+                          />
+                        </div>
                       )
                     )}
                     <div ref={scrollBase}></div>

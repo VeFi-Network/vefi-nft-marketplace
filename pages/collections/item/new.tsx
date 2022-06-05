@@ -343,8 +343,9 @@ export default function NewCollection({}: Props) {
       !!collectionMetadata.owner &&
       !!collectionMetadata.category &&
       !!collectionMetadata.symbol &&
-      collectionMetadata.name.length >= 4 &&
-      collectionMetadata.owner.length >= 4 &&
+      collectionMetadata.name.length >= 7 &&
+      ((!ethAddress.isAddress(collectionMetadata.owner) && collectionMetadata.owner.length >= 4) ||
+        ethAddress.isAddress(collectionMetadata.owner)) &&
       collectionMetadata.symbol.length >= 3 &&
       ethAddress.isAddress(paymentReceiver)
     );
@@ -422,7 +423,7 @@ export default function NewCollection({}: Props) {
               View on explorer!
             </a>
           </>,
-          15
+          3
         );
       }
 
@@ -475,6 +476,9 @@ export default function NewCollection({}: Props) {
                   <Heading className="heading">
                     Name<span className="blue">*</span>
                   </Heading>
+                  <div className="text">
+                    Name of this collection. Must contain at least <span className="blue">7</span> characters.
+                  </div>
                   <div className="input-div">
                     <input
                       value={collectionMetadata.name}
@@ -488,6 +492,10 @@ export default function NewCollection({}: Props) {
                   <Heading className="heading">
                     Owner<span className="blue">*</span>
                   </Heading>
+                  <div className="text">
+                    Owner of this collection. Must contain at least <span className="blue">4</span> characters if it is
+                    an ENS name.
+                  </div>
                   <div className="input-div">
                     <input
                       type="text"

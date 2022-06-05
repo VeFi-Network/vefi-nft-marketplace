@@ -7,6 +7,7 @@ import { Button, message } from 'antd';
 import ethAddress from 'ethereum-address';
 import _ from 'lodash';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import type Web3 from 'web3';
@@ -219,6 +220,8 @@ export default function SellPopup({ modal, setModal, nft, transition }: Props) {
     price: 0
   });
 
+  const router = useRouter();
+
   const setProperty = (e: React.ChangeEvent<HTMLInputElement>) =>
     setData(d => ({ ...d, [e.target.name]: e.target.value }));
 
@@ -274,20 +277,22 @@ export default function SellPopup({ modal, setModal, nft, transition }: Props) {
             from: account
           });
         setModal(false);
-        message.success(
-          <>
-            <span style={{ fontSize: 15 }}>NFT successfully sold!</span>{' '}
-            <a
-              style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
-              href={explorerUrl.concat('tx/' + saleResponse.transactionHash)}
-              target="_blank"
-              rel="noreferrer"
-            >
-              View on explorer!
-            </a>
-          </>,
-          15
-        );
+        message
+          .success(
+            <>
+              <span style={{ fontSize: 15 }}>NFT successfully sold!</span>{' '}
+              <a
+                style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
+                href={explorerUrl.concat('tx/' + saleResponse.transactionHash)}
+                target="_blank"
+                rel="noreferrer"
+              >
+                View on explorer!
+              </a>
+            </>,
+            5
+          )
+          .then(() => router.push(`/collections/${nft.collectionId}`));
       }
       resetAllFields();
       setIsLoading(false);
