@@ -223,6 +223,7 @@ export const ChainOptions = styled.li`
       width: 28px !important;
       height: 28px !important;
       object-fit: cover;
+      border-radius: 50px;
     }
   }
   .chain__text {

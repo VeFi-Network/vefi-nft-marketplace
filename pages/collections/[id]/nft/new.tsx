@@ -348,7 +348,8 @@ export default function NewNFT({}: Props) {
     return (
       !!avatarImage &&
       nftMetadata.name.length >= 7 &&
-      nftMetadata.owner.length >= 4 &&
+      ((!ethAddress.isAddress(nftMetadata.owner) && nftMetadata.owner.length >= 4) ||
+        ethAddress.isAddress(nftMetadata.owner)) &&
       nftMetadata.traits.length > 0 &&
       nftMetadata.levels.length > 0 &&
       ethAddress.isAddress(mintFor)
@@ -408,7 +409,7 @@ export default function NewNFT({}: Props) {
               View on explorer!
             </a>
           </>,
-          15
+          3
         );
       }
 
@@ -462,6 +463,10 @@ export default function NewNFT({}: Props) {
                     Name<span className="blue">*</span>
                   </Heading>
 
+                  <div className="text">
+                    Must contain at least <span className="blue">7</span> characters.
+                  </div>
+
                   <div className="input-div">
                     <input
                       type="text"
@@ -477,6 +482,10 @@ export default function NewNFT({}: Props) {
                     Creator<span className="blue">*</span>
                   </Heading>
 
+                  <div className="text">
+                    Must contain at least <span className="blue">4</span> characters if it is an ENS name.
+                  </div>
+
                   <div className="input-div">
                     <input
                       type="text"
@@ -491,6 +500,8 @@ export default function NewNFT({}: Props) {
                   <Heading className="heading">
                     For<span className="blue">*</span>
                   </Heading>
+
+                  <div className="text">Address that this NFT is minted for.</div>
 
                   <div className="input-div">
                     <input

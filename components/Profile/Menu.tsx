@@ -93,14 +93,14 @@ const MenuItem = () => {
         },
         {
           label: (
-            <Link href="#">
+            <Link href="/bridge">
               <a>
                 <div className="listItem">
                   <div className="icon">
                     <FaLink />
                   </div>
                   <div className="text">
-                    Bridge <Tag color="red">Coming soon!</Tag>
+                    Bridge <Tag color="yellow">Beta!</Tag>
                   </div>
                 </div>
               </a>

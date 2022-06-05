@@ -152,7 +152,7 @@ export const APIContextProvider = ({ children }: any) => {
   const [successfulTradesForCollection, setSuccessfulTradesForCollection] = useState<number>(0);
   const [token, setToken] = useState<string>('');
   const [accountById, setAccountById] = useState<AccountModel>();
-  const { network, account, active, library } = useWeb3Context();
+  const { network, account, library } = useWeb3Context();
 
   const clearError = () => {
     setError(undefined);
@@ -355,7 +355,7 @@ export const APIContextProvider = ({ children }: any) => {
   }, [token]);
 
   useEffect(() => {
-    if (!!account && !!active) {
+    if (!!account) {
       (async () => {
         const messageHash = keccak256(
           ['bytes32', 'string', 'address'],
@@ -367,7 +367,7 @@ export const APIContextProvider = ({ children }: any) => {
         loadToken(signature, messageHash);
       })();
     }
-  }, [account, active]);
+  }, [account]);
 
   return (
     <APIContext.Provider

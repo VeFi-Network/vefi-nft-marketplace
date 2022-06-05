@@ -14,4 +14,19 @@ const pwaConfig = withPWA({
   }
 });
 
-module.exports = withPlugins([withTM], pwaConfig);
+module.exports = withPlugins([withTM], {
+  ...pwaConfig,
+  webpack: (config, { isServer }) => {
+    if (!isServer)
+      config.resolve.fallback = {
+        fs: require.resolve('browserify-fs'),
+        stream: require.resolve('stream-browserify'),
+        crypto: require.resolve('crypto-browserify'),
+        querystring: require.resolve('querystring-browser'),
+        http: require.resolve('stream-http'),
+        https: require.resolve('https-browserify'),
+        os: require.resolve('os-browserify')
+      };
+    return config;
+  }
+});
