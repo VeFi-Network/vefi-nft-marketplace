@@ -325,7 +325,7 @@ const CTA = styled.div`
 const ParentContainer = styled.div``;
 
 export default function NFT() {
-  const { slug, liked, marketId, price, tradeCurrency } = usePageQuery();
+  const { slug, liked } = usePageQuery();
   const { account, network, library, chainId, explorerUrl } = useWeb3Context();
   const {
     nftById,
@@ -334,12 +334,14 @@ export default function NFT() {
     loadNFTById,
     itemOnSale,
     checkItemOnSale,
+    currentSaleOfNFT,
     itemPricePerPeriod,
     loadItemPricePerPeriod,
     favorites,
     loadFavorites,
     allNFTOrders,
     loadAllNFTOrders,
+    loadCurrentSaleOfNFT,
     itemViews,
     loadItemViews,
     token
@@ -377,23 +379,23 @@ export default function NFT() {
 
   const buy = async () => {
     try {
-      if (!!tradeCurrency && !!price && !!marketId) {
+      if (itemOnSale && !!currentSaleOfNFT) {
         setIsLoading(true);
         let amount: ReturnType<typeof parseEther | typeof parseUnits>;
 
         setTip('Parsing amount');
-        if (tradeCurrency !== AddressZero) {
+        if (currentSaleOfNFT.currency !== AddressZero) {
           const erc20AbiInterface = new Interface(erc20Abi);
           const functionHash = erc20AbiInterface.getSighash('decimals()');
           const decimalResponse = await request(network, {
             method: 'eth_call',
             id: 1,
-            params: [{ to: tradeCurrency as string, data: functionHash }, 'latest'],
+            params: [{ to: currentSaleOfNFT.currency, data: functionHash }, 'latest'],
             jsonrpc: '2.0'
           });
-          amount = parseUnits(price as string, decimalResponse);
+          amount = parseUnits(currentSaleOfNFT?.price.toString() as string, decimalResponse);
 
-          const erc20Contract = new (library as Web3).eth.Contract(erc20Abi as any, tradeCurrency as string);
+          const erc20Contract = new (library as Web3).eth.Contract(erc20Abi as any, currentSaleOfNFT.currency);
 
           setTip('Requesting approval');
 
@@ -401,7 +403,7 @@ export default function NFT() {
             from: account
           });
         } else {
-          amount = parseEther(price as string);
+          amount = parseEther(currentSaleOfNFT.price.toString());
         }
 
         const marketPlaceContract = new (library as Web3).eth.Contract(
@@ -412,10 +414,10 @@ export default function NFT() {
         setTip('Now purchasing item');
 
         const purchaseResponse = await marketPlaceContract.methods
-          .buyItem(marketId, tradeCurrency !== AddressZero ? amount : 0)
+          .buyItem(currentSaleOfNFT?.marketId, currentSaleOfNFT?.currency !== AddressZero ? amount : 0)
           .send({
             from: account,
-            value: tradeCurrency === AddressZero ? amount : undefined
+            value: currentSaleOfNFT?.currency === AddressZero ? amount : undefined
           });
 
         message
@@ -533,6 +535,7 @@ export default function NFT() {
       checkItemOnSale(splitSlug[0], parseInt(splitSlug[1]));
       loadFavorites(splitSlug[0], parseInt(splitSlug[1]));
       loadAllNFTOrders(splitSlug[0], parseInt(splitSlug[1]));
+      loadCurrentSaleOfNFT(splitSlug[0], parseInt(splitSlug[1]));
       loadItemViews(splitSlug[0], parseInt(splitSlug[1]));
 
       if (token) {
@@ -699,7 +702,7 @@ export default function NFT() {
                         Sell
                       </Filled_CTA_Button>
                     )}
-                    {!!account && account !== nftById.owner && !!marketId && itemOnSale && (
+                    {!!account && account !== nftById.owner && itemOnSale && (
                       <Filled_CTA_Button
                         style={{ background: !itemOnSale ? 'grey' : undefined }}
                         disabled={!itemOnSale}

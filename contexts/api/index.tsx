@@ -26,6 +26,7 @@ import {
   getAuthenticatedUser,
   getCollectionById,
   getCollectionsByItems,
+  getCurrentSaleOfNFT,
   getFavoriteNFTsOfUser,
   getNFTByIdAndNetwork,
   getNFTsByCollection,
@@ -59,6 +60,7 @@ export enum APIErrorPoint {
   USER_WATCHLIST,
   ITEM_VIEWS,
   SUCCESSFUL_TRADES_COUNT,
+  NFT_CURRENT_SALE,
   ACCOUNT_BY_ID
 }
 
@@ -78,6 +80,7 @@ type APIContextType = {
   nftsInCollectionByOffers: Array<NFTModel>;
   collectionsByAssets: Array<CollectionModel>;
   allOngoingSales: Array<SaleModel>;
+  currentSaleOfNFT?: SaleModel;
   collectionById: CollectionModel;
   itemsInCollection: number;
   isUserAuthenticated: boolean;
@@ -113,6 +116,7 @@ type APIContextType = {
   loadSuccessfulTradesForCollection: (collectionId: string) => void;
   loadToken: (signature: string, messageHash: string) => void;
   loadAccountById: (accountId: string) => void;
+  loadCurrentSaleOfNFT: (collectionId: string, tokenId: number) => void;
   logout: () => void;
   error?: {
     point: APIErrorPoint;
@@ -151,7 +155,9 @@ export const APIContextProvider = ({ children }: any) => {
   const [itemViews, setItemViews] = useState<number>(0);
   const [successfulTradesForCollection, setSuccessfulTradesForCollection] = useState<number>(0);
   const [token, setToken] = useState<string>('');
+  const [currentSaleOfNFT, setCurrentSaleOfNFT] = useState<SaleModel>();
   const [accountById, setAccountById] = useState<AccountModel>();
+
   const { network, account, library } = useWeb3Context();
 
   const clearError = () => {
@@ -327,6 +333,13 @@ export const APIContextProvider = ({ children }: any) => {
       .catch((error: any) => setError({ point: APIErrorPoint.SUCCESSFUL_TRADES_COUNT, message: error.message }));
   };
 
+  const loadCurrentSaleOfNFT = (collectionId: string, tokenId: number) => {
+    clearError();
+    getCurrentSaleOfNFT(network, collectionId, tokenId)
+      .then(setCurrentSaleOfNFT)
+      .catch((error: any) => setError({ point: APIErrorPoint.NFT_CURRENT_SALE, message: error.message }));
+  };
+
   const loadAccountById = (accountId: string) => {
     clearError();
     getAccountById(accountId)
@@ -390,6 +403,7 @@ export const APIContextProvider = ({ children }: any) => {
         itemsInCollection,
         nftsInCollectionByPrice,
         allOngoingSales,
+        currentSaleOfNFT,
         favorites,
         favoriteNFTsOfUser,
         allNFTOrders,
@@ -414,6 +428,7 @@ export const APIContextProvider = ({ children }: any) => {
         loadFavorites,
         loadFavoriteNFTsOfUser,
         loadSuccessfulTradesForCollection,
+        loadCurrentSaleOfNFT,
         loadToken,
         loadAccountById,
         checkItemOnSale,

@@ -332,3 +332,16 @@ export function countSuccessfulTrades(network: string, collectionId: string): Pr
       .catch(reject);
   });
 }
+
+export function getCurrentSaleOfNFT(
+  network: string,
+  collectionId: string,
+  tokenId: number
+): Promise<SaleModel | undefined> {
+  return new Promise((resolve, reject) => {
+    baseAxios
+      .get(`/api/sale/${network}/${collectionId}/${tokenId}/getCurrentSale`)
+      .then(res => handleResponse(res, resolve, reject))
+      .catch(reject);
+  });
+}

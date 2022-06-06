@@ -112,6 +112,10 @@ const ParentExploreAndData = styled.div`
     color: #5c95ff;
   }
 
+  .red {
+    color: #ff0000;
+  }
+
   .heading {
     font-family: 'Rubik';
     font-style: normal;
@@ -447,6 +451,10 @@ export default function NewNFT({}: Props) {
               <>
                 <div className="container__wrapper">
                   <div className="title">Mint your NFT.</div>
+                  <div className="text">
+                    <span className="red">Warning:</span> Ensure your asset is being minted in the appropriate
+                    collection as the Vefi Ecosystem would not be responsible for any loss that occurs thereafter.
+                  </div>
 
                   <Heading top={'31px'}>
                     Avatar <span className="blue">*</span>
