@@ -11,11 +11,7 @@ const pwaConfig = withPWA({
     skipWaiting: true,
     disable: process.env.NODE_ENV === 'development',
     runtimeCaching
-  }
-});
-
-module.exports = withPlugins([withTM], {
-  ...pwaConfig,
+  },
   webpack: (config, { isServer }) => {
     if (!isServer)
       config.resolve.fallback = {
@@ -30,3 +26,5 @@ module.exports = withPlugins([withTM], {
     return config;
   }
 });
+
+module.exports = withPlugins([withTM], pwaConfig);
