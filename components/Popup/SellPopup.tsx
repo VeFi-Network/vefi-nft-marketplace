@@ -290,7 +290,7 @@ export default function SellPopup({ modal, setModal, nft, transition }: Props) {
                 View on explorer!
               </a>
             </>,
-            5
+            3
           )
           .then(() => router.push(`/collections/${nft.collectionId}`));
       }
