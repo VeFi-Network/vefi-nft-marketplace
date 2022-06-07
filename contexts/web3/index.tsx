@@ -78,16 +78,18 @@ export const Web3ContextProvider = ({ children }: any) => {
   useEffect(() => {
     injectedConnector.isAuthorized().then(isAuth => {
       if (isAuth) {
-        activate(injectedConnector, undefined, true).then(() => {
-          setTried(true);
-          setTimeout(() => {
-            if (!!chainId) {
-              setNetwork(chains[chainId?.toString() as keyof typeof chains].appName);
-              setExplorerUrl(chains[chainId?.toString() as keyof typeof chains].explorerUrl);
-              setNetworkSymbol(chains[chainId?.toString() as keyof typeof chains].symbol);
-            }
-          }, 500);
-        });
+        activate(injectedConnector, setError, true)
+          .then(() => {
+            setTried(true);
+            setTimeout(() => {
+              if (!!chainId) {
+                setNetwork(chains[chainId?.toString() as keyof typeof chains].appName);
+                setExplorerUrl(chains[chainId?.toString() as keyof typeof chains].explorerUrl);
+                setNetworkSymbol(chains[chainId?.toString() as keyof typeof chains].symbol);
+              }
+            }, 500);
+          })
+          .catch(setError);
       } else {
         setTried(true);
       }
