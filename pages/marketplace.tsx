@@ -10,7 +10,7 @@ import Card from '../components/Card';
 import MainFooter from '../components/Footer';
 import InfiniteScroll from '../components/InfiniteScroll';
 import Navbar from '../components/Navbar';
-import { useAPIContext } from '../contexts/api/index';
+import { useAPIContext } from '../contexts/api';
 import { useWeb3Context } from '../contexts/web3';
 import { CollectionWrapper, FilterWrapper, MarktePlaceWrapper } from '../styles/Market.styled';
 

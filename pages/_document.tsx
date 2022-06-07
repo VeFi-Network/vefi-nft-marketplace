@@ -44,7 +44,7 @@ export default class CustomDocument extends Document {
             content="The Vefi NFT marketplace is a product of the Vefi Ecosystem that allows the creation and the trading of non-fungible assets on various chains."
           />
           <meta name="robots" content="index, follow" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <meta
             name="keywords"
             content="nft, vefi, multi-chain nft marketplace, xp.network, vefi nft marketplace, earn money from owning collections"

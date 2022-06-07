@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react';
 import { FaArrowRight, FaChevronDown } from 'react-icons/fa';
 import { FiArrowDown, FiSearch } from 'react-icons/fi';
 import { useMoralisWeb3Api } from 'react-moralis';
-import Web3 from 'web3';
+import type Web3 from 'web3';
 import { AppConfigs, Chain, ChainFactory, ChainFactoryConfigs } from 'xp.network';
 
 import chains from '../chains.json';

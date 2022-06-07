@@ -1,4 +1,5 @@
-import { Button } from 'antd';
+import '../scripts/contextmenudisabler';
+
 import _ from 'lodash';
 import Head from 'next/head';
 import Image from 'next/image';
