@@ -18,6 +18,9 @@ import { useRouter } from 'next/router';
 import { CollectionCategory, CollectionCategoryImages, CollectionModel } from '../api/models/collection';
 import { useWeb3Context } from '../contexts/web3';
 import Head from 'next/head';
+import Link from 'next/link';
+import { FiChevronsRight } from 'react-icons/fi';
+import Waitlist from '../components/Waitlist';
 
 const MainContainer = styled.div`
   display: flex;
@@ -216,6 +219,27 @@ export const NFTContainer = styled.div`
   margin-top: 80px;
   border: 1px solid #383838;
   transition: all 0.3s linear;
+
+  .see__more {
+    text-align: right;
+    display: none;
+    justify-content: right;
+    width: 100%;
+    a {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      .see__more__icon {
+        margin-top: 5px !important;
+      }
+      :hover {
+        text-decoration: underline;
+        color: rgba(255, 255, 255, 1);
+      }
+    }
+  }
   @media screen and (max-width: 769px) {
     width: 95%;
   }
@@ -227,6 +251,12 @@ export const NFTContainer = styled.div`
       margin-top: 40px;
       padding-bottom: 20px;
       transition: all 0.3s linear;
+
+      .see__more {
+        display: flex;
+        margin-top: 20px;
+        margin-bottom: -20px;
+      }
     }
   }
 `;
@@ -563,10 +593,18 @@ export default function Homepage() {
                         )
                       )}
                     </div>
+                    <div className="see__more">
+                      <Link href="/collections">
+                        <a>
+                          See more <FiChevronsRight className="see__more__icon" />
+                        </a>
+                      </Link>
+                    </div>
                   </NFTSubCont>
                 </NFTContainer>
               )}
             </ParentNFTCont>
+            <Waitlist />
             <Category>
               <div className="category__container">
                 <div className="category__heading">
