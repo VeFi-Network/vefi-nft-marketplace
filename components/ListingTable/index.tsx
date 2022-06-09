@@ -1,8 +1,9 @@
-import { formatEthAddress } from 'eth-address';
-import styled from 'styled-components';
 import { Table } from 'antd';
+import { formatEthAddress } from 'eth-address';
 import Link from 'next/link';
 import { FiList } from 'react-icons/fi';
+import styled from 'styled-components';
+
 import { OrderModel, OrderStatus } from '../../api/models/order';
 import Filled_CTA_Button from '../Button/CTA/Filled';
 
@@ -96,7 +97,7 @@ function Listing({ datasource, acceptanceButtonEnabled, rejectionButtonEnabled, 
               title: 'Creator',
               dataIndex: 'creator',
               key: 'creator',
-              render: (c: string) => <Link href={`/users/${c}?tab=created`}>{formatEthAddress(c, 4)}</Link>
+              render: (c: string) => <Link href={`/users/${c}?tab=2`}>{formatEthAddress(c, 4)}</Link>
             },
             {
               title: 'Date',

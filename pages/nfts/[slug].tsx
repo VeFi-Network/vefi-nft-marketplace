@@ -1,32 +1,33 @@
-import { Spin, Tag, message } from 'antd';
-import Navbar from '../../components/Navbar';
-import styled from 'styled-components';
 import { Interface } from '@ethersproject/abi';
-import { parseEther, parseUnits } from '@ethersproject/units';
 import { AddressZero } from '@ethersproject/constants';
-import type Web3 from 'web3';
-import Image from 'next/image';
+import { parseEther, parseUnits } from '@ethersproject/units';
+import { message, Spin, Tag } from 'antd';
 import _ from 'lodash';
-import Filled_CTA_Button from '../../components/Button/CTA/Filled';
-import Listing from '../../components/ListingTable';
-import PriceChart from '../../components/PriceChart';
-import { usePageQuery } from '../../hooks/query';
-import { useAPIContext } from '../../contexts/api';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { FiEye, FiHeart, FiInfo, FiLink, FiTag } from 'react-icons/fi';
 import { FaHeart } from 'react-icons/fa';
-import SellPopup from '../../components/Popup/SellPopup';
-import OfferPopup from '../../components/Popup/OfferPopup';
-import { useWeb3Context } from '../../contexts/web3';
-import { Periods } from '../../components/PriceChart/period';
+import { FiEye, FiHeart, FiInfo, FiLink, FiTag } from 'react-icons/fi';
+import styled from 'styled-components';
+import type Web3 from 'web3';
+
 import { addToFavorites, removeFromFavorites, viewItem } from '../../api/nft';
-import marketPlaceAbi from '../../assets/abis/Marketplace.json';
+import request from '../../api/rpc';
+import { addresses, CONSTANTS } from '../../assets';
 import deployableCollectionAbi from '../../assets/abis/DeployableCollection.json';
 import erc20Abi from '../../assets/abis/ERC20.json';
-import { CONSTANTS, addresses } from '../../assets';
-import { useRouter } from 'next/router';
-import request from '../../api/rpc';
+import marketPlaceAbi from '../../assets/abis/Marketplace.json';
+import Filled_CTA_Button from '../../components/Button/CTA/Filled';
 import MainFooter from '../../components/Footer';
+import Listing from '../../components/ListingTable';
+import Navbar from '../../components/Navbar';
+import OfferPopup from '../../components/Popup/OfferPopup';
+import SellPopup from '../../components/Popup/SellPopup';
+import PriceChart from '../../components/PriceChart';
+import { Periods } from '../../components/PriceChart/period';
+import { useAPIContext } from '../../contexts/api';
+import { useWeb3Context } from '../../contexts/web3';
+import { usePageQuery } from '../../hooks/query';
 
 const RootContainer = styled.div`
   width: 100%;
@@ -324,7 +325,7 @@ const CTA = styled.div`
 const ParentContainer = styled.div``;
 
 export default function NFT() {
-  const { slug, liked, isSale, marketId, price, tradeCurrency } = usePageQuery();
+  const { slug, liked } = usePageQuery();
   const { account, network, library, chainId, explorerUrl } = useWeb3Context();
   const {
     nftById,
@@ -333,12 +334,14 @@ export default function NFT() {
     loadNFTById,
     itemOnSale,
     checkItemOnSale,
+    currentSaleOfNFT,
     itemPricePerPeriod,
     loadItemPricePerPeriod,
     favorites,
     loadFavorites,
     allNFTOrders,
     loadAllNFTOrders,
+    loadCurrentSaleOfNFT,
     itemViews,
     loadItemViews,
     token
@@ -376,23 +379,31 @@ export default function NFT() {
 
   const buy = async () => {
     try {
-      if (!!tradeCurrency && !!price && !!marketId) {
+      if (itemOnSale && !!currentSaleOfNFT) {
         setIsLoading(true);
         let amount: ReturnType<typeof parseEther | typeof parseUnits>;
 
         setTip('Parsing amount');
-        if (tradeCurrency !== AddressZero) {
+        if (currentSaleOfNFT.currency !== AddressZero) {
           const erc20AbiInterface = new Interface(erc20Abi);
           const functionHash = erc20AbiInterface.getSighash('decimals()');
           const decimalResponse = await request(network, {
             method: 'eth_call',
             id: 1,
-            params: [{ to: tradeCurrency as string, data: functionHash }, 'latest'],
+            params: [{ to: currentSaleOfNFT.currency, data: functionHash }, 'latest'],
             jsonrpc: '2.0'
           });
-          amount = parseUnits(price as string, decimalResponse);
+          amount = parseUnits(currentSaleOfNFT?.price.toString() as string, decimalResponse);
+
+          const erc20Contract = new (library as Web3).eth.Contract(erc20Abi as any, currentSaleOfNFT.currency);
+
+          setTip('Requesting approval');
+
+          await erc20Contract.methods.approve(addresses[chainId as number], amount.toHexString()).send({
+            from: account
+          });
         } else {
-          amount = parseEther(price as string);
+          amount = parseEther(currentSaleOfNFT.price.toString());
         }
 
         const marketPlaceContract = new (library as Web3).eth.Contract(
@@ -403,10 +414,10 @@ export default function NFT() {
         setTip('Now purchasing item');
 
         const purchaseResponse = await marketPlaceContract.methods
-          .buyItem(marketId, tradeCurrency !== AddressZero ? amount : 0)
+          .buyItem(currentSaleOfNFT?.marketId, currentSaleOfNFT?.currency !== AddressZero ? amount : 0)
           .send({
             from: account,
-            value: tradeCurrency === AddressZero ? amount : undefined
+            value: currentSaleOfNFT?.currency === AddressZero ? amount : undefined
           });
 
         message
@@ -524,6 +535,7 @@ export default function NFT() {
       checkItemOnSale(splitSlug[0], parseInt(splitSlug[1]));
       loadFavorites(splitSlug[0], parseInt(splitSlug[1]));
       loadAllNFTOrders(splitSlug[0], parseInt(splitSlug[1]));
+      loadCurrentSaleOfNFT(splitSlug[0], parseInt(splitSlug[1]));
       loadItemViews(splitSlug[0], parseInt(splitSlug[1]));
 
       if (token) {
@@ -677,9 +689,9 @@ export default function NFT() {
                     )}
                     {!!account && account === nftById.owner && (
                       <Filled_CTA_Button
-                        disabled={!!isSale || itemOnSale}
+                        disabled={itemOnSale}
                         style={{
-                          background: !!isSale || itemOnSale ? 'grey' : undefined
+                          background: itemOnSale ? 'grey' : undefined
                         }}
                         onClick={(e: any) => {
                           e.stopPropagation();
@@ -690,8 +702,12 @@ export default function NFT() {
                         Sell
                       </Filled_CTA_Button>
                     )}
-                    {!!account && account !== nftById.owner && !!marketId && (
-                      <Filled_CTA_Button disabled={!isSale || !itemOnSale} onClick={buy}>
+                    {!!account && account !== nftById.owner && itemOnSale && (
+                      <Filled_CTA_Button
+                        style={{ background: !itemOnSale ? 'grey' : undefined }}
+                        disabled={!itemOnSale}
+                        onClick={buy}
+                      >
                         Buy
                       </Filled_CTA_Button>
                     )}
@@ -715,11 +731,17 @@ export default function NFT() {
             {/* <ColoredBackground></ColoredBackground> */}
           </Spin>
         </ProfileContainer>
+
         <MainFooter />
       </RootContainer>
-
       <SellPopup transition={transition} nft={nftById} modal={sellModal} setModal={setSellModal} />
-      <OfferPopup transition={transition} nft={nftById} modal={offerModal} setModal={setOfferModal} />
+      <OfferPopup
+        fp={collectionById.floorPrice || 0}
+        transition={transition}
+        nft={nftById}
+        modal={offerModal}
+        setModal={setOfferModal}
+      />
     </ParentContainer>
   );
 }

@@ -1,11 +1,12 @@
-import React, { createContext, useEffect, useContext, useCallback, useState } from 'react';
 import { formatEther } from '@ethersproject/units';
 import { useWeb3React } from '@web3-react/core';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import type Web3 from 'web3';
-import chains from '../../chains.json';
+
 import request from '../../api/rpc';
+import chains from '../../chains.json';
 
 type Web3ContextType = {
   account?: string | null;
@@ -25,13 +26,18 @@ type Web3ContextType = {
 const Web3Context = createContext<Web3ContextType>({} as Web3ContextType);
 
 const injectedConnector = new InjectedConnector({
-  supportedChainIds: [97, 56, 32520, 64668, 80001, 4]
+  supportedChainIds: [97, 80001, 4]
 });
 
 const walletConnectConnector = new WalletConnectConnector({
   qrcode: true,
   bridge: 'https://bridge.walletconnect.org',
-  supportedChainIds: [97, 56, 32520, 64668, 80001, 4]
+  supportedChainIds: [97, 80001, 4],
+  rpc: {
+    97: chains[97].chainRpc,
+    80001: chains[80001].chainRpc,
+    4: chains[4].chainRpc
+  }
 });
 
 export const Web3ContextProvider = ({ children }: any) => {
@@ -42,7 +48,7 @@ export const Web3ContextProvider = ({ children }: any) => {
   const [tried, setTried] = useState<boolean>(false);
   const [balance, setBalance] = useState<string>('0');
 
-  const fetchBalance = useCallback(() => {
+  const fetchBalance = () => {
     try {
       request(network, { id: 1, jsonrpc: '2.0', method: 'eth_getBalance', params: [account, 'latest'] })
         .then(formatEther)
@@ -51,23 +57,19 @@ export const Web3ContextProvider = ({ children }: any) => {
     } catch (error: any) {
       setError(error);
     }
-  }, [account, network]);
+  };
 
   const connectMetamask = useCallback(() => {
-    if (!active) {
-      activate(injectedConnector, undefined, true).then(() => {
-        console.log('Metamask connected!');
-      });
-    }
-  }, [active]);
+    activate(injectedConnector, undefined, true).then(() => {
+      console.log('Metamask connected!');
+    });
+  }, []);
 
   const connectWalletConnect = useCallback(() => {
-    if (!active) {
-      activate(walletConnectConnector, undefined, true).then(() => {
-        console.log('Walletconnect connected');
-      });
-    }
-  }, [active]);
+    activate(walletConnectConnector, undefined, true).then(() => {
+      console.log('Walletconnect connected');
+    });
+  }, []);
 
   const disconnectWallet = useCallback(() => {
     if (active) deactivate();
@@ -76,9 +78,18 @@ export const Web3ContextProvider = ({ children }: any) => {
   useEffect(() => {
     injectedConnector.isAuthorized().then(isAuth => {
       if (isAuth) {
-        activate(injectedConnector, undefined, true).then(() => {
-          setTried(true);
-        });
+        activate(injectedConnector, setError, true)
+          .then(() => {
+            setTried(true);
+            setTimeout(() => {
+              if (!!chainId) {
+                setNetwork(chains[chainId?.toString() as keyof typeof chains].appName);
+                setExplorerUrl(chains[chainId?.toString() as keyof typeof chains].explorerUrl);
+                setNetworkSymbol(chains[chainId?.toString() as keyof typeof chains].symbol);
+              }
+            }, 500);
+          })
+          .catch(setError);
       } else {
         setTried(true);
       }
@@ -92,7 +103,7 @@ export const Web3ContextProvider = ({ children }: any) => {
   }, [tried, active]);
 
   useEffect(() => {
-    if (!!chainId && !!active) {
+    if (!!chainId && active) {
       setNetwork(chains[chainId.toString() as keyof typeof chains].appName);
       setExplorerUrl(chains[chainId.toString() as keyof typeof chains].explorerUrl);
       setNetworkSymbol(chains[chainId.toString() as keyof typeof chains].symbol);
@@ -100,10 +111,12 @@ export const Web3ContextProvider = ({ children }: any) => {
   }, [chainId, active]);
 
   useEffect(() => {
-    if (!!account && !!network) {
+    if (active && !!account && !!network) {
       fetchBalance();
+    } else {
+      setBalance('0');
     }
-  }, [account, network]);
+  }, [active, network, account]);
 
   return (
     <Web3Context.Provider

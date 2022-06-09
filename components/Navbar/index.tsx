@@ -1,14 +1,15 @@
-import Image from 'next/image';
-import styled from 'styled-components';
+import { Alert, Button, Drawer, Dropdown, Tooltip } from 'antd';
 import * as ethAddress from 'eth-address';
-import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { Button, Drawer, Dropdown, Tooltip, Alert } from 'antd';
+import { useState } from 'react';
+import { FaEnvelope, FaWallet } from 'react-icons/fa';
 import { FiChevronDown, FiMoreHorizontal, FiPlus, FiUser } from 'react-icons/fi';
-import { FaWallet, FaEnvelope } from 'react-icons/fa';
-import Menu from '../Profile/Menu';
-import { useWeb3Context } from '../../contexts/web3';
+import styled from 'styled-components';
+
 import { useAPIContext } from '../../contexts/api';
+import { useWeb3Context } from '../../contexts/web3';
+import Menu from '../Profile/Menu';
 
 const chainIcons = {
   97: '/icons/binance.svg',
@@ -73,7 +74,7 @@ const NavLinks = styled.div`
       transform: scale(1.1);
     }
   }
-  @media screen and (max-width: 320px) {
+  @media screen and (max-width: 760px) {
     .x-mobile {
       display: none;
     }
@@ -167,7 +168,11 @@ const Navbar = () => {
                 <UserWallet onClick={() => setVisible(!visible)}>
                   <div className="wallet_container">
                     <div className="wallet_icon">
-                      <Image src={chainIcons[chainId as keyof typeof chainIcons]} width={15} height={15} />
+                      <Image
+                        src={chainIcons[chainId as keyof typeof chainIcons] || '/icons/eth.svg'}
+                        width={15}
+                        height={15}
+                      />
                     </div>
                     <div>
                       {!!authenticatedUser
@@ -190,7 +195,12 @@ const Navbar = () => {
               <div className="wallet__header">
                 <div className="wallet__setting">
                   <div className="wallet__icon">
-                    <Image src={chainIcons[chainId as keyof typeof chainIcons]} width={20} height={20} alt="wallet" />
+                    <Image
+                      src={chainIcons[chainId as keyof typeof chainIcons] || '/icons/eth.svg'}
+                      width={20}
+                      height={20}
+                      alt="wallet"
+                    />
                   </div>
                   <div className="wallet__setting__title">
                     <Dropdown overlay={<Menu />} trigger={['click']}>
@@ -203,7 +213,12 @@ const Navbar = () => {
                 </div>
                 <div className="wallet__connected__account">
                   <div className="chain__logo">
-                    <Image src={chainIcons[chainId as keyof typeof chainIcons]} width={20} height={20} alt="wallet" />
+                    <Image
+                      src={chainIcons[chainId as keyof typeof chainIcons] || '/icons/eth.svg'}
+                      width={20}
+                      height={20}
+                      alt="wallet"
+                    />
                   </div>
                   <div className="chain__id">
                     <span>
@@ -236,7 +251,7 @@ const Navbar = () => {
                     <div className="account__balance__info">
                       <div className="wallet__account__logo">
                         <Image
-                          src={chainIcons[chainId as keyof typeof chainIcons]}
+                          src={chainIcons[chainId as keyof typeof chainIcons] || '/icons/eth.svg'}
                           width={20}
                           height={20}
                           alt="wallet"
@@ -244,7 +259,7 @@ const Navbar = () => {
                       </div>
                       <div className="wallet__account__info">
                         <div className="chain__name">{networkSymbol}</div>
-                        <div className="source__account">Vefi wallet</div>
+                        <div className="source__account">USD</div>
                       </div>
                     </div>
                     <div className="account__balance__info__right">
@@ -261,7 +276,7 @@ const Navbar = () => {
                       </div>
                       <div className="wallet__account__info">
                         <div className="chain__name">VEF</div>
-                        <div className="source__account">Vefi wallet</div>
+                        <div className="source__account">USD</div>
                       </div>
                     </div>
                     <div className="account__balance__info__right">

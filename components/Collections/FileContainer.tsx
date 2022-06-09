@@ -1,5 +1,5 @@
-import React from 'react';
 import Image from 'next/image';
+import React from 'react';
 import styled from 'styled-components';
 
 type Props = {
@@ -20,7 +20,9 @@ const DottedLineDivItem = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
-
+  @media screen and (max-width: 760px) {
+    width: 100%;
+  }
   .file-area {
     border: 1px solid red;
     position: absolute;

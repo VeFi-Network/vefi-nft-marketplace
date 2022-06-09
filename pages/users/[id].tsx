@@ -1,32 +1,34 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { id as hashId } from '@ethersproject/hash';
 import { hexStripZeros, hexZeroPad } from '@ethersproject/bytes';
-import styled from 'styled-components';
-import { Table, message } from 'antd';
-import { FaExchangeAlt, FaListAlt, FaQuestion, FaRegUser, FaUserEdit } from 'react-icons/fa';
-import { FiBarChart, FiGrid, FiHeart, FiEye, FiUserPlus, FiThumbsUp } from 'react-icons/fi';
+import { AddressZero } from '@ethersproject/constants';
+import { id as hashId } from '@ethersproject/hash';
+import { message, Table } from 'antd';
+import { formatEthAddress } from 'eth-address';
 import _ from 'lodash';
-import InfiniteScroll from '../../components/InfiniteScroll';
+import Head from 'next/head';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React, { useEffect, useRef, useState } from 'react';
+import { FaExchangeAlt, FaListAlt, FaQuestion, FaRegUser, FaUserEdit } from 'react-icons/fa';
+import { FiBarChart, FiEye, FiGrid, FiHeart, FiThumbsUp, FiUserPlus } from 'react-icons/fi';
+import styled from 'styled-components';
+
+import { NFTModel } from '../../api/models/nft';
+import request from '../../api/rpc';
+import { addresses } from '../../assets';
+import FilledButton from '../../components/Button/CTA/Filled';
+import Button from '../../components/Button/Ghost';
 import Card from '../../components/Card';
 import NFTCard from '../../components/Card/NFTCard';
 import FilterProperty from '../../components/Filter';
 import FIlterBy from '../../components/Filter/FIlterBy';
+import MainFooter from '../../components/Footer';
+import InfiniteScroll from '../../components/InfiniteScroll';
 import Navbar from '../../components/Navbar';
 import UserBanner from '../../components/User/Banner';
-import { NFTCollection, NFTUserCollectionInfo, UsersWrapper, ButtonContainer } from '../../styles/users.styled';
-import Link from 'next/link';
-import Button from '../../components/Button/Ghost';
-import FilledButton from '../../components/Button/CTA/Filled';
 import { useAPIContext } from '../../contexts/api';
-import { usePageQuery } from '../../hooks';
 import { useWeb3Context } from '../../contexts/web3';
-import { useRouter } from 'next/router';
-import { NFTModel } from '../../api/models/nft';
-import { addresses } from '../../assets';
-import request from '../../api/rpc';
-import { AddressZero } from '@ethersproject/constants';
-import { formatEthAddress } from 'eth-address';
-import MainFooter from '../../components/Footer';
+import { usePageQuery } from '../../hooks';
+import { ButtonContainer, NFTCollection, NFTUserCollectionInfo, UsersWrapper } from '../../styles/users.styled';
 
 // We'll leverage this in the population of events table
 const eventHashMap = {
@@ -40,19 +42,32 @@ const NoItemContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  width: 100%;
-  max-width: 1200px;
+  width: calc(100% - 150px);
+
   background: linear-gradient(254.33deg, rgba(255, 255, 255, 0.1) 1.71%, rgba(255, 255, 255, 0.05) 99.35%);
   backdrop-filter: blur(16.86px);
   padding: 50px 0;
   border-radius: 20px;
   margin-top: 50px;
+
+  @media screen and (max-width: 760px) {
+    width: 100%;
+
+    span {
+      font-size: 1.4rem !important;
+    }
+  }
+  @media screen and (max-width: 320px) {
+    span {
+      font-size: 1rem !important;
+    }
+  }
 `;
 
 const Users = () => {
   enum SelectedTab {
     COLLECTIONS = '1',
-    CREATED = '2',
+    OWNED = '2',
     WATCHLIST = '3',
     FAVORITES = '4'
   }
@@ -147,7 +162,7 @@ const Users = () => {
   }, [tab]);
 
   useEffect(() => {
-    if (tab === SelectedTab.CREATED) setNFTList(nftsByUser);
+    if (tab === SelectedTab.OWNED) setNFTList(nftsByUser);
     else if (tab === SelectedTab.FAVORITES) setNFTList(favoriteNFTsOfUser);
     else if (tab === SelectedTab.WATCHLIST) setNFTList(_.map(userWatchList, list => list.nft as unknown as NFTModel));
   }, [nftsByUser, favoriteNFTsOfUser, userWatchList]);
@@ -161,6 +176,9 @@ const Users = () => {
 
   return (
     <>
+      <Head>
+        <title>{id === account ? 'Your' : accountById?.name ? accountById.name + "'s" : id + "'s"} profile</title>
+      </Head>
       <UsersWrapper>
         <Navbar />
         <UserBanner
@@ -208,12 +226,12 @@ const Users = () => {
                 onClick={() => switchTabs(SelectedTab.COLLECTIONS)}
               />
               <FilterProperty
-                isActive={selectedTab === SelectedTab.CREATED}
+                isActive={selectedTab === SelectedTab.OWNED}
                 icon={<FiUserPlus />}
                 count={kFormatter(nftsByUser.length)}
-                label="created"
+                label="owned"
                 onClick={() => {
-                  switchTabs(SelectedTab.CREATED);
+                  switchTabs(SelectedTab.OWNED);
                   setNFTList(nftsByUser);
                 }}
               />
@@ -308,6 +326,7 @@ const Users = () => {
                               owner={collection?.metadata.owner}
                               imageURI={collection?.metadata.imageURI}
                               linkTo={`/collections/${collection?.collectionId}`}
+                              price={collection.floorPrice?.toPrecision(4)}
                             />
                           </div>
                         )
@@ -345,7 +364,6 @@ const Users = () => {
                               onClick={() => {
                                 router.push(`/nfts/${nft.collectionId}:${nft.tokenId}`);
                               }}
-                              key={nft.id}
                             />
                           </div>
                         )

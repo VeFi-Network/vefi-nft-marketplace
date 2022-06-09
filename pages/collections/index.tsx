@@ -1,18 +1,20 @@
 import { Button } from 'antd';
-import InfiniteScroll from '../../components/InfiniteScroll';
+import _ from 'lodash';
+import Head from 'next/head';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useEffect, useRef, useState } from 'react';
 import { FiFilter, FiSearch } from 'react-icons/fi';
-import Navbar from '../../components/Navbar';
-import { CollectionWrapper, FilterWrapper, MarktePlaceWrapper } from '../../styles/Market.styled';
+
+import { CollectionCategory } from '../../api/models/collection';
 import Card from '../../components/Card';
 import MainFooter from '../../components/Footer';
-import Image from 'next/image';
-import _ from 'lodash';
-import { CollectionCategory } from '../../api/models/collection';
+import InfiniteScroll from '../../components/InfiniteScroll';
+import Navbar from '../../components/Navbar';
 import { useAPIContext } from '../../contexts/api';
-import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/router';
-import { usePageQuery } from '../../hooks';
 import { useWeb3Context } from '../../contexts/web3';
+import { usePageQuery } from '../../hooks';
+import { CollectionWrapper, FilterWrapper, MarktePlaceWrapper } from '../../styles/Market.styled';
 
 const ListCollections = () => {
   const { allCollections, loadAllCollections } = useAPIContext();
@@ -46,6 +48,9 @@ const ListCollections = () => {
 
   return (
     <>
+      <Head>
+        <title>View {categoryFilter} collections</title>
+      </Head>
       <MarktePlaceWrapper>
         <div className="marketplace__container">
           <Navbar />
@@ -134,6 +139,7 @@ const ListCollections = () => {
                         owner={collection.collectionOwner}
                         imageURI={collection.metadata.imageURI}
                         linkTo={`/collections/${collection.collectionId}`}
+                        price={collection.floorPrice?.toString()}
                       />
                     </div>
                   )

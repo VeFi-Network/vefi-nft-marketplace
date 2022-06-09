@@ -16,20 +16,20 @@ export enum CollectionCategory {
 }
 
 export const CollectionCategoryImages = {
-  WEARABLES: '/categoriesImages/sports.svg',
-  SPORTS: '/categoriesImages/sports.svg',
-  ART: '/categoriesImages/art.png',
-  COLLECTIBLES: '/categoriesImages/collectibles.svg',
-  'DOMAIN NAMES': '/categoriesImages/domain_names.svg',
-  MUSIC: '/categoriesImages/music.svg',
-  PHOTOGRAPHY: '/categoriesImages/sports.svg',
-  FASHION: '/categoriesImages/sports.svg',
-  GAMING: '/categoriesImages/video-game-assets.svg',
-  UTILITY: '/categoriesImages/ticketing.svg',
-  'REAL ESTATE': '/categoriesImages/virtual-land.svg',
-  CARTOONS: '/categoriesImages/sports.svg',
-  MOVIES: '/categoriesImages/sports.svg',
-  'GIFT CARDS': '/categoriesImages/sports.svg'
+  WEARABLES: '/images/wearables.jpg',
+  SPORTS: '/images/sports.svg',
+  ART: '/images/art.png',
+  COLLECTIBLES: '/images/collectibles.svg',
+  'DOMAIN NAMES': '/images/domain_names.svg',
+  MUSIC: '/images/music.svg',
+  PHOTOGRAPHY: '/images/photography.jpg',
+  FASHION: '/images/fashion.jpg',
+  GAMING: '/images/video-game-assets.svg',
+  UTILITY: '/images/ticketing.svg',
+  'REAL ESTATE': '/images/virtual-land.svg',
+  CARTOONS: '/images/cartoons.jpg',
+  MOVIES: '/images/movies.jpg',
+  'GIFT CARDS': '/images/gift_cards.jpg'
 };
 
 export type CollectionMetadata = {

@@ -1,20 +1,23 @@
+import { message, Spin } from 'antd';
 // @ts-ignore
 import ethAddress from 'ethereum-address';
+import Head from 'next/head';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Navbar from '../../../components/Navbar';
-import Filled_CTA_Button from '../../../components/Button/CTA/Filled';
-import { pinFile, pinJson } from '../../../api/ipfs';
-import FileContainer from '../../../components/Collections/FileContainer';
-import DropdownComponent from '../../../components/Collections/Dropdown';
-import { CollectionMetadata, CollectionCategory } from '../../../api/models/collection';
-import { Spin, message } from 'antd';
 import type Web3 from 'web3';
-import MainFooter from '../../../components/Footer';
-import { useWeb3Context } from '../../../contexts/web3';
-import marketPlaceAbi from '../../../assets/abis/Marketplace.json';
+
+import { pinFile, pinJson } from '../../../api/ipfs';
+import { CollectionCategory, CollectionMetadata } from '../../../api/models/collection';
 import { addresses, CONSTANTS } from '../../../assets';
+import marketPlaceAbi from '../../../assets/abis/Marketplace.json';
+import Filled_CTA_Button from '../../../components/Button/CTA/Filled';
+import DropdownComponent from '../../../components/Collections/Dropdown';
+import FileContainer from '../../../components/Collections/FileContainer';
+import ConnectWallet from '../../../components/ConnectWallet';
+import MainFooter from '../../../components/Footer';
+import Navbar from '../../../components/Navbar';
 import { useAPIContext } from '../../../contexts/api';
+import { useWeb3Context } from '../../../contexts/web3';
 
 type Props = {};
 
@@ -37,15 +40,17 @@ const NavbarContainer = styled.div`
 `;
 
 const ColoredBackground = styled.div`
-  width: 964px;
-  height: 1300px;
+  width: 600px;
+  height: 100vh;
   background: url('/objects/marketplaceObjects.svg') no-repeat;
   position: absolute;
+  background-size: contain;
   top: -5%;
   right: 0%;
   z-index: 0;
   @media screen and (max-width: 760px) {
-    display: none;
+    width: 300px;
+    height: 100vh;
   }
 `;
 
@@ -58,7 +63,7 @@ const ParentExploreAndData = styled.div`
   min-width: 1000px;
 
   @media screen and (max-width: 760px) {
-    width: 95%;
+    width: 90%;
     margin: 0 auto;
     min-width: 90%;
     padding-bottom: 50px;
@@ -79,6 +84,9 @@ const ParentExploreAndData = styled.div`
       line-height: 3rem;
       margin-top: 40px;
       margin-bottom: -30px;
+    }
+    @media screen and (max-width: 320px) {
+      font-size: 1.5rem;
     }
   }
 
@@ -279,12 +287,12 @@ const Heading = styled.div`
 `;
 
 const StyledExploreNft = styled.img`
-  height: 585px;
+  height: 500px;
   width: 97px;
   position: absolute;
-  left: 7px;
-  top: 361px;
-
+  left: 0;
+  top: 100px;
+  object-fit: contain;
   @media screen and (max-width: 760px) {
     display: none;
   }
@@ -335,8 +343,9 @@ export default function NewCollection({}: Props) {
       !!collectionMetadata.owner &&
       !!collectionMetadata.category &&
       !!collectionMetadata.symbol &&
-      collectionMetadata.name.length >= 4 &&
-      collectionMetadata.owner.length >= 4 &&
+      collectionMetadata.name.length >= 7 &&
+      ((!ethAddress.isAddress(collectionMetadata.owner) && collectionMetadata.owner.length >= 4) ||
+        ethAddress.isAddress(collectionMetadata.owner)) &&
       collectionMetadata.symbol.length >= 3 &&
       ethAddress.isAddress(paymentReceiver)
     );
@@ -414,7 +423,7 @@ export default function NewCollection({}: Props) {
               View on explorer!
             </a>
           </>,
-          15
+          3
         );
       }
 
@@ -428,6 +437,9 @@ export default function NewCollection({}: Props) {
 
   return (
     <>
+      <Head>
+        <title>Create new collection</title>
+      </Head>
       <MainContainer>
         <NavbarContainer>
           <Navbar />
@@ -435,11 +447,12 @@ export default function NewCollection({}: Props) {
         <Spin spinning={isLoading} size="large" tip={tip}>
           <ParentExploreAndData>
             {!active ? (
-              <NoItemContainer>
-                <div style={{ marginTop: '10em' }}>
-                  <span style={{ color: '#dc143c', fontSize: 30 }}>Please connect your wallet!</span>
-                </div>
-              </NoItemContainer>
+              // <NoItemContainer>
+              //   <div style={{ marginTop: '10em' }}>
+              //     <span style={{ color: '#dc143c', fontSize: 30 }}>Please connect your wallet!</span>
+              //   </div>
+              // </NoItemContainer>
+              <ConnectWallet />
             ) : (
               <>
                 <div className="container__wrapper">
@@ -449,7 +462,7 @@ export default function NewCollection({}: Props) {
                   </Heading>
                   <div className="text">
                     Supported File Types: JPG, JPEG, PNG, GIF, WEBP
-                    <span className="blue"> Max size 40mb</span>
+                    <span className="blue"> Max size 15MB</span>
                   </div>
                   <FileContainer file={bannerImage} setFile={setBannerImage} type={1} />
                   <Heading className="heading">
@@ -457,12 +470,15 @@ export default function NewCollection({}: Props) {
                   </Heading>
                   <div className="text">
                     Supported File Types: JPG, JPEG, PNG, GIF, WEBP
-                    <span className="blue"> Max size 40mb</span>
+                    <span className="blue"> Max size 15MB</span>
                   </div>
                   <FileContainer file={avatarImage} setFile={setAvatarImage} type={1} />
                   <Heading className="heading">
                     Name<span className="blue">*</span>
                   </Heading>
+                  <div className="text">
+                    Name of this collection. Must contain at least <span className="blue">7</span> characters.
+                  </div>
                   <div className="input-div">
                     <input
                       value={collectionMetadata.name}
@@ -476,6 +492,10 @@ export default function NewCollection({}: Props) {
                   <Heading className="heading">
                     Owner<span className="blue">*</span>
                   </Heading>
+                  <div className="text">
+                    Owner of this collection. Must contain at least <span className="blue">4</span> characters if it is
+                    an ENS name.
+                  </div>
                   <div className="input-div">
                     <input
                       type="text"
@@ -487,7 +507,8 @@ export default function NewCollection({}: Props) {
                     />
                   </div>
                   <Heading className="heading">
-                    Symbol<span className="blue">*</span>
+                    Symbol (<span style={{ fontSize: '0.6rem' }}>Min of 3 Characters</span>)
+                    <span className="blue">*</span>
                   </Heading>
 
                   <div className="input-div">

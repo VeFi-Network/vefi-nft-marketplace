@@ -1,22 +1,25 @@
+import '../scripts/contextmenudisabler';
+
+import _ from 'lodash';
+import Head from 'next/head';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { FaList, FaQuestion, FaShoppingBasket, FaTag } from 'react-icons/fa';
 import styled from 'styled-components';
+
+import { CollectionCategory, CollectionCategoryImages, CollectionModel } from '../api/models/collection';
+import Background from '../components/AnimatedBackground';
 import Filled_CTA_Button from '../components/Button/CTA/Filled';
 import Ghost_CTA_Button from '../components/Button/Ghost';
-import Navbar from '../components/Navbar';
-import Image from 'next/image';
 import Card from '../components/Card';
-import Background from '../components/AnimatedBackground';
-import { FaQuestion, FaTag, FaShoppingBasket, FaList } from 'react-icons/fa';
-import { Button } from 'antd';
-import _ from 'lodash';
-import { useAPIContext } from '../contexts/api';
+import CategoryCard from '../components/Card/CategoryCard';
 import MainFooter from '../components/Footer';
 import Hero from '../components/Hero';
-import { Category } from '../styles/CategoryCard.styled';
-import CategoryCard from '../components/Card/CategoryCard';
-import { useRouter } from 'next/router';
-import { CollectionCategory, CollectionCategoryImages, CollectionModel } from '../api/models/collection';
+import Navbar from '../components/Navbar';
+import { useAPIContext } from '../contexts/api';
 import { useWeb3Context } from '../contexts/web3';
+import { Category } from '../styles/CategoryCard.styled';
 
 const MainContainer = styled.div`
   display: flex;
@@ -316,6 +319,7 @@ const FooterHelpIcon = styled.div`
     text-align: center;
     font-size: 1.5rem;
     color: #fff;
+    z-index: 1;
   }
 `;
 
@@ -399,7 +403,16 @@ const NoItemContainer = styled.div`
   margin-top: 50px;
 
   @media screen and (max-width: 760px) {
-    width: 90%;
+    width: 100%;
+
+    span {
+      font-size: 1.4rem !important;
+    }
+  }
+  @media screen and (max-width: 320px) {
+    span {
+      font-size: 1rem !important;
+    }
   }
 `;
 
@@ -424,23 +437,19 @@ export default function Homepage() {
   const [list, setList] = useState<CollectionModel[]>([]);
   const [activeBtn, setActiveBtn] = useState<ActiveBtn>(ActiveBtn.ALL);
   const router = useRouter();
-  const { network, active, chainId } = useWeb3Context();
-
-  useEffect(() => {
-    loadAllCollections(1);
-    loadTopSellingCollections(1);
-    loadCollectionsByAssets(1);
-  }, []);
+  const { network } = useWeb3Context();
 
   useEffect(() => {
     (() => {
-      if (!!network && active && !!chainId) {
-        loadAllCollections(1);
-        loadTopSellingCollections(1);
-        loadCollectionsByAssets(1);
+      if (!!network) {
+        setTimeout(() => {
+          loadAllCollections(1);
+          loadTopSellingCollections(1);
+          loadCollectionsByAssets(1);
+        }, 500);
       }
     })();
-  }, [network, active, chainId]);
+  }, [network]);
 
   useEffect(() => {
     if (!!allCollections) {
@@ -450,6 +459,9 @@ export default function Homepage() {
 
   return (
     <>
+      <Head>
+        <title>Vefi NFT marketplace | Create and trade various non-fungible assets</title>
+      </Head>
       <MainContainer>
         <MarketplaceContainer>
           <div className="main__container__wrapper">
@@ -547,6 +559,7 @@ export default function Homepage() {
                               owner={collection?.metadata.owner}
                               imageURI={collection?.metadata.imageURI}
                               linkTo={`/collections/${collection?.collectionId}`}
+                              price={collection.floorPrice?.toPrecision(4)}
                             />
                           </div>
                         )

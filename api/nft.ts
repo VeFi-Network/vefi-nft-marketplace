@@ -1,10 +1,11 @@
 import axios, { AxiosResponse } from 'axios';
+
 import { NFT_API } from './constants';
-import { NFTModel } from './models/nft';
-import { CollectionModel } from './models/collection';
 import { AccountModel } from './models/account';
-import { SaleModel } from './models/sale';
+import { CollectionModel } from './models/collection';
+import { NFTModel } from './models/nft';
 import { OrderModel } from './models/order';
+import { SaleModel } from './models/sale';
 
 const baseAxios = axios.create({
   baseURL: NFT_API
@@ -327,6 +328,19 @@ export function countSuccessfulTrades(network: string, collectionId: string): Pr
   return new Promise((resolve, reject) => {
     baseAxios
       .get(`/api/sale/${network}/${collectionId}/traded/count`)
+      .then(res => handleResponse(res, resolve, reject))
+      .catch(reject);
+  });
+}
+
+export function getCurrentSaleOfNFT(
+  network: string,
+  collectionId: string,
+  tokenId: number
+): Promise<SaleModel | undefined> {
+  return new Promise((resolve, reject) => {
+    baseAxios
+      .get(`/api/sale/${network}/${collectionId}/${tokenId}/getCurrentSale`)
       .then(res => handleResponse(res, resolve, reject))
       .catch(reject);
   });

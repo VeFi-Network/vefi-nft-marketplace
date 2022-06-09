@@ -1,18 +1,26 @@
+import { arrayify } from '@ethersproject/bytes';
+import { id as mHash } from '@ethersproject/hash';
+import { Web3Provider } from '@ethersproject/providers';
+import { keccak256 } from '@ethersproject/solidity';
+import { Button, message } from 'antd';
+import Head from 'next/head';
+// import Button from '../../../components/Button/CTA/Filled';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useCallback, useState } from 'react';
 // @ts-ignore
 import * as emailValidator from 'react-email-validator';
 import styled from 'styled-components';
-import Navbar from '../../../components/Navbar';
-// import Button from '../../../components/Button/CTA/Filled';
-import Image from 'next/image';
-import { Button, message } from 'antd';
-import { useRouter } from 'next/router';
-import { useState, useCallback } from 'react';
+import type Web3 from 'web3';
+
 import { pinJson } from '../../../api/ipfs';
 import { AccountMetadata } from '../../../api/models/account';
 import { updateAccount } from '../../../api/nft';
+import ConnectWallet from '../../../components/ConnectWallet';
+import MainFooter from '../../../components/Footer';
+import Navbar from '../../../components/Navbar';
 import { useAPIContext } from '../../../contexts/api';
 import { useWeb3Context } from '../../../contexts/web3';
-import MainFooter from '../../../components/Footer';
 
 const RootContainer = styled.div`
   min-width: 100%;
@@ -24,13 +32,16 @@ const NavContainer = styled.div`
 `;
 
 const Container = styled.div`
-  margin-top: 50px;
-  max-width: 90vw;
   width: 90vw;
+  max-width: 90vw;
+  margin-top: 50px;
   display: flex;
   justify-content: center;
+  @media screen and (max-width: 760px) {
+    flex-direction: column;
+  }
   div {
-    width: 70%;
+    width: 100%;
     @media screen and (max-width: 760px) {
       width: 100%;
       padding: 0 10px;
@@ -101,10 +112,11 @@ const InputText = styled.input`
   border: 1.5px solid #5c95ff;
   border-radius: 4px;
   background-color: transparent;
-  height: 2.2rem;
+  height: 40px;
   width: 100%;
   color: #fff;
   padding: 5px;
+
   @media screen and (max-width: 760px) {
     width: 100%;
     height: 2.5rem;
@@ -133,7 +145,7 @@ const NoItemContainer = styled.div`
 `;
 
 const UpdateProfile = () => {
-  const { active, account } = useWeb3Context();
+  const { active, account, library } = useWeb3Context();
   const { loadToken, token, authenticatedUser } = useAPIContext();
   const [email, setEmail] = useState<string>('');
   const router = useRouter();
@@ -195,6 +207,13 @@ const UpdateProfile = () => {
           composedMetadata = { ...composedMetadata, name: authenticatedUser?.metadata.name };
         }
 
+        const messageHash = keccak256(
+          ['bytes32', 'string', 'address'],
+          [mHash('update_account '.concat(account as string)), 'update_account', account]
+        );
+        const ethersProvider = new Web3Provider((library as Web3).givenProvider);
+        const signer = ethersProvider.getSigner();
+        const signature = await signer.signMessage(arrayify(messageHash));
         const jsonResponse = await pinJson({ ...composedMetadata, email: undefined });
 
         await updateAccount(
@@ -206,7 +225,7 @@ const UpdateProfile = () => {
           },
           token
         );
-        loadToken(account as string);
+        loadToken(signature, messageHash);
         router.replace('/');
       }
       setIsLoading(false);
@@ -219,6 +238,9 @@ const UpdateProfile = () => {
 
   return (
     <>
+      <Head>
+        <title>Update profile</title>
+      </Head>
       <RootContainer>
         <NavContainer>
           <Navbar />
@@ -228,12 +250,14 @@ const UpdateProfile = () => {
             <Image width="97px" height="585px" src="/icons/exploreNFT.png" />
           </ExploreNFT>
           <Container>
+            <div></div>
             {!active ? (
-              <NoItemContainer>
-                <div style={{ marginTop: '10em' }}>
-                  <span style={{ color: '#dc143c', fontSize: 30 }}>Please connect your wallet!</span>
-                </div>
-              </NoItemContainer>
+              // <NoItemContainer>
+              //   <div style={{ marginTop: '10em' }}>
+              //     <span style={{ color: '#dc143c', fontSize: 30 }}>Please connect your wallet!</span>
+              //   </div>
+              // </NoItemContainer>
+              <ConnectWallet />
             ) : (
               <div>
                 <Heading>Update Profile</Heading>
@@ -269,6 +293,7 @@ const UpdateProfile = () => {
                       size="large"
                       disabled={!allConditionsSatisfied() || isLoading}
                       loading={isLoading}
+                      htmlType="submit"
                     >
                       {allConditionsSatisfied() ? 'Update Profile' : 'Please fill in details properly'}{' '}
                     </Button>
@@ -276,6 +301,7 @@ const UpdateProfile = () => {
                 </FormContainer>
               </div>
             )}
+            <div></div>
           </Container>
         </BodyContainer>
         <MainFooter />

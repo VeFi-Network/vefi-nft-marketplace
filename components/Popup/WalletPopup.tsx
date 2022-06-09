@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
 import { Modal } from 'antd';
 import Image from 'next/image';
+import React, { useState } from 'react';
 import { FiChevronDown, FiPlus } from 'react-icons/fi';
 
 const WalletPopup = () => {

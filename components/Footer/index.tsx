@@ -1,12 +1,15 @@
 import Image from 'next/image';
-import React from 'react';
-import { FaFacebook, FaGithub, FaTelegram } from 'react-icons/fa';
-import { AiFillTwitterCircle } from 'react-icons/ai';
-import { Container, FootLink, SubDiv1, SubDiv2 } from '../../styles/footer.styled';
 import Link from 'next/link';
+import React from 'react';
+import { AiFillTwitterCircle } from 'react-icons/ai';
+import { FaFacebook, FaGithub, FaTelegram } from 'react-icons/fa';
+
 import { CollectionCategory } from '../../api/models/collection';
+import { useWeb3Context } from '../../contexts/web3';
+import { Container, FootLink, SubDiv1, SubDiv2 } from '../../styles/footer.styled';
 
 function MainFooter() {
+  const { active, account } = useWeb3Context();
   return (
     <Container>
       <SubDiv1>
@@ -69,28 +72,37 @@ function MainFooter() {
               </FootLink>
             ))}
         </div>
-        <div className="my_account">
-          <div>
-            <h2 className="nav_section">My Account</h2>
-            {marketplaceArray.slice(10, 14).map(({ label, path }: any) => (
-              <FootLink key={label}>
-                <Link href={path}>
-                  <a>{label}</a>
-                </Link>
-              </FootLink>
-            ))}
+        {active && (
+          <div className="my_account">
+            <div>
+              <h2 className="nav_section">My Account</h2>
+              {[
+                {
+                  label: 'Profile',
+                  path: `/users/${account}`
+                },
+                {
+                  label: 'My Favourites',
+                  path: `/users/${account}?tab=4`
+                },
+                {
+                  label: 'Watchlist',
+                  path: `/users/${account}?tab=3`
+                },
+                {
+                  label: 'My Collection',
+                  path: `/users/${account}?tab=1`
+                }
+              ].map(({ label, path }: any) => (
+                <FootLink key={label}>
+                  <Link href={path}>
+                    <a>{label}</a>
+                  </Link>
+                </FootLink>
+              ))}
+            </div>
           </div>
-          {/* <div>
-            <h2 className="nav_section">Stats</h2>
-            {marketplaceArray.slice(14, 16).map(({ label, path }: any) => (
-              <FootLink key={label}>
-                <Link href={path}>
-                  <a>{label}</a>
-                </Link>
-              </FootLink>
-            ))}
-          </div> */}
-        </div>
+        )}
         <div className="company">
           <h2 className="nav_section">Company</h2>
           {marketplaceArray.slice(14, 18).map(({ label, path }: any) => (
@@ -149,22 +161,7 @@ const marketplaceArray = [
     label: 'Domain Names',
     path: '#'
   },
-  {
-    label: 'Profile',
-    path: '#'
-  },
-  {
-    label: 'My Favourites',
-    path: '#'
-  },
-  {
-    label: 'Watchlist',
-    path: '#'
-  },
-  {
-    label: 'My Collection',
-    path: '#'
-  },
+  ,
   {
     label: 'Ranking',
     path: '#'

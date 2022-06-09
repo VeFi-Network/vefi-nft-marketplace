@@ -1,16 +1,18 @@
 import { Button } from 'antd';
-import InfiniteScroll from '../components/InfiniteScroll';
-import { FiFilter, FiPlus, FiSearch, FiArrowDown, FiArrowUp, FiList } from 'react-icons/fi';
+import _ from 'lodash';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect, useRef, useState } from 'react';
+import { FiArrowDown, FiArrowUp, FiFilter, FiList, FiPlus, FiSearch } from 'react-icons/fi';
 import styled from 'styled-components';
-import Navbar from '../components/Navbar';
-import { CollectionWrapper, FilterWrapper, MarktePlaceWrapper } from '../styles/Market.styled';
+
 import Card from '../components/Card';
 import MainFooter from '../components/Footer';
-import { useAPIContext } from '../contexts/api/index';
-import { useEffect, useRef, useState } from 'react';
-import _ from 'lodash';
+import InfiniteScroll from '../components/InfiniteScroll';
+import Navbar from '../components/Navbar';
+import { useAPIContext } from '../contexts/api';
 import { useWeb3Context } from '../contexts/web3';
-import { useRouter } from 'next/router';
+import { CollectionWrapper, FilterWrapper, MarktePlaceWrapper } from '../styles/Market.styled';
 
 const NoItemContainer = styled.div`
   display: flex;
@@ -55,6 +57,9 @@ const Market = () => {
 
   return (
     <>
+      <Head>
+        <title>Marketplace</title>
+      </Head>
       <MarktePlaceWrapper>
         <div className="marketplace__container">
           <Navbar />
@@ -153,10 +158,8 @@ const Market = () => {
                         <Card
                           name={sale.nft?.metadata?.name as string}
                           imageURI={sale.nft?.metadata?.image as string}
-                          owner={sale.nft?.metadata?.owner as string}
-                          linkTo={`/nfts/${sale.nft?.collectionId}:${sale.nft?.tokenId}?isSale=${true}&marketId=${
-                            sale.marketId
-                          }&price=${sale.price}&tradeCurrency=${sale.currency}`}
+                          owner={sale.nft?.owner as string}
+                          linkTo={`/nfts/${sale.nft?.collectionId}:${sale.nft?.tokenId}`}
                           price={sale.price.toString()}
                         />
                       </div>

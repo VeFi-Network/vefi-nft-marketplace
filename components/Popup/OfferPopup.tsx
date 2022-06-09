@@ -1,21 +1,21 @@
+import { Interface } from '@ethersproject/abi';
+import { parseEther, parseUnits } from '@ethersproject/units';
+import { Button, message } from 'antd';
 // @ts-ignore
 import ethAddress from 'ethereum-address';
-import React, { useEffect, useState } from 'react';
-import { Spin, message } from 'antd';
-import { AddressZero } from '@ethersproject/constants';
-import { Interface } from '@ethersproject/abi';
-import { parseUnits, parseEther } from '@ethersproject/units';
-import Image from 'next/image';
-import styled from 'styled-components';
 import _ from 'lodash';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import type Web3 from 'web3';
-import Filled_CTA_Button from '../Button/CTA/Filled';
-import { addresses, WETH } from '../../assets';
-import { useWeb3Context } from '../../contexts/web3';
-import marketPlaceAbi from '../../assets/abis/Marketplace.json';
-import erc20Abi from '../../assets/abis/ERC20.json';
+
 import request from '../../api/rpc';
+import { addresses, WETH } from '../../assets';
+import erc20Abi from '../../assets/abis/ERC20.json';
+import marketPlaceAbi from '../../assets/abis/Marketplace.json';
 import { CONSTANTS } from '../../assets/index';
+import { useWeb3Context } from '../../contexts/web3';
 
 const MainContainer = styled.div`
   height: max-content;
@@ -35,7 +35,7 @@ const MainContainer = styled.div`
   opacity: ${(props: { open: boolean }) => (props.open ? '1' : '0')};
   transition-timing-function: ease-out;
   transition-duration: 500ms;
-  z-index: 5;
+  z-index: 999;
 
   .img-title {
     display: flex;
@@ -173,6 +173,10 @@ const MainContainer = styled.div`
     left: 10px;
 
     padding: 0 2rem;
+    .btn {
+      margin-bottom: 30px;
+      width: 100%;
+    }
     .container__inner {
       padding-bottom: 50px;
     }
@@ -202,16 +206,18 @@ type Props = {
   setModal: any;
   nft: any;
   transition: boolean;
+  fp: number;
 };
 
-export default function OfferPopup({ modal, setModal, nft, transition }: Props) {
+export default function OfferPopup({ modal, setModal, nft, transition, fp }: Props) {
   const { chainId, account, network, library, explorerUrl } = useWeb3Context();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [tip, setTip] = useState<string>('');
   const [data, setData] = useState<{ recipient: string; price: number }>({
     recipient: account as string,
-    price: 0
+    price: fp
   });
+
+  const router = useRouter();
 
   const setProperty = (e: React.ChangeEvent<HTMLInputElement>) =>
     setData(d => ({ ...d, [e.target.name]: e.target.value }));
@@ -231,9 +237,9 @@ export default function OfferPopup({ modal, setModal, nft, transition }: Props) 
         let price: ReturnType<typeof parseEther | typeof parseUnits>;
         const wrappedToken = WETH[chainId as number];
 
-        setTip('Parsing price');
+        message.info('Parsing price');
         const erc20AbiInterface = new Interface(erc20Abi);
-        const functionSigHash = erc20AbiInterface.getSighash('decimals()');
+        const functionSigHash = erc20AbiInterface.getSighash('decimals');
         const decimals = await request(network, {
           method: 'eth_call',
           jsonrpc: '2.0',
@@ -243,9 +249,23 @@ export default function OfferPopup({ modal, setModal, nft, transition }: Props) 
 
         price = parseUnits(data.price.toString(), decimals);
 
-        setTip('Requesting approval');
-        const erc20 = new (library as Web3).eth.Contract(erc20Abi as any, WETH[chainId as number]);
+        if (price.lt(parseUnits(fp.toString(), decimals))) throw new Error('Offer cannot be less than floor price');
 
+        const erc20 = new (library as Web3).eth.Contract(erc20Abi as any, WETH[chainId as number]);
+        const tokenName = await erc20.methods.name().call();
+        const balanceOfHash = erc20AbiInterface.encodeFunctionData('balanceOf', [account]);
+
+        const balance = await request(network, {
+          method: 'eth_call',
+          jsonrpc: '2.0',
+          id: 1,
+          params: [{ to: wrappedToken, data: balanceOfHash }, 'latest']
+        });
+
+        if (!price.lte(balance))
+          throw new Error('You do not have enough '.concat(tokenName).concat(' to make this offer.'));
+
+        message.info('Requesting approval');
         await erc20.methods.approve(addresses[chainId as number], price.toHexString()).send({
           from: account
         });
@@ -254,32 +274,33 @@ export default function OfferPopup({ modal, setModal, nft, transition }: Props) 
 
         const contract = new (library as Web3).eth.Contract(marketPlaceAbi as any, addresses[chainId as number]);
 
-        setTip('Now placing offer');
+        message.info('Now placing offer');
         const offerResponse = await contract.methods
           .placeOffer(nft.collectionId, nft.tokenId, data.recipient, wrappedToken, price.toHexString())
           .send({ from: account });
 
-        message.success(
-          <>
-            <span style={{ fontSize: 15 }}>Offer successfully made!</span>{' '}
-            <a
-              style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
-              href={explorerUrl.concat('tx/' + offerResponse.transactionHash)}
-              target="_blank"
-              rel="noreferrer"
-            >
-              View on explorer!
-            </a>
-          </>,
-          15
-        );
+        setModal(false);
+        message
+          .success(
+            <>
+              <span style={{ fontSize: 15 }}>Offer successfully made!</span>{' '}
+              <a
+                style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
+                href={explorerUrl.concat('tx/' + offerResponse.transactionHash)}
+                target="_blank"
+                rel="noreferrer"
+              >
+                View on explorer!
+              </a>
+            </>,
+            5
+          )
+          .then(() => router.push(`/collections/${nft.collectionId}`));
       }
       resetAllFields();
-      setTip('');
       setIsLoading(false);
     } catch (error: any) {
       setIsLoading(false);
-      setTip('');
       message.error(error.message);
     }
   };
@@ -289,60 +310,70 @@ export default function OfferPopup({ modal, setModal, nft, transition }: Props) 
       {modal ? (
         <MainContainer open={transition}>
           <div className="container__inner">
-            <Spin spinning={isLoading} tip={tip}>
-              <div className="img-title">
-                <div className="image-container">
-                  <img
-                    width="244px"
-                    height="238.53px"
-                    src={nft ? nft.metadata?.image : '/nft/nft02.png'}
-                    alt=""
-                    className="nft-img"
-                  />
-                </div>
-                <div className="title">Cool! Place your offer!</div>
-              </div>
-
-              <Heading top="68px">Set A Price</Heading>
-
-              <div className="text">How much would you like to offer for this NFT?</div>
-
-              <div className="input-div">
-                <div className="eth-container">
-                  <Image
-                    width="12px"
-                    height="12px"
-                    src={CONSTANTS.paymentTokensPerNetwork[chainId as number][0].logo as string}
-                  />
-                </div>
-                <input
-                  value={data.price}
-                  name="price"
-                  onChange={setProperty}
-                  placeholder="0.00"
-                  type="number"
-                  className="input"
+            <div className="img-title">
+              <div className="image-container">
+                <img
+                  width="244px"
+                  height="238.53px"
+                  src={nft ? nft.metadata?.image : '/nft/nft02.png'}
+                  alt=""
+                  className="nft-img"
                 />
               </div>
+              <div className="title">Cool! Place your offer!</div>
+            </div>
 
-              <Heading top="15px">Recipient</Heading>
+            <Heading top="68px">Set A Price</Heading>
 
-              <div className="text">Which address would receive this NFT if this offer is accepted?</div>
+            <div className="text">
+              How much would you like to offer for this NFT? <span style={{ color: 'blue' }}>Note:</span> You'll be
+              offering a wrapped token for this NFT and the lowest you can offer is {fp}.
+            </div>
 
-              <div className="input-div-large">
-                <input
-                  type="text"
-                  value={data.recipient}
-                  name="recipient"
-                  onChange={setProperty}
-                  className="input-large"
+            <div className="input-div">
+              <div className="eth-container">
+                <Image
+                  width="12px"
+                  height="12px"
+                  src={CONSTANTS.paymentTokensPerNetwork[chainId as number][0].logo as string}
                 />
               </div>
+              <input
+                value={data.price}
+                name="price"
+                onChange={setProperty}
+                placeholder="0.00"
+                type="number"
+                className="input"
+              />
+            </div>
 
-              <Filled_CTA_Button onClick={placeOffer} disabled={!allConditionsSatisfied()} className="sell-btn">
-                {allConditionsSatisfied() ? 'Proceed' : 'Invalid data'}
-              </Filled_CTA_Button>
-            </Spin>
+            <Heading top="15px">Recipient</Heading>
+
+            <div className="text">Which address would receive this NFT if this offer is accepted?</div>
+
+            <div className="input-div-large">
+              <input
+                type="text"
+                value={data.recipient}
+                name="recipient"
+                onChange={setProperty}
+                className="input-large"
+              />
+            </div>
+
+            <div style={{ marginTop: 6 }}>
+              <Button
+                type="primary"
+                size="large"
+                disabled={!allConditionsSatisfied() || isLoading}
+                loading={isLoading}
+                onClick={placeOffer}
+                className="btn"
+              >
+                {allConditionsSatisfied() ? 'Place Offer' : 'Please fill in all necessary details'}{' '}
+              </Button>
+            </div>
           </div>
         </MainContainer>
       ) : null}

@@ -1,6 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import styled from 'styled-components';
 
 type Props = {
   setDropdown: any;
