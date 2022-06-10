@@ -1,23 +1,26 @@
-// @ts-ignore
-import * as emailValidator from 'react-email-validator';
-import { message, Button } from 'antd';
+import { arrayify } from '@ethersproject/bytes';
+import { id as mHash } from '@ethersproject/hash';
+import { Web3Provider } from '@ethersproject/providers';
 import { keccak256 } from '@ethersproject/solidity';
-import { id as mHash, hashMessage } from '@ethersproject/hash';
-import type Web3 from 'web3';
-import styled from 'styled-components';
-import Navbar from '../../../components/Navbar';
+import { Button, message } from 'antd';
+import Head from 'next/head';
 // import Button from '../../../components/Button/CTA/Filled';
 import Image from 'next/image';
-import React, { useCallback, useState } from 'react';
-import { AccountMetadata } from '../../../api/models/account';
-import { useWeb3Context } from '../../../contexts/web3';
-import { pinJson } from '../../../api/ipfs';
-import { createAccount } from '../../../api/nft';
-import { useAPIContext } from '../../../contexts/api';
 import { useRouter } from 'next/router';
-import MainFooter from '../../../components/Footer';
-import Head from 'next/head';
+import React, { useCallback, useState } from 'react';
+// @ts-ignore
+import * as emailValidator from 'react-email-validator';
+import styled from 'styled-components';
+import type Web3 from 'web3';
+
+import { pinJson } from '../../../api/ipfs';
+import { AccountMetadata } from '../../../api/models/account';
+import { createAccount } from '../../../api/nft';
 import ConnectWallet from '../../../components/ConnectWallet';
+import MainFooter from '../../../components/Footer';
+import Navbar from '../../../components/Navbar';
+import { useAPIContext } from '../../../contexts/api';
+import { useWeb3Context } from '../../../contexts/web3';
 
 const RootContainer = styled.div`
   min-width: 100%;
@@ -183,9 +186,14 @@ const CreateProfile = () => {
       e.preventDefault();
       setIsLoading(true);
       if (allConditionsSatisfied()) {
+        const messageHash = keccak256(
+          ['bytes32', 'string', 'address'],
+          [mHash('sign_up '.concat(account as string)), 'sign_up', account]
+        );
+        const ethersProvider = new Web3Provider((library as Web3).givenProvider);
+        const signer = ethersProvider.getSigner();
+        const signature = await signer.signMessage(arrayify(messageHash));
         const jsonResponse = await pinJson(accountMetadata);
-        const messageHash = keccak256(['bytes32'], [hashMessage(mHash('sign_up '.concat(account as string)))]);
-        const signature = await (library as Web3).eth.sign(messageHash, account as string);
 
         await createAccount({
           name: accountMetadata.name,

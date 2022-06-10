@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-sync-scripts */
-import Document, { DocumentContext, Html, Head, Main, NextScript } from 'next/document';
+import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
 import React from 'react';
 import { ServerStyleSheet } from 'styled-components';
 
@@ -43,7 +43,19 @@ export default class CustomDocument extends Document {
             name="description"
             content="The Vefi NFT marketplace is a product of the Vefi Ecosystem that allows the creation and the trading of non-fungible assets on various chains."
           />
+          <meta name="robots" content="index, follow" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <meta
+            name="keywords"
+            content="nft, vefi, multi-chain nft marketplace, xp.network, vefi nft marketplace, earn money from owning collections"
+          />
+          <meta charSet="UTF-8" />
           <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+          <meta
+            property="og:description"
+            content="The Vefi NFT marketplace is a product of the Vefi Ecosystem that allows the creation and the trading of non-fungible assets on various chains."
+          />
+          <meta property="og:url" content="https://vefinftmarket.place" />
         </Head>
         <body>
           <Main />

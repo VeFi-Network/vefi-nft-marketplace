@@ -1,17 +1,18 @@
+import { formatEthAddress } from 'eth-address';
 // @ts-ignore
 import ethAddress from 'ethereum-address';
-import { formatEthAddress } from 'eth-address';
+import Link from 'next/link';
 import React from 'react';
+
 import { NFTModel } from '../../../api/models/nft';
 import {
-  CardHeader,
   CardContainer,
   CardFooter,
   CardFooterContainer,
-  CardFooterItem
+  CardFooterItem,
+  CardHeader
 } from '../../../styles/users.styled';
 import Button from '../../Button/Ghost';
-import Link from 'next/link';
 
 type Props = {
   model: NFTModel;

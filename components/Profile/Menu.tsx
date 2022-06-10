@@ -1,9 +1,10 @@
 import { Menu, Tag } from 'antd';
 import Link from 'next/link';
-import { FaChessBoard, FaUserCircle, FaLink } from 'react-icons/fa';
+import { FaChessBoard, FaLink, FaUserCircle } from 'react-icons/fa';
 import { FiEye, FiHeart, FiLogOut, FiShoppingBag } from 'react-icons/fi';
-import { useWeb3Context } from '../../contexts/web3';
+
 import { useAPIContext } from '../../contexts/api/index';
+import { useWeb3Context } from '../../contexts/web3';
 
 const MenuItem = () => {
   const { disconnectWallet, account, active } = useWeb3Context();
@@ -92,14 +93,14 @@ const MenuItem = () => {
         },
         {
           label: (
-            <Link href="#">
+            <Link href="/bridge">
               <a>
                 <div className="listItem">
                   <div className="icon">
                     <FaLink />
                   </div>
                   <div className="text">
-                    Bridge <Tag color="red">Coming soon!</Tag>
+                    Bridge <Tag color="yellow">Beta!</Tag>
                   </div>
                 </div>
               </a>

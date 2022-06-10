@@ -1,26 +1,28 @@
+import '../scripts/contextmenudisabler';
+
+import _ from 'lodash';
+import Head from 'next/head';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { FaList, FaQuestion, FaShoppingBasket, FaTag } from 'react-icons/fa';
 import styled from 'styled-components';
+
+import { CollectionCategory, CollectionCategoryImages, CollectionModel } from '../api/models/collection';
+import Background from '../components/AnimatedBackground';
 import Filled_CTA_Button from '../components/Button/CTA/Filled';
 import Ghost_CTA_Button from '../components/Button/Ghost';
-import Navbar from '../components/Navbar';
-import Image from 'next/image';
 import Card from '../components/Card';
-import Background from '../components/AnimatedBackground';
-import { FaQuestion, FaTag, FaShoppingBasket, FaList } from 'react-icons/fa';
-import { Button } from 'antd';
-import _ from 'lodash';
-import { useAPIContext } from '../contexts/api';
+import CategoryCard from '../components/Card/CategoryCard';
 import MainFooter from '../components/Footer';
 import Hero from '../components/Hero';
-import { Category } from '../styles/CategoryCard.styled';
-import CategoryCard from '../components/Card/CategoryCard';
-import { useRouter } from 'next/router';
-import { CollectionCategory, CollectionCategoryImages, CollectionModel } from '../api/models/collection';
+import Navbar from '../components/Navbar';
+import { useAPIContext } from '../contexts/api';
 import { useWeb3Context } from '../contexts/web3';
-import Head from 'next/head';
+import { Category } from '../styles/CategoryCard.styled';
+import { Button } from 'antd';
 import Link from 'next/link';
 import { FiChevronsRight } from 'react-icons/fi';
-import Waitlist from '../components/Waitlist';
 
 const MainContainer = styled.div`
   display: flex;
@@ -604,7 +606,7 @@ export default function Homepage() {
                 </NFTContainer>
               )}
             </ParentNFTCont>
-            <Waitlist />
+
             <Category>
               <div className="category__container">
                 <div className="category__heading">
@@ -624,7 +626,7 @@ export default function Homepage() {
               </div>
             </Category>
           </div>
-          {/* <Footer>
+          <Footer>
             <div className="footer__container">
               <div className="footer__left">
                 <h2>Introducing the Vefi bridging technology </h2>
@@ -638,7 +640,7 @@ export default function Homepage() {
                 <Image src="/objects/bridge.svg" width={300} height={300} alt="image" />
               </div>
             </div>
-          </Footer> */}
+          </Footer>
           <HeroContainer>
             {' '}
             <Hero />

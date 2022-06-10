@@ -1,14 +1,15 @@
-import Image from 'next/image';
-import styled from 'styled-components';
+import { Alert, Button, Drawer, Dropdown, Tooltip } from 'antd';
 import * as ethAddress from 'eth-address';
-import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { Button, Drawer, Dropdown, Tooltip, Alert } from 'antd';
+import { useState } from 'react';
+import { FaEnvelope, FaWallet } from 'react-icons/fa';
 import { FiChevronDown, FiMoreHorizontal, FiPlus, FiUser } from 'react-icons/fi';
-import { FaWallet, FaEnvelope } from 'react-icons/fa';
-import Menu from '../Profile/Menu';
-import { useWeb3Context } from '../../contexts/web3';
+import styled from 'styled-components';
+
 import { useAPIContext } from '../../contexts/api';
+import { useWeb3Context } from '../../contexts/web3';
+import Menu from '../Profile/Menu';
 
 const chainIcons = {
   97: '/icons/binance.svg',

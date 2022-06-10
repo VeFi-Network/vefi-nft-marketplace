@@ -1,6 +1,6 @@
+import Image from 'next/image';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Image from 'next/image';
 type Props = {};
 
 const FilterByText = styled.div`

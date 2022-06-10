@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import { IPFS_API } from './constants';
 
 const baseAxios = axios.create({

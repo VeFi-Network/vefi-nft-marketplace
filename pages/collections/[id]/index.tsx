@@ -1,39 +1,40 @@
-import { Button, Spin, Table, message } from 'antd';
-import styled from 'styled-components';
-import Link from 'next/link';
-import { formatEthAddress } from 'eth-address';
-import { AddressZero } from '@ethersproject/constants';
 import { hexStripZeros } from '@ethersproject/bytes';
+import { AddressZero } from '@ethersproject/constants';
+import { id as hashId } from '@ethersproject/hash';
+import { Button, message, Spin, Table } from 'antd';
+import { formatEthAddress } from 'eth-address';
+import _ from 'lodash';
+import Head from 'next/head';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useEffect, useRef, useState } from 'react';
 import {
   FaBars,
-  FaShoppingBasket,
-  FaMoneyBill,
   FaDollarSign,
-  FaPlus,
-  FaExclamationTriangle,
   FaExchangeAlt,
-  FaQuestion
+  FaExclamationTriangle,
+  FaMoneyBill,
+  FaPlus,
+  FaQuestion,
+  FaShoppingBasket
 } from 'react-icons/fa';
 import { FiBarChart, FiGrid, FiThumbsUp } from 'react-icons/fi';
+import styled from 'styled-components';
+
+import { NFTModel } from '../../../api/models/nft';
+import request from '../../../api/rpc';
 import NFTCard from '../../../components/Card/NFTCard';
+import CollectionBanner from '../../../components/Collections/CollectionBanner';
 import FilterProperty from '../../../components/Filter';
 import FIlterBy from '../../../components/Filter/FIlterBy';
+import MainFooter from '../../../components/Footer';
+import InfiniteScroll from '../../../components/InfiniteScroll';
 import Navbar from '../../../components/Navbar';
-import CollectionBanner from '../../../components/Collections/CollectionBanner';
+import { useAPIContext } from '../../../contexts/api';
+import { useWeb3Context } from '../../../contexts/web3';
 import { usePageQuery } from '../../../hooks';
 import { NFTCollectionDescription, NFTCollectionWrapper, NFTUserStats } from '../../../styles/collections.styled';
 import { NFTCollection, NFTUserCollectionInfo, UsersWrapper } from '../../../styles/users.styled';
-import { useAPIContext } from '../../../contexts/api';
-import { useEffect, useRef, useState } from 'react';
-import _ from 'lodash';
-import { id as hashId } from '@ethersproject/hash';
-import { useRouter } from 'next/router';
-import MainFooter from '../../../components/Footer';
-import InfiniteScroll from '../../../components/InfiniteScroll';
-import { NFTModel } from '../../../api/models/nft';
-import request from '../../../api/rpc';
-import { useWeb3Context } from '../../../contexts/web3';
-import Head from 'next/head';
 
 // We'll leverage this in the population of events table
 const eventHashMap = {
@@ -324,16 +325,14 @@ const Collection = () => {
                         else return nft;
                       }),
                       nft => (
-                        <>
-                          <div key={nft.tokenId}>
-                            <NFTCard
-                              model={nft}
-                              onClick={() => {
-                                router.push(`/nfts/${collectionById.collectionId}:${nft.tokenId}`);
-                              }}
-                            />
-                          </div>
-                        </>
+                        <div key={nft.tokenId}>
+                          <NFTCard
+                            model={nft}
+                            onClick={() => {
+                              router.push(`/nfts/${collectionById.collectionId}:${nft.tokenId}`);
+                            }}
+                          />
+                        </div>
                       )
                     )}
                     <div ref={scrollBase}></div>

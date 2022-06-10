@@ -1,22 +1,23 @@
+import { message, Spin } from 'antd';
 // @ts-ignore
 import ethAddress from 'ethereum-address';
+import Head from 'next/head';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Navbar from '../../../components/Navbar';
-import Filled_CTA_Button from '../../../components/Button/CTA/Filled';
-import { pinFile, pinJson } from '../../../api/ipfs';
-import FileContainer from '../../../components/Collections/FileContainer';
-import DropdownComponent from '../../../components/Collections/Dropdown';
-import { CollectionMetadata, CollectionCategory } from '../../../api/models/collection';
-import { Spin, message } from 'antd';
 import type Web3 from 'web3';
-import MainFooter from '../../../components/Footer';
-import { useWeb3Context } from '../../../contexts/web3';
-import marketPlaceAbi from '../../../assets/abis/Marketplace.json';
+
+import { pinFile, pinJson } from '../../../api/ipfs';
+import { CollectionCategory, CollectionMetadata } from '../../../api/models/collection';
 import { addresses, CONSTANTS } from '../../../assets';
-import { useAPIContext } from '../../../contexts/api';
-import Head from 'next/head';
+import marketPlaceAbi from '../../../assets/abis/Marketplace.json';
+import Filled_CTA_Button from '../../../components/Button/CTA/Filled';
+import DropdownComponent from '../../../components/Collections/Dropdown';
+import FileContainer from '../../../components/Collections/FileContainer';
 import ConnectWallet from '../../../components/ConnectWallet';
+import MainFooter from '../../../components/Footer';
+import Navbar from '../../../components/Navbar';
+import { useAPIContext } from '../../../contexts/api';
+import { useWeb3Context } from '../../../contexts/web3';
 
 type Props = {};
 
@@ -342,8 +343,9 @@ export default function NewCollection({}: Props) {
       !!collectionMetadata.owner &&
       !!collectionMetadata.category &&
       !!collectionMetadata.symbol &&
-      collectionMetadata.name.length >= 4 &&
-      collectionMetadata.owner.length >= 4 &&
+      collectionMetadata.name.length >= 7 &&
+      ((!ethAddress.isAddress(collectionMetadata.owner) && collectionMetadata.owner.length >= 4) ||
+        ethAddress.isAddress(collectionMetadata.owner)) &&
       collectionMetadata.symbol.length >= 3 &&
       ethAddress.isAddress(paymentReceiver)
     );
@@ -421,7 +423,7 @@ export default function NewCollection({}: Props) {
               View on explorer!
             </a>
           </>,
-          15
+          3
         );
       }
 
@@ -474,6 +476,9 @@ export default function NewCollection({}: Props) {
                   <Heading className="heading">
                     Name<span className="blue">*</span>
                   </Heading>
+                  <div className="text">
+                    Name of this collection. Must contain at least <span className="blue">7</span> characters.
+                  </div>
                   <div className="input-div">
                     <input
                       value={collectionMetadata.name}
@@ -487,6 +492,10 @@ export default function NewCollection({}: Props) {
                   <Heading className="heading">
                     Owner<span className="blue">*</span>
                   </Heading>
+                  <div className="text">
+                    Owner of this collection. Must contain at least <span className="blue">4</span> characters if it is
+                    an ENS name.
+                  </div>
                   <div className="input-div">
                     <input
                       type="text"

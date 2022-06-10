@@ -1,40 +1,44 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
-import type Web3 from 'web3';
+import { arrayify } from '@ethersproject/bytes';
+import { id as mHash } from '@ethersproject/hash';
+import { Web3Provider } from '@ethersproject/providers';
 import { keccak256 } from '@ethersproject/solidity';
-import { id as mHash, hashMessage } from '@ethersproject/hash';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import type Web3 from 'web3';
+
 import { AccountModel } from '../../api/models/account';
+import { CollectionModel } from '../../api/models/collection';
 import { NFTModel } from '../../api/models/nft';
+import { OrderModel } from '../../api/models/order';
+import { SaleModel } from '../../api/models/sale';
 import {
-  getNFTsByOwner,
-  getNFTsByCollection,
+  checkIfOnSale,
+  countAllItemsByCollection,
+  countItemViews,
+  countSuccessfulTrades,
+  fetchPriceFromPeriod,
+  getAccountById,
+  getAllCollections,
+  getAllCollectionsByOwner,
+  getAllFavorites,
   getAllNFTsByNetwork,
-  signToken,
+  getAllOngoingSales,
+  getAllOrdersByNFT,
   getAuthenticatedUser,
   getCollectionById,
   getCollectionsByItems,
-  getAllCollections,
-  getNFTByIdAndNetwork,
-  countAllItemsByCollection,
-  getTopSellingCollections,
-  getAllOngoingSales,
-  checkIfOnSale,
-  fetchPriceFromPeriod,
-  getAllFavorites,
-  getAllOrdersByNFT,
-  getNFTsInCollectionByPrice,
-  getTopSellingNFTsInCollection,
-  getNFTsWithOffersInCollection,
-  getAllCollectionsByOwner,
+  getCurrentSaleOfNFT,
   getFavoriteNFTsOfUser,
+  getNFTByIdAndNetwork,
+  getNFTsByCollection,
+  getNFTsByOwner,
+  getNFTsInCollectionByPrice,
+  getNFTsWithOffersInCollection,
+  getTopSellingCollections,
+  getTopSellingNFTsInCollection,
   getUserWatchList,
-  countItemViews,
-  countSuccessfulTrades,
-  getAccountById
+  signToken
 } from '../../api/nft';
 import { useWeb3Context } from '../web3/index';
-import { CollectionModel } from '../../api/models/collection';
-import { SaleModel } from '../../api/models/sale';
-import { OrderModel } from '../../api/models/order';
 
 export enum APIErrorPoint {
   NFT_BY_ID,
@@ -56,6 +60,7 @@ export enum APIErrorPoint {
   USER_WATCHLIST,
   ITEM_VIEWS,
   SUCCESSFUL_TRADES_COUNT,
+  NFT_CURRENT_SALE,
   ACCOUNT_BY_ID
 }
 
@@ -75,6 +80,7 @@ type APIContextType = {
   nftsInCollectionByOffers: Array<NFTModel>;
   collectionsByAssets: Array<CollectionModel>;
   allOngoingSales: Array<SaleModel>;
+  currentSaleOfNFT?: SaleModel;
   collectionById: CollectionModel;
   itemsInCollection: number;
   isUserAuthenticated: boolean;
@@ -110,6 +116,7 @@ type APIContextType = {
   loadSuccessfulTradesForCollection: (collectionId: string) => void;
   loadToken: (signature: string, messageHash: string) => void;
   loadAccountById: (accountId: string) => void;
+  loadCurrentSaleOfNFT: (collectionId: string, tokenId: number) => void;
   logout: () => void;
   error?: {
     point: APIErrorPoint;
@@ -148,8 +155,10 @@ export const APIContextProvider = ({ children }: any) => {
   const [itemViews, setItemViews] = useState<number>(0);
   const [successfulTradesForCollection, setSuccessfulTradesForCollection] = useState<number>(0);
   const [token, setToken] = useState<string>('');
+  const [currentSaleOfNFT, setCurrentSaleOfNFT] = useState<SaleModel>();
   const [accountById, setAccountById] = useState<AccountModel>();
-  const { network, account, active, library } = useWeb3Context();
+
+  const { network, account, library } = useWeb3Context();
 
   const clearError = () => {
     setError(undefined);
@@ -324,6 +333,13 @@ export const APIContextProvider = ({ children }: any) => {
       .catch((error: any) => setError({ point: APIErrorPoint.SUCCESSFUL_TRADES_COUNT, message: error.message }));
   };
 
+  const loadCurrentSaleOfNFT = (collectionId: string, tokenId: number) => {
+    clearError();
+    getCurrentSaleOfNFT(network, collectionId, tokenId)
+      .then(setCurrentSaleOfNFT)
+      .catch((error: any) => setError({ point: APIErrorPoint.NFT_CURRENT_SALE, message: error.message }));
+  };
+
   const loadAccountById = (accountId: string) => {
     clearError();
     getAccountById(accountId)
@@ -352,14 +368,19 @@ export const APIContextProvider = ({ children }: any) => {
   }, [token]);
 
   useEffect(() => {
-    if (!!account && !!active) {
+    if (!!account) {
       (async () => {
-        const messageHash = keccak256(['bytes32'], [hashMessage(mHash('load_token '.concat(account as string)))]);
-        const signature = await (library as Web3).eth.sign(messageHash, account as string);
+        const messageHash = keccak256(
+          ['bytes32', 'string', 'address'],
+          [mHash('load_token '.concat(account as string)), 'load_token', account]
+        );
+        const ethersProvider = new Web3Provider((library as Web3).givenProvider);
+        const signer = ethersProvider.getSigner();
+        const signature = await signer.signMessage(arrayify(messageHash));
         loadToken(signature, messageHash);
       })();
     }
-  }, [account, active]);
+  }, [account]);
 
   return (
     <APIContext.Provider
@@ -382,6 +403,7 @@ export const APIContextProvider = ({ children }: any) => {
         itemsInCollection,
         nftsInCollectionByPrice,
         allOngoingSales,
+        currentSaleOfNFT,
         favorites,
         favoriteNFTsOfUser,
         allNFTOrders,
@@ -406,6 +428,7 @@ export const APIContextProvider = ({ children }: any) => {
         loadFavorites,
         loadFavoriteNFTsOfUser,
         loadSuccessfulTradesForCollection,
+        loadCurrentSaleOfNFT,
         loadToken,
         loadAccountById,
         checkItemOnSale,

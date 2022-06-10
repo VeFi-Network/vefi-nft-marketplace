@@ -27,6 +27,7 @@ export const CategoryWrapper = styled.section`
       top: 0;
       bottom: 0;
       margin: auto;
+      cursor: pointer;
       &.left {
         left: 0;
       }

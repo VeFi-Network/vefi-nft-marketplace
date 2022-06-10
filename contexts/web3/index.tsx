@@ -1,11 +1,12 @@
-import React, { createContext, useEffect, useContext, useCallback, useState } from 'react';
 import { formatEther } from '@ethersproject/units';
 import { useWeb3React } from '@web3-react/core';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import type Web3 from 'web3';
-import chains from '../../chains.json';
+
 import request from '../../api/rpc';
+import chains from '../../chains.json';
 
 type Web3ContextType = {
   account?: string | null;
@@ -77,16 +78,18 @@ export const Web3ContextProvider = ({ children }: any) => {
   useEffect(() => {
     injectedConnector.isAuthorized().then(isAuth => {
       if (isAuth) {
-        activate(injectedConnector, undefined, true).then(() => {
-          setTried(true);
-          setTimeout(() => {
-            if (!!chainId) {
-              setNetwork(chains[chainId?.toString() as keyof typeof chains].appName);
-              setExplorerUrl(chains[chainId?.toString() as keyof typeof chains].explorerUrl);
-              setNetworkSymbol(chains[chainId?.toString() as keyof typeof chains].symbol);
-            }
-          }, 500);
-        });
+        activate(injectedConnector, setError, true)
+          .then(() => {
+            setTried(true);
+            setTimeout(() => {
+              if (!!chainId) {
+                setNetwork(chains[chainId?.toString() as keyof typeof chains].appName);
+                setExplorerUrl(chains[chainId?.toString() as keyof typeof chains].explorerUrl);
+                setNetworkSymbol(chains[chainId?.toString() as keyof typeof chains].symbol);
+              }
+            }, 500);
+          })
+          .catch(setError);
       } else {
         setTried(true);
       }

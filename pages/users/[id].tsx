@@ -1,33 +1,34 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { id as hashId } from '@ethersproject/hash';
 import { hexStripZeros, hexZeroPad } from '@ethersproject/bytes';
-import styled from 'styled-components';
-import { Table, message } from 'antd';
-import { FaExchangeAlt, FaListAlt, FaQuestion, FaRegUser, FaUserEdit } from 'react-icons/fa';
-import { FiBarChart, FiGrid, FiHeart, FiEye, FiUserPlus, FiThumbsUp } from 'react-icons/fi';
+import { AddressZero } from '@ethersproject/constants';
+import { id as hashId } from '@ethersproject/hash';
+import { message, Table } from 'antd';
+import { formatEthAddress } from 'eth-address';
 import _ from 'lodash';
-import InfiniteScroll from '../../components/InfiniteScroll';
+import Head from 'next/head';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React, { useEffect, useRef, useState } from 'react';
+import { FaExchangeAlt, FaListAlt, FaQuestion, FaRegUser, FaUserEdit } from 'react-icons/fa';
+import { FiBarChart, FiEye, FiGrid, FiHeart, FiThumbsUp, FiUserPlus } from 'react-icons/fi';
+import styled from 'styled-components';
+
+import { NFTModel } from '../../api/models/nft';
+import request from '../../api/rpc';
+import { addresses } from '../../assets';
+import FilledButton from '../../components/Button/CTA/Filled';
+import Button from '../../components/Button/Ghost';
 import Card from '../../components/Card';
 import NFTCard from '../../components/Card/NFTCard';
 import FilterProperty from '../../components/Filter';
 import FIlterBy from '../../components/Filter/FIlterBy';
+import MainFooter from '../../components/Footer';
+import InfiniteScroll from '../../components/InfiniteScroll';
 import Navbar from '../../components/Navbar';
 import UserBanner from '../../components/User/Banner';
-import { NFTCollection, NFTUserCollectionInfo, UsersWrapper, ButtonContainer } from '../../styles/users.styled';
-import Link from 'next/link';
-import Button from '../../components/Button/Ghost';
-import FilledButton from '../../components/Button/CTA/Filled';
 import { useAPIContext } from '../../contexts/api';
-import { usePageQuery } from '../../hooks';
 import { useWeb3Context } from '../../contexts/web3';
-import { useRouter } from 'next/router';
-import { NFTModel } from '../../api/models/nft';
-import { addresses } from '../../assets';
-import request from '../../api/rpc';
-import { AddressZero } from '@ethersproject/constants';
-import { formatEthAddress } from 'eth-address';
-import MainFooter from '../../components/Footer';
-import Head from 'next/head';
+import { usePageQuery } from '../../hooks';
+import { ButtonContainer, NFTCollection, NFTUserCollectionInfo, UsersWrapper } from '../../styles/users.styled';
 
 // We'll leverage this in the population of events table
 const eventHashMap = {

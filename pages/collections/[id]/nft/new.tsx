@@ -1,24 +1,25 @@
+import { message, Spin } from 'antd';
 // @ts-ignore
 import ethAddress from 'ethereum-address';
-import React, { useEffect, useState } from 'react';
-import { FaPlus, FaMinus } from 'react-icons/fa';
-import { Spin, message } from 'antd';
-import { v4 as uuid } from 'uuid';
-import styled from 'styled-components';
 import _ from 'lodash';
+import Head from 'next/head';
+import React, { useEffect, useState } from 'react';
+import { FaMinus, FaPlus } from 'react-icons/fa';
+import styled from 'styled-components';
+import { v4 as uuid } from 'uuid';
 import type Web3 from 'web3';
-import Navbar from '../../../../components/Navbar';
-import Filled_CTA_Button from '../../../../components/Button/CTA/Filled';
-import FileContainer from '../../../../components/Collections/FileContainer';
+
 import { pinFile, pinJson } from '../../../../api/ipfs';
 import { NFTLevels, NFTMetadata } from '../../../../api/models/nft';
-import marketPlaceAbi from '../../../../assets/abis/Marketplace.json';
 import { addresses, CONSTANTS } from '../../../../assets';
+import marketPlaceAbi from '../../../../assets/abis/Marketplace.json';
+import Filled_CTA_Button from '../../../../components/Button/CTA/Filled';
+import FileContainer from '../../../../components/Collections/FileContainer';
+import ConnectWallet from '../../../../components/ConnectWallet';
+import MainFooter from '../../../../components/Footer';
+import Navbar from '../../../../components/Navbar';
 import { useWeb3Context } from '../../../../contexts/web3';
 import { usePageQuery } from '../../../../hooks/query';
-import MainFooter from '../../../../components/Footer';
-import Head from 'next/head';
-import ConnectWallet from '../../../../components/ConnectWallet';
 
 type Props = {};
 
@@ -109,6 +110,10 @@ const ParentExploreAndData = styled.div`
 
   .blue {
     color: #5c95ff;
+  }
+
+  .red {
+    color: #ff0000;
   }
 
   .heading {
@@ -347,7 +352,8 @@ export default function NewNFT({}: Props) {
     return (
       !!avatarImage &&
       nftMetadata.name.length >= 7 &&
-      nftMetadata.owner.length >= 4 &&
+      ((!ethAddress.isAddress(nftMetadata.owner) && nftMetadata.owner.length >= 4) ||
+        ethAddress.isAddress(nftMetadata.owner)) &&
       nftMetadata.traits.length > 0 &&
       nftMetadata.levels.length > 0 &&
       ethAddress.isAddress(mintFor)
@@ -407,7 +413,7 @@ export default function NewNFT({}: Props) {
               View on explorer!
             </a>
           </>,
-          15
+          3
         );
       }
 
@@ -445,6 +451,10 @@ export default function NewNFT({}: Props) {
               <>
                 <div className="container__wrapper">
                   <div className="title">Mint your NFT.</div>
+                  <div className="text">
+                    <span className="red">Warning:</span> Ensure your asset is being minted in the appropriate
+                    collection as the Vefi Ecosystem would not be responsible for any loss that occurs thereafter.
+                  </div>
 
                   <Heading top={'31px'}>
                     Avatar <span className="blue">*</span>
@@ -461,6 +471,10 @@ export default function NewNFT({}: Props) {
                     Name<span className="blue">*</span>
                   </Heading>
 
+                  <div className="text">
+                    Must contain at least <span className="blue">7</span> characters.
+                  </div>
+
                   <div className="input-div">
                     <input
                       type="text"
@@ -476,6 +490,10 @@ export default function NewNFT({}: Props) {
                     Creator<span className="blue">*</span>
                   </Heading>
 
+                  <div className="text">
+                    Must contain at least <span className="blue">4</span> characters if it is an ENS name.
+                  </div>
+
                   <div className="input-div">
                     <input
                       type="text"
@@ -490,6 +508,8 @@ export default function NewNFT({}: Props) {
                   <Heading className="heading">
                     For<span className="blue">*</span>
                   </Heading>
+
+                  <div className="text">Address that this NFT is minted for.</div>
 
                   <div className="input-div">
                     <input
