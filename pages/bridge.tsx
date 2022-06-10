@@ -29,15 +29,16 @@ import {
 import { SectionWrapper } from '../styles/createCollections.styled';
 
 const chainIcons = {
-  97: '/icons/binance.svg',
-  80001: '/icons/matic.svg',
-  4: '/icons/eth.svg'
+  56: '/icons/binance.svg',
+  137: '/icons/matic.svg',
+  43114: '/icons/avax.svg',
+  32520: '/icons/brise.svg'
 };
 
 const bridgeChain: { [key: number]: any } = {
-  97: Chain.BSC,
-  80001: Chain.POLYGON,
-  4: Chain.ETHEREUM
+  56: Chain.BSC,
+  137: Chain.POLYGON,
+  43114: Chain.AVALANCHE
 };
 
 // export async function getServerSideProps(context: any) {
@@ -82,13 +83,14 @@ const Bridge = () => {
         const ethersProvider = new Web3Provider((library as Web3).givenProvider);
         const signer = ethersProvider.getSigner();
         const signature = await signer.signMessage(arrayify(messageHash));
-        const config = await ChainFactoryConfigs.TestNet();
-        const factory = ChainFactory(AppConfigs.TestNet(), config);
+        const config = await ChainFactoryConfigs.MainNet();
+        const factory = ChainFactory(AppConfigs.MainNet(), config);
         const departureChain = await factory.inner(bridgeChain[chainId as number]);
         const destinationChain = await factory.inner(bridgeChain[parseInt(selectedDestinationChainKey)]);
         const nft = {
           ...selectedNFT,
           uri: selectedNFT.token_uri,
+          image: selectedNFT.metadata.image,
           native: {
             chainId: chainId?.toString(),
             tokenId: selectedNFT.token_id,
@@ -162,7 +164,7 @@ const Bridge = () => {
                 <div className="list__wrapper" onClick={() => setIsTokensModalVisible(!isTokensModalVisible)}>
                   <div className="list__logo">
                     <Image
-                      src={chainIcons[(chainId as number as keyof typeof chainIcons) || 97]}
+                      src={chainIcons[(chainId as number as keyof typeof chainIcons)] || '/icons/eth.svg'}
                       width={30}
                       height={30}
                       alt="image"
@@ -170,7 +172,7 @@ const Bridge = () => {
                   </div>
                   <div className="list__text">
                     {chains[chainId?.toString() as keyof typeof chains]?.name || 'Departure chain'} (
-                    {`${selectedNFT?.metadata.name || ''}:${selectedNFT?.token_id || ''}`})
+                    {selectedNFT?.metadata.name})
                   </div>
                   <div className="list__icon">
                     <FaChevronDown />
@@ -183,7 +185,7 @@ const Bridge = () => {
                 <div className="list__wrapper" onClick={() => setIsChainsModalVisible(!isChainsModalVisible)}>
                   <div className="list__logo">
                     <Image
-                      src={chainIcons[(parseInt(selectedDestinationChainKey) as keyof typeof chainIcons) || 97]}
+                      src={chainIcons[(parseInt(selectedDestinationChainKey) as keyof typeof chainIcons)] || '/icons/eth.svg'}
                       width={30}
                       height={30}
                       alt="image"
@@ -279,7 +281,7 @@ const Bridge = () => {
                 <ChainOptions>
                   <div className="chain__logo">
                     <Image
-                      src={chainIcons[parseInt(key) as keyof typeof chainIcons]}
+                      src={chainIcons[parseInt(key) as keyof typeof chainIcons] || '/icons/eth.svg'}
                       width={30}
                       height={30}
                       alt="image"

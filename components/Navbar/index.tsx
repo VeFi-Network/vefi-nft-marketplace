@@ -12,9 +12,10 @@ import { useWeb3Context } from '../../contexts/web3';
 import Menu from '../Profile/Menu';
 
 const chainIcons = {
-  97: '/icons/binance.svg',
-  80001: '/icons/matic.svg',
-  4: '/icons/eth.svg'
+  56: '/icons/binance.svg',
+  137: '/icons/matic.svg',
+  43114: '/icons/avax.svg',
+  32520: '/icons/brise.svg'
 };
 
 const NavContainer = styled.nav`

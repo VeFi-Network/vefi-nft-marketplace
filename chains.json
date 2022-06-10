@@ -1,23 +1,42 @@
 {
-  "97": {
+  "56": {
     "appName": "smartchain",
-    "chainRpc": "https://speedy-nodes-nyc.moralis.io/794e3cc32b8e273c0fe79c14/bsc/testnet",
+    "chainRpc": "https://bsc-dataseed1.binance.org",
     "symbol": "BNB",
-    "explorerUrl": "https://testnet.bscscan.com/",
-    "name": "Binance Smartchain Testnet"
+    "explorerUrl": "https://bscscan.com/",
+    "name": "Binance Smartchain",
+    "txPath": "tx"
   },
-  "80001": {
+  "137": {
     "appName": "polygon",
-    "chainRpc": "https://matic-mumbai.chainstacklabs.com",
+    "chainRpc": "https://polygon-rpc.com/",
     "symbol": "MATIC",
-    "explorerUrl": "https://mumbai.polygonscan.com/",
-    "name": "Polygon Mumbai Testnet"
+    "explorerUrl": "https://polygonscan.com/",
+    "name": "Polygon",
+    "txPath": "tx"
   },
-  "4": {
-    "appName": "ethereum",
-    "chainRpc": "https://rinkeby.infura.io/v3/f9e72d0223644a4fa9a8807426b6dbef",
-    "symbol": "ETH",
-    "explorerUrl": "https://rinkeby.etherscan.io/",
-    "name": "Rinkeby Testnet"
+  "32520": {
+    "appName": "bitgert",
+    "chainRpc": "https://chainrpc.com/",
+    "symbol": "BRISE",
+    "explorerUrl": "https://brisescan.com/",
+    "name": "Bitgert",
+    "txPath": "tx"
+  },
+  "1024": {
+    "appName": "clover",
+    "chainRpc": "https://api-para.clover.finance/",
+    "symbol": "CLV",
+    "explorerUrl": "https://clvscan.com/",
+    "name": "Clover",
+    "txPath": "tx"
+  },
+  "43114": {
+    "appName": "avalanche",
+    "chainRpc": "https://api.avax.network/ext/bc/C/rpc",
+    "symbol": "AVAX",
+    "explorerUrl": "https://snowtrace.io/",
+    "name": "Avalanche",
+    "txPath": "tx"
   }
 }
