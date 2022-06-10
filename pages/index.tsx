@@ -1,11 +1,14 @@
 import '../scripts/contextmenudisabler';
 
+import { Button } from 'antd';
 import _ from 'lodash';
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { FaList, FaQuestion, FaShoppingBasket, FaTag } from 'react-icons/fa';
+import { FiChevronsRight } from 'react-icons/fi';
 import styled from 'styled-components';
 
 import { CollectionCategory, CollectionCategoryImages, CollectionModel } from '../api/models/collection';
@@ -218,6 +221,27 @@ export const NFTContainer = styled.div`
   margin-top: 80px;
   border: 1px solid #383838;
   transition: all 0.3s linear;
+
+  .see__more {
+    text-align: right;
+    display: none;
+    justify-content: right;
+    width: 100%;
+    a {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      .see__more__icon {
+        margin-top: 5px !important;
+      }
+      :hover {
+        text-decoration: underline;
+        color: rgba(255, 255, 255, 1);
+      }
+    }
+  }
   @media screen and (max-width: 769px) {
     width: 95%;
   }
@@ -229,6 +253,12 @@ export const NFTContainer = styled.div`
       margin-top: 40px;
       padding-bottom: 20px;
       transition: all 0.3s linear;
+
+      .see__more {
+        display: flex;
+        margin-top: 20px;
+        margin-bottom: -20px;
+      }
     }
   }
 `;
@@ -565,10 +595,18 @@ export default function Homepage() {
                         )
                       )}
                     </div>
+                    <div className="see__more">
+                      <Link href="/collections">
+                        <a>
+                          See more <FiChevronsRight className="see__more__icon" />
+                        </a>
+                      </Link>
+                    </div>
                   </NFTSubCont>
                 </NFTContainer>
               )}
             </ParentNFTCont>
+
             <Category>
               <div className="category__container">
                 <div className="category__heading">
@@ -588,21 +626,22 @@ export default function Homepage() {
               </div>
             </Category>
           </div>
-          {/* <Footer>
+          <Footer>
             <div className="footer__container">
               <div className="footer__left">
                 <h2>Introducing the Vefi bridging technology </h2>
-                <p>
-                  Get to link your Nft from one network to another Quick and easy right from the VefiNft website Read
-                  more
-                </p>
-                <Button type="primary">Start Bridging</Button>
+                <p>Get to link your Nft from one network to another, it's Quick and easy.</p>
+                <Link href="/bridge">
+                  <a>
+                    <Button type="primary">Start Bridging</Button>
+                  </a>
+                </Link>
               </div>
               <div className="footer__right">
                 <Image src="/objects/bridge.svg" width={300} height={300} alt="image" />
               </div>
             </div>
-          </Footer> */}
+          </Footer>
           <HeroContainer>
             {' '}
             <Hero />
@@ -610,11 +649,11 @@ export default function Homepage() {
         </MarketplaceContainer>
       </MainContainer>
       <MainFooter />
-      <FooterHelpIcon>
+      {/* <FooterHelpIcon>
         <div className="help">
           <FaQuestion />
         </div>
-      </FooterHelpIcon>
+      </FooterHelpIcon> */}
     </>
   );
 }

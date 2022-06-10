@@ -31,31 +31,6 @@ export default class CustomDocument extends Document {
           <link rel="apple-touch-icon" href="/static/favicon.ico" />
           <link rel="manifest" href="/manifest.json" />
           <link rel="icon" href="/static/favicon.ico" />
-          {/* <meta name="viewport" content="width=device-width, initial-scale=1" /> */}
-          <meta name="theme-color" content="#000000" />
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="crossOrigin" />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;600;700;800&display=swap"
-            rel="stylesheet"
-          ></link>
-          <meta
-            name="description"
-            content="The Vefi NFT marketplace is a product of the Vefi Ecosystem that allows the creation and the trading of non-fungible assets on various chains."
-          />
-          <meta name="robots" content="index, follow" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <meta
-            name="keywords"
-            content="nft, vefi, multi-chain nft marketplace, xp.network, vefi nft marketplace, earn money from owning collections"
-          />
-          <meta charSet="UTF-8" />
-          <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
-          <meta
-            property="og:description"
-            content="The Vefi NFT marketplace is a product of the Vefi Ecosystem that allows the creation and the trading of non-fungible assets on various chains."
-          />
-          <meta property="og:url" content="https://vefinftmarket.place" />
         </Head>
         <body>
           <Main />
