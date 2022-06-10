@@ -188,7 +188,7 @@ const Users = () => {
           <div className="user__info">
             <div className="username">
               <h2>
-                {accountById?.name || 'Unnamed'} <span></span>
+                {accountById?.name || 'Unnamed'} {accountById?.isVerified && <span></span>}
               </h2>
             </div>
             <div className="join__date">
