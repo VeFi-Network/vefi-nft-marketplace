@@ -153,7 +153,7 @@ const FilterContainer = styled.div`
 //   gap: 10px;
 // `;
 
-const FilterBtn = styled.button`
+const FilterBtn = styled.button<any>`
   background: ${(props: any) => (props.isActive ? '#5C95FF' : '#373943 ')};
   border-radius: 11px;
   font-family: 'Rubik';
