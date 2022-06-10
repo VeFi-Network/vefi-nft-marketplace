@@ -1,5 +1,6 @@
 import { createRef, useRef } from 'react';
 import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
+
 import { CategoryWrapper } from '../../styles/category.styled';
 
 const Waitlist = () => {
@@ -10,7 +11,7 @@ const Waitlist = () => {
       <CategoryWrapper>
         <div className="categoryTitle">Waitlist</div>
         <div className="wrapper">
-          <FiArrowLeft className="sliderArrow left" onClick={() => handleClick('left')} />
+          <FiArrowLeft className="sliderArrow left" />
           <div className="container" ref={listRef}>
             <div className="listItem">item</div>
             <div className="listItem">item</div>
@@ -32,7 +33,7 @@ const Waitlist = () => {
             <div className="listItem">item</div>
             <div className="listItem">item</div>
           </div>
-          <FiArrowRight className="sliderArrow right" onClick={() => handleClick('right')} />
+          <FiArrowRight className="sliderArrow right"/>
         </div>
       </CategoryWrapper>
     </>
