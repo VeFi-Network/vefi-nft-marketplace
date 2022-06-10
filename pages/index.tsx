@@ -630,11 +630,12 @@ export default function Homepage() {
             <div className="footer__container">
               <div className="footer__left">
                 <h2>Introducing the Vefi bridging technology </h2>
-                <p>
-                  Get to link your Nft from one network to another Quick and easy right from the VefiNft website Read
-                  more
-                </p>
-                <Button type="primary">Start Bridging</Button>
+                <p>Get to link your Nft from one network to another, it's Quick and easy.</p>
+                <Link href="/bridge">
+                  <a>
+                    <Button type="primary">Start Bridging</Button>
+                  </a>
+                </Link>
               </div>
               <div className="footer__right">
                 <Image src="/objects/bridge.svg" width={300} height={300} alt="image" />
@@ -648,11 +649,11 @@ export default function Homepage() {
         </MarketplaceContainer>
       </MainContainer>
       <MainFooter />
-      <FooterHelpIcon>
+      {/* <FooterHelpIcon>
         <div className="help">
           <FaQuestion />
         </div>
-      </FooterHelpIcon>
+      </FooterHelpIcon> */}
     </>
   );
 }

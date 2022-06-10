@@ -105,7 +105,7 @@ function MainFooter() {
         )}
         <div className="company">
           <h2 className="nav_section">Company</h2>
-          {marketplaceArray.slice(14, 18).map(({ label, path }: any) => (
+          {marketplaceArray.slice(14, 19).map(({ label, path }: any) => (
             <FootLink key={label}>
               <Link href={path}>
                 <a>{label}</a>
@@ -185,5 +185,13 @@ const marketplaceArray = [
   {
     label: 'Grants',
     path: '#'
+  },
+  {
+    label: 'Privacy Policy',
+    path: '/privacy'
+  },
+  {
+    label: 'Terms of Service',
+    path: '/terms'
   }
 ];
