@@ -11,6 +11,7 @@ body {
   font-family: 'MonumentExtended', 'Rubik', sans-serif;
   overflow-x: hidden;
   background: #0c0c0c;
+  scroll-behavior: smooth;
 }
 ::-webkit-scrollbar {
   width: 10px;
