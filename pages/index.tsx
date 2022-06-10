@@ -1,11 +1,14 @@
 import '../scripts/contextmenudisabler';
 
+import { Button } from 'antd';
 import _ from 'lodash';
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { FaList, FaQuestion, FaShoppingBasket, FaTag } from 'react-icons/fa';
+import { FiChevronsRight } from 'react-icons/fi';
 import styled from 'styled-components';
 
 import { CollectionCategory, CollectionCategoryImages, CollectionModel } from '../api/models/collection';
@@ -20,9 +23,6 @@ import Navbar from '../components/Navbar';
 import { useAPIContext } from '../contexts/api';
 import { useWeb3Context } from '../contexts/web3';
 import { Category } from '../styles/CategoryCard.styled';
-import { Button } from 'antd';
-import Link from 'next/link';
-import { FiChevronsRight } from 'react-icons/fi';
 
 const MainContainer = styled.div`
   display: flex;
