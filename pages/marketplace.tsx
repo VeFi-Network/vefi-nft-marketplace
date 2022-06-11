@@ -160,7 +160,7 @@ const Market = () => {
                           imageURI={sale.nft?.metadata?.image as string}
                           owner={sale.nft?.owner as string}
                           linkTo={`/nfts/${sale.nft?.collectionId}:${sale.nft?.tokenId}`}
-                          price={sale.price.toString()}
+                          price={sale.price.toFixed(4)}
                         />
                       </div>
                     )
