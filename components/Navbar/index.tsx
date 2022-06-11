@@ -9,6 +9,7 @@ import styled from 'styled-components';
 
 import { useAPIContext } from '../../contexts/api';
 import { usePrice } from '../../contexts/price';
+import { usePush } from '../../contexts/push';
 import { useWeb3Context } from '../../contexts/web3';
 import Menu from '../Profile/Menu';
 
@@ -81,6 +82,10 @@ const NavLinks = styled.div`
     align-items: center;
     cursor: pointer;
 
+    &.blued {
+      background-color: #0000ff;
+    }
+
     transition-duration: 250ms;
 
     &:hover {
@@ -142,6 +147,8 @@ const Navbar = () => {
 
   const price = usePrice();
 
+  const { subscribe, unsubscribe, isSubscribed } = usePush();
+
   const kFormatter = (num: number): string | number => {
     return Math.abs(num) > 999
       ? Math.sign(num) * parseFloat((Math.abs(num) / 1000).toFixed(1)) + 'k'
@@ -163,7 +170,10 @@ const Navbar = () => {
           <NavLinks>
             {active && (
               <>
-                <div className="icon x-mobile">
+                <div
+                  className={`icon x-mobile ${isSubscribed ? 'blued' : ''}`}
+                  onClick={!isSubscribed ? subscribe : unsubscribe}
+                >
                   <FiBell fontSize={15} />
                 </div>
 

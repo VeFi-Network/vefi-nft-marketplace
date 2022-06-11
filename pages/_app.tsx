@@ -13,6 +13,7 @@ import { APIContextProvider } from '../contexts/api';
 import { PriceProvider } from '../contexts/price';
 import { SocketProvider } from '../contexts/socket';
 import { Web3ContextProvider } from '../contexts/web3';
+import { PushProvider } from '../contexts/push';
 
 function getLibrary(provider: any) {
   return new Web3(provider);
@@ -56,7 +57,9 @@ function MyApp({ Component, pageProps }: AppProps) {
                 appId={process.env.NEXT_PUBLIC_MORALIS_APP_ID as string}
               >
                 <PriceProvider>
-                  <Component {...pageProps} />
+                  <PushProvider>
+                    <Component {...pageProps} />
+                  </PushProvider>
                 </PriceProvider>
               </MoralisProvider>
             </SocketProvider>
