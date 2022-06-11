@@ -1,13 +1,14 @@
-import { Alert, Button, Drawer, Dropdown, Tooltip } from 'antd';
+import { Alert, Button, Drawer, Dropdown, Tag, Tooltip } from 'antd';
 import * as ethAddress from 'eth-address';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { FaEnvelope, FaWallet } from 'react-icons/fa';
-import { FiChevronDown, FiMoreHorizontal, FiPlus, FiUser } from 'react-icons/fi';
+import { FaWallet } from 'react-icons/fa';
+import { FiBell, FiChevronDown, FiMoreHorizontal, FiPlus, FiUser } from 'react-icons/fi';
 import styled from 'styled-components';
 
 import { useAPIContext } from '../../contexts/api';
+import { usePrice } from '../../contexts/price';
 import { useWeb3Context } from '../../contexts/web3';
 import Menu from '../Profile/Menu';
 
@@ -15,7 +16,18 @@ const chainIcons = {
   56: '/icons/binance.svg',
   137: '/icons/matic.svg',
   43114: '/icons/avax.svg',
-  32520: '/icons/brise.svg'
+  32520: '/icons/brise.svg',
+  40: '/icons/telos.svg',
+  1024: '/icons/clover.svg'
+};
+
+const chainIdToPriceKeyMap: any = {
+  56: 'binancecoin',
+  137: 'matic-network',
+  43114: 'avalanche-2',
+  32520: 'bitrise-token',
+  40: 'telos',
+  1024: 'clover'
 };
 
 const NavContainer = styled.nav`
@@ -128,6 +140,14 @@ const Navbar = () => {
   } = useWeb3Context();
   const { authenticatedUser } = useAPIContext();
 
+  const price = usePrice();
+
+  const kFormatter = (num: number): string | number => {
+    return Math.abs(num) > 999
+      ? Math.sign(num) * parseFloat((Math.abs(num) / 1000).toFixed(1)) + 'k'
+      : Math.sign(num) * Math.abs(num);
+  };
+
   return (
     <>
       {!!web3Error && <Alert type="error" message={web3Error.message} />}
@@ -144,7 +164,7 @@ const Navbar = () => {
             {active && (
               <>
                 <div className="icon x-mobile">
-                  <FaEnvelope fontSize={15} />
+                  <FiBell fontSize={15} />
                 </div>
 
                 <div className="icon x-mobile" onClick={() => setVisible(!visible)}>
@@ -236,14 +256,17 @@ const Navbar = () => {
                 <div className="wallet__balance">
                   <span className="wallet__balance__heading">Total balance</span>
                   <div className="wallet__balance__amt">
-                    {parseFloat(balance).toFixed(4)} {networkSymbol}{' '}
+                    {kFormatter(parseFloat(parseFloat(balance).toFixed(4)))} {networkSymbol}{' '}
                   </div>
                 </div>
                 <div className="wallet__balance__btn">
                   <span className="icon">
                     <FiPlus />
                   </span>
-                  <span className="btn__text">Add to Balance</span>
+                  <span className="btn__text">Add to Balance </span>
+                  <Tag color="blue" closable={false}>
+                    Coming Soon
+                  </Tag>
                 </div>
               </div>
               <div className="wallet__accounts">
@@ -264,12 +287,24 @@ const Navbar = () => {
                       </div>
                     </div>
                     <div className="account__balance__info__right">
-                      <div className="chain__name__amount">{parseFloat(balance).toFixed(2)}</div>
-                      <div className="source__account__amount">$3000 USD</div>
+                      <div className="chain__name__amount">
+                        {kFormatter(parseFloat(parseFloat(balance).toFixed(2)))}
+                      </div>
+                      <div className="source__account__amount">
+                        $
+                        {kFormatter(
+                          parseFloat(
+                            (
+                              (price[chainIdToPriceKeyMap[(chainId as number) || 56]]?.usd || 0) *
+                              parseFloat(parseFloat(balance).toFixed(2))
+                            ).toFixed(2)
+                          )
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div className="wallet__account__container">
+                {/* <div className="wallet__account__container">
                   <div className="wallet__account__balance">
                     <div className="account__balance__info">
                       <div className="wallet__account__logo">
@@ -285,7 +320,7 @@ const Navbar = () => {
                       <div className="source__account__amount">$3,000 USD</div>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </>
           ) : (

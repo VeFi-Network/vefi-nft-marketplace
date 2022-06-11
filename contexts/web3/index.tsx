@@ -26,7 +26,7 @@ type Web3ContextType = {
 const Web3Context = createContext<Web3ContextType>({} as Web3ContextType);
 
 const injectedConnector = new InjectedConnector({
-  supportedChainIds: [56, 137, 32520, 1024, 43114]
+  supportedChainIds: [56, 137, 32520, 1024, 43114, 40]
 });
 
 const walletConnectConnector = new WalletConnectConnector({
@@ -38,7 +38,8 @@ const walletConnectConnector = new WalletConnectConnector({
     137: chains[137].chainRpc,
     32520: chains[32520].chainRpc,
     1024: chains[1024].chainRpc,
-    43114: chains[43114].chainRpc
+    43114: chains[43114].chainRpc,
+    40: chains[40].chainRpc
   }
 });
 

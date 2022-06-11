@@ -294,7 +294,7 @@ const ParentExploreAndData = styled.div`
   margin-bottom: 50px;
 `;
 
-const Heading = styled.div`
+const Heading = styled.div<any>`
   margin-top: ${(props: { top: string }) => (props.top ? props.top : '58px')};
   font-family: 'Rubik';
   font-style: normal;
@@ -316,12 +316,12 @@ const StyledExploreNft = styled.img`
   }
 `;
 
-const NoItemContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-`;
+// const NoItemContainer = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   text-align: center;
+// `;
 
 export default function NewNFT({}: Props) {
   const { account, library, chainId, explorerUrl, active } = useWeb3Context();
@@ -451,6 +451,10 @@ export default function NewNFT({}: Props) {
               <>
                 <div className="container__wrapper">
                   <div className="title">Mint your NFT.</div>
+                  <div className="text">
+                    <span className="blue">Note:</span> Owner of this collection gets a{' '}
+                    <span className="blue">70%</span> minting discount.
+                  </div>
                   <div className="text">
                     <span className="red">Warning:</span> Ensure your asset is being minted in the appropriate
                     collection as the Vefi Ecosystem would not be responsible for any loss that occurs thereafter.

@@ -276,7 +276,7 @@ const ParentExploreAndData = styled.div`
   }
 `;
 
-const Heading = styled.div`
+const Heading = styled.div<any>`
   margin-top: ${(props: { top: string }) => (props.top ? props.top : '58px')};
   font-family: 'Rubik';
   font-style: normal;
@@ -298,16 +298,16 @@ const StyledExploreNft = styled.img`
   }
 `;
 
-const NoItemContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+// const NoItemContainer = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   text-align: center;
 
-  @media screen and (max-width: 760px) {
-    height: 100vh;
-  }
-`;
+//   @media screen and (max-width: 760px) {
+//     height: 100vh;
+//   }
+// `;
 
 export default function NewCollection({}: Props) {
   const { active, library, chainId, explorerUrl, account } = useWeb3Context();

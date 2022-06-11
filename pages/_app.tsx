@@ -1,3 +1,5 @@
+import '../scripts/contextmenudisabler';
+import '../scripts/push';
 import '../styles/globals.css';
 import 'antd/dist/antd.css';
 
@@ -8,6 +10,7 @@ import { MoralisProvider } from 'react-moralis';
 import Web3 from 'web3';
 
 import { APIContextProvider } from '../contexts/api';
+import { PriceProvider } from '../contexts/price';
 import { SocketProvider } from '../contexts/socket';
 import { Web3ContextProvider } from '../contexts/web3';
 
@@ -52,7 +55,9 @@ function MyApp({ Component, pageProps }: AppProps) {
                 serverUrl={process.env.NEXT_PUBLIC_MORALIS_SERVER_URL as string}
                 appId={process.env.NEXT_PUBLIC_MORALIS_APP_ID as string}
               >
-                <Component {...pageProps} />
+                <PriceProvider>
+                  <Component {...pageProps} />
+                </PriceProvider>
               </MoralisProvider>
             </SocketProvider>
           </APIContextProvider>

@@ -33,7 +33,7 @@ const Waitlist = () => {
             <div className="listItem">item</div>
             <div className="listItem">item</div>
           </div>
-          <FiArrowRight className="sliderArrow right"/>
+          <FiArrowRight className="sliderArrow right" />
         </div>
       </CategoryWrapper>
     </>

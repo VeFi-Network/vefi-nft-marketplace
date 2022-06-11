@@ -15,6 +15,8 @@ import type Web3 from 'web3';
 import { AppConfigs, Chain, ChainFactory, ChainFactoryConfigs } from 'xp.network';
 
 import chains from '../chains.json';
+import ConnectWallet from '../components/ConnectWallet';
+import UnsupportedChain from '../components/error/UnsupportedChain';
 import MainFooter from '../components/Footer';
 import Navbar from '../components/Navbar';
 import { useSocket } from '../contexts/socket';
@@ -32,7 +34,9 @@ const chainIcons = {
   56: '/icons/binance.svg',
   137: '/icons/matic.svg',
   43114: '/icons/avax.svg',
-  32520: '/icons/brise.svg'
+  32520: '/icons/brise.svg',
+  40: '/icons/telos.svg',
+  1024: '/icons/clover.svg'
 };
 
 const bridgeChain: { [key: number]: any } = {
@@ -40,6 +44,8 @@ const bridgeChain: { [key: number]: any } = {
   137: Chain.POLYGON,
   43114: Chain.AVALANCHE
 };
+
+const supportedChains = [43114, 137, 56];
 
 // export async function getServerSideProps(context: any) {
 
@@ -62,9 +68,7 @@ const Bridge = () => {
 
   const [tokenSearchValue, setTokenSearchValue] = useState<string>('');
   const [selectedNFT, setSelectedNFT] = useState<any>(null);
-  const [selectedDestinationChainKey, setSelectedDestinationChainKey] = useState<keyof typeof chains>(
-    chainId?.toString() as keyof typeof chains
-  );
+  const [selectedDestinationChainKey, setSelectedDestinationChainKey] = useState<keyof typeof chains>('56');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const router = useRouter();
@@ -135,13 +139,14 @@ const Bridge = () => {
 
   useEffect(() => {
     if (active && !!chainId && !!account) {
-      (async () => {
-        const nfts = await moralisWeb3Api.account.getNFTs({
-          chain: hexValue(chainId as number) as any,
-          address: account as string
-        });
-        setNFTList(nfts.result!);
-      })();
+      if (supportedChains.includes(chainId))
+        (async () => {
+          const nfts = await moralisWeb3Api.account.getNFTs({
+            chain: hexValue(chainId as number) as any,
+            address: account as string
+          });
+          setNFTList(nfts.result!);
+        })();
     }
   }, [active, chainId, account]);
 
@@ -149,67 +154,80 @@ const Bridge = () => {
     <>
       <SectionWrapper>
         <Navbar />
-        <BridgeBackground>
-          <div className="exploreNft"></div>
-          <div className="bg__left"></div>
-          <BridgeContainer>
-            <div className="container">
-              <div className="heading">
-                <h2>
-                  Transfer NFTs <br />
-                  between blockchains
-                </h2>
-              </div>
-              <div className="container__wrapper">
-                <div className="list__wrapper" onClick={() => setIsTokensModalVisible(!isTokensModalVisible)}>
-                  <div className="list__logo">
-                    <Image
-                      src={chainIcons[(chainId as number as keyof typeof chainIcons)] || '/icons/eth.svg'}
-                      width={30}
-                      height={30}
-                      alt="image"
-                    />
-                  </div>
-                  <div className="list__text">
-                    {chains[chainId?.toString() as keyof typeof chains]?.name || 'Departure chain'} (
-                    {selectedNFT?.metadata.name})
-                  </div>
-                  <div className="list__icon">
-                    <FaChevronDown />
-                  </div>
-                </div>
+        {!active ? (
+          <ConnectWallet />
+        ) : (
+          <>
+            {supportedChains.includes(chainId as number) ? (
+              <BridgeBackground>
+                <div className="exploreNft"></div>
+                <div className="bg__left"></div>
+                <BridgeContainer>
+                  <div className="container">
+                    <div className="heading">
+                      <h2>
+                        Transfer NFTs <br />
+                        between blockchains
+                      </h2>
+                    </div>
+                    <div className="container__wrapper">
+                      <div className="list__wrapper" onClick={() => setIsTokensModalVisible(!isTokensModalVisible)}>
+                        <div className="list__logo">
+                          <Image
+                            src={chainIcons[chainId as number as keyof typeof chainIcons] || '/icons/eth.svg'}
+                            width={30}
+                            height={30}
+                            alt="image"
+                          />
+                        </div>
+                        <div className="list__text">
+                          {chains[chainId?.toString() as keyof typeof chains]?.name || 'Departure chain'} (
+                          {selectedNFT?.metadata.name})
+                        </div>
+                        <div className="list__icon">
+                          <FaChevronDown />
+                        </div>
+                      </div>
 
-                <div className="list__switch">
-                  <FiArrowDown />
-                </div>
-                <div className="list__wrapper" onClick={() => setIsChainsModalVisible(!isChainsModalVisible)}>
-                  <div className="list__logo">
-                    <Image
-                      src={chainIcons[(parseInt(selectedDestinationChainKey) as keyof typeof chainIcons)] || '/icons/eth.svg'}
-                      width={30}
-                      height={30}
-                      alt="image"
-                    />
+                      <div className="list__switch">
+                        <FiArrowDown />
+                      </div>
+                      <div className="list__wrapper" onClick={() => setIsChainsModalVisible(!isChainsModalVisible)}>
+                        <div className="list__logo">
+                          <Image
+                            src={
+                              chainIcons[parseInt(selectedDestinationChainKey) as keyof typeof chainIcons] ||
+                              '/icons/eth.svg'
+                            }
+                            width={30}
+                            height={30}
+                            alt="image"
+                          />
+                        </div>
+                        <div className="list__text">Destination chain</div>
+                        <div className="list__icon">
+                          <FaChevronDown />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="button__wrapper">
+                      <Button
+                        type="primary"
+                        disabled={!allConditionsSatisfied() || isLoading}
+                        onClick={bridgeToken}
+                        loading={isLoading}
+                      >
+                        Bridge <FaArrowRight className="btn__icon" />
+                      </Button>
+                    </div>
                   </div>
-                  <div className="list__text">Destination chain</div>
-                  <div className="list__icon">
-                    <FaChevronDown />
-                  </div>
-                </div>
-              </div>
-              <div className="button__wrapper">
-                <Button
-                  type="primary"
-                  disabled={!allConditionsSatisfied() || isLoading}
-                  onClick={bridgeToken}
-                  loading={isLoading}
-                >
-                  Bridge <FaArrowRight className="btn__icon" />
-                </Button>
-              </div>
-            </div>
-          </BridgeContainer>
-        </BridgeBackground>
+                </BridgeContainer>
+              </BridgeBackground>
+            ) : (
+              <UnsupportedChain supportedChains={['Avalanche', 'Polygon', 'Binance']} />
+            )}
+          </>
+        )}
         <MainFooter />
       </SectionWrapper>
       <Modal
@@ -270,7 +288,7 @@ const Bridge = () => {
             <Input size="large" placeholder="Search" prefix={<FiSearch />} />
           </div> */}
           <div className="select__chain__container">
-            {_.map(Object.keys(chains), key => (
+            {_.filter(Object.keys(chains), key => supportedChains.includes(parseInt(key))).map(key => (
               <SelectChainOptions
                 key={key}
                 onClick={() => {

@@ -1,5 +1,3 @@
-import '../scripts/contextmenudisabler';
-
 import { Button } from 'antd';
 import _ from 'lodash';
 import Head from 'next/head';
@@ -7,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { FaList, FaQuestion, FaShoppingBasket, FaTag } from 'react-icons/fa';
+import { FaList, FaShoppingBasket, FaTag } from 'react-icons/fa';
 import { FiChevronsRight } from 'react-icons/fi';
 import styled from 'styled-components';
 
@@ -629,8 +627,11 @@ export default function Homepage() {
           <Footer>
             <div className="footer__container">
               <div className="footer__left">
-                <h2>Introducing the Vefi bridging technology </h2>
-                <p>Get to link your Nft from one network to another, it's Quick and easy.</p>
+                <h2>Our bridging technology </h2>
+                <p>
+                  By leveraging the XP.Network bridge, the cross-chain transfer of non-fungible assets is made quick and
+                  easy.
+                </p>
                 <Link href="/bridge">
                   <a>
                     <Button type="primary">Start Bridging</Button>

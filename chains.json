@@ -1,7 +1,7 @@
 {
   "56": {
     "appName": "smartchain",
-    "chainRpc": "https://bsc-dataseed1.binance.org",
+    "chainRpc": "https://rpc-bsc.bnb48.club",
     "symbol": "BNB",
     "explorerUrl": "https://bscscan.com/",
     "name": "Binance Smartchain",
@@ -9,7 +9,7 @@
   },
   "137": {
     "appName": "polygon",
-    "chainRpc": "https://polygon-rpc.com/",
+    "chainRpc": "https://matic-mainnet.chainstacklabs.com",
     "symbol": "MATIC",
     "explorerUrl": "https://polygonscan.com/",
     "name": "Polygon",
@@ -37,6 +37,14 @@
     "symbol": "AVAX",
     "explorerUrl": "https://snowtrace.io/",
     "name": "Avalanche",
+    "txPath": "tx"
+  },
+  "40": {
+    "appName": "telos",
+    "chainRpc": "https://rpc.telosarabia.net/evm",
+    "symbol": "TLOS",
+    "explorerUrl": "https://teloscan.io/",
+    "name": "Telos",
     "txPath": "tx"
   }
 }
