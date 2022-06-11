@@ -345,3 +345,17 @@ export function getCurrentSaleOfNFT(
       .catch(reject);
   });
 }
+
+export function removeNFTFromCollection(
+  network: string,
+  collectionId: string,
+  tokenId: number,
+  body: any
+): Promise<number> {
+  return new Promise((resolve, reject) => {
+    baseAxios
+      .patch(`/api/nft/${network}/${collectionId}/${tokenId}/removeNFT`, body)
+      .then(res => handleResponse(res, resolve, reject))
+      .catch(reject);
+  });
+}

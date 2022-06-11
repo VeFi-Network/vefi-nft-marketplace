@@ -1,5 +1,9 @@
 import { Interface } from '@ethersproject/abi';
+import { arrayify } from '@ethersproject/bytes';
 import { AddressZero } from '@ethersproject/constants';
+import { id as mHash } from '@ethersproject/hash';
+import { Web3Provider } from '@ethersproject/providers';
+import { keccak256 } from '@ethersproject/solidity';
 import { parseEther, parseUnits } from '@ethersproject/units';
 import { message, Spin, Tag } from 'antd';
 import _ from 'lodash';
@@ -11,7 +15,7 @@ import { FiEye, FiHeart, FiInfo, FiLink, FiTag } from 'react-icons/fi';
 import styled from 'styled-components';
 import type Web3 from 'web3';
 
-import { addToFavorites, removeFromFavorites, viewItem } from '../../api/nft';
+import { addToFavorites, removeFromFavorites, removeNFTFromCollection, viewItem } from '../../api/nft';
 import request from '../../api/rpc';
 import { addresses } from '../../assets';
 import deployableCollectionAbi from '../../assets/abis/DeployableCollection.json';
@@ -53,24 +57,24 @@ const ProfileContainer = styled.div`
   }
 `;
 
-const Banner = styled.div`
-  margin-top: 10px;
-  width: 100%;
-  border-top: 5px solid #5c95ff;
-  border-bottom: 5px solid #5c95ff;
-  height: 98px;
-  background: ${(props: any) => `url(${props.background})`} no-repeat;
-  display: flex;
-  background-size: cover;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  @media screen and (max-width: 760px) {
-    height: 150px;
-    margin: 0px auto;
-    flex-direction: column;
-  }
-`;
+// const Banner = styled.div`
+//   margin-top: 10px;
+//   width: 100%;
+//   border-top: 5px solid #5c95ff;
+//   border-bottom: 5px solid #5c95ff;
+//   height: 98px;
+//   background: ${(props: any) => `url(${props.background})`} no-repeat;
+//   display: flex;
+//   background-size: cover;
+//   justify-content: center;
+//   align-items: center;
+//   position: relative;
+//   @media screen and (max-width: 760px) {
+//     height: 150px;
+//     margin: 0px auto;
+//     flex-direction: column;
+//   }
+// `;
 
 // const BannerCaption = styled.h3`
 //   font-weight: bold;
@@ -141,15 +145,15 @@ const CollectionInfoCont = styled.div`
   }
 `;
 
-const ColoredBackground = styled.div`
-  width: 825px;
-  height: 960px;
-  background: url('/objects/colorBackground.svg') no-repeat;
-  position: absolute;
-  top: 15%;
-  right: 0%;
-  z-index: 0;
-`;
+// const ColoredBackground = styled.div`
+//   width: 825px;
+//   height: 960px;
+//   background: url('/objects/colorBackground.svg') no-repeat;
+//   position: absolute;
+//   top: 15%;
+//   right: 0%;
+//   z-index: 0;
+// `;
 
 const BodyContainer = styled.div`
   margin-top: 45px;
@@ -170,6 +174,7 @@ const BodyContainer = styled.div`
     flex-direction: column;
   }
 `;
+
 const LeftColumn = styled.div`
   flex: 0.3;
   width: 100%;
@@ -202,6 +207,7 @@ const LeftColumn = styled.div`
     }
   }
 `;
+
 const RightColumn = styled.div`
   flex: 0.7;
   width: 100%;
@@ -215,6 +221,7 @@ const RightColumn = styled.div`
     width: 100%;
   }
 `;
+
 const ProfileAvatarCard = styled.div``;
 
 const LikeButtonContainer = styled.div`
@@ -326,7 +333,7 @@ const ParentContainer = styled.div``;
 
 export default function NFT() {
   const { slug, liked } = usePageQuery();
-  const { account, network, library, chainId, explorerUrl } = useWeb3Context();
+  const { account, network, library, chainId, explorerUrl, txPath } = useWeb3Context();
   const {
     nftById,
     collectionById,
@@ -426,7 +433,7 @@ export default function NFT() {
               <span style={{ fontSize: 15 }}>Item successfully purchased!</span>{' '}
               <a
                 style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
-                href={explorerUrl.concat('tx/' + purchaseResponse.transactionHash)}
+                href={explorerUrl.concat(txPath + '/' + purchaseResponse.transactionHash)}
                 target="_blank"
                 rel="noreferrer"
               >
@@ -471,7 +478,7 @@ export default function NFT() {
             <span style={{ fontSize: 15 }}>Offer accepted!</span>{' '}
             <a
               style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
-              href={explorerUrl.concat('tx/' + acceptanceResponse.transactionHash)}
+              href={explorerUrl.concat(txPath + '/' + acceptanceResponse.transactionHash)}
               target="_blank"
               rel="noreferrer"
             >
@@ -509,7 +516,7 @@ export default function NFT() {
             <span style={{ fontSize: 15 }}>Offer rejected!</span>{' '}
             <a
               style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
-              href={explorerUrl.concat('tx/' + rejectionResponse.transactionHash)}
+              href={explorerUrl.concat(txPath + '/' + rejectionResponse.transactionHash)}
               target="_blank"
               rel="noreferrer"
             >
@@ -522,6 +529,100 @@ export default function NFT() {
           router.push(`/collections/${(slug as string).split(':')[0]}`);
         });
     } catch (error: any) {
+      setIsLoading(false);
+      message.error(error.message);
+    }
+  };
+
+  const removeItemFromCollection = async () => {
+    try {
+      setIsLoading(true);
+      const messageHash = keccak256(
+        ['bytes32', 'string', 'address'],
+        [mHash('sign_up '.concat(account as string)), 'sign_up', account]
+      );
+      const ethersProvider = new Web3Provider((library as Web3).givenProvider);
+      const signer = ethersProvider.getSigner();
+
+      setTip('Requesting signature');
+      const signature = await signer.signMessage(arrayify(messageHash));
+      const collectionContract = new (library as Web3).eth.Contract(
+        deployableCollectionAbi as any,
+        collectionById.collectionId
+      );
+
+      setTip('Burning NFT');
+      const removalResponse = await collectionContract.methods.burn(nftById.tokenId).send({
+        from: account
+      });
+
+      setTip('Removing from collection');
+      const removed = await removeNFTFromCollection(network, collectionById.collectionId, nftById.tokenId, {
+        signature,
+        messageHash
+      });
+
+      setTip('');
+      setIsLoading(false);
+
+      message
+        .success(
+          <>
+            <span style={{ fontSize: 15 }}>{removed} items(s) removed!</span>{' '}
+            <a
+              style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
+              href={explorerUrl.concat(txPath + '/' + removalResponse.transactionHash)}
+              target="_blank"
+              rel="noreferrer"
+            >
+              View on explorer!
+            </a>
+          </>,
+          2
+        )
+        .then(() => {
+          router.push(`/collections/${(slug as string).split(':')[0]}`);
+        });
+    } catch (error: any) {
+      setTip('');
+      setIsLoading(false);
+      message.error(error.message);
+    }
+  };
+
+  const cancelSale = async () => {
+    try {
+      setIsLoading(true);
+      const marketContract = new (library as Web3).eth.Contract(marketPlaceAbi as any, addresses[chainId as number]);
+
+      setTip('Now cancelling sale');
+      const saleCancelledResponse = await marketContract.methods.cancelSale(currentSaleOfNFT?.marketId).send({
+        from: account
+      });
+
+      setTip('');
+      setIsLoading(false);
+
+      message
+        .success(
+          <>
+            <span style={{ fontSize: 15 }}>Sale cancelled!</span>{' '}
+            <a
+              style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
+              href={explorerUrl.concat(txPath + '/' + saleCancelledResponse.transactionHash)}
+              target="_blank"
+              rel="noreferrer"
+            >
+              View on explorer!
+            </a>
+          </>,
+          2
+        )
+        .then(() => {
+          router.push(`/collections/${(slug as string).split(':')[0]}`);
+        });
+    } catch (error: any) {
+      setTip('');
       setIsLoading(false);
       message.error(error.message);
     }
@@ -709,6 +810,28 @@ export default function NFT() {
                         onClick={buy}
                       >
                         Buy
+                      </Filled_CTA_Button>
+                    )}
+                    {!!account && account === collectionById.collectionOwner && (
+                      <Filled_CTA_Button
+                        disabled={account !== collectionById.collectionOwner}
+                        style={{
+                          background: '#ff0000'
+                        }}
+                        onClick={removeItemFromCollection}
+                      >
+                        Remove item from collection
+                      </Filled_CTA_Button>
+                    )}
+                    {!!account && account === nftById.owner && itemOnSale && (
+                      <Filled_CTA_Button
+                        disabled={account !== nftById.owner || !itemOnSale}
+                        style={{
+                          background: '#ff0000'
+                        }}
+                        onClick={cancelSale}
+                      >
+                        Cancel Sale
                       </Filled_CTA_Button>
                     )}
                   </CTA>

@@ -1,10 +1,10 @@
 (() => {
   if (typeof window !== 'undefined' && !!window.self) {
     self.addEventListener('push', ev => {
-      const data = JSON.parse(ev.data.text());
+      const pushData = JSON.parse(ev.data.text());
       ev.waitUntil(
-        self.registration.showNotification(data.title, {
-          body: data.message,
+        self.registration.showNotification(pushData.title, {
+          body: pushData.data,
           icon: '/icon=192x192.png'
         })
       );
