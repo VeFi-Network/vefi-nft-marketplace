@@ -140,12 +140,12 @@ const ExploreNFT = styled.div`
   }
 `;
 
-const NoItemContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-`;
+// const NoItemContainer = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   text-align: center;
+// `;
 
 const CreateProfile = () => {
   const { active, account, library } = useWeb3Context();

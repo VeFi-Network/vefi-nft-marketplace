@@ -11,4 +11,5 @@ export interface AccountModel {
   metadataURI: string;
   metadata: AccountMetadata;
   createdAt?: string;
+  isVerified?: boolean;
 }

@@ -212,7 +212,7 @@ type Props = {
 export default function SellPopup({ modal, setModal, nft, transition }: Props) {
   const [tokenDropdownShown, setTokenDropdownShown] = useState(false);
   const [token, setToken] = useState<{ name: string; image: string; address: string }>();
-  const { chainId, account, network, library, explorerUrl } = useWeb3Context();
+  const { chainId, account, network, library, explorerUrl, txPath } = useWeb3Context();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<{ paymentReceiver: string; currency: string; price: number }>({
     paymentReceiver: account as string,
@@ -283,7 +283,7 @@ export default function SellPopup({ modal, setModal, nft, transition }: Props) {
               <span style={{ fontSize: 15 }}>NFT successfully sold!</span>{' '}
               <a
                 style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
-                href={explorerUrl.concat('tx/' + saleResponse.transactionHash)}
+                href={explorerUrl.concat(txPath + '/' + saleResponse.transactionHash)}
                 target="_blank"
                 rel="noreferrer"
               >

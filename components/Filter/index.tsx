@@ -8,7 +8,7 @@ type IFilterProps = {
   onClick?: () => void;
 };
 
-export const FilterPropertyWrapper = styled.div`
+export const FilterPropertyWrapper = styled.div<any>`
   background: ${(props: { isActive: boolean }) => (props.isActive ? '#5C95FF' : '#373943')};
   width: max-content;
 

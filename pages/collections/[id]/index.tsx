@@ -101,7 +101,7 @@ const Collection = () => {
     loadNFTsInCollectionByOffers,
     loadSuccessfulTradesForCollection
   } = useAPIContext();
-  const { network, explorerUrl, networkSymbol } = useWeb3Context();
+  const { network, explorerUrl, networkSymbol, txPath } = useWeb3Context();
 
   const kFormatter = (num: number): string | number => {
     return Math.abs(num) > 999
@@ -433,7 +433,7 @@ const Collection = () => {
                         key: 'transactionHash',
                         render: value => (
                           <a
-                            href={explorerUrl.concat('tx/' + value)}
+                            href={explorerUrl.concat(txPath + '/' + value)}
                             style={{ textDecoration: 'none' }}
                             target="_blank"
                             rel="noreferrer"

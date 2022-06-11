@@ -276,7 +276,7 @@ const ParentExploreAndData = styled.div`
   }
 `;
 
-const Heading = styled.div`
+const Heading = styled.div<any>`
   margin-top: ${(props: { top: string }) => (props.top ? props.top : '58px')};
   font-family: 'Rubik';
   font-style: normal;
@@ -298,19 +298,19 @@ const StyledExploreNft = styled.img`
   }
 `;
 
-const NoItemContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+// const NoItemContainer = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   text-align: center;
 
-  @media screen and (max-width: 760px) {
-    height: 100vh;
-  }
-`;
+//   @media screen and (max-width: 760px) {
+//     height: 100vh;
+//   }
+// `;
 
 export default function NewCollection({}: Props) {
-  const { active, library, chainId, explorerUrl, account } = useWeb3Context();
+  const { active, library, chainId, explorerUrl, txPath, account } = useWeb3Context();
   const { authenticatedUser } = useAPIContext();
 
   const [bannerImage, setBannerImage] = useState<any>(null);
@@ -416,7 +416,7 @@ export default function NewCollection({}: Props) {
             <span style={{ fontSize: 15 }}>Collection successfully deployed!</span>{' '}
             <a
               style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
-              href={explorerUrl.concat('tx/' + deploymentResponse.transactionHash)}
+              href={explorerUrl.concat(txPath + '/' + deploymentResponse.transactionHash)}
               target="_blank"
               rel="noreferrer"
             >

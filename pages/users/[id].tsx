@@ -90,7 +90,7 @@ const Users = () => {
     accountById,
     loadAccountById
   } = useAPIContext();
-  const { account, network, chainId, explorerUrl } = useWeb3Context();
+  const { account, network, chainId, explorerUrl, txPath } = useWeb3Context();
   const [selectedTab, setSelectedTab] = useState<SelectedTab>(SelectedTab.COLLECTIONS);
   const [renderedItem, setRenderedItem] = useState<Rendered>(Rendered.ITEMS);
   const [nftList, setNFTList] = useState<Array<NFTModel>>([]);
@@ -188,7 +188,7 @@ const Users = () => {
           <div className="user__info">
             <div className="username">
               <h2>
-                {accountById?.name || 'Unnamed'} <span></span>
+                {accountById?.name || 'Unnamed'} {accountById?.isVerified && <span></span>}
               </h2>
             </div>
             <div className="join__date">
@@ -447,7 +447,7 @@ const Users = () => {
                       key: 'transactionHash',
                       render: value => (
                         <a
-                          href={explorerUrl.concat('tx/' + value)}
+                          href={explorerUrl.concat(txPath + '/' + value)}
                           style={{ textDecoration: 'none' }}
                           target="_blank"
                           rel="noreferrer"

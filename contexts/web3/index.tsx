@@ -17,6 +17,7 @@ type Web3ContextType = {
   network: string;
   networkSymbol: string;
   explorerUrl: string;
+  txPath: string;
   balance: string;
   connectMetamask: () => void;
   connectWalletConnect: () => void;
@@ -26,17 +27,20 @@ type Web3ContextType = {
 const Web3Context = createContext<Web3ContextType>({} as Web3ContextType);
 
 const injectedConnector = new InjectedConnector({
-  supportedChainIds: [97, 80001, 4]
+  supportedChainIds: [56, 137, 32520, 1024, 43114, 40]
 });
 
 const walletConnectConnector = new WalletConnectConnector({
   qrcode: true,
   bridge: 'https://bridge.walletconnect.org',
-  supportedChainIds: [97, 80001, 4],
+  supportedChainIds: [56, 137, 32520, 1024, 43114],
   rpc: {
-    97: chains[97].chainRpc,
-    80001: chains[80001].chainRpc,
-    4: chains[4].chainRpc
+    56: chains[56].chainRpc,
+    137: chains[137].chainRpc,
+    32520: chains[32520].chainRpc,
+    1024: chains[1024].chainRpc,
+    43114: chains[43114].chainRpc,
+    40: chains[40].chainRpc
   }
 });
 
@@ -44,7 +48,8 @@ export const Web3ContextProvider = ({ children }: any) => {
   const { library, account, activate, deactivate, active, chainId, error, setError } = useWeb3React<Web3>();
   const [network, setNetwork] = useState<string>('smartchain');
   const [networkSymbol, setNetworkSymbol] = useState<string>('BNB');
-  const [explorerUrl, setExplorerUrl] = useState<string>(chains['97'].explorerUrl);
+  const [explorerUrl, setExplorerUrl] = useState<string>(chains['56'].explorerUrl);
+  const [txPath, setTxPath] = useState<string>(chains['56'].txPath);
   const [tried, setTried] = useState<boolean>(false);
   const [balance, setBalance] = useState<string>('0');
 
@@ -86,6 +91,7 @@ export const Web3ContextProvider = ({ children }: any) => {
                 setNetwork(chains[chainId?.toString() as keyof typeof chains].appName);
                 setExplorerUrl(chains[chainId?.toString() as keyof typeof chains].explorerUrl);
                 setNetworkSymbol(chains[chainId?.toString() as keyof typeof chains].symbol);
+                setTxPath(chains[chainId?.toString() as keyof typeof chains].txPath);
               }
             }, 500);
           })
@@ -107,6 +113,7 @@ export const Web3ContextProvider = ({ children }: any) => {
       setNetwork(chains[chainId.toString() as keyof typeof chains].appName);
       setExplorerUrl(chains[chainId.toString() as keyof typeof chains].explorerUrl);
       setNetworkSymbol(chains[chainId.toString() as keyof typeof chains].symbol);
+      setTxPath(chains[chainId.toString() as keyof typeof chains].txPath);
     }
   }, [chainId, active]);
 
@@ -131,6 +138,7 @@ export const Web3ContextProvider = ({ children }: any) => {
         network,
         networkSymbol,
         explorerUrl,
+        txPath,
         balance,
         error
       }}

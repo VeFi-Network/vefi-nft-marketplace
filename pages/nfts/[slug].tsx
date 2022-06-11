@@ -13,7 +13,7 @@ import type Web3 from 'web3';
 
 import { addToFavorites, removeFromFavorites, viewItem } from '../../api/nft';
 import request from '../../api/rpc';
-import { addresses, CONSTANTS } from '../../assets';
+import { addresses } from '../../assets';
 import deployableCollectionAbi from '../../assets/abis/DeployableCollection.json';
 import erc20Abi from '../../assets/abis/ERC20.json';
 import marketPlaceAbi from '../../assets/abis/Marketplace.json';
@@ -29,7 +29,7 @@ import { useAPIContext } from '../../contexts/api';
 import { useWeb3Context } from '../../contexts/web3';
 import { usePageQuery } from '../../hooks/query';
 
-const RootContainer = styled.div`
+const RootContainer = styled.div<any>`
   width: 100%;
   background: #0c0c0c;
 `;

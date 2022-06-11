@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ConnectWalletWrapper = styled.div`
+const UnsupportedChainWrapper = styled.div`
   width: 100%;
   display: flex;
   height: calc(100vh - 200px);
@@ -55,22 +55,25 @@ const ConnectWalletWrapper = styled.div`
   }
 `;
 
-const ConnectWallet = () => {
+const UnsupportedChain = ({ supportedChains }: any) => {
   return (
     <>
-      <ConnectWalletWrapper>
+      <UnsupportedChainWrapper>
         <div className="container">
           <div className="title">
-            <h1>Oops!</h1>
-            <h2>Connect your Wallet</h2>
+            <h1>Sorry!</h1>
+            <h2>
+              This chain is not supported yet.{' '}
+              {supportedChains && <span>Supported chains are {supportedChains.join(', ')}</span>}
+            </h2>
           </div>
           <div className="body">
-            <p>You need to connect your wallet to continue</p>
+            <p>Switch chain to continue</p>
           </div>
         </div>
-      </ConnectWalletWrapper>
+      </UnsupportedChainWrapper>
     </>
   );
 };
 
-export default ConnectWallet;
+export default UnsupportedChain;
