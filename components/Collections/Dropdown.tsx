@@ -13,7 +13,7 @@ type Props = {
   top: string;
 };
 
-const DropdownMain = styled.div`
+const DropdownMain = styled.div<any>`
   display: flex;
   flex-direction: row;
   align-items: flex-start;

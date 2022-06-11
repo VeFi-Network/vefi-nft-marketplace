@@ -20,7 +20,7 @@ const DynamicDropdownCont = styled.div`
   gap: 27px;
 `;
 
-const Dropdown = styled.div`
+const Dropdown = styled.div<any>`
   display: flex;
   flex-direction: row;
   align-items: flex-start;
