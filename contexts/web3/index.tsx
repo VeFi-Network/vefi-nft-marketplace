@@ -46,9 +46,9 @@ const walletConnectConnector = new WalletConnectConnector({
 
 export const Web3ContextProvider = ({ children }: any) => {
   const { library, account, activate, deactivate, active, chainId, error, setError } = useWeb3React<Web3>();
-  const [network, setNetwork] = useState<string>('smartchain');
-  const [networkSymbol, setNetworkSymbol] = useState<string>('BNB');
-  const [explorerUrl, setExplorerUrl] = useState<string>(chains['56'].explorerUrl);
+  const [network, setNetwork] = useState<string>('bitgert');
+  const [networkSymbol, setNetworkSymbol] = useState<string>('BRISE');
+  const [explorerUrl, setExplorerUrl] = useState<string>(chains['32520'].explorerUrl);
   const [txPath, setTxPath] = useState<string>(chains['56'].txPath);
   const [tried, setTried] = useState<boolean>(false);
   const [balance, setBalance] = useState<string>('0');
