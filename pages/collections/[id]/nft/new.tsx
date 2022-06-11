@@ -324,7 +324,7 @@ const StyledExploreNft = styled.img`
 // `;
 
 export default function NewNFT({}: Props) {
-  const { account, library, chainId, explorerUrl, active } = useWeb3Context();
+  const { account, library, chainId, explorerUrl, txPath, active } = useWeb3Context();
   const [avatarImage, setAvatarImage] = useState<any>(null);
   const [traitsIDs, setTraitsIDs] = useState<string[]>([uuid()]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -406,7 +406,7 @@ export default function NewNFT({}: Props) {
             <span style={{ fontSize: 15 }}>NFT successfully minted!</span>{' '}
             <a
               style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
-              href={explorerUrl.concat('tx/' + nftMintingResponse.transactionHash)}
+              href={explorerUrl.concat(txPath + '/' + nftMintingResponse.transactionHash)}
               target="_blank"
               rel="noreferrer"
             >

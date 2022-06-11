@@ -17,6 +17,7 @@ type Web3ContextType = {
   network: string;
   networkSymbol: string;
   explorerUrl: string;
+  txPath: string;
   balance: string;
   connectMetamask: () => void;
   connectWalletConnect: () => void;
@@ -48,6 +49,7 @@ export const Web3ContextProvider = ({ children }: any) => {
   const [network, setNetwork] = useState<string>('smartchain');
   const [networkSymbol, setNetworkSymbol] = useState<string>('BNB');
   const [explorerUrl, setExplorerUrl] = useState<string>(chains['56'].explorerUrl);
+  const [txPath, setTxPath] = useState<string>(chains['56'].txPath);
   const [tried, setTried] = useState<boolean>(false);
   const [balance, setBalance] = useState<string>('0');
 
@@ -89,6 +91,7 @@ export const Web3ContextProvider = ({ children }: any) => {
                 setNetwork(chains[chainId?.toString() as keyof typeof chains].appName);
                 setExplorerUrl(chains[chainId?.toString() as keyof typeof chains].explorerUrl);
                 setNetworkSymbol(chains[chainId?.toString() as keyof typeof chains].symbol);
+                setTxPath(chains[chainId?.toString() as keyof typeof chains].txPath);
               }
             }, 500);
           })
@@ -110,6 +113,7 @@ export const Web3ContextProvider = ({ children }: any) => {
       setNetwork(chains[chainId.toString() as keyof typeof chains].appName);
       setExplorerUrl(chains[chainId.toString() as keyof typeof chains].explorerUrl);
       setNetworkSymbol(chains[chainId.toString() as keyof typeof chains].symbol);
+      setTxPath(chains[chainId.toString() as keyof typeof chains].txPath);
     }
   }, [chainId, active]);
 
@@ -134,6 +138,7 @@ export const Web3ContextProvider = ({ children }: any) => {
         network,
         networkSymbol,
         explorerUrl,
+        txPath,
         balance,
         error
       }}

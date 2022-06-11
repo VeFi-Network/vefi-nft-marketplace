@@ -310,7 +310,7 @@ const StyledExploreNft = styled.img`
 // `;
 
 export default function NewCollection({}: Props) {
-  const { active, library, chainId, explorerUrl, account } = useWeb3Context();
+  const { active, library, chainId, explorerUrl, txPath, account } = useWeb3Context();
   const { authenticatedUser } = useAPIContext();
 
   const [bannerImage, setBannerImage] = useState<any>(null);
@@ -416,7 +416,7 @@ export default function NewCollection({}: Props) {
             <span style={{ fontSize: 15 }}>Collection successfully deployed!</span>{' '}
             <a
               style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
-              href={explorerUrl.concat('tx/' + deploymentResponse.transactionHash)}
+              href={explorerUrl.concat(txPath + '/' + deploymentResponse.transactionHash)}
               target="_blank"
               rel="noreferrer"
             >

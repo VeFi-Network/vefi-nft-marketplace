@@ -210,7 +210,7 @@ type Props = {
 };
 
 export default function OfferPopup({ modal, setModal, nft, transition, fp }: Props) {
-  const { chainId, account, network, library, explorerUrl } = useWeb3Context();
+  const { chainId, account, network, library, explorerUrl, txPath } = useWeb3Context();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<{ recipient: string; price: number }>({
     recipient: account as string,
@@ -286,7 +286,7 @@ export default function OfferPopup({ modal, setModal, nft, transition, fp }: Pro
               <span style={{ fontSize: 15 }}>Offer successfully made!</span>{' '}
               <a
                 style={{ fontSize: 15, textDecoration: 'none', color: '#6d00c1' }}
-                href={explorerUrl.concat('tx/' + offerResponse.transactionHash)}
+                href={explorerUrl.concat(txPath + '/' + offerResponse.transactionHash)}
                 target="_blank"
                 rel="noreferrer"
               >
