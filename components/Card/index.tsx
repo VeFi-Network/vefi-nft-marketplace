@@ -148,6 +148,13 @@ const CardFooterItem = styled.div`
 
 const Card = (props: Props) => {
   const { networkSymbol } = useWeb3Context();
+
+  const kFormatter = (num: number): string | number => {
+    return Math.abs(num) > 999
+      ? Math.sign(num) * parseFloat((Math.abs(num) / 1000).toFixed(1)) + 'k'
+      : Math.sign(num) * Math.abs(num);
+  };
+
   return (
     <CardContainer>
       <Link href={props.linkTo}>
@@ -171,7 +178,7 @@ const Card = (props: Props) => {
                         <Image src="/icons/eth_classic.svg" width={20} height={20} />
 
                         <div>
-                          {props.price} {networkSymbol}
+                          {kFormatter(parseFloat(props.price))} {networkSymbol}
                         </div>
                       </div>
                     )}
