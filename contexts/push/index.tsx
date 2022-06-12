@@ -46,14 +46,12 @@ export const PushProvider = ({ children }: any) => {
               userVisibleOnly: true,
               applicationServerKey: base64ToUint8Array(result)
             });
+            const subJson = sub.toJSON();
             const serverSubscription = await axios.post(
               NFT_API + '/api/push/subscribe',
               {
-                endpoint: sub.endpoint,
-                keys: {
-                  auth: sub.getKey('auth'),
-                  p256dh: sub.getKey('p256dh')
-                }
+                endpoint: subJson.endpoint,
+                keys: subJson.keys
               },
               {
                 headers: {
