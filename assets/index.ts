@@ -36,28 +36,28 @@ export const CONSTANTS: {
 } = {
   feesPerNetwork: {
     56: {
-      nftMintFee: parseEther('0.416400'),
-      collectionDeployFee: parseEther('0.867500')
+      nftMintFee: parseEther('0.007618467164406522'),
+      collectionDeployFee: parseEther('0.03802715138608966')
     },
     137: {
-      nftMintFee: parseEther('196.501809935208'),
-      collectionDeployFee: parseEther('409.37877069834997')
+      nftMintFee: parseEther('3.8105109133032555'),
+      collectionDeployFee: parseEther('19.03094431545693')
     },
     32520: {
-      nftMintFee: parseEther('29107361.63'),
-      collectionDeployFee: parseEther('5813481.48')
+      nftMintFee: parseEther('4866606.320748289'),
+      collectionDeployFee: parseEther('24365818.654958077')
     },
     1024: {
-      nftMintFee: parseEther('923.076923077'),
-      collectionDeployFee: parseEther('1923.07692308')
+      nftMintFee: parseEther('1.968503937007874'),
+      collectionDeployFee: parseEther('9.84251968503937')
     },
     43114: {
-      nftMintFee: parseEther('4.916520'),
-      collectionDeployFee: parseEther('10.242750')
+      nftMintFee: parseEther('0.1075268817204301'),
+      collectionDeployFee: parseEther('0.5376344086021505')
     },
     40: {
-      nftMintFee: parseEther('467.624777878'),
-      collectionDeployFee: parseEther('974.218287246')
+      nftMintFee: parseEther('8.977023308841021'),
+      collectionDeployFee: parseEther('44.90446574911875')
     }
   },
   paymentTokensPerNetwork: {
