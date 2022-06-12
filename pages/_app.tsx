@@ -1,5 +1,4 @@
 import '../scripts/contextmenudisabler';
-import '../scripts/push';
 import '../styles/globals.css';
 import 'antd/dist/antd.css';
 
@@ -11,9 +10,9 @@ import Web3 from 'web3';
 
 import { APIContextProvider } from '../contexts/api';
 import { PriceProvider } from '../contexts/price';
+import { PushProvider } from '../contexts/push';
 import { SocketProvider } from '../contexts/socket';
 import { Web3ContextProvider } from '../contexts/web3';
-import { PushProvider } from '../contexts/push';
 
 function getLibrary(provider: any) {
   return new Web3(provider);

@@ -60,7 +60,7 @@ export const PushProvider = ({ children }: any) => {
               }
             );
 
-            console.log('PushSubscription: ', JSON.stringify(serverSubscription, undefined, 2));
+            console.log('PushSubscription: ', JSON.stringify(serverSubscription.data, undefined, 2));
             setSubscription(sub);
             setIsSubscribed(true);
             message.success('Subscribed for push notification');
@@ -101,6 +101,16 @@ export const PushProvider = ({ children }: any) => {
         });
         setRegistration(reg);
       });
+
+      if ('self' in window) {
+        self.addEventListener('push', (ev: any) => {
+          const obj = JSON.parse(ev.data.text());
+          registration?.showNotification(obj.title, {
+            body: obj.data,
+            icon: '/icon-192x192.png'
+          });
+        });
+      }
     }
   }, []);
   return <AppPushContext.Provider value={{ isSubscribed, subscribe, unsubscribe }}>{children}</AppPushContext.Provider>;
