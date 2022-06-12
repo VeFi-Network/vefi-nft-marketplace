@@ -106,29 +106,6 @@ function Listing({ datasource, acceptanceButtonEnabled, rejectionButtonEnabled, 
               render: (val: number) => <span>{new Date(val * 1000).toUTCString()}</span>
             },
             {
-              title: 'Status',
-              dataIndex: 'status',
-              key: 'status',
-              render: (val: OrderStatus) => (
-                <span
-                  style={{
-                    color:
-                      val === OrderStatus.STARTED
-                        ? 'yellow'
-                        : val === OrderStatus.ACCEPTED
-                        ? 'green'
-                        : val === OrderStatus.REJECTED
-                        ? 'orangered'
-                        : val === OrderStatus.CANCELLED
-                        ? 'red'
-                        : 'blue'
-                  }}
-                >
-                  {val}
-                </span>
-              )
-            },
-            {
               title: 'Actions',
               dataIndex: 'orderId',
               key: 'orderId',
