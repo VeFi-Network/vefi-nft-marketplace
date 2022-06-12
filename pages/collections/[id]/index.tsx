@@ -18,7 +18,7 @@ import {
   FaQuestion,
   FaShoppingBasket
 } from 'react-icons/fa';
-import { FiBarChart, FiGrid, FiThumbsUp } from 'react-icons/fi';
+import { FiBarChart, FiExternalLink, FiGrid, FiThumbsUp } from 'react-icons/fi';
 import styled from 'styled-components';
 
 import { NFTModel } from '../../../api/models/nft';
@@ -101,7 +101,7 @@ const Collection = () => {
     loadNFTsInCollectionByOffers,
     loadSuccessfulTradesForCollection
   } = useAPIContext();
-  const { network, explorerUrl, networkSymbol, txPath } = useWeb3Context();
+  const { network, explorerUrl, networkSymbol, txPath, erc721Scan } = useWeb3Context();
 
   const kFormatter = (num: number): string | number => {
     return Math.abs(num) > 999
@@ -173,6 +173,14 @@ const Collection = () => {
             <NFTCollectionWrapper>
               <div className="username">
                 <h2>{collectionById.collectionName}</h2>
+                <a
+                  href={erc721Scan.replace(':address', id as string)}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ textDecoration: 'none', margin: 4 }}
+                >
+                  <FiExternalLink fontSize={16} />
+                </a>
               </div>
               <div className="user__info">
                 <p>

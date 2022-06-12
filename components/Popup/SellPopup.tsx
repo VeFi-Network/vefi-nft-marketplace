@@ -304,7 +304,7 @@ export default function SellPopup({ modal, setModal, nft, transition }: Props) {
 
   useEffect(() => {
     setToken(
-      CONSTANTS.paymentTokensPerNetwork[chainId || 97].map(t => ({
+      CONSTANTS.paymentTokensPerNetwork[chainId || 32520].map(t => ({
         name: t.name,
         image: t.logo,
         address: t.token

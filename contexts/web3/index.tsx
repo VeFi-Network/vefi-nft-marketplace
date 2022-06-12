@@ -18,6 +18,7 @@ type Web3ContextType = {
   networkSymbol: string;
   explorerUrl: string;
   txPath: string;
+  erc721Scan: string;
   balance: string;
   connectMetamask: () => void;
   connectWalletConnect: () => void;
@@ -49,7 +50,8 @@ export const Web3ContextProvider = ({ children }: any) => {
   const [network, setNetwork] = useState<string>('bitgert');
   const [networkSymbol, setNetworkSymbol] = useState<string>('BRISE');
   const [explorerUrl, setExplorerUrl] = useState<string>(chains['32520'].explorerUrl);
-  const [txPath, setTxPath] = useState<string>(chains['56'].txPath);
+  const [txPath, setTxPath] = useState<string>(chains['32520'].txPath);
+  const [erc721Scan, setERC721Scan] = useState<string>(chains['32520'].erc721Scan);
   const [tried, setTried] = useState<boolean>(false);
   const [balance, setBalance] = useState<string>('0');
 
@@ -92,6 +94,7 @@ export const Web3ContextProvider = ({ children }: any) => {
                 setExplorerUrl(chains[chainId?.toString() as keyof typeof chains].explorerUrl);
                 setNetworkSymbol(chains[chainId?.toString() as keyof typeof chains].symbol);
                 setTxPath(chains[chainId?.toString() as keyof typeof chains].txPath);
+                setERC721Scan(chains[chainId?.toString() as keyof typeof chains].erc721Scan);
               }
             }, 500);
           })
@@ -114,6 +117,7 @@ export const Web3ContextProvider = ({ children }: any) => {
       setExplorerUrl(chains[chainId.toString() as keyof typeof chains].explorerUrl);
       setNetworkSymbol(chains[chainId.toString() as keyof typeof chains].symbol);
       setTxPath(chains[chainId.toString() as keyof typeof chains].txPath);
+      setERC721Scan(chains[chainId?.toString() as keyof typeof chains].erc721Scan);
     }
   }, [chainId, active]);
 
@@ -139,6 +143,7 @@ export const Web3ContextProvider = ({ children }: any) => {
         networkSymbol,
         explorerUrl,
         txPath,
+        erc721Scan,
         balance,
         error
       }}

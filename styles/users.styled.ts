@@ -477,13 +477,12 @@ export const CardContainer = styled.div`
   z-index: 3;
   transition-duration: 250ms;
 
-  cursor: pointer;
-
   &:hover {
     transform: scale(1);
     top: 5px;
     position: relative;
   }
+
   border-radius: 21px 21px 0 0;
 `;
 

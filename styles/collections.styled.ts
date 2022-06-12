@@ -66,6 +66,7 @@ export const NFTUserStats = styled.div`
         color: #fff;
         font-size: 0.6rem;
         border-radius: 3px;
+        margin-top: 2px;
       }
     }
   }
