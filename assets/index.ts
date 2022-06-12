@@ -44,8 +44,8 @@ export const CONSTANTS: {
       collectionDeployFee: parseEther('409.37877069834997')
     },
     32520: {
-      nftMintFee: parseEther('242172774.12948978'),
-      collectionDeployFee: parseEther('504526612.7697703')
+      nftMintFee: parseEther('29107361.63'),
+      collectionDeployFee: parseEther('5813481.48')
     },
     1024: {
       nftMintFee: parseEther('923.076923077'),
