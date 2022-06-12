@@ -105,10 +105,12 @@ export const PushProvider = ({ children }: any) => {
       if ('self' in window) {
         self.addEventListener('push', (ev: any) => {
           const obj = JSON.parse(ev.data.text());
-          registration?.showNotification(obj.title, {
-            body: obj.data,
-            icon: '/icon-192x192.png'
-          });
+          ev.waitUntil(
+            registration?.showNotification(obj.title, {
+              body: obj.data,
+              icon: '/icon-192x192.png'
+            })
+          );
         });
       }
     }
