@@ -645,7 +645,7 @@ export default function NFT() {
 
       setIsLoading(false);
     }
-  }, [slug]);
+  }, []);
 
   useEffect(() => {
     if (collectionById && nftById) {

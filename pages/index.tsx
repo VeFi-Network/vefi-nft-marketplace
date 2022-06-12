@@ -203,6 +203,10 @@ const NFTSubCont = styled.div`
     width: max-content;
     gap: 8px;
     transition: all 0.3s ease-in;
+
+    // @media screen and (max-width: 760px) {
+    //   flex-direction: column;
+    // }
   }
 `;
 

@@ -5,7 +5,8 @@
     "symbol": "BNB",
     "explorerUrl": "https://bscscan.com/",
     "name": "Binance Smartchain",
-    "txPath": "tx"
+    "txPath": "tx",
+    "erc721Scan": "https://bscscan.com/token/:address"
   },
   "137": {
     "appName": "polygon",
@@ -13,7 +14,8 @@
     "symbol": "MATIC",
     "explorerUrl": "https://polygonscan.com/",
     "name": "Polygon",
-    "txPath": "tx"
+    "txPath": "tx",
+    "erc721Scan": "https://polygonscan.com/token/:address"
   },
   "32520": {
     "appName": "bitgert",
@@ -21,7 +23,8 @@
     "symbol": "BRISE",
     "explorerUrl": "https://brisescan.com/",
     "name": "Bitgert",
-    "txPath": "tx"
+    "txPath": "tx",
+    "erc721Scan": "https://brisescan.com/token/:address"
   },
   "1024": {
     "appName": "clover",
@@ -29,7 +32,8 @@
     "symbol": "CLV",
     "explorerUrl": "https://clvscan.com/",
     "name": "Clover",
-    "txPath": "tx"
+    "txPath": "tx",
+    "erc721Scan": "https://clvscan.com/token/:address"
   },
   "43114": {
     "appName": "avalanche",
@@ -37,7 +41,8 @@
     "symbol": "AVAX",
     "explorerUrl": "https://snowtrace.io/",
     "name": "Avalanche",
-    "txPath": "tx"
+    "txPath": "tx",
+    "erc721Scan": "https://snowtrace.io/token/:address"
   },
   "40": {
     "appName": "telos",
@@ -45,6 +50,7 @@
     "symbol": "TLOS",
     "explorerUrl": "https://teloscan.io/",
     "name": "Telos",
-    "txPath": "tx"
+    "txPath": "tx",
+    "erc721Scan": "https://teloscan.io/address/:address"
   }
 }

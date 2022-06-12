@@ -171,7 +171,7 @@ const Navbar = () => {
             {active && (
               <>
                 <div
-                  className={`icon x-mobile ${isSubscribed ? 'blued' : ''}`}
+                  className={`icon ${isSubscribed ? 'blued' : ''}`}
                   onClick={!isSubscribed ? subscribe : unsubscribe}
                 >
                   <FiBell fontSize={15} />

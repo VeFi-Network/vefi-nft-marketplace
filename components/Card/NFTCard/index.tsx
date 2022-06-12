@@ -3,6 +3,7 @@ import { formatEthAddress } from 'eth-address';
 import ethAddress from 'ethereum-address';
 import Link from 'next/link';
 import React from 'react';
+import { FiArrowRight } from 'react-icons/fi';
 
 import { NFTModel } from '../../../api/models/nft';
 import {
@@ -12,7 +13,6 @@ import {
   CardFooterItem,
   CardHeader
 } from '../../../styles/users.styled';
-import Button from '../../Button/Ghost';
 
 type Props = {
   model: NFTModel;
@@ -42,16 +42,12 @@ const NFTCard = ({ model, onClick }: Props) => {
                   <Image src="/icons/eth_classic.svg" width={20} height={20} />
                   <div>2 eth</div>
                 </div> */}
-                <Button
+                <button
                   onClick={onClick}
-                  borderThickness="1px"
-                  width="65px"
-                  borderRadius="4px"
-                  fontSize="12px"
-                  padding="5px 20px"
+                  style={{ border: 'none', outline: 'none', background: 'transparent', cursor: 'pointer' }}
                 >
-                  View
-                </Button>
+                  <FiArrowRight fontSize={26} />
+                </button>
               </div>
             </CardFooterItem>
           </CardFooter>
