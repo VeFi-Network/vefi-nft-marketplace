@@ -28,20 +28,21 @@ type Web3ContextType = {
 const Web3Context = createContext<Web3ContextType>({} as Web3ContextType);
 
 const injectedConnector = new InjectedConnector({
-  supportedChainIds: [56, 137, 32520, 1024, 43114, 40]
+  supportedChainIds: [56, 137, 32520, 1024, 43114, 40, 86]
 });
 
 const walletConnectConnector = new WalletConnectConnector({
   qrcode: true,
   bridge: 'https://bridge.walletconnect.org',
-  supportedChainIds: [56, 137, 32520, 1024, 43114],
+  supportedChainIds: [56, 137, 32520, 1024, 43114, 40, 86],
   rpc: {
     56: chains[56].chainRpc,
     137: chains[137].chainRpc,
     32520: chains[32520].chainRpc,
     1024: chains[1024].chainRpc,
     43114: chains[43114].chainRpc,
-    40: chains[40].chainRpc
+    40: chains[40].chainRpc,
+    86: chains[86].chainRpc
   }
 });
 

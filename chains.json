@@ -52,5 +52,14 @@
     "name": "Telos",
     "txPath": "tx",
     "erc721Scan": "https://teloscan.io/address/:address"
+  },
+  "86": {
+    "appName": "gatechain",
+    "chainRpc": "https://evm.gatenode.cc",
+    "symbol": "GT",
+    "explorerUrl": "https://gatescan.org/",
+    "name": "Gatechain",
+    "txPath": "tx",
+    "erc721Scan": "https://gatescan.org/token/:address"
   }
 }
