@@ -179,6 +179,7 @@ a {
   width: 30px !important;
   height: 30px !important;
   object-fit: contain !important;
+  border-radius: 50%;
 }
 .wallet__connected__account {
   display: flex;
@@ -191,6 +192,9 @@ a {
   background-color: #ebf8ff;
   border-radius: 50%;
   padding: 3px;
+}
+.chain__logo img {
+  border-radius: 50%;
 }
 .chain__id {
   color: #ebf8ff;
@@ -278,6 +282,9 @@ a {
   width: 30px !important;
   object-fit: contain !important;
   height: 30px !important;
+}
+.wallet__account__logo img {
+  border-radius: 50%;
 }
 .wallet__account__info {
   display: flex;
