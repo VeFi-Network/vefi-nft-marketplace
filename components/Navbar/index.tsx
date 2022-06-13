@@ -19,7 +19,8 @@ const chainIcons = {
   43114: '/icons/avax.svg',
   32520: '/icons/brise.svg',
   40: '/icons/telos.svg',
-  1024: '/icons/clover.svg'
+  1024: '/icons/clover.svg',
+  86: '/icons/gatechain.svg'
 };
 
 const chainIdToPriceKeyMap: any = {
@@ -28,7 +29,8 @@ const chainIdToPriceKeyMap: any = {
   43114: 'avalanche-2',
   32520: 'bitrise-token',
   40: 'telos',
-  1024: 'clover'
+  1024: 'clover',
+  86: 'gatechain'
 };
 
 const NavContainer = styled.nav`

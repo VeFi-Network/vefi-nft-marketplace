@@ -7,7 +7,8 @@ export const addresses: { [key: number]: string } = {
   32520: '0xA1FcA451AF5782d6A25582DAc5AF77B867a5bcC9',
   1024: '0x64FAF984Bf60dE19e24238521814cA98574E3b00',
   43114: '0xb562b09Bc2317D18a82FD415B7Fb33540Db7e723',
-  40: '0x64FAF984Bf60dE19e24238521814cA98574E3b00'
+  40: '0x64FAF984Bf60dE19e24238521814cA98574E3b00',
+  86: '0x2e19F01B81628CCd8cFce9F7d9F2fACC77343b7c'
 };
 
 export const WETH: { [key: number]: string } = {
@@ -16,7 +17,8 @@ export const WETH: { [key: number]: string } = {
   32520: '0x0eb9036cbE0f052386f36170c6b07eF0a0E3f710',
   1024: '0x1376C97C5c512d2d6F9173A9A3A016B6140b4536',
   43114: '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7',
-  40: '0xd102ce6a4db07d247fcc28f366a623df0938ca9e'
+  40: '0xd102ce6a4db07d247fcc28f366a623df0938ca9e',
+  86: '0x672f30407A71fa8737A3A14474ff37E09c7Fc44a'
 };
 
 export const CONSTANTS: {
@@ -58,6 +60,10 @@ export const CONSTANTS: {
     40: {
       nftMintFee: parseEther('8.977023308841021'),
       collectionDeployFee: parseEther('44.90446574911875')
+    },
+    86: {
+      nftMintFee: parseEther('0.45248868778280543'),
+      collectionDeployFee: parseEther('2.2675736961451247')
     }
   },
   paymentTokensPerNetwork: {
@@ -131,6 +137,18 @@ export const CONSTANTS: {
         token: WETH[1024],
         logo: '/icons/clover.svg',
         name: 'Wrapped Clover'
+      }
+    ],
+    86: [
+      {
+        token: AddressZero,
+        logo: '/icons/gatechain.svg',
+        name: 'Gatechain'
+      },
+      {
+        token: WETH[86],
+        logo: '/icons/gatechain.svg',
+        name: 'Wrapped Gatecoin'
       }
     ]
   }

@@ -36,16 +36,19 @@ const chainIcons = {
   43114: '/icons/avax.svg',
   32520: '/icons/brise.svg',
   40: '/icons/telos.svg',
-  1024: '/icons/clover.svg'
+  1024: '/icons/clover.svg',
+  86: '/icons/gatechain.svg'
 };
 
 const bridgeChain: { [key: number]: any } = {
   56: Chain.BSC,
   137: Chain.POLYGON,
-  43114: Chain.AVALANCHE
+  43114: Chain.AVALANCHE,
+  86: Chain.GATECHAIN
 };
 
-const supportedChains = [43114, 137, 56];
+const supportedChains = [43114, 137, 56, 86];
+const moralisSupportedChains = [43114, 137, 56];
 
 // export async function getServerSideProps(context: any) {
 
@@ -139,7 +142,7 @@ const Bridge = () => {
 
   useEffect(() => {
     if (active && !!chainId && !!account) {
-      if (supportedChains.includes(chainId))
+      if (moralisSupportedChains.includes(chainId))
         (async () => {
           const nfts = await moralisWeb3Api.account.getNFTs({
             chain: hexValue(chainId as number) as any,
