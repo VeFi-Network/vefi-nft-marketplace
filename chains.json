@@ -19,7 +19,7 @@
   },
   "32520": {
     "appName": "bitgert",
-    "chainRpc": "https://serverrpc.com/",
+    "chainRpc": "https://chainrpc.com/",
     "symbol": "BRISE",
     "explorerUrl": "https://brisescan.com/",
     "name": "Bitgert",
