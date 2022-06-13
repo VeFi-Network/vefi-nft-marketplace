@@ -129,6 +129,9 @@ const UserWallet = styled.div`
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    img {
+      border-radius: 50%;
+    }
   }
   z-index: 2;
 `;
