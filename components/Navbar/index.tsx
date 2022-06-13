@@ -30,7 +30,7 @@ const chainIdToPriceKeyMap: any = {
   32520: 'bitrise-token',
   40: 'telos',
   1024: 'clover',
-  86: 'gatechain'
+  86: 'gatechain-token'
 };
 
 const NavContainer = styled.nav`
