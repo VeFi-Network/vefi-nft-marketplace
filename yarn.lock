@@ -4300,9 +4300,9 @@ crypto-browserify@3.12.0, crypto-browserify@^3.12.0:
     randombytes "^2.0.0"
     randomfill "^1.0.3"
 
-"crypto-exchange-rate@git+https://github.com/xp-network/exchange-rate.git#master-dist":
+"crypto-exchange-rate@git+https://github.com/xp-network/exchange-rate#master-dist":
   version "1.0.0"
-  resolved "git+https://github.com/xp-network/exchange-rate.git#04867f1773b37f77a1aa3edd7e0562517099c078"
+  resolved "git+https://github.com/xp-network/exchange-rate#ae839df99ed55c3670b47dbaaa0503425e2d17e8"
   dependencies:
     axios "^0.21.1"
 
@@ -10661,9 +10661,9 @@ xp.network@^3.0.8:
     web3-providers-connex "^0.3.1"
     xpnet-web3-contracts "git+https://github.com/xp-network/XP.network-HECO-Migration#65b3d13fb814ec8d8c4ea847c5915d763c0fec6f"
 
-"xpnet-web3-contracts@git+https://github.com/xp-network/XP.network-HECO-Migration.git#65b3d13fb814ec8d8c4ea847c5915d763c0fec6f":
+"xpnet-web3-contracts@git+https://github.com/xp-network/XP.network-HECO-Migration#65b3d13fb814ec8d8c4ea847c5915d763c0fec6f":
   version "0.1.0"
-  resolved "git+https://github.com/xp-network/XP.network-HECO-Migration.git#65b3d13fb814ec8d8c4ea847c5915d763c0fec6f"
+  resolved "git+https://github.com/xp-network/XP.network-HECO-Migration#65b3d13fb814ec8d8c4ea847c5915d763c0fec6f"
   dependencies:
     ethers "^5.5.4"
 

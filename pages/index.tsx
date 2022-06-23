@@ -26,7 +26,7 @@ const MainContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
+  justify-content:center;
   /* background: #0c0c0c; */
 
   width: 100%;
@@ -40,8 +40,8 @@ const MarketplaceContainer = styled.div`
   background: #0c0c0c;
   overflow: hidden;
   .main__container__wrapper {
-    width: 100%;
-    margin: 0 auto;
+    /* width: 100%; */
+    /* margin: 0 auto; */
   }
   @media screen and (max-width: 760px) {
     width: 100%;
@@ -192,21 +192,29 @@ const SearchBar = styled.div`
 `;
 
 const NFTSubCont = styled.div`
-  width: 90%;
-  margin: 0px auto;
-  overflow-x: scroll;
-  margin-top: -50px;
+display:flex ;
+align-items: center;
+justify-content: center;
+background : red;
+  /* width: 90%; */
+
+  /* margin: 0px auto; */
+  /* overflow-x: scroll; */
+  margin-top:40px ;
+  /* margin-top: -50px; */
   transition: all 0.3s ease-in;
 
   .nft__sub__container {
     display: flex;
-    width: max-content;
+    align-items: center;
+    flex-wrap:wrap ;
+    /* width: max-content; */
     gap: 8px;
     transition: all 0.3s ease-in;
 
-    // @media screen and (max-width: 760px) {
-    //   flex-direction: column;
-    // }
+    @media screen and (max-width: 760px) {
+       flex-direction: column;
+     }
   }
 `;
 
@@ -217,9 +225,11 @@ export const NFTContainer = styled.div`
   background: linear-gradient(254.33deg, rgba(255, 255, 255, 0.1) 1.71%, rgba(255, 255, 255, 0.05) 99.35%);
   backdrop-filter: blur(16.86px);
   border-radius: 20px 20px 0px 0px;
-  width: 90%;
+  /* width: 90%; */
   min-height: 400px;
-  margin: 0px auto;
+  margin: 30px 60px;
+
+  /* margin: 0px auto; */
   margin-top: 80px;
   border: 1px solid #383838;
   transition: all 0.3s linear;
@@ -245,10 +255,10 @@ export const NFTContainer = styled.div`
     }
   }
   @media screen and (max-width: 769px) {
-    width: 95%;
+    /* width: 95%; */
   }
 
-  &:hover {
+  /* &:hover {
     padding-bottom: 40px;
     transition: all 0.3s linear;
     ${NFTSubCont} {
@@ -262,7 +272,7 @@ export const NFTContainer = styled.div`
         margin-bottom: -20px;
       }
     }
-  }
+  } */
 `;
 
 const ParentNFTCont = styled.div``;
@@ -579,7 +589,8 @@ export default function Homepage() {
                 <NFTContainer className="nft-container">
                   <NFTSubCont>
                     <div className="nft__sub__container">
-                      {_.map(
+                      {_
+                      .map(
                         list.filter(model => {
                           if (searchValue.trim().length > 0) return model.collectionName.includes(searchValue);
                           else return model;

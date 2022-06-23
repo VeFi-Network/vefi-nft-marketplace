@@ -175,7 +175,7 @@ const Card = (props: Props) => {
                   <div className="nft-price-info">
                     {props.price && (
                       <div className="price">
-                        <Image src="/icons/eth_classic.svg" width={20} height={20} />
+                        <Image src="/icons/eth_classic.svg" width={20} height={20}  />
 
                         <div>
                           {kFormatter(parseFloat(props.price))} {networkSymbol}

@@ -1,23 +1,33 @@
 import styled from 'styled-components';
 
 export const Category = styled.section`
-  width: calc(100% - 150px);
-  margin: 0px auto;
-  margin-top: 80px;
-  height: 100%;
+margin: 30px 60px;
+display:flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content:center;
+  /* width: calc(100% - 150px); */
+  /* margin: 0px auto; */
+  /* margin-top: 80px; */
+  /* height: 100%; */
+  @media screen and (max-width: 760px) {
+      margin: 10px;
+    }
+
 
   .category__container {
     background: rgba(255, 255, 255, 0.1);
-    padding: 20px 30px;
-    height: 100%;
+    /* padding: 20px 30px; */
+    /* height: 100%; */
     border-radius: 10px;
     padding-bottom: 50px;
+
   }
   .category__heading {
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 40px 0;
+    padding:15px 0;
     h2 {
       font-family: 'MonumentExtended';
       color: #fff;
@@ -26,16 +36,17 @@ export const Category = styled.section`
   .cartegory__card__listing {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    align-items:center ;
+    justify-content: center;
     gap: 5px;
     @media screen and (max-width: 760px) {
-      width: 100%;
+      /* width: 100%; */
       flex-direction: column;
     }
   }
 
   @media screen and (max-width: 760px) {
-    width: 90%;
+    /* width: 90%; */
   }
 `;
 
